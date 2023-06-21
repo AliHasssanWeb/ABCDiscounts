@@ -1,0 +1,751 @@
+﻿
+@{
+    ViewData["Title"] = "CustomerCertification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    hr {
+        margin-bottom: 0px;
+    }
+
+    canvas#signature-pad {
+        background: #fff;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+    }
+
+    .button {
+        background-color: gray; /* Green */
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+        height: 25px;
+        width: 50px;
+    }
+
+    .button1 {
+        /*padding: 10px 24px;*/
+    }
+</style>
+
+<div class="container" style="margin-top:20px; margin-bottom:20px;">
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3>Streamlined Sales and Use Tax Agreement</h3>
+                        <h2 style="margin-top:7px;"><b>Certificate of Examption</b></h2>
+                    </div>
+
+
+                    @*<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <p style="padding-inline-start: 50px; margin-right: 20px;">
+            This is a multi-state form. Not all states allow all exemptions listed on this form. Purchasers are responsible for knowing if they qualify to claim exemption from tax in the state that would otherwise be due tax on this sale. The seller may be required to provide this exemption certificate (or data elements required on the form) to a state that would otherwise be due tax on this sale.
+        </p>
+        <p style="padding-inline-start:50px; margin-top:10px; margin-right:20px;">
+            The purchaser will be held liable for any tax and interest, and possibly civil and criminal penalties imposed by the member state, if the purchaser is not eligible to claim this exemption. A seller may not accept a certificate of exemption for an entity-based exemption on a sale made at a location operated by the seller within the designated state if the state does not allow such an entity-based exemption.
+        </p>
+
+    </div>
+
+
+    <div class="col-md-12">
+        <div style="padding-inline-start: 50px; margin-top:15px;">
+            <input type="checkbox" id="Multistate" value="true" />
+            <label>Check if you are attaching the Multistate Supplemental form.</label><br>
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group" style="padding-inline-start: 50px; margin-top: 15px;">
+            <input type="text" id="Multistate" style="width:40px;" />
+            <label>If not, enter the two-letter postal abbreviation for the state under whose laws you are claiming exemption.</label><br>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group" style="padding-inline-start:50px;">
+            <input type="checkbox" id="Multistate" value="true" />
+            <label>Check if this certificate is for a single purchase and enter the related invoice/purchase order# <input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /> </label>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <hr />
+        <div style="padding-inline-start: 50px;">
+            <label>
+                Name of Purchaser
+            </label><br /><br />
+            <input type="text" id="Multistate" style="width:1065px; outline: 0; border-left: none; border-right: none; border-top: none " />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row" style="padding-inline-start: 50px;">
+            <div class="col-md-4">
+                <label>
+                    Business Adress
+                </label><br /><br />
+                <input type="text" id="Multistate" style="width:363px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-4">
+                <label>
+                    City
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start:50px; width: 370px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    State
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    Zip Code
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 160px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+        </div>
+        @*<div style="padding-inline-start: 50px;">
+
+            </div>*@
+    </div>
+    <div class="col-md-12">
+        <div class="row" style="padding-inline-start: 50px;">
+            <div class="col-md-4">
+                <label>
+                    Purchaser's Tax ID Number
+                </label><br /><br />
+                <input type="text" id="Multistate" style="width:390px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-4">
+                <label>
+                    State of Issue
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start:50px; width: 390px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    Country of Issue
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 340px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+        </div>
+        @*<div style="padding-inline-start: 50px;">
+
+            </div>*@
+    </div>
+
+    <div class="col-md-12">
+        <div class="row" style="padding-inline-start: 50px;">
+            <div class="col-md-3" style="border-right:1px solid">
+                <label>
+                    If no Tax ID Number, enter one of the following
+                </label><br /><br />
+                <input type="text" id="Multistate" style="width:300px; outline: 0; border-left: none; border-top: none " readonly />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    FEIN
+                </label><br /><br /><br />
+                <input type="text" id="Multistate" style="outline: 0; padding-inline-start: 10px; width: 250px; border-left: none; border-top: none;border-right:none " />
+            </div>
+            <div class="col-md-4">
+                <label style=" padding-inline-start: 10px; border-right: 1px solid; border-left: 1px solid;">
+                    Driving License Number/State Issued ID Number
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 370px; outline: 0; border-left:none; border-top:none " />
+            </div>
+            <div class="col-md-3">
+                <label>
+                    Country of Issue
+                </label><br /><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 250px; outline: 0; border-left:none; border-top:none; border-right:none " />
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div style="padding-inline-start: 50px;">
+            <label>
+                Name of seller from whom you are purchasing, leasing, or renting
+            </label><br /><br />
+            <input type="text" id="Multistate" style="width:1065px; outline: 0; border-left: none; border-right: none; border-top: none " />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row" style="padding-inline-start: 50px;">
+            <div class="col-md-4">
+                <label>
+                    Seller Adress
+                </label><br /><br />
+                <input type="text" id="Multistate" style="width:363px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-4">
+                <label>
+                    City
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start:50px; width: 370px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    State
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    Zip Code
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 160px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12" style="margin-top: 20px; padding-inline-start: 60px;">
+        <label>Type of business. Check the number that describes your business.</label><p></p>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Accommodation and food services</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Agricultural, forestry, fishing, and hunting</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Construction</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Finance and insurance</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Information, publishing, and communications</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Manufacturing</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Mining</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Real estate</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Rental and leasing</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Retail trade</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Transportation and warehousing</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Utilities</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label> Wholesale trade</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Business services</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Professional services</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Education and health-care services</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Nonprofit organization</label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Government</label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Not a business</label><br>
+            </div>
+            <div class="col-md-6">
+                <label>Other</label>
+                <input type="text" id="Multistate" style="outline:0; border-left:none; border-right:none; border-top:none" />
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="col-md-12" style="margin-top: 20px; padding-inline-start: 60px;">
+        <label>Reason for exemption. Check the letter that identifies the reason for the exemption.</label><p></p>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Federal government (department)<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>State or local government (name)<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Tribal government (name)<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Foreign diplomat #<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Agricultural production #<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label style="font-weight:normal">Industrial production/manufacturing #<input type="text" id="Multistate" style="width:200px; padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Direct pay permit #<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Direct mail #<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Resale #<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+            <div class="col-md-6">
+                <input type="checkbox" id="Multistate" value="true" />
+                <label>Other (explain)<input type="text" id="Multistate" style="padding: 0; outline: 0; border-left: none; border-right: none; border-top: none " /></label><br>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12" style="margin-top: 20px; padding-inline-start: 60px;">
+        <br />
+        <label>Sign here. I declare that the information on this certificate is correct and complete to the best of my knowledge and belief</label><hr />
+        <div class="row">
+            <div class="col-md-4">
+                <label>
+                    Signature of authorized purchaser
+                </label><br /><br />
+                <div>
+                    <canvas id="signature-pad" width="400" height="100"></canvas>
+                    <div class="text-center">
+                        <button id="clear" class="button button1">Clear</button>
+                    </div>
+                </div>
+                @*<input type="text" id="Multistate" style="width:365px; outline: 0; border-left: none; border-right: none; border-top: none " />*@
+            </div>
+            <div class="col-md-4">
+                <label>
+                    Write name here
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start:50px; width: 370px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    Title
+                </label><br /><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-2">
+                <label>
+                    Date
+                </label><br /><br />
+                <input type="date" id="Multistate" style="padding-inline-start: 10px; width: 160px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:50px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                    <h2 style="margin-top:7px;"><b>Certificate of Examption</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div style="padding-inline-start: 50px;">
+            <label>
+                Name of Purchaser
+            </label><br />
+            <input type="text" id="Multistate" style="width:1065px; outline: 0; border-left: none; border-right: none; border-top: none " />
+        </div>
+    </div>
+    <div class="col-md-12" style="padding-inline-start: 50px; margin-top:40px;">
+        <div class="row">
+            <div class="col-md-2">
+                <label style="margin-bottom:10px;">
+                    State
+                </label>
+                <p>
+                    AR*
+                </p>
+                <p>
+                    IA
+                </p>
+                <p>
+                    IN
+                </p>
+                <p>
+                    KS
+                </p>
+                <p>
+                    KY
+                </p>
+                <p>
+                    MI
+                </p>
+                <p>
+                    MN
+                </p>
+                <p>
+                    NC
+                </p>
+                <p>
+                    ND
+                </p>
+                <p>
+                    NE
+                </p>
+                <p>
+                    NJ
+                </p>
+                <p>
+                    NV
+                </p>
+                <p>
+                    OH
+                </p>
+                <p>
+                    RI
+                </p>
+                <p>
+                    OK
+                </p>
+                <p>
+                    SD
+                </p>
+                <p>
+                    TN*
+                </p>
+                <p>
+                    UT
+                </p>
+                <p>
+                    VT
+                </p>
+                <p>
+                    WV
+                </p>
+                <p>
+                    WY
+                </p>
+            </div>
+            <div class="col-md-5">
+                <label>
+                    Reason For Examption
+                </label><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+            <div class="col-md-5">
+                <label>
+                    identification Number
+                </label><br />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+                <input type="text" id="Multistate" style="padding-inline-start: 30px; width: 300px; outline: 0; border-left: none; border-right: none; border-top: none " />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:50px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                    <h2 style="margin-top:7px;"><b>Certificate of Exemption Instructions</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top:30px;padding-inline-start: 50px;">
+
+        <p style="margin-right: 20px;">
+            Use this form to claim exemption from sales tax on purchases of otherwise taxable items. The purchaser must
+            complete all fields on the exemption certificate and provide the fully completed certificate to the seller in order to
+            claim exemption
+        </p>
+        <p style="margin-top:10px; margin-right:20px;">
+        <p>
+            <b>Warning to purchaser:</b>
+            You are responsible for ensuring that you are eligible for the exemption you are claiming.
+            You will be held liable for any tax and interest, and possibly penalties imposed by the member state due the tax
+            on your purchase, if the purchase is not legally exempt
+        </p>
+    </div>
+
+    <div class="col-md-12" style="margin-top:30px;padding-inline-start: 50px;">
+
+        <p style="margin-right: 20px;">
+            Purchaser instructions for completing the exemption certificate
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+
+            Some purchasers may wish to complete a single certificate for multiple states where they conduct business
+            and, regularly, make exempt purchases from the same seller. If you do, check the box on the front of the
+            SSUTA Certificate of Exemption to indicate that you are attaching the Multistate Supplemental form on page 2.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+
+            CAUTION: Certificates completed with a multistate supplement may include non-member states of the SST
+            Governing Board, provided those states have agreed to accept the SSUTA Certificate of Exemption. Both
+            sellers and purchasers MUST BE AWARE that these additional non-member states may not have adopted
+            the SSUTA provisions for Direct Mail. Additionally, completion of this certificate in its entirety may not fully
+            relieve the seller from liability unless non-member states’ requirements have been met.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+
+            Single purchase exemption certificate: Check this box if this exemption certificate is being used for a
+            single purchase. Include the invoice or purchase order number for the transaction.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+
+            If this boxed is not checked, this certificate will be treated as a blanket certificate. A blanket certificate
+            continues in force so long as the purchaser is making recurring purchases (at least one purchase within a
+            period of twelve consecutive months) or until otherwise cancelled by the purchaser.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+
+            Purchaser information: Complete the purchaser and seller information section, as requested. An
+            identification number for you or your business must be included. Include your North Carolina sales and
+            use tax account ID number or North Carolina sales and use tax exemption number, as appropriate. If a
+            transaction does not require the use of a registration or exemption number, enter the Federal Employer
+            Identification Number (FEIN) issued to your business, or if no FEIN is required, enter your personal driver’s
+            license number and the state that it is issued by. Foreign diplomats and consular personnel must enter the
+            individual tax identification number shown on the sales tax exemption card issued to you by the United States
+            Department of State’s Office of Foreign Missions.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+            Multistate Purchasers: The purchaser should enter its headquarters address as its business address.
+        </p>
+
+
+        <p style="margin-top:10px; margin-right:10px;">
+            Type of business: Circle the number that best describes your business or organization. If none of the
+            categories apply, circle number 20 and provide a brief description.
+        </p>
+
+        <p style="margin-top:10px; margin-right:10px;">
+            Reason for exemption: Circle the exemption that applies to your business and enter the additional information
+            requested for that exemption. If the member state that is due tax on your purchase does not require the
+            additional information requested for the exemption reason code circled, enter “NA” for not applicable on
+            the appropriate line. If an exemption that is not listed applies, circle “L Other” and enter an explanation.
+            The explanation for “L Other” must include a clear and concise explanation of the reason for the exemption
+            claimed.
+        </p>
+
+
+    </div>
+
+    <div class="col-md-12" style="margin-top:50px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                    <h2 style="margin-top:7px;"><b>Certificate of Exemption Instructions - Continued</b></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top:30px;padding-inline-start: 50px;">
+
+        <p style="margin-top: 10px;">
+            Multistate Purchasers: Attach the SSUTA Certificate of Exemption: Multistate Supplemental form and
+            indicate the applicable reason for exemption and identification number (if required) for each of the additional
+            states in which the purchaser wishes to claim exemption from tax
+        </p>
+        <p style="margin-top: 10px;">
+            CAUTION: The exemptions listed are general exemptions most commonly allowed by member states. However,
+            each state’s laws governing exemptions are different. Not all of the reasons listed may be valid exemptions
+            in the state in which you are claiming exemption. In addition, each state has other exemptions that are not
+            listed on this form. To determine what sales and use tax exemptions are allowed in a particular state refer to
+            the state’s web site or other information available relating to their exemptions.
+        </p>
+        <p style="margin-top: 10px;">
+            For information on exemption certificate procedures and exemption number requirements in North Carolina,
+            see Section 52 of the Sales and Use Tax Technical Bulletins which can be found on the Department’s website
+            at www.dornc.com, or you may contact the Taxpayer Assistance Division at 1-877-252-3052 (toll free).
+        </p>
+        <p style="margin-top: 10px;">
+            Seller: You are required to maintain proper records of exempt transactions and provide those records to Member
+            states of the SST Governing Board, Inc., when requested. These certificates may be provided in paper or electronic
+            format. If a paper exemption certificate is not forwarded by the purchaser, but instead the data elements required
+            on the form are otherwise captured by the seller, the seller must maintain such data and make it available to
+            Member states in the form in which it is maintained by the seller
+        </p>
+        <p style="margin-top: 10px;">
+            You are relieved of the responsibility for collecting and remitting sales tax on the sale or sales for which the
+            purchaser provided you with this exemption certificate, even if it is ultimately determined that the purchaser
+            improperly claimed an exemption, provided all of the following conditions are met:
+        </p>
+        <p style="margin-top: 10px;">
+            All fields on the exemption certificate are completed by the purchaser or the required information is captured
+            and maintained;
+            The fully completed exemption certificate (or the required information) is provided to you at the time of sale
+            or as otherwise provided by Section 317 of the SSUTA;
+            If the purchaser is claiming an entity-based exemption (i.e., an exemption based on who the purchaser is),
+            the state that would otherwise be due the tax on the sale allows the specific entity-based exemption claimed
+            by the purchaser if the purchase was made at a sale location operated by the seller within that state;
+            You do not fraudulently fail to collect the tax due; or
+            You do not solicit customers to unlawfully claim an exemption
+        </p>
+
+    </div>
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.3.5/signature_pad.min.js" integrity="sha512-kw/nRM/BMR2XGArXnOoxKOO5VBHLdITAW00aG8qK4zBzcLVZ4nzg7/oYCaoiwc8U9zrnsO9UHqpyljJ8+iqYiQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var canvas = document.getElementById("signature-pad");
+
+    function resizeCanvas() {
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+    }
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+
+    var signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(250,250,250)'
+    });
+
+    document.getElementById("clear").addEventListener('click', function () {
+        signaturePad.clear();
+    })
+</script>

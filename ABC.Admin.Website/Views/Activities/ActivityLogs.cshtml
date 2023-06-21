@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.ActivityLog>
+
+@{
+    ViewBag.Title = "Activity Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Users/AddUser" aria-controls="overview" aria-selected="true">Admin</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/ManageUser" aria-controls="overview" aria-selected="true">Existing Admins</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/BlockUser" role="tab" aria-selected="false">BlockUser</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/ChangePassword" role="tab" aria-selected="false">ChangePassword</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/AddRole" role="tab" aria-selected="false">Role</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/ManageRoles" role="tab" aria-selected="false">Existing Roles</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Activities/ActivityLogs" role="tab" aria-selected="false">AdminActivity Logs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Activities/TerminalLogs" role="tab" aria-selected="false">TerminalLogs</a>
+        </li>
+
+    </ul>
+</div>
+
+        <div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Activities log</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table dataTable" role="grid" aria-describedby="order-listing_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Order #: activate to sort column descending" style="width: 51.8281px;">Sr No.</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Purchased On: activate to sort column ascending" style="width: 97.8438px;">Operation</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Customer: activate to sort column ascending" style="width: 67.6875px;">Detail</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Ship to: activate to sort column ascending" style="width: 49.4062px;">Date</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Base Price: activate to sort column ascending" style="width: 74.0625px;">Time</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Base Price: activate to sort column ascending" style="width: 74.0625px;">Operator</th>
+
+                                </thead>
+
+                                @{var i = 0;
+                                }
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            i = i + 1;
+                                            <tr class="odd">
+                                                <td class="sorting_1">@i</td>
+                                                <td>@item.OperationName</td>
+                                                <td>@item.NewDetails</td>
+                                                <td>@Html.FormatValue("", @item.CreatedDate ?.ToString("dd/MM/yyyy"))</td>
+                                                <td>@item.LogTime.Split('.')[0]</td>
+                                                <td>@item.CreatedBy</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

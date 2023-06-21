@@ -1,0 +1,321 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Employee>
+
+@{
+    ViewData["Title"] = "PendingEmployees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+@using (Html.BeginForm("PendingEmployees", "Users", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Pending Employee </h4>
+            <ul class="nav nav-tabs" style="border-bottom: 1px solid #ebedf2;" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="pending-tab" data-bs-toggle="tab" href="#pending-1" role="tab" aria-controls="pending-1" aria-selected="false">Pending</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="appndreg-tab" data-bs-toggle="tab" href="#appndreg-1" role="tab" aria-controls="appndreg-1" aria-selected="false">Approved & Registered</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="app-tab" data-bs-toggle="tab" href="#app-1" role="tab" aria-controls="app-1" aria-selected="false">Approved</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="rej-tab" data-bs-toggle="tab" href="#rej-1" role="tab" aria-controls="rej-1" aria-selected="false">Rejected</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div class="tab-pane fade active show" id="pending-1" role="tabpanel" aria-labelledby="pending-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="order-listing_length"><label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div><div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <td></td>
+                                                        <th>
+                                                            Employee Code
+                                                        </th>
+                                                        <th>
+                                                            Full Name
+                                                        </th>
+                                                        <th>
+                                                            Email
+                                                        </th>
+                                                        <th>
+                                                            Driving Lisence
+                                                        </th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                @{var i = 0; }
+                                                <tbody>
+                                                    @if (Model != null)
+                                                    {
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            @if (item.AdminApproval == null && item.AdminStatus == null && item.AccessAccount == null)
+                                                            {
+                                                                i = i + 1;
+                                                                <tr class="odd">
+
+                                                                    <td class="sorting_1">@i</td>
+
+                                                                    <td>@item.EmployeeCode</td>
+                                                                    <td>@item.FullName</td>
+                                                                    <td>@item.Email</td>
+                                                                    <td>@item.DrivingLisence</td>
+                                                                    <td>
+                                                                        <a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Users", new { id = item.EmployeeId })" id="btnDetails">Detail</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade  show" id="appndreg-1" role="tabpanel" aria-labelledby="appndreg-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="order-listing_length"><label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div><div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <td></td>
+                                                        <th>
+                                                            Employee Code
+                                                        </th>
+                                                        <th>
+                                                            Full Name
+                                                        </th>
+                                                        <th>
+                                                            Email
+                                                        </th>
+                                                        <th>
+                                                            Driving Lisence
+                                                        </th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                @{var j = 0; }
+                                                <tbody>
+                                                    @if (Model != null)
+                                                    {
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            @if (item.AdminApproval == true && item.AccessAccount == true)
+                                                            {
+                                                                j = j + 1;
+                                                                <tr class="odd">
+                                                                    <td class="sorting_1">@j</td>
+
+                                                                    <td>@item.EmployeeCode</td>
+                                                                    <td>@item.FullName</td>
+                                                                    <td>@item.Email</td>
+                                                                    <td>@item.DrivingLisence</td>
+                                                                    <td>
+                                                                        <a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Users", new { id = item.EmployeeId })" id="btnDetails">Detail</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade  show" id="app-1" role="tabpanel" aria-labelledby="app-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="order-listing_length"><label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div><div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <td></td>
+                                                        <th>
+                                                            Employee Code
+                                                        </th>
+                                                        <th>
+                                                            Full Name
+                                                        </th>
+                                                        <th>
+                                                            Email
+                                                        </th>
+                                                        <th>
+                                                            Driving Lisence
+                                                        </th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                @{var k = 0; }
+                                                <tbody>
+                                                    @if (Model != null)
+                                                    {
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            @if (item.AdminApproval == true && item.AdminStatus == false && item.AccessAccount == false)
+                                                            {
+                                                                k = k + 1;
+                                                                <tr class="odd">
+                                                                    <td class="sorting_1">@k</td>
+
+                                                                    <td>@item.EmployeeCode</td>
+                                                                    <td>@item.FullName</td>
+                                                                    <td>@item.Email</td>
+                                                                    <td>@item.DrivingLisence</td>
+                                                                    <td>
+                                                                        <a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Users", new { id = item.EmployeeId })" id="btnDetails">Detail</a>
+                                                                    </td>
+
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade  show" id="rej-1" role="tabpanel" aria-labelledby="rej-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="order-listing_length"><label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div><div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <td></td>
+                                                        <th>
+                                                            Employee Code
+                                                        </th>
+                                                        <th>
+                                                            Full Name
+                                                        </th>
+                                                        <th>
+                                                            Email
+                                                        </th>
+                                                        <th>
+                                                            Driving Lisence
+                                                        </th>
+                                                        <th>
+                                                            Action
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                                @{var l = 0; }
+                                                <tbody>
+                                                    @if (Model != null)
+                                                    {
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            @if (item.AdminApproval == false && item.AdminStatus == false && item.AccessAccount == false)
+                                                            {
+                                                                l = l + 1;
+                                                                <tr class="odd">
+                                                                    @if (item.AdminStatus == false)
+                                                                    {
+                                                                        <td class="sorting_1">@l</td>
+
+                                                                        <td>@item.EmployeeCode</td>
+                                                                        <td>@item.FullName</td>
+                                                                        <td>@item.Email</td>
+                                                                        <td>@item.DrivingLisence</td>
+                                                                        <td>
+                                                                            <a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Users", new { id = item.EmployeeId })" id="btnDetails">Detail</a>
+
+                                                                        </td>
+                                                                    }
+                                                                    @*<td>
+                                                                            <a><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateEmployee", "Employee", new { id = item.EmployeeId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                                            <a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteEmployee", "Employee", new { id = item.EmployeeId })': null"></i></a>
+                                                                        </td>*@
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+                                    </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+}
+
+@*<script>
+        $(function () {
+            $('#btnDetails').click(function () {
+                window.location.href("DetailEmployee/Users/") + id
+
+        });
+    });
+    </script>*@
+
+@*<script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>*@

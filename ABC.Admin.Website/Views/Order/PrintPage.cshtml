@@ -1,0 +1,372 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.CartDetail>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PrintPage</title>
+</head>
+<body>
+    <!-- Modal -->
+   @* <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    
+                    <div>
+                        <button type="button" class="close" onclick="Closeclick()" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+
+
+        <button hidden id="btn-click" type="button" onclick="printDiv('modal-data')" value="Print">
+            <span>Print</span>
+        </button>
+
+    <div id="modal-data" class="">
+        <div style="margin:0px!important;padding:0px!important;box-sizing:border-box">
+            <div style="display:none;font-size:1px;color:rgb(254,254,254);line-height:1px;font-family:Helvetica,Arial,sans-serif;max-height:0px;max-width:0px;opacity:0;overflow:hidden;box-sizing:border-box">
+                We have got your order! Here are your order and payment details .
+            </div>
+            
+                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                    <tbody style="box-sizing:border-box">
+                        
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                                <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                    <tbody style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                            <td bgcolor="#ffffff" style="border-top-right-radius:15px;border-top-left-radius:15px;box-sizing:border-box;min-width:5px;border:none">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                    <tbody style="box-sizing:border-box">
+                                                        <tr style="box-sizing:border-box">
+                                                            <td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        
+                                                                        
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="40" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td align="center" style="padding:0px 20px;font-size:28px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">
+                                                                                Order Invoice
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                                <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                    <tbody style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                            <td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                    <tbody style="box-sizing:border-box">
+                                                        <tr style="box-sizing:border-box">
+                                                            <td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td align="left" style="padding:0px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:none">
+                                                                                Order Date: @Model.ElementAt(0).CustomerOrders.ElementAt(0).OrderDate.Value.Date.ToString("dd/MM/yyyy")
+                                                                                <br style="box-sizing:border-box">PO ID: @Model.ElementAt(0).CustomerOrders.ElementAt(0).TicketId
+                                                                                <br style="box-sizing:border-box">
+                                                                                <br style="box-sizing:border-box">
+                                                                                <br style="box-sizing:border-box">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="box-sizing:border-box">
+                                                            <td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                    <thead style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                            <th align="left" bgcolor="#ffffff" style="box-sizing:border-box;background:rgb(236,236,236);border:0px solid rgb(221,221,221)" valign="top" width="50%">
+                                                <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%">
+                                                    <tbody style="box-sizing:border-box">
+                                                        <tr style="box-sizing:border-box">
+                                                            <td align="center" style="box-sizing:border-box;min-width:5px;border:none" width="500">
+                                                                <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="10" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <table align="center" border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                                                                    <tbody style="box-sizing:border-box">
+                                                                                        <tr style="box-sizing:border-box">
+                                                                                            <td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);width:250px;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                                                Package Expected Deliver Date:
+                                                                                            </td>
+                                                                                            <td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);width:250px;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                                                <div style="text-align:left;box-sizing:border-box">Payment Mode</div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr style="box-sizing:border-box">
+                                                                                            <td height="5" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                                        </tr>
+                                                                                        <tr style="box-sizing:border-box">
+                                                                                            <td align="left" style="padding:0px 20px;font-size:18px;line-height:24px;font-family:Arial,sans-serif;font-weight:bold;color:rgb(255,0,0);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                                            @if(Model.ElementAt(0).CustomerOrders.ElementAt(0).ExpectedDate != null)
+                                                                                            {
+                                                                                                @Model.ElementAt(0).CustomerOrders.ElementAt(0).ExpectedDate.Value.Date.ToString("dd/MM/yyyy");
+                                                                                            }
+                                                                                        </td>
+                                                                                            <td align="left" style="padding:0px 20px;font-size:18px;line-height:24px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                                                <div style="text-align:left;box-sizing:border-box">
+                                                                                                    @Model.ElementAt(0).CustomerOrders.ElementAt(0).PaymentMode
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                                <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                    <tbody style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                            <td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                    <tbody style="box-sizing:border-box">
+                                                        <tr style="box-sizing:border-box">
+                                                            <td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="20" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">
+                                                                                Invoice Details:
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="5" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td align="left" style="padding:0px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                                <span id="" style="box-sizing:border-box">
+                                                                                    <br style='box-sizing:border-box'>Customer Name: &nbsp; @Model.ElementAt(0).CustomerOrders.ElementAt(0).CustomerName
+                                                                                    <br style='box-sizing:border-box'>Puller Name: &nbsp; @Model.ElementAt(0).CustomerOrders.ElementAt(0).PulledBy
+                                                                                    <br style="box-sizing:border-box">
+                                                                                </span>
+                                                                                
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="60" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td align="center" style="font-size:28px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">Order Details</td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box"><td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td></tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                                <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                    <tbody style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                            <td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                    <tbody style="box-sizing:border-box">
+                                                        <tr style="box-sizing:border-box">
+                                                            <td height="10" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:92%;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td bgcolor="#EDEDED" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Product</td>
+                                                                            <td bgcolor="#EDEDED" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <br style="box-sizing:border-box">
+                                                                            </td>
+                                                                            <td bgcolor="#EDEDED" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);width:20%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <div style="text-align:center;box-sizing:border-box">Quantity</div>
+                                                                            </td>
+                                                                            <td bgcolor="#EDEDED" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);width:20%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <div style="text-align:center;box-sizing:border-box">Price</div>
+                                                                            </td>
+                                                                            <td bgcolor="#EDEDED" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);width:20%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <div style="text-align:center;box-sizing:border-box">Total</div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box"><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td></tr>
+                                                                        @foreach (var item in Model)
+                                                                        {
+                                                                            var total = @Convert.ToDouble(item.Quantity) * @Convert.ToDouble(item.Retail);
+                                                                            <tr style="box-sizing:border-box">
+                                                                                <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">@item.Name</td>
+                                                                                <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)"><br style="box-sizing:border-box"></td>
+                                                                                <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)"><div style="text-align:center;box-sizing:border-box">@item.Quantity</div></td>
+                                                                                <td style="padding:0px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);text-align:right;vertical-align:top;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                    <div style="box-sizing:border-box">$ @item.Retail </div>
+                                                                                <td style="padding:0px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);text-align:right;vertical-align:top;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                    <div style="box-sizing:border-box">$ @total </div>
+                                                                                    <hr style="width:100%; border-top: 1px dashed black">
+                                                                            </tr>
+                                                                        };
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="box-sizing:border-box">
+                                                            <td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                <span style="box-sizing:border-box">&nbsp;</span>
+                                                                <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:92%;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                                                    <tbody style="box-sizing:border-box">
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">&nbsp;</td>
+                                                                            <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">Subtotal:</td>
+                                                                            <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">
+                                                                                <div style="text-align:right;box-sizing:border-box">$ @Model.ElementAt(0).CustomerOrders.ElementAt(0).OrderAmount</div>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                            <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Tax / Deposits:</td>
+                                                                            <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <div style="text-align:right;box-sizing:border-box">$ @Model.ElementAt(0).CustomerOrders.ElementAt(0).CardTax</div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="box-sizing:border-box">
+                                                                            <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                            <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <strong style="box-sizing:border-box;font-weight:700">Order Total:</strong>
+                                                                            </td>
+                                                                            <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                                <div style="text-align:right;box-sizing:border-box">
+                                                                                    <strong style="box-sizing:border-box;font-weight:700">$ @Model.ElementAt(0).CustomerOrders.ElementAt(0).OrderAmount</strong>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="box-sizing:border-box">
+                                                                            <td height="40" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                        </tr>
+                                                        </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr style="box-sizing:border-box">
+                            <td align="center" bgcolor="#ededed" style="padding:10px 0px;background:rgb(237,237,237);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                    <tbody style="box-sizing:border-box">
+                                        <tr style="box-sizing:border-box">
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+        </div>
+
+    </div>
+</body>
+</html>
+<script>
+    $( document ).ready(function() {
+        document.getElementById('btn-click').click();
+});
+    function printDiv(elem) {
+        var mywindow = window.open('8.5*14.5');
+        var content = document.getElementById(elem).innerHTML;
+        var realContent = document.body.innerHTML;
+        mywindow.document.write(content);
+        mywindow.print();
+        //document.body.innerHTML = realContent;
+        //mywindow.close();
+        return true;
+    }
+
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

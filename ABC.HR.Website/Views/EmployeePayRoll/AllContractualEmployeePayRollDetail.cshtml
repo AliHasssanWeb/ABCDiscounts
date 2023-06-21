@@ -1,0 +1,361 @@
+﻿@model ABC.HR.Domain.Entities.EmPayRollViewModel
+
+@{
+    ViewData["Title"] = "PaySlipByDate";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Employee PayRoll Report</h1>
+
+
+
+        <hr />
+        <div class="row">
+
+            <div class="col-md-3 grid-margin action-btn">
+                <div class="card bg-twitter d-flex align-items-center">
+                    <div class="card-body" id="openpdfpayslipreport">
+                        <div class="d-flex flex-row align-items-center">
+                            <i class="ti-receipt text-white icon-md"></i>
+                            <div class="ms-3" onclick="getPDF()">
+                                <h6 class="text-white">Generate</h6>
+                                <p class="mt-2 text-white card-text">Report</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="showpdfpayslip" class="canvas_div_pdf">
+            <h2>Payroll Register Report</h2>
+            <div>ABC DISCOUNTS</div>
+            @if (Model == null || Model.AllPayRoll == null)
+            {
+                <div>No data</div>
+            }
+            else
+            {
+                var totalhours = 0.0;
+                var currtotals = 0.0;
+                var currytdtotal = 0.0;
+                var taxcurrtotal = 0.0;
+                var txytdtotal = 0.0;
+                var dedcuurtotal = 0.0;
+                var dedytdtotal = 0.0;
+                var ertaxcrrtotal = 0.0;
+                var erytdtaxtotal = 0.0;
+
+                var countList = 0;
+                foreach (var item in Model.AllPayRoll)
+                {
+
+                    <div><span id="frfrffr">Pay Period From <span id="fromslipdate">@item.empPayRoll.FromDate</span> to <span id="tolipdate">@item.empPayRoll.ToDate</span>, Pay Date: <span>@item.empPayRoll.DisperseDate</span>, Payroll # 24 (Standard)</span></div>
+                    <div class="table-responsive">
+                        <table style="width: 100%; font-size: 12px; height: 185px; font-weight: 700; ">
+                            <thead>
+                                <tr style="border: solid 1px;">
+                                    <th>Earnings</th>
+                                    <th>Hours*</th>
+                                    <th>Rate</th>
+                                    <th>Current</th>
+                                    <th>YTD</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody class="tbody">
+                                <tr>
+                                    <td>
+                                        Emp# ,
+                                        @if (item.employeeContract.EmployeeNumber == null)
+                                        {
+                                            <span>No Data</span>
+                                        }
+                                        else
+                                        {
+                                    <span id="empName">@item.employeeContract.EmployeeNumber  @item.employee.FullName</span>
+                                        }
+                                    </td>
+
+                                    @*@if (item.employee.FullName == null)
+                                    {
+                                        <td id="empName" colspan="2">No Data</td>
+                                    }
+                                    else
+                                    {
+                                        <td id="empName" colspan="2">@item.employee.FullName</td>
+                                    }*@
+                                </tr>
+                                <tr>
+                                    <td colspan="2">DirDep</td>
+                                    <td align="right"> &nbsp;&nbsp;&nbsp;NetPay:</td>
+                                    @if (item.empPayRoll.TotalSalary == null)
+                                    {
+                                        <td>No Data</td>
+                                    }
+                                    else
+                                    {
+                                        var inputValuetotalsal = Convert.ToDouble(item.empPayRoll.TotalSalary);
+                                        inputValuetotalsal = Math.Round(inputValuetotalsal, 2);
+                                        <td>@inputValuetotalsal</td>
+                                    }
+                                </tr>
+                                <tr>
+                                    @* Start Here *@
+                                    @* Contract Name *@
+                                    @if (item.employeeContract.ContractName == null)
+                                    {
+                                        <td>No Data</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.employeeContract.ContractName</td>
+                                    }
+                                    @* For Working Hours *@
+                                    <td>
+                                        @{ var totalattent = item.attendanceRecord.TotalAttendHours;
+
+                                            if (item.attendanceRecord.TotalAttendHours == 0)
+                                            {
+                                                <span>NoData</span>
+                                            }
+                                            else
+                                            {
+                                                var gettotalhours = 0.0;
+                                                gettotalhours = item.attendanceRecord.TotalAttendHours;
+                                                gettotalhours = Math.Round(gettotalhours, 2);
+                                                totalhours += gettotalhours;
+
+
+                                                @gettotalhours;
+                                            }
+
+                                        }
+                                    </td>
+                                    @* For Daily Wage *@
+                                    <td>
+                                        @{
+                                            var hourlyperdaywage = 0.0;
+                                            if (item.employeeContract.DailyWages == true)
+                                            {
+
+                                                if (item.employeeContract.DailyWagesChargesAmount == null)
+                                                {
+                                                    <span>NoData</span>
+                                                }
+                                                else
+                                                {
+
+                                                    hourlyperdaywage = Convert.ToDouble(item.employeeContract.DailyWagesChargesAmount);
+                                                    @item.employeeContract.DailyWagesChargesAmount
+
+                                                }
+
+
+                                            }
+                                            else
+                                            {
+                                                var timein = DateTime.Now;
+                                                if (item.employeeContract.WorkingTimeIn == null)
+                                                {
+                                                    timein = Convert.ToDateTime("0001/01/01");
+
+
+                                                }
+                                                else
+                                                {
+                                                    timein = DateTime.Parse(item.employeeContract.WorkingTimeIn);
+                                                }
+
+                                                var timeout = DateTime.Now;
+                                                if (item.employeeContract.WorkingTimeOut == null)
+                                                {
+                                                    timeout = Convert.ToDateTime("0001/01/01");
+                                                }
+                                                else
+                                                {
+                                                    timeout = DateTime.Parse(item.employeeContract.WorkingTimeOut);
+                                                }
+
+                                                var monthwage = 0;
+                                                if (item.employeeContract.Salary == null)
+                                                {
+                                                    monthwage = 0;
+
+                                                }
+                                                else
+                                                {
+                                                    monthwage = Convert.ToInt32(item.employeeContract.Salary);
+                                                }
+                                                var daywage = monthwage / 30;
+
+                                                var dayworktime = (timeout - timein).TotalHours;
+
+                                                hourlyperdaywage = daywage / dayworktime;
+
+                                                hourlyperdaywage = Math.Round(hourlyperdaywage, 2);
+                                                <span>@hourlyperdaywage</span>
+                                            }
+                                        }
+                                    </td>
+                                    @* For baisc multipication *@
+
+                                    @{
+                                        var ytdsal = totalattent * hourlyperdaywage;
+                                        ytdsal = Math.Round(ytdsal, 2);
+                                        var salaryTotal = ytdsal;
+
+                                        currtotals += ytdsal;
+                                        <td>
+                                            @ytdsal
+                                        </td>
+                                    }
+
+                                    @{
+                                        var gettotalytdsal = item.YTDSalary;
+                                        if (item.YTDSalary == 0)
+                                        {
+                                            <td>No Data</td>
+                                        }
+                                        else
+                                        {
+                                            gettotalytdsal = item.YTDSalary;
+
+
+
+                                            gettotalytdsal -= ytdsal;
+                                            gettotalytdsal = Math.Round(gettotalytdsal, 2);
+                                            currytdtotal += ytdsal;
+                                            <td>@gettotalytdsal</td>
+                                        }
+                                    }
+                             
+                                  
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td> @ytdsal</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            </tbody>
+                            @* Fotter of table *@
+                            <tfoot style="border: solid thin">
+                                <tr>
+                                    <td align="right" style="font-weight:bold">Employee Tot:</td>
+                                    <td>
+                                        @{
+
+                                            if (item.attendanceRecord.TotalAttendHours == 0)
+                                            {
+                                                <span>NoData</span>
+                                            }
+                                            else
+                                            {
+                                                var tatoolateennedded = item.attendanceRecord.TotalAttendHours;
+                                                tatoolateennedded = Math.Round(tatoolateennedded, 2);
+
+
+                                                @tatoolateennedded
+                                            }
+
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <td> @ytdsal</td>
+
+                                    @{
+                                        var currentytdsallary = gettotalytdsal + ytdsal;
+                                        currentytdsallary = Math.Round(currentytdsallary, 2);
+
+                                        <td>@currentytdsallary</td>
+
+
+                                    }
+                                    <td></td>
+                                   
+                                   
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <hr />
+                    </div>
+                    countList++;
+                }
+            }
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+
+<script>
+    function getPDF() {
+
+        var HTML_Width = $(".canvas_div_pdf").width();
+        var HTML_Height = $(".canvas_div_pdf").height();
+        var top_left_margin = 15;
+        var PDF_Width = HTML_Width + (top_left_margin * 2);
+        var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        var canvas_image_width = HTML_Width;
+        var canvas_image_height = HTML_Height;
+        var myfilename = $("#frfrffr").text() + "," + $("#fromslipdate").text() + "," + $("#toslipdate").text()
+        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+        html2canvas($(".canvas_div_pdf")[0], { allowTaint: true }).then(function (canvas) {
+            canvas.getContext('2d');
+
+            console.log(canvas.height + "  " + canvas.width);
+
+
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+            for (var i = 1; i <= totalPDFPages; i++) {
+                pdf.addPage(PDF_Width, PDF_Height);
+                pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+            }
+
+            //pdf.save("HTML-Document.pdf");
+            pdf.save(myfilename);
+        });
+    };
+</script>
+
+
+
+

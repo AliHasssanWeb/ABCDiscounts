@@ -1,0 +1,278 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Sale>
+@{
+    ViewData["Title"] = "AllSaleInvoices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+<style>
+    .head-label {
+        color: black;
+        font-weight: 700;
+    }
+
+    .setgross {
+        float: right;
+        margin-right: 9%;
+    }
+
+    .setprice {
+        position: relative;
+        left: 92%;
+    }
+</style>
+@if (TempData["response"] != null)
+{
+    <div class="alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Sale/SaleOrder" aria-controls="overview" aria-selected="true">Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Sale/AllSaleInvoices" aria-controls="overview" aria-selected="true">Sales Invoices</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Account/Receivables" role="tab" aria-selected="false">Receiables</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Account/Receiving" role="tab" aria-selected="false">Receipt</a>
+        </li>
+
+    </ul>
+</div>
+<div>
+    <a href="@Url.Action("SaleOrder","Sale")"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Sale New Items</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">AllSaleInvoices</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                <thead>
+                                    <tr role="row">
+
+                                        <th>
+                                            Sr No.
+                                        </th>
+                                        <th>
+                                            InvoiceNumber
+                                        </th>
+                                        <th>
+                                            Item
+                                        </th>
+                                        <th>
+                                            ItemBarCode
+                                        </th>
+                                        <th>
+                                            Customer
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            TotalAmount
+                                        </th>
+
+                                        <th>
+                                            Detail
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                @{var i = 0; }
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            i = i + 1;
+                                            <tr class="odd">
+                                                <td class="sorting_1">@i</td>
+
+                                                <td>
+                                                    @item.InvoiceNumber
+                                                </td>
+                                                <td>
+                                                    @item.ItemName
+                                                </td>
+                                                <td>
+                                                    @item.BarCode
+                                                </td>
+                                                <td>
+                                                    @item.CustomerName
+                                                </td>
+                                                <td>
+                                                    @item.Quantity
+                                                </td>
+                                                <td>
+                                                    @item.TotalAmount
+                                                </td>
+
+                                                <td>
+                                                    @*<a class="btn btn-dark py-2" href="@Url.Action("GetPurchaseOrderDetail", "Purchase", new { InvoiceNumber = item.InvoiceNumber })"   style="color:white; font-size:15px; height:30px;" >Detail</a>*@
+                                                    <button class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" onclick="ajaxcallforinvoice('@item.InvoiceNumber')">Detail</button>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="addstore" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+    </div>
+</div>
+
+@*Modal Itempurchase*@
+
+
+@*modalItempurchase end*@
+
+
+<script>
+
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+
+    //$("#idcredit").change(function () {
+    //    $('#addstore').modal('show');
+    //    $('#addstore').modal('hide');
+    //});
+
+    function closemodal() {
+        $('#abcd').modal('hide');
+    };
+
+        function ajaxcallforinvoice(InvoiceNumber) {
+
+                    $.ajax({
+                        type: "GET",
+                         url: '@Url.Action("GetSaleOrderDetail", "Sale")',
+                        data: {
+                            InvoiceNumber: InvoiceNumber
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            showOrder(data);
+                            console.log(data);
+                        },
+                        error: function (xhr, status, error) {
+                            var errorMessage = xhr.status + ': ' + xhr.statusText
+                        },
+                    });
+    }
+
+    function showOrder(data) {
+        var html = "";
+
+        html += '<div class="modal-content">';
+        html += '<div class="modal-header">';
+        html += '<h5 class="modal-title mx-auto" id="ModalLabel"></h5>';
+        html += '<button type="button" class="close" data-dismiss="modal" onclick="closemodalbtn()" aria-label="Close">';
+        html += '<span aria-hidden="true">&times;</span>';
+        html += '</button>';
+        html += '</div>';
+        html += '<div class="modal-body">';
+        html += '<div class="row">';
+        html += '<div id="" class="">';
+        html += '<label  class="head-label">Invoice Number  :  </label>';
+        html += '<span class="suppliername" style="margin-left:1%">' + data[0].invoiceNumber + '</span>';
+        html += '</br>';
+        html += '<label  class="head-label">Customer Name  :  </label>';
+        html += '<span class="suppliername" style="margin-left:1%">' + data[0].customerName + '</span>';
+
+        html += '</div>';
+        html += '<div class="col-sm-12">';
+        html += '<div class="table-responsive">';
+        html += '<table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">';
+        html += '<thead>';
+        html += '<tr role="row">';
+        html += '<th>Sr#</th>';
+        html += '<th>Item Name</th>';
+        html += '<th>Item Code</th>';
+        html += '<th>Bar Code</th>';
+        html += '<th>Qty</th>';
+        html += '<th>Total Amount</th>';
+        html += '</tr>';
+        html += '</thead>';
+        html += '<tbody>';
+        $.each(data, function (index, item) {
+            console.log(data);
+            console.log(item);
+
+            html += '<tr class="odd">';
+            html += '<td class="sorting_1">' + (index + 1) + '</td>';
+            html += ' <td>' + item.itemName + '</td>';
+            html += ' <td>' + item.itemCode + '</td>';
+            html += ' <td>' + item.barCode + '</td>';
+            html += ' <td>' + item.quantity + '</td>';
+            html += ' <td>' + item.totalAmount + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody>';
+        html += '</table>';
+        html += '<label  class="head-label setgross">Gross Amount  :  </label>';
+        html += '<span class="suppliername setprice">' + data[0].grossAmount + ' /-</span>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+
+
+        $('#addstore').append(html);
+        $('#addstore').modal('show');
+    //    console.log(html);
+    }
+
+    function closemodalbtn() {
+        $("#addstore").modal('hide');
+    }
+</script>
+
+
+
+
+
+

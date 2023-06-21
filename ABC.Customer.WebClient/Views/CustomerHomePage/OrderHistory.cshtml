@@ -1,0 +1,170 @@
+@model List<ABC.EFCore.Repository.Edmx.CartDetail>
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+<script>
+      function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        };
+    </script>
+<meta name="viewport" content="width=device-width" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css " />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" />
+<link href="~/Admin/css/OrderStyle.css" rel="stylesheet" />
+<div class="wrapper">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-column">
+            <div class="h3">MY ORDER LIST</div>
+            @*<div class="text-uppercase">6 sublists</div>*@
+        </div>
+        <!--<div class="ml-auto btn"><span class="fas fa-cog"></span></div>-->
+        @*<div class="btn" id="sub"> + Add sublist </div>*@
+    </div>
+    <div class="notification alert alert-dismissible fade show text-white d-flex align-items-center my-3 text-justify" role="alert"> <span class="far fa-bell pr-2"></span> You've got Order items on your list  check it out! <button type="button" class="close text-white ml-auto" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true"> Ok, Thanks </span> </button> </div>
+    <div id="table" class="bg-white rounded">
+        <div class="d-md-flex align-items-md-center px-3 pt-3">
+            @*<div class="d-flex flex-column">
+                    <div class="h4 font-weight-bold">Wedding lists</div>
+                    <div class="text-muted">400 items</div>
+                </div>*@
+            @*<div class="ml-auto d-flex align-items-center">
+                    <div class="editors"> <img src="https://images.unsplash.com/photo-1509967419530-da38b4704bc6?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFjZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" id="img1" alt=""> <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8ZmFjZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" id="img2" alt=""> <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" id="img3" alt=""> </div>
+                    <div class="text-muted pl-md-0 pl-5"> + 7 editors </div>
+                </div>*@
+        </div>
+        <hr>
+        <div class="table-responsive detailtable">
+            <table class="table activitites">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-uppercase header">Item</th>
+                        <th scope="col" class="text-uppercase">Order-Id</th>
+                        <th scope="col" class="text-uppercase">Quantity </th>
+                        <th scope="col" class="text-uppercase">Price</th>
+                        <th scope="col" class="text-uppercase">Total</th>
+                        <th scope="col" class="text-uppercase">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var data = (from s in Model
+                                    group s by s.TicketId).ToList();
+                        var distinctData = Model.Where(x=>x.PendingForApproval==true).GroupBy(x => x.TicketId).Select(x => x.FirstOrDefault()).ToList();
+                        var newlist = data.Where(x => x.Key == "Ticket-1656").ToList();
+                    }
+                    @foreach (var item in distinctData)
+                    {
+                        <tr>
+                            <td class="item">
+                                <div class="d-flex">
+                                    <img src="https://images.unsplash.com/photo-1601479604588-68d9e6d386b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y2FuZGxlc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+                                    <div class="item-description" style="margin-left: 20px;">
+                                        <hr />
+                                        @item.Name <div class="text-uppercase new"><span class="fas fa-star"></span>new</div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            @*<div class="text-muted">Blue</div>*@
+                                            @* <div><a href="#"><span class="red text-uppercase"><span class="fas fa-comment pr-1"></span>add a comment</span></a> </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="ticketId">@item.TicketId</td>
+                            <td>@item.Quantity</td>
+                            <td>$@item.Retail </td>
+                            <td>$@item.Total</td>
+                            @{
+                                var status = "";
+                                if (item.PendingForApproval == false || item.IsDelivered == false)
+                                {
+                                    status = "Pending for Approval";
+                                }
+                                else if (item.PendingForApproval == true || item.IsDelivered == true)
+                                {
+                                    status = "Delivered";
+                                }
+                            }
+                            <td>@status</td>
+                            <td class="font-weight-bold">
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button class="btn btn-primary Details" id="Status" type="button" style="background-color: #64b3f4">Details</button>
+                                </div>
+                            </td>
+                        </tr>
+                                }
+                        
+                    </tbody>
+            </table>
+        </div>
+        <div class="table-responsive detailtpop d-none">
+            <table class="table activitites " id="bktable1">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-uppercase header">Item</th>
+                        <th scope="col" class="text-uppercase">Quantity</th>
+                        <th scope="col" class="text-uppercase">Price </th>
+                        <th scope="col" class="text-uppercase">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="detailtablebody">
+                  
+                </tbody>
+            </table>
+            <button type="button" id="Back" style="background-color: #64b3f4" class="btn btn-primary">Back</button>
+        </div>
+
+        <hr class="items">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-uppercase header"></th>
+                        <th scope="col" class="text-uppercase"></th>
+                        <th scope="col" class="text-uppercase"></th>
+                        <th scope="col" class="text-uppercase">Total</th>
+                    </tr>
+
+                </thead>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+<script srs="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $(".Details").click(function () {
+       
+        $(".detailtpop").addClass("d-block").removeClass("d-none");
+        $(".detailtable").addClass("d-none").removeClass("d-block");
+        var ticketId = ($(this).closest("tr")).find(".ticketId").text();
+        var data = @Html.Raw(Json.Serialize(@Model));
+        var newList = [];
+        $.each(data, function (index, value) {
+            if (value.ticketId == ticketId) {
+                newList.push(value);
+            }
+       
+        });
+       $("#detailtablebody").empty();
+        $.each(newList, function (index, value) {
+            debugger;
+            $('#detailtablebody').append(' <tr><td class="item"><div class="d-flex" ><img src="https://images.unsplash.com/photo-1601479604588-68d9e6d386b5?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8Y2FuZGxlc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt=""><div class="item-description" style="margin-left: 20px;"><hr />' + value.name + '<div class="text-uppercase"><span class="fas fa-star"></span>new</div><div class="d-flex flex-column justify-content-center"></div></div></div></td><td>' + value.quantity + '</td><td>$' + value.retail + ' </td><td>$' + value.total+' </td></tr>');
+        });
+        debugger;
+
+    });
+    $("#Back").on('click', function () {
+       
+        $(".detailtable").addClass("d-block").removeClass("d-none");
+        $(".detailtpop").addClass("d-none").removeClass("d-block");
+    });
+ 
+</script>
+Collapse
+

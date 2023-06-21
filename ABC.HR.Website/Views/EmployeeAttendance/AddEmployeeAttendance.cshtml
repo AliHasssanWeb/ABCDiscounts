@@ -1,0 +1,243 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpAttendance*@
+@model ABC.HR.Domain.Entities.ValidateEmpAttendance
+
+@{
+    ViewData["Title"] = "AddAttendance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/lib/chosen_v1.8.7/chosen.css" rel="stylesheet" />*@
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container .select2-selection--single {
+        height: 32px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 10px;
+    }
+</style>
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeTax/AddEmployeeTax" aria-controls="overview" aria-selected="true">Add Tax</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeAllowance/AddEmployeeAllowance" role="tab" aria-selected="false">Add Allowance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeDeduction/AddEmployeeDeduction" role="tab" aria-selected="false">Add Deduction</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeLeave/AddEmployeeLeave" role="tab" aria-selected="false">Add Leave</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/EmployeeLoan/AddEmployeeLoan" role="tab" aria-selected="false">Add Loan</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="~/EmployeeAttendance/AddEmployeeAttendance" role="tab" aria-selected="false">Add Attendance</a>
+        </li>
+
+    </ul>
+</div>
+
+
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Add Attendance</h1>
+
+
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="AddEmployeeAttendance">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId"
+                                    class="form-control Serchattend"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="AttendanceDate" class="control-label"></label>
+                            <input asp-for="AttendanceDate" class="form-control" />
+                            <span asp-validation-for="AttendanceDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="TimeIn" class="control-label"></label>
+                            <input asp-for="TimeIn" class="form-control" id="timein" onfocusout="Timeinmethod()" />
+                            <span asp-validation-for="TimeIn" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="TimeOut" class="control-label"></label>
+                            <input asp-for="TimeOut" class="form-control" id="timeout" onfocusout="Timeoutmethod()" />
+                            <span asp-validation-for="TimeOut" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Late" class="control-label"></label>
+                            <input asp-for="Late" class="form-control" id="setlate" readonly />
+                            <span asp-validation-for="Late" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="OverTime" class="control-label"></label>
+                            <input asp-for="OverTime" class="form-control" id="setovertime" readonly />
+                            <span asp-validation-for="OverTime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            @*<input asp-for="IsApprove" type="checkbox" checked />*@
+                            @Html.CheckBox("IsApprove", true)
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageEmployeeAttendance">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+
+<script src="~/lib/chosen_v1.8.7/docsupport/jquery-1.12.4.min.js"></script>
+@*<script src="~/lib/chosen_v1.8.7/chosen.jquery.js"></script>*@
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+
+     $(".Serchattend").select2();
+</script>
+ 
+<script>
+
+    function toSeconds(time_str) {
+        // Extract hours, minutes and seconds
+        var parts = time_str.split(':');
+        // compute  and return total seconds
+        return parts[0] * 3600 + // an hour has 3600 seconds
+            parts[1] * 60 + // a minute has 60 seconds
+            +
+            parts[2]; // seconds
+    }
+
+
+
+
+    function Timeinmethod() {
+        debugger
+        var a = "09:00:00"
+        var c = $("#timein").val();
+        var b = c + ":00";
+        var difference = Math.abs(toSeconds(b) - toSeconds(a));
+        var differencenegative = toSeconds(a) - toSeconds(b);
+        // alert(difference);
+        // format time differnece
+
+        var result = [
+            Math.floor(difference / 3600), // an hour has 3600 seconds
+            Math.floor((difference % 3600) / 60), // a minute has 60 seconds
+            difference % 60
+        ];
+        // 0 padding and concatation
+        result = result.map(function (v) {
+
+            return v < 10 ? '0' + v : v;
+        }).join(':');
+
+        var latedetect
+        if (differencenegative < 0) {
+            latedetect = result;
+        }
+        else {
+            latedetect = "00:00";
+
+        }
+        //if (result[0] < 0 || result[1] < 0) {
+
+        //    latedetect = "No Late";
+        //}
+        //else if (result[0] == 00 && result[1] == 00){
+        //    latedetect = "No Late";
+        //}
+
+
+
+
+        $("#setlate").val(latedetect);
+        // alert(result);
+
+    }
+
+    function Timeoutmethod() {
+
+        debugger
+        var q = "17:00:00"
+        var e = $("#timeout").val();
+        var w = e + ":00";
+        var differenceover = Math.abs(toSeconds(w) - toSeconds(q));
+        var differencenegativeover = toSeconds(w) - toSeconds(q);
+        // alert(difference);
+        // format time differnece
+
+        var result1 = [
+            Math.floor(differenceover / 3600), // an hour has 3600 seconds
+            Math.floor((differenceover % 3600) / 60), // a minute has 60 seconds
+            differenceover % 60
+        ];
+        // 0 padding and concatation
+        result1 = result1.map(function (v1) {
+
+            return v1 < 10 ? '0' + v1 : v1;
+        }).join(':');
+
+        var latedetectover
+        if (differencenegativeover > 0) {
+            latedetectover = result1;
+        }
+        else {
+            latedetectover = "00:00";
+
+        }
+        //if (result[0] < 0 || result[1] < 0) {
+
+        //    latedetect = "No Late";
+        //}
+        //else if (result[0] == 00 && result[1] == 00){
+        //    latedetect = "No Late";
+        //}
+
+
+
+
+        $("#setovertime").val(latedetectover);
+
+    }
+
+</script>

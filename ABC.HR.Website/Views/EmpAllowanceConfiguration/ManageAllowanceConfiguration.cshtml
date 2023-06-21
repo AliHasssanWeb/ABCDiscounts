@@ -1,0 +1,222 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpAllowanceTypeEmp>
+
+@{
+    ViewData["Title"] = "ManageAllowanceConfiguration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div>
+    <a asp-action="AddAllowanceConfiguration"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Allowance Configuration</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Manage Allowance </h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="alownnceesss" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            @*<th>
+                                                    @Html.DisplayNameFor(model => model.EmployeeId)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.AllowanceTypeId)
+                                                </th>*@
+                                            <th>
+                                                Employee No
+                                            </th>
+                                            <th>
+                                                Employee Name
+                                            </th>
+                                            <th>
+                                                Allowance Type
+                                            </th>
+                                            <th>
+                                                 Allownce Amount / %
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Date)
+                                            </th>
+                                             
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsApprove)
+                                            </th>
+
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @{var i = 0; }
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+
+                                                    @foreach (var item1 in ViewBag.EmployeeName)
+                                                    {
+                                                        if (item1.EmployeeId == item.EmployeeId)
+                                                        {
+
+                                                            <td>
+                                                                @item1.EmployeeCode
+                                                            </td>
+
+
+                                                            <td> @item1.FullName </td>
+                                                        }
+                                                    }
+
+                                                    <td>
+                                                        @foreach (var itemAllowncetype in ViewBag.EmpAllownceType)
+                                                        {
+                                                            if (itemAllowncetype.EmpAllowanceTypeId == item.EmpAllowanceTypeId)
+                                                            {
+
+                                                                @itemAllowncetype.AllowanceTypeName
+
+                                                            }
+
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsPerFix == true)
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.AllowanceTypePer)
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DisplayFor(modelItem => item.AllowanceTypeFix)
+
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Date)
+                                                    </td>
+                                                     
+                                                    <td>
+                                                        @if (item.IsApprove == true)
+                                                        {
+
+
+                                                            <span>Approve</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Approve</span>
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        <a title="Edit"><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateAllowanceConfiguration", "EmpAllowanceConfiguration", new { id = item.EmpAllowanceTypeEmpId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        @*<a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteAllowance", "Employees", new { id = item.EmpAllowanceId })': null"></i></a>*@
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeleteAllownce(@item.EmpAllowanceTypeEmpId)"></i></a>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#alownnceesss').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["responseofAddAllownceCon"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddAllownceCon"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateAllownceCon"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateAllownceCon"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteAllownceCon"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteAllownceCon"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDeleteAllownce(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeleteAllowanceConfiguration/" + id,
+
+                        success: function () {
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageAllowanceConfiguration';
+                            }, 500);
+                            //window.location.href = "/HumanResource/Employees/ManageTaxType/";
+
+
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

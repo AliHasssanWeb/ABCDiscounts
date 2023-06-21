@@ -1,0 +1,165 @@
+﻿@model ABC.EFCore.Repository.Edmx.EmployeeDocument
+@{
+    ViewBag.Title = "Add Employee Documents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .dropdoctype {
+        background: #e9ecef;
+        opacity: 1;
+        border: 0;
+        outline: 1px solid #dee2e6;
+        font-weight: 400;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+</style>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert-danger" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " href="~/Employees/RegisterEmployee" aria-controls="overview" aria-selected="true">RegisterEmployee</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Employees/AddEmployeeLeaveEntitle" role="tab" aria-selected="false">AddEmployeeLeaveEntitle</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Employees/AddEmployeeDocuments" role="tab" aria-selected="false">AddEmployeeDocuments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"  href="~/Employees/AddEmployeeContract" role="tab" aria-selected="false">AddEmployeeContract</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link "  href="~/Employees/CreateEmployeeSettlement" role="tab" aria-selected="false">CreateEmployeeSettlement</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Employee Documents</h4>
+            @using (Html.BeginForm("AddEmployeeDocuments", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <label for="EmployeeID">Employee Name</label>
+                    @Html.DropDownList("EmployeeId", (IEnumerable<SelectListItem>)ViewBag.Employee, "--Choose Employee Name--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger db" })
+
+
+                </div>
+                <div class="form-group">
+                    <label for="DocTypeID">Documents Type</label>
+                    @Html.DropDownList("DocTypeId", (IEnumerable<SelectListItem>)ViewBag.EmpDocType, "--Choose Documents Type--", new { @class = "col-md-11 dropdoctype" })
+                    @Html.ValidationMessageFor(model => model.DocTypeId, "", new { @class = "text-danger db" })
+                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addempdoctype"></i>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="file" />
+                    @Html.ValidationMessageFor(model => model.Document, "", new { @class = "text-danger db" })
+
+                </div>
+                <button type="submit" class="btn btn-dark me-2" style="float:right;"><p style=color:white>Upload</p></button>
+
+            }
+        </div>
+    </div>
+</div>
+
+<div id="addempdoctype" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg-8">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Document Type</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="documenttype">Document Type</label>
+                        <input class="form-control" type="text" placeholder="Document Type" id="documenttype" />
+                        <label class="text-danger db" style="display:none" id="msgdoctype">Enter Document Type</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="doctypesubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script>
+        $("#documenttype").on('focusout', function () {
+            var TypeName = $("#documenttype").val();
+            if (TypeName != null && TypeName != "" && TypeName != "undefined") {
+                $("#msgdoctype").hide();
+            }
+            else {
+                $("#msgdoctype").show();
+            }
+        });
+    $("#doctypesubmit").on('click', function () {
+        var TypeName = $("#documenttype").val();
+
+        var record = {};
+        record = new FormData();
+        if (TypeName != null && TypeName != "" && TypeName != "undefined") {
+
+            record.append("TypeName", TypeName);
+            $.ajax({
+                url: '@Url.Action("AddEmployeeDocumentType", "Employees",new{@area= "HumanResource" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addempdoctype").modal('hide');
+                        window.location = '@Url.Action("AddEmployeeDocuments", "Employees",new{@area= "HumanResource" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgdoctype").show();
+        }
+    });
+
+    function closemodal() {
+        $("#addempdoctype").modal('hide');
+    }
+</script>
+
+
+
+
+

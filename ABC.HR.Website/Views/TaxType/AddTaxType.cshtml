@@ -1,0 +1,215 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpTaxType*@
+@model ABC.HR.Domain.Entities.ValidateTaxType
+
+@{
+    ViewData["Title"] = "AllowanceType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/TaxType/AddTaxType" aria-controls="overview" aria-selected="true">Add Tax Type</a>
+        </li>
+        @*<li class="nav-item">
+                <a class="nav-link " href="~/EmployeeTaxConfiguration/AddTaxConfiguration" aria-controls="overview" aria-selected="true">Add Tax Configuration</a>
+            </li>*@
+        <li class="nav-item">
+            <a class="nav-link" href="~/AllowanceType/AddAllowanceType" role="tab" aria-selected="false">Add Allowance Type</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/DeductionType/AddDeductionType" role="tab" aria-selected="false">Add Deduction Type</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/LeaveType/AddLeaveType" role="tab" aria-selected="false">Add Leave Type</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/LoanType/AddLoanType" role="tab" aria-selected="false">Add Loan Type</a>
+        </li>
+
+
+    </ul>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Add Tax Type</h1>
+
+        @*<h4>EmpAllowanceType</h4>*@
+        <hr />
+        <div class="row container">
+            <div class="col-md-12 ">
+                <form asp-action="AddTaxType">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="EmpTaxTypeName" class="control-label"></label>
+                            <input asp-for="EmpTaxTypeName" class="form-control" />
+                            <span asp-validation-for="EmpTaxTypeName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label asp-for="AmountLimit" class="control-label">Tax Amount</label>
+                            <input asp-for="AmountLimit" class="form-control tax_class" type="number" />
+                            <span asp-validation-for="AmountLimit" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="IsErTax" class="control-label"></label>
+                            @*<input asp-for="IsErTax" type="checkbox" />*@
+                            <select asp-for="IsErTax" class="form-control">
+                                <option selected disabled>---Select Type---</option>
+                                <option value="Tax">Tax</option>
+                                <option value="ER Tax">ER Tax</option>
+                            </select>
+                            <span asp-validation-for="IsErTax" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="form-group col-md-8">
+
+                            <label asp-for="Description" class="control-label"></label>
+                            @*<textarea asp-for="Description" class="form-control"></textarea>*@
+                            @*<textarea asp-for="Description" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>*@
+                            <textarea asp-for="Description" class="form-control" style="min-height: 5rem;"></textarea>
+
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label  class="control-label"> Martial Status</label>
+                            @*<input asp-for="TaxType" type="checkbox" />*@
+                            <select asp-for="TaxType" class="form-control">
+                                <option selected disabled>---Select Type---</option>
+                                <option value="Single">Indiviual</option>
+                                <option value="Married">Married</option>
+                                <option value="MarriedBut">Married but living seprately</option>
+                            </select>
+                            <span asp-validation-for="TaxType" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="control-label"> Salary Range</label>
+                            <select asp-for="SalaryRange" class="form-control">
+                                <option selected disabled>---Select Type---</option>
+                                <option value="$0 -> $9999">$0 -> $9999</option>
+                                <option value="$10,000 -> $19,999">$10,000 -> $19,999</option>
+                                <option value="$20,000 -> $29,999">$20,000 -> $29,999</option>
+                                <option value="$30,000 -> $39,999">$30,000 -> $39,999</option>
+                                <option value="$40,000 -> $49,999">$40,000 -> $49,999</option>
+                                <option value="$50,000 -> $59,999">$50,000 -> $59,999</option>
+                                <option value="$60,000 -> $69,999">$60,000 -> $69,999</option>
+                                <option value="$70,000 -> $79,999">$70,000 -> $79,999</option>
+                                <option value="$80,000 -> $99,999">$80,000 -> $99,999</option>
+                                <option value="$100,000 -> $149,999">$100,000 -> $149,999</option>
+                                <option value="$150,000 -> $239,999">$150,000 -> $239,999</option>
+                                <option value="$240,000 -> $259,999">$240,000 -> $259,999</option>
+                                <option value="$260,000 -> $279,999">$260,000 -> $279,999</option>
+                                <option value="$280,000 -> $299,999">$280,000 -> $299,999</option>
+                                <option value="$300,000 -> $319,999">$300,000 -> $319,999</option>
+                                <option value="$320,000 -> $364,999">$320,000 -> $364,999</option>
+                                <option value="$365,000 -> $524,999">$365,000 -> $524,999</option>
+                                <option value="$525,000 -> over">$525,000 -> over</option>
+                                
+                            </select>
+                            <span asp-validation-for="SalaryRange" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @*<div class="row">
+
+                            <div class="form-group col-md-3">
+                                <label class="control-label">ER Tax</label>
+                                <input asp-for="IsErTax" type="checkbox" />
+
+                                <span asp-validation-for="IsErTax" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Tax</label>
+                                <input asp-for="IsTax" type="checkbox" />
+
+                                <span asp-validation-for="IsTax" class="text-danger"></span>
+                            </div>
+                        </div>*@
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="IsActive" class="control-label"></label>
+                            @*<input asp-for="IsActive" type="checkbox" checked/>*@
+                            @Html.CheckBox("IsActive", true)
+                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageTaxType">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+
+        $('#IsErTax').click(function () {
+
+            if ($('#IsErTax').prop("checked") == true) {
+                if ($('#IsTax').prop("checked") == true) {
+                    var mygggh = $('#IsTax').val('false');
+                }
+            }
+        })
+
+        $('#IsTax').click(function () {
+
+            if ($('#IsTax').prop("checked") == true) {
+                if ($('#IsErTax').prop("checked") == true) {
+                    $('#IsErTax').attr('checked', false);
+                }
+            }
+        })
+    </script>*@
+
+
+<script>
+    var inputBox = document.querySelector(".tax_class");
+
+    var invalidChars = [
+        "-",
+        "+",
+        "e",
+        ",",
+    ];
+
+    inputBox.addEventListener("keydown", function (e) {
+        if (invalidChars.includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+</script>
+<script src="~/lib/chosen_v1.8.7/docsupport/jquery-1.12.4.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["responseofAddTax"] != null)
+{
+    <script>
+        debugger;
+        toastr.error("@TempData["responseofAddTax"].ToString()");</script>
+
+}

@@ -1,0 +1,437 @@
+﻿@model List<ABC.EFCore.Repository.Edmx.CustomerOrder>
+
+@{
+    ViewData["Title"] = "Ready To Pulled";
+  Layout = "~/Views/Shared/_LayoutManagers.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<style>
+    label.error{
+        color:red;
+    }
+          .width-19{
+        width: 19% !important;
+    }
+    
+    tr.border_bottom td {
+  border-bottom: 1px solid black;
+}
+    .late{
+    background-color: #ef45127a !important;
+}
+.pending{
+    background-color:  #ffaf00de !important;
+}
+    
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Approved Orders <small>(Ready To Pull By Cashier)</small> </h4>
+        <div id="performance-line-legend"><div class="chartjs-legend"><ul><li><span style="background-color:#ef45127a !important"></span>Pending Pulled Orders More Then 2 days</li><li><span style="background-color:#ffaf00de !important;"></span>Previous Credit Exist</li></ul></div></div>
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="pending-1" role="tabpanel" aria-labelledby="pending-tab">
+                <table id="order-listing" class="col-12">
+                    <thead>
+                        <tr role="row">
+                            <td style="font-weight:600">Sr#</td>
+                            <th style="width:13%">
+                                Order #
+                            </th>
+                            <th>
+                                Customer
+                            </th>
+                            <th>
+                                Customer Code
+                            </th>
+                            <th>
+                                Phone
+                            </th>
+                             <th>
+                                Line Count
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Approved Date & Time
+                            </th>
+                            <th>
+                                Approved By
+                            </th>
+                             <th>
+                                Puller
+                            </th>
+                            <th>
+                                Order Preview
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var i = 0; }
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                @if (item.AdminStatus == true)
+                                {
+                                    i = i + 1;
+                                    @if(@item.OrderDaysAlert == true)
+                                    {
+                                         <tr class="odd border_bottom late">
+
+                                        <td class="sorting_1 ">@i</td>
+
+                                        <td>@item.TicketId</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.CustomerCode</td>
+                                               <td class="width-19">@item.Phone</td>
+                                         <td>@item.LineCounts</td>
+                                        <td>@item.OrderAmount</td>
+                                        <td>@Html.FormatValue("dd/MM/yyyy", item.AdminActionDate?.ToString("dd/MM/yyyy")) @item.AdminActionTime</td>
+                                        <td>
+                                            @item.AdminActionBy
+                                        </td>
+                                         <td>@item.PulledBy</td>
+                                        <td>
+                                            <a class="btn btn-dark pullorder py-2 " data-orderId="@item.OrderId" data-orderNum="@item.TicketId" style="color:white; font-size:15px; height:30px;" id="">Pull</a>
+                                            <a class="btn btn-dark py-2 btnDetails" data-ticketId="@item.TicketId" data-orderId="@item.UserId" style="color:white; font-size:15px; height:30px;" @*href="@Url.Action("DetailEmployee", "Users", new { id = item.OrderId })"*@><i class="fa fa-eye"></i></a>
+                                        </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="odd border_bottom">
+
+                                        <td class="sorting_1">@i</td>
+
+                                        <td>@item.TicketId</td>
+                                        <td>@item.CustomerName</td>
+                                        <td>@item.CustomerCode</td>
+                                          <td class="width-19">@item.Phone</td>
+                                         <td>@item.LineCounts</td>
+                                        <td>@item.OrderAmount</td>
+                                        <td>@Html.FormatValue("dd/MM/yyyy", item.AdminActionDate?.ToString("dd/MM/yyyy")) @item.AdminActionTime</td>
+                                        <td>
+                                            @item.AdminActionBy
+                                        </td>
+                                        <td>@item.PulledBy</td>
+                                        <td>
+                                            <a class="btn btn-dark pullorder py-2 " data-orderId="@item.OrderId" data-orderNum="@item.TicketId" style="color:white; font-size:15px; height:30px;" id="">Pull</a>
+                                            <a class="btn btn-dark py-2 btnDetails" data-ticketId="@item.TicketId" data-orderId="@item.UserId" style="color:white; font-size:15px; height:30px;" @*href="@Url.Action("DetailEmployee", "Users", new { id = item.OrderId })"*@><i class="fa fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    }
+                                    
+
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+         
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="input-delivery" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog"  role="document">
+        <form id="approveform">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <input name="deliverDate" id="deliverDate" class="col-7 form-control" type="date" />
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-success" data-orderId="" data-orderNum="" id="approveorder">Approve</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="approve-register" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:max-content" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Order Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="mb16 table table-striped table-sm js_cart_lines" id="cart_products">
+                    <thead>
+                        <tr>
+                            <th class="td-img">Product Code</th>
+                            <th>Name</th>
+                            <th class="text-center td-qty">
+                                Quantity
+                            </th>
+                            <th class="text-center"> Retail</th>
+                            <th class="text-center"> Total</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="cart_body">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-success" id="registeremployee" onclick="approveregister()">Register</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    var table = null;
+    $(document).ready(function () {
+        table = $("#order-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+        var approvetable = $("#approve-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+    });
+    $("#approveform").validate({
+        rules: {
+            deliverDate: {
+                "required": true,
+            },
+            
+        },
+        messages: {
+            deliverDate: {
+                required: "Deliver Date is Required",
+            }, 
+           
+        },
+        submitHandler: function (form) {
+            var orderId = parseInt($("#approveorder").attr("data-orderId"));
+            var orderNum = $("#approveorder").attr("data-orderNum");
+            var deliverDate = $("#deliverDate").val();
+         
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("ApproveOrder", "Order")',
+                data: {
+                    id: orderId,
+                    ordernum: orderNum,
+                    orderDate: deliverDate
+                },
+                //async: false,
+                dataType: "json",
+                success: function (result) {
+                    if (result != null)
+                        $("#deliverDate").val('');
+                        $("#input-delivery").modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Approved!',
+                            text: orderNum,
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        })
+                    },
+
+               
+                error: function () {
+                    alert('Failed to receive the Data');
+                    console.log('Failed ');
+                }
+            });
+        }
+
+
+    });
+      $(".btnDetails").click(function () {
+        
+        var thiss = this;
+        var orderId = parseInt($(this).attr("data-orderId"));
+        var ticket = $(this).attr("data-ticketId");
+      
+        $.ajax({
+            type: "GET",
+           url: '@Url.Action("ListOfCartAminApproval", "Order")',
+            data: {
+                id: orderId,
+                ticketId : ticket,
+              },
+            //async: false,
+            dataType: "json",
+            success: function (result) {
+              
+                    $('#cart_body tr').remove();
+                if (result.length > 0 && result != "null" && result != "false" && result != "") {
+                    $.each(result, function (index, value) {
+                        console.log(value);
+                        $('#cart_body').append("<tr><td>" + value.productCode + "</td><td>" + value.name + "</td><td>" + value.quantity+"</td><td>" + value.retail + "</td><td>" + (parseFloat(value.quantity) * parseFloat(value.retail))+"</td></tr>");
+                    });
+                }else{
+                     $('#cart_body').append("<tr><td>No Detail Found</td><td></td><td></td><td></td><td></td></tr>");
+                }
+
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
+            }
+        });
+        $("#approve-register").modal('show');
+    });
+
+    $(".btnApprove").click(function () {
+        var orderId = parseInt($(this).attr("data-orderId"));
+        var orderNum = $(this).attr("data-orderNum");
+        $("#approveorder").attr("data-orderId", orderId);
+        $("#approveorder").attr("data-orderNum", orderNum);
+        $("#input-delivery").modal('show');
+       
+    });
+    $(".btnDeliver").click(function () {
+        var orderId = parseInt($(this).attr("data-orderId"));
+        var orderNum = $(this).attr("data-orderNum");
+
+        $.ajax({
+            type: "GET",
+           url: '@Url.Action("DeliverOrder", "Order")',
+            data: {
+                id: orderId,
+                ordernum: orderNum
+              },
+            //async: false,
+            dataType: "json",
+            success: function (result) {
+                debugger;
+                if (result != null) {
+                    if (result == true) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Deliver!',
+                            text: orderNum,
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        })
+                    }
+                    if (result.length > 0 ) {
+                        $('#notdeliver_body tr').remove();
+                        $.each(result, function (index, value) {
+                            debugger;
+                            $('#notdeliver_body').append("<tr><td>" + value.productCode + "</td><td>" + value.name + "</td><td>" + value.quantity + "</td><td>" + value.retail + "</td><td>" + value.total + "</td></tr>");
+                        });
+                        $("#notDeliver").modal('show');
+                    }
+                    if (result == false) {
+                        Swal.fire(
+                            'Quantity Error',
+                            'Item Quantity Error',
+                            'error'
+                        )
+                    }
+
+                }
+
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
+            }
+        });
+    });
+    function closemodal() {
+        $("#approve-register").modal('hide');
+        $("#notDeliver").modal('hide');
+        $("#input-delivery").modal('hide');
+    };
+      function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        };
+
+
+        $(".pullorder").click(function(){
+            var orderId = parseInt($(this).attr("data-orderId"));
+            var orderNum = $(this).attr("data-orderNum");
+               $.ajax({
+                type: "GET",
+                url: '@Url.Action("PullOrder", "Order")',
+                data: {
+                    id: orderId,
+                    ordernum: orderNum,
+                    //orderDate: deliverDate,
+                    //pulleremployeeid: pullerId
+                },
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function (result) {
+                    if (result != "null" && result != "false"){
+                         toastr.success('Order Pulled, and ready to be Delivered');
+                        $("#deliverDate").val('');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Pulled!',
+                            text: orderNum,
+                            confirmButtonText: 'Ok',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                              location.reload();
+                            }
+                        })
+                    }
+                      else {
+                            toastr.error('Order unabled to Pulled, Failed.');
+                      }
+                    },
+                error: function () {
+                    toastr.error('Failed to receive the Data');
+                }
+            });
+  });
+</script>

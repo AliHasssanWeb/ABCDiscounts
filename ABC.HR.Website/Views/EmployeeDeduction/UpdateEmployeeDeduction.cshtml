@@ -1,0 +1,95 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpDeduction*@
+@model ABC.HR.Domain.Entities.ValidateEmpDeduction
+
+
+@{
+    ViewData["Title"] = "AddEmpDeduction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/chosen_v1.8.7/chosen.css" rel="stylesheet" />
+
+<div class="card">
+    <div class="card-body">
+
+        <h1 class="card-title">Update Deduction For Employee</h1>
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="UpdateEmployeeDeduction">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmpDeductionTypeId" class="control-label"></label>
+                            <select asp-for="EmpDeductionTypeId"
+                                    class="form-control Serchdeduc"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeDeduction,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE DEDUCTION---</option>
+                            </select>
+                            <span asp-validation-for="EmpDeductionTypeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" type="number" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group  col-md-6">
+                            <label asp-for="Reason" class="control-label"></label>
+                            <textarea asp-for="Reason" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            <input asp-for="IsApprove" type="checkbox" checked />
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageEmployeeDeduction">Back to List</a>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+
+
+<script src="~/lib/chosen_v1.8.7/docsupport/jquery-1.12.4.min.js"></script>
+<script src="~/lib/chosen_v1.8.7/chosen.jquery.js"></script>
+<script>
+
+    $(".Serchdeduc").chosen();
+
+</script>

@@ -1,0 +1,433 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Supervisor>
+
+@{
+    ViewData["Title"] = "Rejected Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<style>
+    label.error {
+        color: red;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div>
+            <h4 style="display:inline-block" class="card-title">Credit Limit &amp; Pin <small>(Supervisors &amp; Sales Managers)</small> </h4>
+            <button class="btn btn-warning mt-3 mb-4" style="float:right" data-bs-toggle="modal" data-bs-target="#approve-register">Add User</button>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="pending-1" role="tabpanel" aria-labelledby="pending-tab">
+                <table id="order-listing" class="col-12">
+                    <thead>
+                        <tr role="row">
+                            <td style="font-weight:600">Sr#</td>
+
+                            <th>
+                                Customer Name
+                            </th>
+                            <th>
+                                Full Name
+                            </th>
+                            <th>
+                                Roll Name
+                            </th>
+                            <th>
+                                Access PIN
+                            </th>
+                            <th>
+                                Total Credit
+                            </th>
+                            <th>
+                                Credit Availed
+                            </th>
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var i = 0;
+                        }
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+
+                                i = i + 1;
+                                <tr class="odd">
+
+                                    <td class="sorting_1">@i</td>
+
+                                    <td>@item.CustomerName</td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.RoleName</td>
+                                    <td>@item.AccessPin</td>
+                                    <td>@item.CreditLimit</td>
+                               
+                                    @if (item.AvailedCredit != null)
+                                    {
+                                        <td>@item.AvailedCredit</td>
+                                    }
+                                    else
+                                    {
+
+                                        <td>0.00</td>
+                                    }
+                                    <td><span class=" btn btn-warning" onclick="editSupervisor(@item.SupervisorId,'@item.AccessPin','@item.CreditLimit')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</span></td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="input-delivery" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="approveform">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <input name="deliverDate" id="deliverDate" class="col-7 form-control" type="date" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-orderId="" data-orderNum="" id="approveorder">Approve</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="editSupervisor" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="approveSupervisor">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="ModalLabel">Edit User</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="accessPin" class="col-form-label">Access Pin:</label>
+                        <input name="accessPin" type="number" class="form-control col-lg-7" id="accessPin">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="totalCredit" class="col-form-label">Total Credit:</label>
+                        <input type="number" class="form-control col-lg-7" id="totalCredit" name="totalCredit">
+                    </div>
+                    @*<div class="form-group">
+                    <label for="scannedfile" class="col-form-label">Upload Scanned File:</label>
+                    <input type="file" class="form-control col-lg-7" id="scannedfile" name="scannedfile">
+                    </div>*@
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" data-Id="" id="approveSupervisorsubmit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="approve-register" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Add New User </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Select User:</label>
+                    @Html.DropDownList("RoleId", (IEnumerable<SelectListItem>)ViewBag.Roles, "--Choose User --", new { @class = "form-control", id = "selectrole" })
+                    <span id="selectrolevalidate" class="text-danger db"></span>
+
+                </div>
+                <div class="form-group superbox">
+                    <label for="recipient-name" class="col-form-label">Pin</label>
+                    <span class="text-danger field-validation-error db" id="ValMsgSupervisorpin" style="font-size: 15px !important;"></span>
+                    <input class="form-control txtinput" id="pin" type="number" />
+
+                    <label for="recipient-name" class="col-form-label">Credit Limit</label>
+                    <span class="text-danger field-validation-error db" id="ValMsgSupervisorlimit" style="font-size: 15px !important;"></span>
+                    <input class="form-control txtinput" id="creditLimit" type="number" />
+
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Select User:</label>
+                    @Html.DropDownList("CustomerId", (IEnumerable<SelectListItem>)ViewBag.Customer, "--Choose Customer --", new { @class = "form-control", id = "selectcustomer" })
+                    @*<span id="selectrolevalidate" class="text-danger db"></span>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="registeremployee" onclick="approveregister()">Register</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    var table = null;
+    $(document).ready(function() {
+        table = $("#order-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+        var approvetable = $("#approve-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+    });
+
+
+    $("#selectrole").on('change', function() {
+        debugger;
+
+
+        if ($("#selectrole option:selected")[0].value == "--Choose Role For Employee --" || $("#selectrole option:selected")[0].value == "") {
+            $("#selectrolevalidate").text("Please select role");
+            $("#selectrolevalidate").show();
+        } else {
+            var id = $("#selectrole option:selected").val();
+            var empId = parseInt(id);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("SupervisorGet", "Users")',
+                data: {
+                    id: empId,
+                },
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function(result) {
+                    console.log(result);
+                    if(result.length>0){
+                    $("#pin").attr("disabled", true);
+                    $("#pin").val(result[0].accessPin);
+                    }
+                    else{
+                        $("#pin").attr("disabled", false);
+                    $("#pin").val('');
+                    }
+                },
+                error: function() {
+                    console.log("aagya");
+                }
+            });
+
+        }
+    });
+    function approveregister() {
+
+        var isvalid = true;
+        var employeedata = {};
+        employeedata = new FormData();
+
+        var currentrole = $("#selectrole option:selected").val();
+        var currentrolename = $("#selectrole option:selected").text();
+        var currentcustomer = $("#selectcustomer option:selected").val();
+        var id = $("#selectrole option:selected").val();
+            var empId = parseInt(id);
+      //  var employeeID = $("#employeeid").html();
+        var pin = $("#pin").val();
+        var creditlimit = $("#creditLimit").val();
+        employeedata.append("EmployeeID", empId);
+        employeedata.append("RoleId", currentrole);
+        employeedata.append("FullName", currentrolename);
+        employeedata.append("CustomerId", currentcustomer);
+        employeedata.append("Accesspin", pin);
+        employeedata.append("CreditLimit", creditlimit);
+        console.log(employeedata);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddNewCreditAllower", "Users")',
+            data: employeedata,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function(msgss) {
+                if (msgss == true || msgss == "true") {
+                    $("#approve-register").modal("hide");
+                    toastr.success('User Added');
+                    setTimeout(function() {
+                        location.reload(true);
+                    }, 3000);
+                    //location.reload();
+                }
+                else {
+                    toastr.error('User already available');
+                }
+            },
+            error: function(error) {
+                console.log("error");
+            },
+        });
+
+    }
+
+
+
+
+
+    $("#approveform").validate({
+        rules: {
+            deliverDate: {
+                "required": true,
+            },
+        },
+        messages: {
+            deliverDate: {
+                required: "Deliver Date is Required",
+            },
+        },
+        submitHandler: function(form) {
+            var orderId = parseInt($("#approveorder").attr("data-orderId"));
+            var orderNum = $("#approveorder").attr("data-orderNum");
+            var deliverDate = $("#deliverDate").val();
+            debugger;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ApproveOrder", "Order")',
+                data: {
+                    id: orderId,
+                    ordernum: orderNum,
+                    orderDate: deliverDate
+                },
+                //async: false,
+                dataType: "json",
+                success: function(result) {
+                    if (result != null)
+                        $("#deliverDate").val('');
+                    $("#input-delivery").modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Approved!',
+                        text: orderNum,
+                        confirmButtonText: 'Ok',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    })
+                },
+
+
+                error: function() {
+                    alert('Failed to receive the Data');
+                    console.log('Failed ');
+                }
+            });
+        }
+
+
+    });
+
+    function DropdownLink() {
+        $("#DropdownLink").toggleClass("show");
+    }
+
+    function closemodal() {
+        $("#approve-register").modal('hide');
+        $("#editSupervisor").modal('hide');
+    };
+
+
+    function editSupervisor(id, accesspin, creditlimit) {
+        $("#approveSupervisorsubmit").attr("data-Id", id);
+        $("#totalCredit").val(creditlimit);
+        $("#accessPin").val(accesspin);
+        $("#editSupervisor").modal('show');
+
+    }
+
+    $("#approveSupervisor").validate({
+
+        submitHandler: function(form) {
+            var id = $("#approveSupervisorsubmit").attr("data-Id");
+            var Credit = $("#totalCredit").val();
+            var Pin = $("#accessPin").val();
+
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EditSupervisorDetails", "Users")',
+                data: {
+                    id: id,
+                    credit: Credit,
+                    pin: Pin,
+                },
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function(result) {
+                    //NProgress.done();
+                    if (result == "true") {
+                        $("#editSupervisor").modal('hide');
+                        toastr.success('Record Updated Successfully ');
+                        setTimeout(function() {
+                            location.reload(true);
+                        }, 3000);
+                    }
+                },
+                error: function() {
+                    NProgress.done();
+                    toastr.error('Failed to Update the Data');
+                    console.log('Failed ');
+                }
+            });
+        }
+
+
+    });
+</script>

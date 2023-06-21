@@ -1,0 +1,2248 @@
+﻿@model ABC.EFCore.Repository.Edmx.PosSale;
+
+
+<style>
+
+    .inputblue {
+        color: #00008be6;
+        font-weight: 700;
+        font-size: large;
+    }
+
+    .inputbluesmall {
+        color: #00008be6;
+        font-weight: 700;
+    }
+
+    .marginbtm {
+        margin-bottom: -7.4%;
+    }
+
+    .modalstyling {
+        width: 57%;
+        left: 25%;
+    }
+    /* Extra small devices (phones, 600px and down) */
+    @@media only screen and (max-width: 600px) {
+        .marginbtm {
+            margin-bottom: -7.4%;
+        }
+
+        .margintop {
+            margin-top: 15%;
+        }
+
+        .marginbotm {
+            margin-bottom: -7%;
+        }
+    }
+
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @@media only screen and (min-width: 600px) {
+        .marginbtm {
+            margin-bottom: -7.4%;
+        }
+
+        .margintop {
+            margin-top: 15%;
+        }
+
+        .marginbotm {
+            margin-bottom: -7%;
+        }
+    }
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @@media only screen and (min-width: 768px) {
+        .marginbtm {
+            margin-bottom: -3.7%;
+        }
+
+        .margintop {
+            margin-top: 5%;
+        }
+
+        .marginbotm {
+            margin-bottom: 0%;
+        }
+    }
+
+    /* Large devices (laptops/desktops, 992px and up) */
+    @@media only screen and (min-width: 992px) {
+        .marginbtm {
+            margin-bottom: -7.4%;
+        }
+
+        .margintop {
+            margin-top: 10%;
+        }
+
+        .marginbotm {
+            margin-bottom: -6%;
+        }
+    }
+
+    @@media only screen and (min-width: 1024px) {
+        .marginbtm {
+            margin-bottom: -10.3%;
+        }
+
+        .marginlft {
+            margin-left: -250%;
+        }
+
+        .margintop {
+            margin-top: 10%;
+        }
+
+        .marginbotm {
+            margin-bottom: -4%;
+        }
+    }
+
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @@media only screen and (min-width: 1200px) {
+        .marginbtm {
+            margin-bottom: -7.4%;
+        }
+
+        .marginlft {
+            margin-left: -65%;
+        }
+
+        .margintop {
+            margin-top: 6%;
+        }
+
+        .marginbotm {
+            margin-bottom: -4%;
+        }
+    }
+</style>
+<style>
+    select {
+        max-width: 90%;
+    }
+
+    .div-style {
+        max-width: 15%;
+    }
+
+    .card .card-body {
+        background-color: #eae8ea;
+        border-radius: 15px;
+    }
+
+    .table td, .table th {
+        padding: 5px !important;
+        width: 100%;
+    }
+
+    .editor-label {
+        float: left;
+        margin-right: 15px;
+    }
+
+    .editor-field {
+        float: left;
+        margin-right: 0px !important;
+    }
+
+    .border-style {
+        border: 0.7px solid;
+    }
+
+    .table td, .table th {
+        padding: 5px !important;
+    }
+
+    .card .card-body {
+        background-color: #eae8ea;
+        border-radius: 15px;
+    }
+
+    .editor-label, .editor-field {
+        float: left;
+        margin-right: 15px;
+    }
+
+    .btn-style {
+        padding: 25px 25px !important;
+        color: blue !important;
+        box-shadow: 2px 2px #888888;
+    }
+
+    .textbox-style {
+        padding: 10px 10px !important;
+        font-size: 15px !important;
+    }
+
+    .label-style {
+        font-size: 20px !important;
+        text-align: center;
+    }
+
+    .modal-style {
+        /*width:170%!important;*/
+    }
+
+    .invoice-num {
+        background-color: #87c5e4;
+        border: 0px;
+    }
+
+    .brz {
+        border-radius: 0px;
+        padding-left:15px;
+        padding-bottom:5px;
+    }
+
+    .mb-2 {
+        margin-bottom: -2% !important;
+    }
+
+    .saletext {
+        color: red;
+        font-size: 18px;
+    }
+
+    .saletexttotal {
+        color: blue;
+        font-size: 18px;
+    }
+
+
+    .setsearchbox {
+        position: relative;
+        margin-top: 0%;
+        width: auto;
+        background-color: antiquewhite;
+        border-radius: 0px;
+    }
+
+    .searchheader {
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+        display: inline-block;
+        width: 50%;
+        text-align: start;
+        border-bottom: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .di {
+        display: inline-block;
+    }
+
+    .itemnumberbox {
+        border: 1px solid #989a9d;
+        background: #80808047;
+    }
+
+    .fr {
+        float: right !important;
+    }
+
+    .mg-t-5 {
+        margin-top: 5%;
+    }
+
+    .ml-2 {
+        margin-left: 2%;
+    }
+
+    .mg-t-2 {
+        margin-top: 2%;
+    }
+
+    .ml-3 {
+        margin-left: 3%;
+    }
+
+    .mg-t-3 {
+        margin-top: 3%;
+    }
+
+    .dn {
+        display: none;
+    }
+
+    .checkcheapitems {
+        margin-top: 50%;
+        position: relative;
+        left: 110%;
+        width: 20%;
+    }
+
+    .emptygrid {
+        height: 300px;
+        background-color: antiquewhite;
+    }
+
+
+
+
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 10px 10px;
+            transition: 0.3s;
+            font-size: 12px;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        /* border: 1px solid #ccc;*/
+        border-top: none;
+    }
+
+    .newspaper {
+        column-gap: 44px;
+    }
+
+    .responsive {
+        width: 100%;
+        height: auto;
+    }
+
+    .mtop {
+        margin-top: -15px;
+    }
+
+    .bordercolormodal {
+        border: 2px solid #b0b6c3;
+        background-color: #ffffff;
+    }
+
+    .selectcash {
+        max-width: 100%;
+    }
+
+    .st-1 {
+        color: #0000ab;
+        border: 1.1px solid #b0bde0;
+        font-size: xxx-large;
+        font-style: bold;
+        font-weight: 900;
+        width: 100%;
+    }
+
+    .font-size {
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .alertstyle {
+        display: inline-block;
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="row row-no-gutters">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="LoadPage" class="alertstyle">
+                            <a href="#" id="Printbtn"> <img src="~/images/printer.png" style="width: 50px; margin-bottom: 20px;" title="Print" /></a>
+                        </div>
+
+
+                        <div class="col-lg-8">
+
+                            <div class="row">
+                                <div class="col-lg-10 col-md-12 col-sm-12 col-12">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-12 gx-0 gy-0">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12">
+                                                    Sold To
+                                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", autocomplete = "nope", id = "searchnameP", disabled = "disabled" } })
+                                                    <div style="background-color: blue !important;cursor:pointer" id="listallmissions"></div>
+                                                    <label class="text-danger field-validation-error db" id="ValCustomerName" style="font-size:12px;"></label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-12" style="margin-top: 21.8px;">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12">
+                                                    @Html.EditorFor(model => model.CustomerNumber, new { htmlAttributes = new { @class = "form-control customername", id = "customercodeinfo", disabled = "disabled" } })
+                                                    <label class="text-danger field-validation-error db" id="ValCustomercode" style="font-size:12px;"></label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="row gx-0 gy-0">
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12" for="ShowAllitem">
+                                                            Get Sales/Discount
+                                                            @Html.CheckBox("GetSaleDiscount", false, new { @id = "getsalediscount", disabled = "disabled" })
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", id = "discount", disabled = "disabled" } })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+                                                    <div class="form-group" style="display:inline-flex">
+                                                        <div class="col-lg-4 col-sm-6 col-6 col-md-4">
+                                                            @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control", id = "discount", disabled = "disabled" } })
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                                            @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control", id = "discount", disabled = "disabled" } })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span style="display:none" id="customerid"></span>
+                                                <span style="display:none" id="customername"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive">
+                                            <table class="table  table-bordered table-condensed" style="border:0.7px solid;">
+                                                <thead>
+                                                    <tr style="background-color:lightgreen">
+                                                        <th scope="col">Sales Man</th>
+                                                        <th scope="col">Paymnt Terms</th>
+                                                        <th scope="col">Shipped Via</th>
+                                                        <th scope="col">Driver</th>
+                                                        <th scope="col">Weight</th>
+                                                        <th scope="col">Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="height:2px;">
+                                                        <td  id="salesmanid">Akbar</td>
+                                                        <td ></td>
+                                                        <td ></td>
+                                                        <td  id="driverid"></td>
+                                                        <td ></td>
+                                                        <td id="countnum"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="col-lg-4 col-md-4 col-sm-4 col-4"></div>*@
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="row">
+                                <div class="row margintop marginbotm">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 col">
+                                        <input class="form-control border-style invoice-num" style="background-color: #87c5e4" type="text" id="invoicenumber" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgpreviousbalance" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class="col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletext marginlft">Prev.bal</label>
+                                    </div>
+                                    <div class="col col-lg-8 col-md-8 col-sm-12 col-12 editor-field" style=" margin-top: 0px;">
+                                        <input class="form-control border-style brz" type="text" id="previousbalance" name="previousbalance" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgpreviousbalance" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class=" col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletexttotal marginlft">SubTotal</label>
+                                    </div>
+                                    <div class=" col col-lg-8 col-md-8 col-sm-12 col-12 editor-field">
+                                        <input class="form-control border-style brz" type="text" id="subtotalauto" name="subtotal" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class=" col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletexttotal marginlft">Dis/Other</label>
+                                    </div>
+                                    <div class=" col col-lg-4 col-md-4 col-sm-12 col-12 editor-field me-lg-0 me-md-0 pe-lg-0 pe-md-0">
+                                        <input class="form-control border-style brz " type="text" id="discountidadd" name="subtotal" onkeyup="CalculatetaxPlusDiscount()" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                    <div class=" col col-lg-4 col-md-4 col-sm-12 col-12 editor-field ms-lg-0 ms-md-0 ps-lg-0 ps-md-0">
+                                        <input class="form-control border-style brz p-0 " type="text" id="otherid" name="subtotal" onkeyup="CalculatetaxPlusDiscount()" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class=" col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletexttotal marginlft">Tax/Freight</label>
+                                    </div>
+                                    <div class=" col col-lg-4 col-md-4 col-sm-12 col-12 editor-field me-lg-0 me-md-0 pe-lg-0 pe-md-0">
+                                        <input class="form-control border-style brz" type="text" id="taxid" name="taxid" onkeyup="CalculatetaxPlusDiscount()" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                    <div class=" col col-lg-4 col-md-4 col-sm-12 col-12 editor-field ms-lg-0 ms-md-0 ps-lg-0 ps-md-0">
+                                        <input class="form-control border-style brz p-0" type="text" id="freightid" ondblclick="taxfunc()" name="subtotal" onkeyup="CalculatetaxPlusDiscount()" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class="  col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletext marginlft">Inv.Total</label>
+                                    </div>
+                                    <div class="col col-lg-8 col-md-8 col-sm-12 col-12 editor-field">
+                                        <input class="form-control border-style brz" type="text" id="invoicetotal" name="subtotal" onkeyup="CalculatetaxPlusDiscount()" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgsubtotal" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
+                                <div class="row marginbtm">
+                                    <div class="col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
+                                        <label class="saletext marginlft">AmountDue</label>
+                                    </div>
+                                    <div class="col col-lg-8 col-md-8 col-sm-12 col-12 editor-field">
+                                        <input class="form-control border-style brz" type="text" id="amountdue" name="previousbalance" disabled>
+                                        <label class="text-danger field-validation-error db" id="ValMsgamountdue" style="font-size:12px;"></label>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" id="saletable">
+                            <table class="table table-bordered table-condensed" id="saletable" style="border:0.7px solid;">
+                                <thead>
+                                    <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                        <th style="width: 10px">Ser</th>
+                                        <th style="width: 10px">Item#</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th>Discount</th>
+                                        <th>Discount</th>
+                                        <th>Units</th>
+                                        <th>Units</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        @*<th><span class="add-row ti-plus"></span></th>*@
+                                    </tr>
+                                </thead>
+                                <tbody id="appendnewrowforsaleInventory">
+                                    <!-- hidden row -->
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="abcde" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Super Admin Pin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodalabcd()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Please Enter Super Admin Pin</label>
+                        <input class="form-control" type="text" placeholder="Super Admin Pin" id="" />
+                        <label class="text-danger db" style="display:none" id="">Enter Credit</label>
+                        <br>
+                        <input class="form-control" type="text" placeholder="CreditLimit" id="" />
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="itemcategorysubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="payment" class="modal fade" role="dialog" style="border-radius: 25px;">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content col-lg-12 modal-style">
+            <div class="modal-header" style="background-color: #eae8ea;">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: #eae8ea;">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            @*<div class="card">
+                                <div class="card-body">*@
+                            <div class="row">
+                                <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                                    <img class="" src="~/images/create.png" style="width:50px" title="Create" />
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+                                    <img class="" src="~/images/search.png" style="width:50px" title="Search" />
+
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-12 mt-3">
+                                    <div class="form-group" style="color:blue;">
+                                        <label class="dim col-sm-12 col-12">
+                                            @Html.CheckBox("GetSaleDiscount", false, new { @id = "getsalediscount", })
+                                            List All Customers
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                                    <button class="btn  btn-style ">Silent/F4</button>
+                                    <button class="btn  btn-style ">Print/F5</button>
+                                    <img class="ms-lg-5" src="~/images/cancel.png" style="width:50px" title="Close" />&ensp;&ensp;&ensp;
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-lg-5">
+                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control", id = "discount", } })
+
+                                </div>
+                                <div class="col-lg-3">
+                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control", id = "discount", } })
+                                </div>
+                                <div class="col-lg-4">
+
+                                    <div class="col-lg-1 col-sm-12 col-12 editor-label">
+                                        <label>Prev.bal</label>
+                                    </div>
+                                    <div class="col-lg-9 col-sm-12 col-12 ps-5 editor-field">
+                                        @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control border-style", id = "discount", } })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <ul class="nav nav-tabs mt-2" style="border:1px solid #dee2e6 ;" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active Payments-tab" data-bs-toggle="tab" href="#payments" role="tab" aria-controls="payments" aria-selected="true">Payments</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link Invoice-tab" data-bs-toggle="tab" href="#invoice" role="tab" aria-controls="invoice" aria-selected="false">Unpaid Invoices[F8]</a>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="payments" role="tabpanel" aria-labelledby="Payments-tab">
+                                        <div class="row" style="height:200px;overflow-x: auto; overflow-y: auto; ">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" id="mytable">
+                                                        <table class="table table-bordered table-condensed" style="border:0.7px solid;">
+                                                            <thead>
+                                                                <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                                                    <th>Amount Paid</th>
+                                                                    <th>Amount Alloc</th>
+                                                                    <th>Payment Type</th>
+                                                                    <th>Ck/Card Number</th>
+                                                                    <th>Hold Date</th>
+
+                                                                    <th><span class="add-row1 ti-plus"></span></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="appendnewrowforsale">
+                                                                <!-- hidden row -->
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <footer class="row">
+                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12 ">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                                        Total Paid
+                                                    </label>
+                                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control textbox-style", id = "discount", } })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                                        Total Alloc
+                                                    </label>
+                                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control textbox-style", id = "discount", } })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-12 label-style" style="color:red">
+                                                        TotalChange
+                                                    </label>
+                                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control textbox-style ", id = "discount", } })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-12 label-style" style="color:blue">
+                                                        Balance
+                                                    </label>
+                                                    @Html.EditorFor(model => model.InDiscount, new { htmlAttributes = new { @class = "form-control textbox-style", id = "discount", } })
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="invoice" role="tabpanel" aria-labelledby="Invoice-tab">
+                                        <div class="row" style="height:300px;">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" id="mytable">
+                                                        <table class="table table-bordered table-condensed" style="border:0.7px solid;">
+                                                            <thead>
+                                                                <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                                                    <th>Innvoive #</th>
+                                                                    <th>Date</th>
+                                                                    <th>Days</th>
+                                                                    <th>Inv.Total</th>
+                                                                    <th>Total Paid</th>
+                                                                    <th>Inv.Balance</th>
+                                                                    <th style="color:blue;">Pay Order</th>
+                                                                    @*<th><span class="add-row ti-plus"></span></th>*@
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="appendnewrowforsalepayment">
+                                                                <!-- hidden row -->
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <footer class="row">
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                            @*</div>
+                                </div>*@
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*//paymentmodal*@
+<div id="customerpayment" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content modalstyling">
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100">Print Invoice Dialog invoice# 1221212121212</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="tab">
+                <button class="tablinks active" onclick="openCity(event, 'GeneralPayments')">General Payments</button>
+                <button class="tablinks" onclick="openCity(event, 'InvoicePayments')">Invoice Payments</button>
+                <button class="tablinks" onclick="openCity(event, 'PrintOptions')">Print Options</button>
+                <button class="tablinks" onclick="openCity(event, 'FooterMessages')">FooterMessages</button>
+                <button class="tablinks" onclick="openCity(event, 'UnPaidInvoices')">UnPaidInvoices</button>
+            </div>
+            <div class="modal-body ">
+
+                <div id="GeneralPayments" class="tabcontent" style="display:block">
+                    <div class="row">
+                        <div class="col-lg-7">
+
+                            <label id="custname" style="color: #010083; font-size: 20px; font-weight: 600; "> 1803 Gondals 786 ltc </label>
+
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-4">
+
+                            <label id="custno" style="color: #010083; font-weight: 700; font-size: 18px; "> 01 </label>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div style="background-color: #ffff00; border: 2px solid #d1d6e1; display: block; text-align: center;">
+                                <label style="font-weight: 600; color: #848091; font-size: 22px;">
+                                    Invoice#
+                                </label>
+                                <br>
+                                <label id="invno" style="color: #848091; font-weight: 500; font-size: 20px;">
+                                    1121208-22222
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+
+
+                        </div>
+                        <div class="col-lg-5" style="border: 2px solid #bbb4b4; font-size: 18px; ">
+                            <label style="color: #848091; font-weight: 700;">
+                                Invoice Total <span id="invtotal" class="ms-5">$70.70</span>
+                            </label>
+
+                            <label style="color: #8f2000; font-weight: 700;">
+                                Balance Due <span id="balancedue" class="ms-5">$70.70</span>
+                            </label>
+
+                        </div>
+                        <div class="col-lg-1">
+
+
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row " style="background-color: #cccccc;border: 2px solid #e3e8f1;">
+                        <div class="col-lg-12 mt-1 col-md-12 col-sm-12 col-12 table-responsive" id="Custpaymenttable">
+                            <table class="table table-bordered table-condensed table-responsive-lg" id="Custpaymenttable" style="border:0.7px solid;">
+                                <thead>
+                                    <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                        <th style="color: #020caf;">Amount Paid</th>
+                                        <th>Amount Alloc</th>
+                                        <th>Payment Type</th>
+                                        <th>Ck/Card Number</th>
+                                        <th style="color: #c92d21">Hold Date</th>
+
+                                        <th><span class="add-rowpayment ti-plus"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentmodaltable" style="background-color: white;">
+                                    <!-- hidden row -->
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Paid
+                                    </label>
+                                    <label id="totalpaid" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $60.00
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Paid
+                                    </label>
+                                    <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $60.00
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:red">
+                                        Change
+                                    </label>
+                                    <label id="change" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $60.00
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:blue">
+                                        Balance
+                                    </label>
+                                    <label id="balance" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        10.00
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2" style="background-color: #cccccc">
+                        <div class="col-lg-4">
+                            <label id="paythisinv" style="border: 2px solid #c99797;font-size: 13px;"><span style="color:Blue">F3</span> Pay This Invoice First </label>
+                        </div>
+                        <div class="col-lg-1">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <input type="checkbox" id="emailcopy" style=" height: 9px;" name="vehicle1" value="Bike">
+                                    <label for="emailcopy" style=" font-size: 10px; font-weight: 800; color: red;">Email Copy</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label id="emaillabel" style=" font-size: 11px; font-weight: 700;">qondalistion@gmail.com</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <input type="checkbox" id="textcopy" style=" height: 9px;" name="vehicle1" value="Bike">
+                                    <label for="textcopy" style=" font-size: 10px; font-weight: 800; color: red;">Text Copy</label>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 ps-3 pe-0 me-0">
+                                            <!--<input class=" form-control" type="text"--> @*style=" font-size: 11px; font-weight: 700;"*@ <!--/>-->
+                                            <label id="textlabel" style=" font-size: 11px; font-weight: 700;">qondalistion@gmail.com</label>
+                                        </div>
+                                        @*<input style=" font-size: 11px; font-weight: 700;">qondalistion@gmail.com>*@
+                                        <div class="col-lg-6 form-group ms-0 ps-0">
+                                            <select id="selectdropdown" class="form-control" aria-label="Default select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-12" style="background-color: #cccccc"></div>
+                    <div class="row" style="background-color: #cccccc">
+                        <div class="col-md-2 ms-0">
+                            <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
+                        </div>
+                        <div class="ms-5 col-md-2">
+                            <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-microsoft-excel-96.png" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" onclick="SavePaymentDetails()" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                        </div>
+                        <div class="col-md-2 ms-3">
+                            <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                        </div>
+                        @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                            </div>*@
+                    </div>
+
+                </div>
+
+                <div id="InvoicePayments" class="tabcontent">
+                    <h3>InvoicePayments</h3>
+                    <p>Paris is the capital of France.</p>
+                </div>
+
+                <div id="PrintOptions" class="tabcontent">
+                    <h3>PrintOptions</h3>
+                    <p>Tokyo is the capital of Japan.</p>
+                </div>
+                <div id="FooterMessages" class="tabcontent">
+                    <h3>FooterMessages</h3>
+                    <p>Tokyo is the capital of Japan.</p>
+                </div>
+                <div id="UnPaidInvoices" class="tabcontent">
+                    <h3>UnPaidInvoices</h3>
+                    <p>Tokyo is the capital of Japan.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="receivablesid" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    </div>
+</div>
+<div id="freightmodal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding:0.5rem!important;">
+                <h5 class="modal-title" id="ModalLabel">Shipping & Handling</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodalfreight()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color: #0000ab; padding-top: 10px;padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col">
+                                <label>Invoice</label>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col p-0 m-0">
+                                <input type="text" class="form-control inputblue" name="name" id="Invoice-no" value="3232" />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col p-0 m-0">
+                                <input type="date" class="form-control inputbluesmall" id="cdate" value="" />
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col">
+                                <label class="col-lg-12">Customer</label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12 col p-0 m-0">
+                                <input type="text" class="form-control inputblue" id="customerName" name="name" value="" />
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col">
+                                <label>Date</label>
+                            </div>
+                            <div class="col-lg-5 col-md-4 col-sm-12 col p-0 m-0">
+                                <input type="datetime-local" class="form-control inputbluesmall m-0 p-0" name="name" value="" />
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-12 col">
+                                <label>RouteDeliveryDay</label>
+                                <select class="form-control" name="cars" id="deliveryDay">
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col" style="margin-top:-18px">
+                                <label>Carrier</label>
+                            </div>
+                            <div class="col-lg-5 col-md-4 col-sm-12 col p-0 me-0" style="margin-top:-18px">
+                                <select class="form-control" name="cars" id="carrier" style="min-width: 100%;">
+                                    <option value="Monday">Bus</option>
+                                    <option value="Truck">Truck</option>
+                                    <option value="Railway">Railway</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 col-md-5 col-sm-12 col">
+                                <label>Route Name</label>
+                                <select class="form-control" name="cars" id="deliveryDay">
+                                    <option value="">Lhr-KH</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col" style="margin-top:-33px">
+                                <label>Tracking</label>
+                            </div>
+                            <div class="col-lg-5 col-md-4 col-sm-12 col p-0 me-0" style="margin-top:-33px">
+                                <input type="text" class="form-control" name="name" value="" />
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-7 col-md-7 col-sm-12 col me-0">
+                                <textarea id="txtid" name="txtname" class="form-control m-0 p-0" rows="4" style="width: 105%; height: 75%;">A nice day is a nice day.Lao Tseu</textarea>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-12 col">
+                                <textarea id="txtid" name="txtname" class="form-control" rows="4" style="width: 100%; height: 75%;">A nice day is a nice day.Lao Tseu</textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col pe-1 text-center">
+                                <label>Shipping Cost</label>
+                                <input type="text" class="form-control " name="name" value="" />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col ps-1 pe-1 text-center">
+                                <label>Handling Cost</label>
+                                <input type="text" class="form-control" name="name" value="" />
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-12 col ps-1 text-center">
+                                <label style="color:maroon">CustomerCharge</label>
+                                <input type="text" class="form-control" name="name" value="" />
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-lg-9 col-md-9 col-sm-12 col">
+                                <textarea id="txtid" class="form-control" name="txtname" rows="4" style="width:100%;height:75%;">A nice day is a nice day.Lao Tseu</textarea>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col">
+                                <img class="" src="/images/attach.png" style="width:50px" title="Attachment" onclick="" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 col-md-9 col-sm-12 col"></div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col ps-0">
+                                <button type="button" class="btn btn-lg btn-warning ps-4 pe-4">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<script>
+            function SavePaymentDetails() {
+                debugger;
+        var custname = $("#custname").text();
+                var customerno = $("#custno").text();
+                var InvoiceNo = $("#invno").text().trim();
+                var InvoiceTotal = $("#invtotal").text();
+                var BalanceDue = $("#balancedue").text();
+                var TotalPaid = $("#totalpaid").text().trim();
+                var TotalPaidd = $("#totalpaidd").text().trim();
+                var Change = $("#change").text().trim();
+                var Balance = $("#balance").text().trim();
+                var EmailCopy = $("#emailcopy").is(':checked');/////checkbox//
+                var TextCopy = $("#textcopy").is(':checked');/////checkbox//
+                var Emaillabel = $("#emaillabel").text();
+                var Textlabel = $("#textlabel").text();
+                var SelectDropdown = $("#selectdropdown").val();
+                console.log(customerno + "1/" + InvoiceNo + "2/" + InvoiceTotal + "3/" + BalanceDue + "4/" + TotalPaid + "5/" + TotalPaidd + "6/" + Change + "7/" + Balance + "8/" + EmailCopy + "9/" + TextCopy + "10/" + Emaillabel + "11/" + Textlabel + "12/" + SelectDropdown);
+        var paymentdetail = new Array();
+                $("#Custpaymenttable TBODY TR").each(function () {
+            var row = $(this);
+            var SalePayment = {};
+                    SalePayment.ItemNumberr = row.find("TD").eq(0).html();
+                    SalePayment.ItemNumber = row.find("TD").eq(1).html();
+                    SalePayment.ItemDescription = row.find("TD").eq(2).html();
+                    SalePayment.Quantity = row.find("TD").eq(3).html();
+                    SalePayment.AmountRetail = row.find("TD").eq(4).html();
+                    SalePayment.InDiscount = row.find("TD").eq(5).html();
+                    SalePayment.OutDiscount = row.find("TD").eq(6).html();
+                    SalePayment.InUnits = row.find("TD").eq(7).html();
+                    SalePayment.OutUnits = row.find("TD").eq(8).html();
+                    SalePayment.Price = row.find("TD").eq(9).html();
+                    SalePayment.Total = row.find("TD").eq(10).html();
+                    SalePayment.CustomerName = customername;
+                    SalePayment.CustomerNumber = customercode;
+                    SalePayment.CustomerID = CustomerID;
+                    SalePayment.ItemId = row.find("TD").eq(14).html();
+                    SalePayment.SaleManName = saleman;
+                    SalePayment.InvoiceNumber = invoicenumber;
+                    SalePayment.InvoiceTotal = invoicetotal;
+                    SalePayment.Discount = discountidadd;
+                    SalePayment.Other = otherid;
+                    SalePayment.Tax = taxid;
+                    SalePayment.Freight = freightid;
+                    SalePayment.ItemName = row.find("TD").eq(2).html();
+
+            if (GetSaleDiscount == true) {
+                SalePayment.GetSaleDiscount = "true";
+            } else {
+
+                SalePayment.GetSaleDiscount = "false";
+
+            }
+
+                    SalePayment.Count = CountNumber;
+
+           // Sale.GetSaleDiscount = GetSaleDiscount;
+
+         //   alert(Sale.GetSaleDiscount);
+
+                    paymentdetail.push(SalePayment);
+        });
+                console.log(paymentdetail);
+
+
+
+        if (customername != "" && customername != "undefined") {
+            $("#ValCustomerName").hide();
+            isValid = true;
+
+        } else {
+            $("#ValCustomerName").first().focus();
+            $("#ValCustomerName").text("CustomerName Is Required.");
+            $("#ValCustomerName").show();
+            isValid = false;
+        }
+        if (customercode != "" && customercode != "undefined") {
+
+            $("#ValCustomercode").hide();
+            isValid = true;
+
+        } else {
+            $("#ValCustomercode").first().focus();
+            $("#ValCustomercode").text("ValCustomercode Is Required.");
+            $("#ValCustomercode").show();
+            isValid = false;
+        }
+        if (isValid == true) {
+               $.confirm({
+                title: 'Save New Sale Invoice!',
+                   content: 'Are you sure to save new Sale Invoice?',
+                buttons: {
+                    confirm: function () {
+                         $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddSalePos", "Sale")',
+
+                data: JSON.stringify(SaleDetails),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                             success: function (data) {
+                                 if (data == true) {
+                                     location.reload();
+                                 }
+                      }
+                      });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+
+
+        }
+    }
+        </script>*@
+
+
+<!--<script type="text/javascript">
+    var nowDate = new Date();
+    var nowDay = ((nowDate.getDate().toString().length) == 1) ? '0' + (nowDate.getDate()) : (nowDate.getDate());
+    var nowMonth = ((nowDate.getMonth().toString().length) == 1) ? '0' + (nowDate.getMonth() + 1) : (nowDate.getMonth() + 1);
+    var nowYear = nowDate.getFullYear();
+    var formatDate = nowDay + "/" + nowMonth + "/" + nowYear;
+    var sernum = 1;
+    var paymentserial = 1;
+    $(document).ready(function () {
+
+
+        AppendAllMissions(event);
+        var grosstotal = 0;
+        $('.add-row').click(function () {
+            var customername = $("#customername").val();
+            var customercode = $("#customercodeinfo").val();
+            var CustomerID = $("#customerid").val();
+
+            var GetSaleDiscount= $("#getsalediscount").is(':checked');
+            var html = '';
+            html += '<tr  id="rowid-' + sernum + '" class="">';
+            html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
+            html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(' + sernum + ')"></td>';
+            html += '<td id="description-' + sernum + '" style="width: 10px" contenteditable="true" val"' + sernum + '"></td>';
+            html += '<td id="Quantity-' + sernum + '" contenteditable="true" class="table-primary" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">1</td>';
+            html += '<td id="amount-' + sernum + '" contenteditable="true"></td>';
+            html += '<td id="discountin-' + sernum + '"  contenteditable="true">$0.00</td>';
+            html += '<td id="discountout-' + sernum + '" contenteditable="true">0.00%</td>';
+            html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
+            html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
+            html += '<td id="price-' + sernum + '" contenteditable="true" class="table-warning"></td>';
+            html += '<td id="total-' + sernum + '" contenteditable="true" class="table-warning"></td>';
+            html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
+            html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
+            html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
+            html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning"></td>';
+            /*html += '<td style="display:none" id="getsalediscount-' + sernum + '" contenteditable="true" class="table-warning">' + GetSaleDiscount +'</td>';*/
+            html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+            html += '</tr >';
+
+            /// var $row = $('#mytable').find('tr.hidden').clone(true).removeClass('hidden');
+            $('#appendnewrowforsale').append(html);
+            $("#countnum").text(sernum);
+            sernum++;
+            CountTotalOfAllTD();
+        });
+        $("#btn").click(function () {
+            InsertSaleDetails();
+        });
+
+        $("#invoicenumber").val('@ViewBag.InvoiceNumber');
+
+
+    });
+    /*  /to append list on posted open dropdown/*/
+    $('.add-rowpayment').click(function () {
+
+        var html = '';
+        html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
+        html += '<td id="amountpayed-' + paymentserial + '" onkeyup="AddCreditTax(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf;"></td>';
+        html += '<td id="amountallocate-' + paymentserial + '" contenteditable="true" class="table-warning"></td>';
+        html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
+        html += '<option value = "Cash" >Cash</option >';
+        html += '<option value="Check">Check</option>';
+        html += '<option value="MoneyOrder">MoneyOrder</option>';
+        html += '<option value="CreditCard">CreditCard</option>';
+        html += '<option value="DebitCard">DebitCard</option>';
+        html += '<option value="cust">Cust.Advance</option>';
+        html += '</select ></td>';
+        html += '<td id="cardnumber-' + paymentserial + '" contenteditable="true" class="table-warning"></td>';
+        html += '<td id="holddate-' + paymentserial + '" contenteditable="true" class="table-warning" style="color: #c92d21;font-weight: 500;">'+ formatDate +'</td>';
+        html += '<td id="paymentrowdelete-' + paymentserial + '"  onclick="RemoveRowPayment(' + paymentserial + ')"><span class="delete-row ti-close"></span></td>';
+        html += '</tr >';
+        paymentserial++;
+        CountTotalOfAllTDOfPayment();
+        $('#paymentmodaltable').append(html);
+    });
+
+   function AddCreditTax(id)
+   {
+
+       var amountvalue = 0;
+       amountvalue = $("#amountpayed-" + id).text();
+
+     var selectvalue=$("#paymenttype-1").find("select").val();
+     if (selectvalue ==="CreditCard") {
+         var percentage = (amountvalue * 2) / 100;
+
+         var tofixedvalue =percentage.toFixed(2);
+         //alert(tofixedvalue);
+         $("#cardnumber-" + id).text("@@2%=$"+tofixedvalue);
+       }
+    }
+    var openinvoices = $('#open-invoice');
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetOnGoingSale", "Sale")',
+            dataType: 'json',
+            success: function (data) {
+
+                $.each(data, function (val, text) {
+                    openinvoices.append(
+                        /*  $('<option></option>').val(val).html("<div onclick=seletchdkjsa(" + text.currentInvoiceNumber + ")" + text.currentInvoiceNumber + "-" + text.customerNumber + "-" + text.customerName +"</div>")*/
+                        $('<option></option>').val(val).html(text.currentInvoiceNumber + "-" + text.customerNumber + "-" + text.customerName )
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+    var postedinvoices = $('#posted-invoice');
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("PostedSales", "Sale")',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (val, text) {
+                    postedinvoices.append(
+                        $('<option></option>').val(val).html( text.customerAccountNumber + "-" + text.customerName + "-" + text.customerNumber)
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+
+    function CountTotalOfAllTD() {
+       /* $("#subtotalauto").empty();*/
+      var total=0
+
+     //   var alltr = $("#saletable").find('tr');
+        $("#saletable tr").each(function () {
+            var self = $(this);
+
+            var col_11_value = self.find("td:eq(10)").text().trim();
+
+            var result = col_11_value.replace(/\$/g, '');
+
+            console.log(result + "result");
+           var afterparsing =  parseFloat(result);
+            if (!isNaN(afterparsing)) {
+                total += afterparsing;
+            }
+
+            console.log(total + "////");
+            $("#subtotalauto").val("$" + total);
+        });
+        CalculatetaxPlusDiscount()
+    }
+    function CountTotalOfAllTDOfPayment() {
+
+      var total=0
+
+
+        //$("#saletable tr").each(function () {
+        //    var self = $(this);
+
+        //    var col_11_value = self.find("td:eq(10)").text().trim();
+
+        //    var result = col_11_value.replace(/\$/g, '');
+
+        //    console.log(result + "result");
+        //   var afterparsing =  parseFloat(result);
+        //    if (!isNaN(afterparsing)) {
+        //        total += afterparsing;
+        //    }
+
+        //    console.log(total + "////");
+        //    $("#subtotalauto").val("$" + total);
+        //});
+      //  CalculatetaxPlusDiscount()
+    }
+    function RemoveRow(val) {
+
+        $("#rowid-" + val).remove();
+        var alltr = $("#saletable").find('tr');
+        $.each(alltr, function (i, t) {
+            if (i > 0) {
+                var TRid = $(t)[0].id.split('-');
+                $(t).attr('id', TRid[0] + "-" + i);
+
+                var alltd = $(t).find('td');
+                $.each(alltd, function (f, it) {
+                  //  console.log($(it)[0].id.split('-'));
+                    var id = $(it)[0].id.split('-');
+                    if (id[0] == "countser") {
+                        $(it).attr('id', id[0] + "-" + i);
+                        $(it).text(i);
+                    }
+                    if (id[0] == "itemnumber") {
+                        $(it).attr('onkeyup', 'GetItemByItemNumber('+i+')');
+                    }
+                    if (id[0] == "Quantity") {
+                        $(it).attr('onkeyup', 'QuantityMultipyPrice('+i+')');
+                    }
+                    if (id[0] == "delete") {
+                        $(it).attr('onclick', 'RemoveRow('+i+')');
+                    }
+                    $(it).attr('id', id[0] + "-" + i);
+
+                });
+            }
+
+        });
+
+        sernum--;
+        $("#countnum").text(sernum - 1);
+        CountTotalOfAllTD();
+
+    }
+    function RemoveRowPayment(val) {
+         $("#rowidsalepayment-" + val).remove();
+        var alltr = $("#customerpaymentsaletable").find('tr');
+
+        $.each(alltr, function (i, t) {
+            if (i > 0) {
+                var TRid = $(t)[0].id.split('-');
+                $(t).attr('id', TRid[0] + "-" + i);
+
+                var alltd = $(t).find('td');
+                $.each(alltd, function (f, it) {
+                    var id = $(it)[0].id.split('-');
+
+
+                    if (id[0] == "paymentrowdelete") {
+                        $(it).attr('onclick', 'RemoveRowPayment(' + i + ')');
+                    }
+                    if (id[0] == "amountpayed") {
+                        $(it).attr('onkeyup', 'AddCreditTax(' + i + ')');
+                    }
+                    if (id[0] == "paymenttype") {
+                        $(it).find("select").attr('onchange', 'AddCreditTax(' + i + ')');
+                    }
+                    $(it).attr('id', id[0] + "-" + i);
+                    var idselect = $(it).find("select").attr('id');
+                    console.log(idselect + "selectmyid");
+                    if (idselect != null && idselect != "undefined") {
+                        var selectid = idselect.split('-');
+                        if (selectid[0] != null && selectid[0] != "undefined") {
+                            $(it).find("select").attr('id', selectid[0] + "-" + i);
+                        }
+
+                    }
+
+
+                });
+            }
+
+        });
+
+        paymentserial--;
+      //  $("#countnum").text(sernum - 1);
+        CountTotalOfAllTDOfPayment();
+
+    }
+
+
+    function closemodal() {
+        $("#payment").modal('hide');
+    }
+    function openmodal() {
+        $("#customerpayment").modal('show');
+    }
+    function openmodalabcde() {
+        $("#payment").modal('show');
+        }
+    function openmodalabcd()
+    {
+    $("#abcd").modal('show');
+    }
+    function closemodalabcd() {
+        $("#abcd").modal('hide');
+    }
+    function closemodalabcd() {
+        $("#customerpayment").modal('hide');
+    }
+    $('.add-row1').click(function () {
+
+        var html = '';
+        html += '<tr class="">';
+        html += '<td style="width: 10px" class="counter" contenteditable="true"></td>';
+
+        html += '<td style="width: 10px" contenteditable="true"></td>';
+        html += '<td contenteditable="true" class="table-primary"></td>';
+        html += '<td contenteditable="true"></td>';
+        html += '<td contenteditable="true"></td>';
+        html += '<td><span class="delete-row ti-close" onclick="RemoveRow()"></span></td>';
+        html += '</tr >';
+
+        $('#appendnewrowforsalepayment').append(html);
+    });
+    function Increamenrgross(val) {
+
+        //var idnum = sernum - 1;
+
+        var totalamountgrossindex1 = $("#total-" + val).text();
+        var ReplacedAmountgross1 = totalamountgrossindex1.replace(/\$/g, '');
+
+        var existingValue = $("#subtotalauto").val().split('$');
+        var existingvalueAmount = existingValue[1];
+        if (existingvalueAmount > 0) {
+            var newtotal = parseFloat(existingvalueAmount) + parseFloat(ReplacedAmountgross1);
+            $("#subtotalauto").val("$" + newtotal);
+        } else {
+            var newtotal1 = ReplacedAmountgross1;
+            $("#subtotalauto").val("$" + newtotal1);
+        }
+        CountTotalOfAllTD();
+        //var totalamountgrossindex2 = $("#total" + val).text();
+        //var ReplacedAmountgross2 = totalamountgrossindex1.replace(/\$/g, '');
+
+
+        //alert(newtotal);
+       /* var ReplacedAmountgross2 = totalamountgrossindex2.replace(/\$/g, '');*/
+
+        //var newgrosstotalfinal = ReplacedAmountgross1 + ReplacedAmountgross2;
+
+
+    }-->
+    @*function InsertSaleDetails() {
+        var customername = $("#searchnameP").val();
+        var customercode = $("#customercodeinfo").val();
+        var CustomerID = $("#customerid").val();
+        var saleman = $("#salesmanid").text();
+        var invoicenumber = $("#invoicenumber").val();
+        var invoicetotal = $("#invoicetotal").val();
+        var discountidadd = $("#discountidadd").val();
+        var otherid = $("#otherid").val();
+        var taxid = $("#taxid").val();
+        var freightid = $("#freightid").val();
+        var GetSaleDiscount = $("#getsalediscount").is(':checked');
+        var CountNumber = $("#countnum").text();
+
+        var SaleDetails = new Array();
+        $("#saletable TBODY TR").each(function () {
+            var row = $(this);
+            var Sale = {};
+            Sale.ItemNumber = row.find("TD").eq(1).html();
+            Sale.ItemDescription = row.find("TD").eq(2).html();
+            Sale.Quantity = row.find("TD").eq(3).html();
+            Sale.AmountRetail = row.find("TD").eq(4).html();
+            Sale.InDiscount = row.find("TD").eq(5).html();
+            Sale.OutDiscount = row.find("TD").eq(6).html();
+            Sale.InUnits = row.find("TD").eq(7).html();
+            Sale.OutUnits = row.find("TD").eq(8).html();
+            Sale.Price = row.find("TD").eq(9).html();
+            Sale.Total = row.find("TD").eq(10).html();
+            Sale.CustomerName = customername;
+            Sale.CustomerNumber = customercode;
+            Sale.CustomerID = CustomerID;
+            Sale.ItemId = row.find("TD").eq(14).html();
+            Sale.SaleManName = saleman;
+            Sale.InvoiceNumber = invoicenumber;
+            Sale.InvoiceTotal = invoicetotal;
+            Sale.Discount = discountidadd;
+            Sale.Other = otherid;
+            Sale.Tax = taxid;
+            Sale.Freight = freightid;
+            Sale.ItemName = row.find("TD").eq(2).html();
+
+            if (GetSaleDiscount == true) {
+                Sale.GetSaleDiscount = "true";
+            } else {
+
+                Sale.GetSaleDiscount = "false";
+
+            }
+
+            Sale.Count = CountNumber;
+
+           // Sale.GetSaleDiscount = GetSaleDiscount;
+
+         //   alert(Sale.GetSaleDiscount);
+
+            SaleDetails.push(Sale);
+        });
+        console.log(SaleDetails);
+
+
+
+        if (customername != "" && customername != "undefined") {
+            $("#ValCustomerName").hide();
+            isValid = true;
+
+        } else {
+            $("#ValCustomerName").first().focus();
+            $("#ValCustomerName").text("CustomerName Is Required.");
+            $("#ValCustomerName").show();
+            isValid = false;
+        }
+        if (customercode != "" && customercode != "undefined") {
+
+            $("#ValCustomercode").hide();
+            isValid = true;
+
+        } else {
+            $("#ValCustomercode").first().focus();
+            $("#ValCustomercode").text("ValCustomercode Is Required.");
+            $("#ValCustomercode").show();
+            isValid = false;
+        }
+        if (isValid == true) {
+               $.confirm({
+                title: 'Save New Sale Invoice!',
+                   content: 'Are you sure to save new Sale Invoice?',
+                buttons: {
+                    confirm: function () {
+                         $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddSalePos", "Sale")',
+
+                data: JSON.stringify(SaleDetails),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                             success: function (data) {
+                                 if (data == true) {
+                                     location.reload();
+                                 }
+                      }
+                      });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+
+
+        }
+    }
+    function SaveOnGoingSales() {
+
+        var  isValid = true;
+        var customername = $("#searchnameP").val();
+        var customercode = $("#customercodeinfo").val();
+        var CustomerID = $("#customerid").val();
+        var saleman = $("#salesmanid").text();
+        var invoicenumber = $("#invoicenumber").val();
+        var invoicetotal = $("#invoicetotal").val();
+        var discountidadd = $("#discountidadd").val();
+        var otherid = $("#otherid").val();
+        var taxid = $("#taxid").val();
+        var freightid = $("#freightid").val();
+        var GetSaleDiscount = $("#getsalediscount").is(':checked');
+        var CountNumber = $("#countnum").text();
+        var desnam = $("#description-1").text();
+        var SaleDetails = new Array();
+        $("#saletable TBODY TR").each(function () {
+            var row = $(this);
+            var Sale = {};
+            Sale.ItemNumber = row.find("TD").eq(1).html();
+            Sale.ItemDescription = row.find("TD").eq(2).html();
+            Sale.Quantity = row.find("TD").eq(3).html();
+            Sale.AmountRetail = row.find("TD").eq(4).html();
+            Sale.InDiscount = row.find("TD").eq(5).html();
+            Sale.OutDiscount = row.find("TD").eq(6).html();
+            Sale.InUnits = row.find("TD").eq(7).html();
+            Sale.OutUnits = row.find("TD").eq(8).html();
+            Sale.Price = row.find("TD").eq(9).html();
+            Sale.Total = row.find("TD").eq(10).html();
+            Sale.CustomerName = customername;
+            Sale.CustomerNumber = customercode;
+            Sale.CustomerID = CustomerID;
+            Sale.ItemId = row.find("TD").eq(14).html();
+            Sale.SaleManName = saleman;
+            Sale.CurrentInvoiceNumber = invoicenumber;
+            Sale.InvoiceTotal = invoicetotal;
+            Sale.Discount = discountidadd;
+            Sale.Other = otherid;
+            Sale.Tax = taxid;
+            Sale.Freight = freightid;
+            Sale.ItemName = row.find("TD").eq(2).html();
+
+            if (GetSaleDiscount == true) {
+                Sale.GetSaleDiscount = "true";
+            } else {
+
+                Sale.GetSaleDiscount = "false";
+
+            }
+
+            Sale.Count = CountNumber;
+
+           // Sale.GetSaleDiscount = GetSaleDiscount;
+
+         //   alert(Sale.GetSaleDiscount);
+
+            SaleDetails.push(Sale);
+        });
+        console.log(SaleDetails);
+
+
+
+        if (customername != "" && customername != "undefined") {
+            $("#ValMsgQuantity").hide();
+
+
+        } else {
+            $("#ValCustomerName").first().focus();
+            $("#ValCustomerName").text("CustomerName Is Required.");
+            $("#ValCustomerName").show();
+            isValid = false;
+        }
+        if (customercode != "" && customercode != "undefined") {
+
+            $("#ValCustomercode").hide();
+
+
+        } else {
+            $("#ValCustomercode").first().focus();
+            $("#ValCustomercode").text("ValCustomercode Is Required.");
+            $("#ValCustomercode").show();
+            isValid = false;
+        }
+        if (desnam != "" && desnam != "undefined") {
+
+
+
+
+        } else {
+
+            isValid = false;
+        }
+
+
+        if (isValid == true) {
+
+                         $.ajax({
+                type: "POST",
+                url: '@Url.Action("OngoingSale", "Sale")',
+
+                data: JSON.stringify(SaleDetails),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                             success: function (data) {
+
+                      }
+                      });
+
+                }
+
+    }
+    function QuantityMultipyPrice(val) {
+        $("#total-" + val).empty();
+        var quantity = $("#Quantity-" + val).text();
+
+        var tootal = $("#price-" + val).text();
+
+        var ReplacedAmount = tootal.replace(/\$/g, '');
+        var foundtotal = parseFloat(quantity) * parseFloat(ReplacedAmount);
+
+        var ceilingvalue = foundtotal;
+
+        ceilingvalue = ceilingvalue.toFixed(2);
+
+        $("#total-" + val).text("$" + foundtotal);
+        //var subtotalnew = $("#subtotalauto").val();
+        //var finalsubtotalvalue = subtotalnew.split('$');
+        //var subtotalsuplitednew = finalsubtotalvalue[1];
+        //var additionoftotalquantitysub = parseFloat(subtotalsuplitednew) + parseFloat(foundtotal);
+
+      //  $("#subtotalauto").val("$" + additionoftotalquantitysub);
+        CountTotalOfAllTD();
+    }
+    function CalculateQrossTotal() {
+
+        var freightid = $("#freightid").val();
+        var taxidval = $("#taxid").val();
+        var discountadd = $("#discountidadd").val();
+        var otherval = $("#otherid").val();
+        var subtotal = $("#subtotal").val();
+       var previousbalance = $("#previousbalance").val();
+        $("#amountdue").text("$"+ foundtotal);
+    }
+    function CalculatetaxPlusDiscount() {
+
+        var subtotal = $("#subtotalauto").val().split('$');
+
+        var discount = $("#discountidadd").val();
+        var otheridval = $("#otherid").val();
+        var taxidval = $("#taxid").val();
+        var freight = $("#freightid").val();
+        if (discount == "" ) {
+            discount = 0;
+
+        } if (otheridval == "" ) {
+            otheridval = 0;
+
+        }
+        if (taxidval == "") {
+            taxidval = 0;
+
+        } if (freight == "") {
+            freight = 0;
+
+        }
+
+        var newsubtotal = subtotal[1];
+     //   alert(newsubtotal);
+        // var newdiscount = discount[1];
+        var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
+        var minusdiscount = parseFloat(sumofallexpences) - parseFloat(discount);
+        var invoicetotal = parseFloat(minusdiscount);
+
+
+        if (isNaN(invoicetotal))
+        {
+            $("#invoicetotal").val("$" + 0);
+            $("#amountdue").val("$" + 0);
+        } else
+        {
+               $("#invoicetotal").val("$" + invoicetotal);
+
+           $("#amountdue").val("$" + invoicetotal);
+        }
+
+        //if (invoicetotal == "NaN") {
+
+        //    $("#invoicetotal").val("$" + 0);
+        //    $("#amountdue").val("$" + 0);
+        //} else
+        //{
+        //    $("#invoicetotal").val("$" + invoicetotal);
+
+        //    $("#amountdue").val("$" + invoicetotal);
+        //}
+
+    }
+    function CalculateTaxFreight() {
+        var val1 = $("#subtotal").val();
+        var val2 = $("#discountidadd").val();
+        var val3 = $("#taxid").val();
+        var val4 = $("#freightid").val();
+
+
+        var invoicetotal1 = val3 + val4;
+     //   alert(invoicetotal1);
+        var invoicetotal2 = val1 + invoicetotal1;
+     //   alert(invoicetotal2);
+        $("#invoicetotal").val(invoicetotal2);
+       // alert(val);
+    }
+    function GetItemByItemNumber(val) {
+     //   var blocker = $("#itemnumber" + ID).text();
+        var total = $("#total-" + val).text();
+        var subtotalnew = $("#subtotalauto").val();
+          var finalsubtotalvalue =    subtotalnew.split('$');
+        debugger;
+        if (total!=null && total!='') {
+            var newtotal = total.split('$');
+             var newtotalsuplitted =   newtotal[1];
+            var subtotalsuplitednew = finalsubtotalvalue[1];
+            if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+
+                var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                $("#subtotalauto").val("$" + subtractedtotal);
+                $("#itemnumber-" + val).empty();
+                $("#Quantity-" + val).empty();
+                $("#amount-" + val).empty();
+                $("#discountin-" + val).empty();
+                $("#discountout-" + val).empty();
+                $("#InUnits-" + val).empty();
+                $("#OutUnits-" + val).empty();
+                $("#price-" + val).empty();
+                $("#total-" + val).empty();
+                $("#description-" + val).empty();
+            }
+        }
+        var itemnumber = $("#itemnumber-"+val).text();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetItemStockFinancialByItemNumber", "Sale")',
+
+            data: { 'itemnumber': itemnumber },
+
+            dataType: 'json',
+
+            success: function (data) {
+                console.log(data);
+                if (data.name!=null && data.name!="undefined") {
+                    $("#description-" + val).text(data.name);
+
+                } if (data.cost != null && data.cost!="undefined") {
+
+                    var price = 0;
+
+
+                    $("#price-" + val).text("$" + data.cost);
+
+                  //  var totalamountgrossindex1 = $("#total" + val).text();
+                   // var ReplacedAmountgross1 = totalamountgrossindex1.replace(/\$/g, '');
+                    var existingValue = $("#subtotalauto").val().split('$');
+                    var existingvalueAmount = existingValue[1];
+                    if (existingvalueAmount > 0) {
+                        var newtotal = parseFloat(existingvalueAmount) + parseFloat(data.cost);
+                        $("#subtotalauto").val("$" + newtotal);
+                    } else {
+                        //var newtotal1 = ReplacedAmountgross1;
+                        $("#subtotalauto").val("$" + data.cost);
+                    }
+
+                    //calculate function
+
+                }
+                if (data.cost != null && data.name != "undefined") {
+                    $("#amount-" + val).text("$" + data.cost);
+                    $("#total-" + val).text("$" + data.cost);
+                }
+                if (data.id != null && data.id != "undefined") {
+                    $("#itemid-" + val).text(data.id);
+
+                }
+                CalculatetaxPlusDiscount();
+
+                SaveOnGoingSales();
+
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+    }
+    function AppendAllMissions(event) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("AutoCompleteSearchCustomerInfo", "Sale")",
+            async: false,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                var inner = '';
+                var opts = jQuery.parseJSON(JSON.stringify(data));
+                console.log(opts);
+                if (opts.length > 0) {
+                    //$("#matchedCharityTemplate").show();
+                }
+                console.log(data);
+                //$('#ddlAllMission').empty();
+                $.each(opts, function (i, d) {
+                    inner = '';
+                    inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCompanyByID(' + d.id + ')";>';
+                    if (i == 0) {
+                        inner += '<div class="searchheader">Company Name</div></br>';
+                    }
+                    inner += '<span class="item_name di w-50" data-rel="' + d.id + '">' + d.company + '</span>';
+                    inner += '</div>';
+
+
+                    // $("#listallmissions").modal('show');
+                    $("#listallmissions").append(inner);
+
+
+                });
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+    };
+    function GetAllMatchedItems(event) {
+
+        var naming = $(".searchnameP").val();
+        if (naming == "") {
+            $(".item_name").parent().hide();
+        }
+        else {
+            var text = naming;
+            var items = $(".item_name");
+            //first, hide all:
+            items.parent().hide();
+
+            //show only those matching user input:
+            items.filter(function () {
+                return $(this).text().toLowerCase().indexOf(text) == 0;
+            }).parent().show();
+        }
+
+    };
+    function GetCompanyByID(val) {
+
+        var id = val;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetCompanyByID", "Sale")',
+
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data != null) {
+                    ShowReceivables(data);
+                    $("#searchnameP").val(data.company);
+                    if (data.customerCode != null && data.customerCode != "undefined") {
+
+                        $("#customercodeinfo").val(data.customerCode);
+
+
+
+                    } if (data.id != null && data.id != "undefined") {
+                        console.log(data.customerCode);
+                        $("#customerid").val(data.id);
+
+
+
+                    }
+                    if (data.company != null && data.company != "undefined") {
+                        console.log(data.customerCode);
+                        $("#customername").val(data.company);
+                    }
+                    if (data.accountNumber != null && data.accountNumber != "undefined") {
+                        console.log(data.accountNumber);
+                        $("#Accountnumber").val(data.accountNumber);
+                    }
+                    //if (data.balance != null && data.balance != "undefined") {
+                    //    $("#previousbalance").val(data.balance);
+
+                    //} else {
+                    //    $("#previousbalance").val("0");
+                    //}
+                    if (data.customerClassification != null && data.customerClassification != "undefined") {
+
+                        if (data.customerClassification.salesman != null && data.customerClassification.salesman != "undefined") {
+
+                            $("#salesmanid").text(data.customerClassification.salesman);
+                        }
+                        if (data.customerClassification.driverName != null && data.customerClassification.driverName != "undefined") {
+
+                            $("#driverid").text(data.customerClassification.driverName);
+                        }
+
+                    }
+
+                }
+
+                $("#listallmissions").empty();
+                SaveOnGoingSales();
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+
+
+    }*@
+    <!--function ReloadPage() {
+        location.reload();
+    };
+    var isCtrl = false;
+    $(document).keyup(function (e) {
+        if (e.which == 17)
+            isCtrl = false;
+    }).keydown(function (e) {
+        if (e.which == 17) isCtrl = true;
+        if (e.which == 83 && isCtrl == true) {
+            InsertSaleDetails();
+            CountTotalOfAllTD();
+            return false;
+        }
+    });
+    $(document).keyup(function (e) {
+
+        if (e.which == 17) isCtrl = false;
+    }).keydown(function (e) {
+        if (e.which == 17) isCtrl = true;
+        if (e.which == 73 && isCtrl == true) {
+            $(".add-row").trigger("click");
+            event.stopPropagation();
+            CountTotalOfAllTD();
+            return false;
+        }
+    });
+    $('body').keydown(function (event) {
+        var letter = String.fromCharCode(event.which);
+
+        if (event.keyCode == 46) {
+            var id = $("#countnum").text();
+            if (id > 0) {
+                $("#rowid-" + id).remove();
+                sernum--;
+                $("#countnum").text(sernum - 1);
+            }
+            CountTotalOfAllTD();
+        }
+        //console.log(event);
+        //console.log(event.keyCode);
+    });
+    //document.addEventListener('keydown', function (event) {
+    //    const key = event.key; // const {key} = event; ES6+
+    //    if (key === 46) {
+    //        var id = $("#countnum").text();
+    //        if (id>0) {
+    //            $("#rowid-" + id).remove();
+    //            sernum--;
+    //            $("#countnum").text(sernum - 1);
+    //        }
+
+
+    //    }
+    //    CountTotalOfAllTD();
+    //});
+
+
+
+//     function openCity(evt, cityName) {
+//      var i, tabcontent, tablinks;
+//      tabcontent = document.getElementsByClassName("tabcontent");
+//      for (i = 0; i < tabcontent.length; i++) {
+//        tabcontent[i].style.display = "none";
+//      }
+//      tablinks = document.getElementsByClassName("tablinks");
+//      for (i = 0; i < tablinks.length; i++) {
+//        tablinks[i].className = tablinks[i].className.replace(" active", "");
+//      }
+//      document.getElementById(cityName).style.display = "block";
+//      evt.currentTarget.className += " active";
+//}
+
+
+
+    // function ShowReceivables(data) {
+    //     if (data != null && data != "undefined") {
+
+
+    //     }
+
+    //     var html = "";
+
+    //     html += '<div class="modal-content forremovingmodel">';
+    //     html += '<div class="modal-header" style="padding:1rem!important;">';
+    //     html += '<h5 class="modal-title" id="ModalLabel">Balance Overdue</h5>';
+    //     html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodalabcd()">';
+    //     html += '<span aria-hidden="true">×</span>';
+    //     html += '</button>';
+    //     html += '</div>';
+    //     html += '<div class="modal-body" style="color: #0000ab; background-color: #ff99cc;padding-top:10px;">';
+    //     html += '<div class="row">';
+    //     html += '<div class="col-lg-12 col-md-12 col-sm-12 col">';
+    //     html += '<label style="font-weight:700">Customer: <label id="customerNo">1011</label></label>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-1">';
+    //     html += '<div class="col-lg-6 col-md-12 col-sm-12 col font-size">';
+    //     html += '<label id="Storename">lorem ipsum</label>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-1">';
+    //     html += '<div class="col-lg-6 col-md-12 col-sm-12 col font-size">';
+    //     html += '< label > loremhvssa sakskdasd sad as d</label >';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-1">';
+    //     html += '<div class="col-lg-12 col-md-12 col-sm-12 col font-size">';
+    //     html += '<label>Tel: <label id="telno">+92832742398</label></label>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-2">';
+    //     html += '<div class="col-lg-12 col-md-12 col-sm-12 col">';
+    //     html += '<h2 class="text-center">Balance Overdue</h2>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-2">';
+    //     html += '<div class="col-lg-12 col-md-12 col-sm-12 col text-center">';
+    //     html += '<input type="text" class="text-center st-1" name="name" value="$64357"  />';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '<div class="row mt-2">';
+    //     html += '<div class="col-lg-12 col-md-12 col-sm-12 col text-center">';
+    //     html += '<label>DueDate: <label id="date"></label></label>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '</div>';
+
+    //     $('#receivablesid').append(html);
+    //     $('#receivablesid').modal('show');
+
+    //    //    console.log(html);
+    //}
+
+     function closemodalfreight() {
+                $("#freightmodal").modal('hide');
+            }
+
+            function taxfunc() {
+                $("#freightmodal").modal('show');
+    }
+    function testM() {
+        $("#testmodal").modal('show');
+            }
+
+</script>-->
+

@@ -1,0 +1,249 @@
+﻿@model ABC.EFCore.Repository.Edmx.Vendor
+
+@{
+    ViewData["Title"] = "VendorDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<div class="row">
+
+    <div class="col-md-3 grid-margin action-btn">
+        <div class="card bg-twitter d-flex align-items-center">
+            <div class="card-body">
+                <div class="d-flex flex-row align-items-center">
+                    <i class="ti-receipt text-white icon-md"></i>
+                    <div class="ms-3">
+                        <h6 class="text-white">Generate</h6>
+                        <p class="mt-2 text-white card-text">Report</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 grid-margin grid-margin-md-0 stretch-card">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    @if (Model.ImageByPath != null && Model.ImageByPath != "")
+                    {
+                        <img src="@Model.ImageByPath" class="img-lg rounded-circle mb-2" alt="profile image">
+                    }
+                    else
+                    {
+                        <img src="~/images/useravatar.png" class="img-lg rounded-circle mb-2" alt="profile image">
+                    }
+                    <h4>@Model.FullName</h4>
+                    <p class="text-muted mb-0">@Model.Email</p>
+                </div>
+                <p class="mt-2 card-text">
+
+                </p>
+                @*<div class="border-top pt-3">
+                    <div class="row">
+                        <div class="col-4">
+                            @if (Model.AdminApproval == true)
+                            {
+                                <span class="textdetail badge badge-success">Approved</span>
+                                <p class="textsubdetail">Status</p>
+                            }
+                            else if (Model.AdminApproval == null)
+                            {
+                                <span class="textdetail badge badge-warning">Pending</span>
+                                <p class="textsubdetail">Status</p>
+                            }
+                            else if (Model.AdminApproval == false)
+                            {
+                                <span class="textdetail badge badge-danger">Rejected</span>
+                                <p class="textsubdetail">Status</p>
+                            }
+                        </div>
+                        <div class="col-4">
+                            @if (Model.IsActive == true)
+                            {
+                                <span class="textdetail badge badge-danger">Blocked</span>
+                                <p class="textsubdetail">Is Blocked?</p>
+                            }
+                            else
+                            {
+                                <span class="textdetail">Not Blocked</span>
+                                <p class="textsubdetail">Is Blocked?</p>
+                            }
+                        </div>
+                        <div class="col-4">
+
+                            @if (Model.AccessAccount == true)
+                            {
+                                <span class="textdetail">Registered</span>
+                                <p class="textsubdetail">Login Access</p>
+                            }
+                            else if (Model.AccessAccount == false)
+                            {
+                                <span class="textdetail badge badge-warning">Non Registered</span>
+                                <p class="textsubdetail">Login Access</p>
+
+                            }
+                            else
+                            {
+                                <span class="textdetail">Pending</span>
+                                <p class="textsubdetail">Login Access</p>
+                            }
+                        </div>
+                    </div>
+                </div>*@
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7 grid-margin grid-margin-md-0 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Vendor Detail</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="pt-1 ps-0">
+                                    Vendor Number
+                                </th>
+                                <th class="pt-1">
+                                    @Model.VendorCode
+                                </th>
+                                <th class="pt-1">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-1 ps-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.FullName</p>
+                                            <p class="mb-0 text-muted text-small">Full Name</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.Mobile</p>
+                                            <p class="mb-0 text-muted text-small">Mobile#</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.Phone</p>
+                                            <p class="mb-0 text-muted text-small">Phone#</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-1 ps-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.DrivingLicenseState</p>
+                                            <p class="mb-0 text-muted text-small">Driving License State</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.StateName</p>
+                                            <p class="mb-0 text-muted text-small">State Name</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.Irs</p>
+                                            <p class="mb-0 text-muted text-small">IRS</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-1 ps-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.DrivingLicense</p>
+                                            <p class="mb-0 text-muted text-small">Driving License </p>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.TaxId</p>
+                                            <p class="mb-0 text-muted text-small">Tax_ID</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.Discount</p>
+                                            <p class="mb-0 text-muted text-small">Discount</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-1 ps-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.Address</p>
+                                            <p class="mb-0 text-muted text-small">Address</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            @if (Model.TaxExempt == true)
+                                            {
+                                                <p class="mb-0">Yes</p>
+                                                <p class="mb-0 text-muted text-small">Tax Exempt</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="mb-0">No</p>
+                                                <p class="mb-0 text-muted text-small">Tax Exempt</p>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-1 ps-0">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p class="mb-0">@Model.AccountNumber</p>
+                                            <p class="mb-0 text-muted text-small">Account Number</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

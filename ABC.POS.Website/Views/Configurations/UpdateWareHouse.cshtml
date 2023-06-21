@@ -1,0 +1,71 @@
+﻿@model ABC.EFCore.Repository.Edmx.WareHouse
+@{
+    ViewBag.Title = "Ware House";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+
+
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update WareHouse</h4>
+            @*<p class="card-description">
+            Basic form layout
+        </p>*@
+            @using (Html.BeginForm("UpdateWareHouse", "Configurations", FormMethod.Post, new { @class = "forms-sample" }))
+            {
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">WareHouse Name</label>
+                    @Html.EditorFor(model => model.WareHouseName, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                    @Html.ValidationMessageFor(model => model.WareHouseName, "", new { @class = "text-danger db" })
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">WareHouse Phone</label>
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", type = "number" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Concerned Person</label>
+                    @Html.EditorFor(model => model.ConcernedPersonName, new { htmlAttributes = new { @class = "form-control", placeholder = "Person", type = "number" } })
+                    @Html.ValidationMessageFor(model => model.ConcernedPersonName, "", new { @class = "text-danger db" })
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">WareHouse Address</label>
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", type = "number" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+
+                </div>
+                <button type="submit" class="btn btn-dark me-2"><p style=color:white>Update</p></button>
+                @*<button class="btn btn-light">Cancel</button>*@
+            }
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+

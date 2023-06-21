@@ -1,0 +1,3024 @@
+﻿@model ABC.EFCore.Repository.Edmx.CustomerInformation
+@{ ViewData["Title"] = "NewCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<style>
+    .form-control {
+        color: #00008B;
+        font-weight: 500;
+    }
+
+    .panel-head {
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+    label {
+        color: #00008B;
+    }
+
+    .add-style {
+        color: red;
+    }
+
+    .dropadditemCategory {
+        background: #e9ecef;
+        opacity: 1;
+        border: 0;
+        outline: 1px solid #dee2e6;
+        font-weight: 400;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+
+    .progress-bar-vertical {
+        width: 20px;
+        min-height: 200px;
+        margin-right: 20px;
+        background: #d0cece;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: flex-end;
+        -webkit-align-items: flex-end
+    }
+
+        .progress-bar-vertical .progress-bar {
+            width: 100%;
+            height: 0;
+            -webkit-transition: height 0.6s ease;
+            -o-transition: height 0.6s ease;
+            transition: height 0.6s ease
+        }
+
+    .actionbox {
+        background: white;
+        box-sizing: border-box;
+        margin-bottom: 2%;
+        border-radius: 20px;
+    }
+
+    .setsearchbox {
+        position: relative;
+        margin-top: 0%;
+        width: auto;
+        background-color: antiquewhite;
+        border-radius: 0px;
+    }
+
+    .searchheader {
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+        display: inline-block;
+        width: 50%;
+        text-align: start;
+        border-bottom: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .di {
+        display: inline-block;
+    }
+
+    .itemnumberbox {
+        border: 1px solid #989a9d;
+        background: #80808047;
+    }
+
+    .fr {
+        float: right !important;
+    }
+
+    .mg-t-5 {
+        margin-top: 5%;
+    }
+
+    .ml-2 {
+        margin-left: 2%;
+    }
+
+    .mg-t-2 {
+        margin-top: 2%;
+    }
+
+    .ml-3 {
+        margin-left: 3%;
+    }
+
+    .mg-t-3 {
+        margin-top: 3%;
+    }
+
+    .dn {
+        display: none;
+    }
+
+    .checkcheapitems {
+        margin-top: 50%;
+        position: relative;
+        left: 110%;
+        width: 20%;
+    }
+
+    .emptygrid {
+        height: 300px;
+        background-color: antiquewhite;
+    }
+</style>
+
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <div class="panel panel-primary ">
+                <div class="w-100 p-3 h-100 d-inline-block">
+
+                    <div id="onlisticon" class="di">
+                        <img class="createnew" src="~/images/add.png" style="width:50px" title="Create" onclick="triggerAddCustomer()" />&ensp;&ensp;&ensp;
+                        <img id="refresh-id" src="~/images/refresh.png" style="width:50px" title="Refresh" onclick="ReloadPage()" />&ensp;&ensp;&ensp;
+                    </div>
+                    <div id="defaultlisticons" class="di"></div>
+                    <div id="onsaveicon">
+
+                    </div>
+                    <div class="row fr" id="existingitemnumber">
+                        @Html.HiddenFor(model => model.CustomerCode, new { @class = "form-control", id = "hiddencustomercode" })
+                        @Html.HiddenFor(model => model.Id, new { @class = "form-control", id = "customerinformationid" })
+                    </div>
+                    <div class="row fr" id="newitemnumber">
+                        @Html.HiddenFor(model => model.CustomerCode, new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.Balance, new { @class = "form-control" })
+                    </div>
+                    @*<a href="#"> <img src="~/images/create.png" style="width:50px" title="Create" id="createicon" /></a>&ensp;&ensp;&ensp;
+                        <a href="#"> <img src="~/images/attach.png" style="width:50px" title="Attachments" id="attachmentsicon" /></a>&ensp; &ensp; &ensp;
+                        <a href="#"> <img src="~/images/edit.png" style="width:50px" title="Edit" id="editicon" /></a>&ensp; &ensp; &ensp;
+                        <a href="#"> <img src="~/images/delete.png" style="width:50px" title="Delete" id="deleteicon" /></a>&ensp; &ensp; &ensp;
+                        <a href="#"> <img src="~/images/printer.png" style="width:50px" title="Print" id="printicon" /></a>&ensp; &ensp; &ensp;*@
+                </div>
+                <div class="panel-heading" id="panelheading">Customers</div>
+                <div class="panel-body">
+                    @*<div class="row">
+                            <div class="col-lg-8 col-sm-8">
+                                <input type="text" id="searchcompany" class="w-100" placeholder="Searching By Company Name" />
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <button type="button" class="btn btn-primary" id="searchbutton">Search</button>
+                            </div>
+                        </div>*@
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="infotab" data-bs-toggle="tab" href="#infodata" role="tab" aria-controls="infodata" aria-selected="true">Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="classificationtab" data-bs-toggle="tab" href="#classificationdata" role="tab" aria-controls="classificationdata" aria-selected="false">Classification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="billinginfotab" data-bs-toggle="tab" href="#billinginfodata" role="tab" aria-controls="billinginfodata" aria-selected="false">Billing Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="Attachments-tab" data-bs-toggle="tab" href="#" role="tab" aria-controls="Attachments-1" aria-selected="false">Sales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="home-tab" data-bs-toggle="tab" href="#" role="tab" aria-controls="home-1" aria-selected="false">Payements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="false">Unpaid Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="false">Account History</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show row" id="infodata">
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-12">Company</label>
+                                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control searchname", placeholder = "Enter Company Name", id = "companyname", onkeydown = "GetAllMatchedItems(event)", autocomplete = "off" } })
+                                        <div style="cursor:pointer" id="listallmissions"></div>
+                                        <label class="text-danger db" id="companyvalidation"></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-sm-2">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-8">Mr./Mrs.</label>
+
+                                                @Html.DropDownListFor(model => model.Gender, (IEnumerable<SelectListItem>)ViewData["Gender"], "--Choose Title", new { @class = "form-control", id = "txtgender" })
+                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Gender Type</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-sm-5">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6">First Name</label>
+                                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstName" } })
+                                                <label class="text-danger db" id="fnamevalidation"></label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-5 col-sm-5">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6">Last name</label>
+                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control ", placeholder = "Last Name", id = "txtLastName" } })
+                                                <label class="text-danger db" id="lnamevalidation"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Street </label>
+                                                @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Street ", id = "StretNumber" } })
+                                                @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12">Ste A  </label>
+                                                @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control ", placeholder = "STE A", id = "streetNumber" } })
+                                                @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-8">
+                                            <div class="row">
+                                                <div class="col-lg-5 col-sm-5">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">City</label>
+                                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter City", id = "txtcity" } })
+                                                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-5 col-sm-5">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">State</label>
+                                                        @Html.DropDownListFor(model => model.State, (IEnumerable<SelectListItem>)ViewBag.CustomerState, "--Choose State--", new { @class = "form-control", id = "state" })
+                                                        <label class="text-danger db" style="display:none" id="msgstate">Enter Customer State</label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 mt-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addcustomerstate"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6">Zip</label>
+                                                @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control ", placeholder = "ZipCode", id = "txtzipcode" } })
+                                                @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-8">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12">Country </label>
+                                                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control ", placeholder = "Country", id = "Country" } })
+                                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 mt-4">
+                                            <div class="form-group py-3">
+                                                @Html.CheckBox("CheckAdress", false, new { @id = "CheckAdress", })
+                                                <label class="dim col-sm-8" for="CheckAdress">
+                                                    CheckAdress
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Phone</label>
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Phone ", id = "phonenumber", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12">Fax</label>
+                                                @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control ", placeholder = "EnterFax", id = "txtfax" } })
+                                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-lg-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-8">
+                                            <div class="row">
+                                                <div class="col-lg-6 col col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12"> Cell </label>
+                                                        @Html.EditorFor(model => model.Cell, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Cell ", id = "txtcell", type = "number" } })
+                                                        @Html.ValidationMessageFor(model => model.Cell, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-lg-10 col-sm-10">
+                                                            <div class="form-group">
+                                                                <label class="dim col-sm-8">Provider</label>
+                                                                @Html.DropDownListFor(model => model.ProviderId, (IEnumerable<SelectListItem>)ViewBag.Provider, "--Choose Provider--", new { @class = "form-control", id = "ProviderID" })
+
+                                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Provider</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2 col-sm-2 mt-4 ">
+                                                            <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addprovider"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4">
+                                            <div class="row ">
+                                                <div class="col-lg-10 col-sm-10">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-6">Customer Type </label>
+                                                        @Html.DropDownListFor(model => model.CustomerType, (IEnumerable<SelectListItem>)ViewBag.CustomerType, "--Choose Customer Type--", new { @class = "form-control", id = "customertype" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Customer Type</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 mt-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addcustomertype"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Other </label>
+                                                @Html.EditorFor(model => model.Other, new { htmlAttributes = new { @class = "form-control ", placeholder = "other ", id = "other" } })
+                                                @Html.ValidationMessageFor(model => model.Other, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Owner Adrss</label>
+                                                @Html.EditorFor(model => model.OwnerAddress, new { htmlAttributes = new { @class = "form-control ", placeholder = "Owner Adress ", id = "txtowneraddress" } })
+                                                @Html.ValidationMessageFor(model => model.OwnerAddress, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-12"> Vehicle Number </label>
+                                        @Html.EditorFor(model => model.VehicleNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Cell ", id = "txtvehiclenumber" } })
+                                        @Html.ValidationMessageFor(model => model.VehicleNumber, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> Emial </label>
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control ", placeholder = "Email ", id = "email" } })
+                                                <label class="text-danger db" id="emailvalidation"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> Website</label>
+                                                @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control ", placeholder = "Website ", id = "Website" } })
+                                                @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-12"> DOB </label>
+                                        @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control ", id = "txtdob" } })
+                                        @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Tax Id [FEIN] </label>
+                                                @Html.EditorFor(model => model.TaxIdfein, new { htmlAttributes = new { @class = "form-control ", placeholder = "TaxID ", id = "Taxidfein" } })
+                                                @Html.ValidationMessageFor(model => model.TaxIdfein, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> State ID # </label>
+                                                @Html.EditorFor(model => model.StateIdnumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "State ID Number ", id = "Stateidnumber" } })
+                                                @Html.ValidationMessageFor(model => model.StateIdnumber, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-6"> SSN </label>
+                                        @Html.EditorFor(model => model.Ssn, new { htmlAttributes = new { @class = "form-control ", placeholder = "SSN ", id = "Ssn" } })
+                                        <label class="text-danger db" id="ssnvalidation"></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-12"> Tobacco License </label>
+                                                @Html.EditorFor(model => model.TobaccoLicenseNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Tobacco Licenese ", id = "TobaccoLiscenese" } })
+                                                @Html.ValidationMessageFor(model => model.TobaccoLicenseNumber, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> Vendor </label>
+                                                @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "form-control ", placeholder = "Vendor", id = "vendor" } })
+                                                @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> DL Number </label>
+                                                @Html.EditorFor(model => model.DrivingLicenseNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Driving Licenese ", id = "txtdrivingnumber" } })
+                                                @Html.ValidationMessageFor(model => model.DrivingLicenseNumber, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-lg-9 col col-sm-9">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">License State</label>
+                                                        @Html.DropDownListFor(model => model.DrivingLicenseStateId, (IEnumerable<SelectListItem>)ViewBag.DrivingLicenseState, "--Choose State--", new { @class = "form-control", id = "txtdrivinglicensestate" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Driving License State</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-3 mt-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivinglicensestate"></i>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> Cigaratte License </label>
+                                                @Html.EditorFor(model => model.CigaretteLicenseNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Cigratte License Number ", id = "txtcigarettelicensenumber" } })
+                                                @Html.ValidationMessageFor(model => model.CigaretteLicenseNumber, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-6"> DEA </label>
+                                                @Html.EditorFor(model => model.Dea, new { htmlAttributes = new { @class = "form-control ", placeholder = "DEA", id = "dea" } })
+                                                @Html.ValidationMessageFor(model => model.Dea, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4 mt-4">
+                                    <div class="form-group py-3">
+                                        @Html.CheckBox("Authorized", false, new { @id = "Authorized", })
+                                        <label class="dim col-sm-8" for="Authorized">
+                                            Authorized
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-12"> Memo </label>
+                                        @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control ", placeholder = "memo", id = "memo" } })
+                                        @Html.ValidationMessageFor(model => model.Memo, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                            @*</form>*@
+                        </div>
+                        <div class="tab-pane fade row" id="classificationdata">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class=" col-lg-10 col-sm-10">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">Group </label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.GroupId, (IEnumerable<SelectListItem>)ViewBag.Group, "--Group--", new { @class = "form-control", id = "Group" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select Group</label>
+                                                </div>
+                                            </div>
+                                            <div class=" col-lg-2 col-sm-2 py-4">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addgroup"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class=" col-lg-10 col-sm-10">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6"> SubGroup </label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.SubGroupId, (IEnumerable<SelectListItem>)ViewBag.SubGroup, "--SubGroup--", new { @class = "form-control", id = "SubGroup" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select Group</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 py-4">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addsubgroup"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10 col-sm-10">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">Zone </label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.Zone, (IEnumerable<SelectListItem>)ViewBag.Zone, "--Zone--", new { @class = "form-control", id = "Zone" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select Zone</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 py-4">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addzone"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10 col-sm-10">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">BusinessType</label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.BusinessTypeId, (IEnumerable<SelectListItem>)ViewBag.BusinessType, "--BusinessType--", new { @class = "form-control", id = "BusinessType" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select Business Type</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 py-4">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addbusinesstype"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10 col-sm-10">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">Salesman</label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.SalesmanId, (IEnumerable<SelectListItem>)ViewBag.Salesman, "--Salesman--", new { @class = "form-control", id = "SalesMan" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select SalesMan</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-sm-2 py-4">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addsalesman"></i>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-6">Ship To Reference </label>
+                                        @Html.DropDownListFor(model => model.CustomerClassification.ShiptoReference, (IEnumerable<SelectListItem>)ViewBag.ShiptoReference, "--Select--", new { @class = "form-control", id = "ShipToReference" })
+                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Select Ship to Reference</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-4 border">
+                                            <br />
+                                            <h2> Shipping Info</h2>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">ShippedVia</label>
+                                                        @Html.DropDownListFor(model => model.CustomerClassification.ShippedViaId, (IEnumerable<SelectListItem>)ViewBag.ShipmentPurchase, "--ShippedVia--", new { @class = "form-control", id = "ShippedVia" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Select ShippedVia</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 py-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addshippedvia"></i>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">Route name</label>
+                                                        @Html.DropDownListFor(model => model.CustomerClassification.RouteId, (IEnumerable<SelectListItem>)ViewBag.Route, "--Route--", new { @class = "form-control", id = "Route" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Select Route</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 py-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addroutename"></i>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">Route Delievery Day</label>
+                                                        @Html.DropDownListFor(model => model.CustomerClassification.RouteDeliveryDay, (IEnumerable<SelectListItem>)ViewBag.routedeliverydays, "--Delievery Days--", new { @class = "form-control", id = "routedeliveryday" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Select Group</label>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-10 col-sm-10">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">Driver,s name</label>
+                                                        @Html.DropDownListFor(model => model.CustomerClassification.DriverName, (IEnumerable<SelectListItem>)ViewBag.Driver, "--Driver--", new { @class = "form-control", id = "Driver" })
+                                                        <label class="text-danger db" style="display:none" id="msgcustomertype">Select Driver</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2 col-sm-2 py-4">
+                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivername"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 border">
+                                            <br />
+                                            <h2>Customer Setting</h2>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.OutOfStateCustomer", false, new { @id = "txtOutOfstateCustomer", })
+                                                    <label class="dim col-sm-8" for="OutOfStateCustomer">
+                                                        Out Of State Customer
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.AddtoMaillingList", false, new { @id = "txtAddToMailingList", })
+                                                    <label class="dim col-sm-8" for="AddtoMaillingList">
+                                                        Add To Mailing List
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.AddtoemailTextList", false, new { @id = " txtaddtoemailtextlist", })
+                                                    <label class="dim col-sm-8" for="AddtoemailTextLis">
+                                                        Add To Emial/Text List
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.RejectPromotion", false, new { @id = "txtrejectpromotion", })
+                                                    <label class="dim col-sm-8" for="RejectPromotion">
+                                                        Reject Promotion
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 border">
+                                            <br />
+                                            <h2>Invoice Setting</h2>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.ViewInvoicePrevBalance", false, new { @id = "txtViewInvoicePrevBalance", })
+                                                    <label class="dim col-sm-8" for="ViewInvoicePrevBalance">
+                                                        View Invoice Prev.Balance
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group py-3">
+                                                    @Html.CheckBox("CustomerClassification.ViewRetailandDiscount", false, new { @id = "txtViewRetailandDiscount", })
+                                                    <label class="dim col-sm-8" for="ViewRetailandDiscount">
+                                                        View Retail And Discount
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-12">Barcode</label>
+                                                    @Html.DropDownListFor(model => model.CustomerClassification.BarCodeId, (IEnumerable<SelectListItem>)ViewData["Group"], "--Retail--", new { @class = "form-control", id = "txtbarcode" })
+                                                    <label class="text-danger db" style="display:none" id="msgcustomertype">Select Barcode</label>
+                                                    @*<i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addbarcode"></i>*@
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-8"> Default Invoice Copies </label>
+                                                    @Html.EditorFor(model => model.CustomerClassification.DefaultInvoiceCopies, new { htmlAttributes = new { @class = "form-control ", id = "txtdefaultinvoicecopies" } })
+                                                    @Html.ValidationMessageFor(model => model.CustomerClassification.DefaultInvoiceCopies, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="form-group">
+                                                    @Html.CheckBox("CustomerClassification.SpecialInvoiceCustom", false, new { @id = "txtSpecialInvoiceCustom", })
+                                                    <label class="dim col-sm-8" for="SpecialInvoiceCustom">
+                                                        Special Invoive Custom
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="row mt-3">
+                                    <div class="offset-lg-4 col-lg-8 offset-sm-4 col-sm-8">
+                                        <div class="form-group">
+                                            @Html.CheckBox("CustomerClassification.UseDefaultInvMemo", false, new { @id = "defaultinvmemo", })
+                                            <label class="dim col-sm-8" for="Default Inv Memo">
+                                                User Default Inv Memo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col col-sm-4">
+                                        <div class="form-group">
+                                            <label class="dim col-sm-12"> Other Customer Reference </label>
+                                            @Html.EditorFor(model => model.CustomerClassification.OtherCustomerReference, new { htmlAttributes = new { @class = "form-control ", placeholder = "Other Reference Number ", id = "txtOtherReferenceNumber " } })
+                                            @Html.ValidationMessageFor(model => model.CustomerClassification.OtherCustomerReference, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col col-sm-8">
+                                        <div class="form-group">
+                                            <label class="dim col-sm-12"> Invoice Memo </label>
+                                            @Html.EditorFor(model => model.CustomerClassification.InvoiceMemo, new { htmlAttributes = new { @class = "form-control ", placeholder = "InvoiceMemo", id = "txtinvoicememo" } })
+                                            @Html.ValidationMessageFor(model => model.CustomerClassification.InvoiceMemo, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade row" id="billinginfodata">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-8 col-sm-8 col px-md-5 ">
+                                        <div class="row  border border-dark ">
+                                            <div class="row">
+                                                <h2>Sales Information</h2>
+
+                                                <div class="form-group mt-4">
+                                                    @Html.CheckBox(" TaxExempt", false, new { @id = " TaxExempt", })
+                                                    <label class="dim col-sm-8 fs-5 text-primary" for=" TaxExempt">
+                                                        TaxExempt
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                            <div class=" col-lg-12 col-sm-12 mt-4">
+                                                <div class="row">
+                                                    <div class=" col-lg-6 col-sm-6">
+                                                        <div class="form-group ">
+                                                            <label class="col-sm-6 col-lg-6 text-primary">Pricing</label>
+                                                            @Html.DropDownListFor(model => model.CustomerClassification.GroupName, (IEnumerable<SelectListItem>)ViewData["Group"], "--Pricing--", new { @class = "form-control", id = "Pricing" })
+                                                            <label class="text-danger db" style="display:none" id="msgcustomertype">Select Barcode</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 col-sm2">
+                                                        <div class="form-group  ">
+                                                            <label class=""> Retail Plus% </label>
+                                                            @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                            @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                        </div>
+                                                    </div>
+                                                    <div class=" col-lg-2 col-sm-2">
+                                                        <div class="form-group">
+                                                            <label "> Retail Plus$ </label>
+                                                            @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                            @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <div class="col-lg-12 col-sm-12 mt-4">
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            @Html.CheckBox(" GetSales/Discounts", false, new { @id = " Get Sales/Discounts", })
+                                                            <label class="dim col-sm-10 fs-5 text-primary" for=" Get Sales/Discounts">
+                                                                Get Sales/Discounts
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            @Html.CheckBox(" OutOfStatesCustomers", false, new { @id = " Out Of States Customers", })
+                                                            <label class="dim col-sm-10 fs-5 text-primary " for=" Out Of States Customers">
+                                                                Out Of States Customers
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class=" col-lg-12 col-sm-12 mt-4">
+                                            <div class="row">
+                                                <div class=" col-lg-4 col-sm-4 mt-5">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-light fs-6 btn-lg btn-block">Special Prices</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class=" col-lg-8 col-sm-8 mt-5">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-light fs-6 btn-lg btn-block ">Additional Item Discount/Charge</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-lg-12 col-sm -12">
+                                            <div class="row">
+                                                <div class=" col-lg-6 col-sm-6  mt-5">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-6 col-lg-6">Additional Invoice Charge</label>
+                                                        @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "%0.00", id = "Pricing " } })
+                                                        @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                                <div class=" col-lg-6 col-sm-6  mt-5">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-6 col-lg-6"> Additional Invoice Discount </label>
+                                                        @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "%0.00", id = "Pricing " } })
+                                                        @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <br />
+                                    <div class="col-lg-4 col-sm-4 border border-dark">
+                                        <div class="=row">
+                                            <br />
+                                            <h2>Customer Credit</h2>
+                                            <div class="form-group">
+                                                <label class="dim col-sm-8 text-primary">Payement Terms</label>
+                                                @Html.DropDownListFor(model => model.CustomerClassification.GroupName, (IEnumerable<SelectListItem>)ViewData["Group"], "--Pricing--", new { @class = "form-control", id = "Pricing" })
+                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Select Barcode</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="dim col-sm-8 text-primary">Credit Limit</label>
+                                                @Html.DropDownListFor(model => model.CustomerClassification.GroupName, (IEnumerable<SelectListItem>)ViewData["Group"], "--Pricing--", new { @class = "form-control", id = "Pricing" })
+                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Select Barcode</label>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                                <label class="dim col-sm-8 fs-5 text-danger" for="Default Inv Memo">
+                                                    Credit Hold
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                                <label class="dim col-sm-8 fs-5 text-danger" for="Default Inv Memo">
+                                                    Bill To Bill
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                                <label class="dim col-sm-8 fs-5 text-danger" for="Default Inv Memo">
+                                                    No Checks Accepted
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                                <label class="dim col-sm-8 fs-6 text-success" for="Default Inv Memo">
+                                                    Exclude Overdue Popup Message on new Invoice
+                                                </label>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="form-group ">
+                                                    <label class="text-primary">3rd Party Check Charge</label>
+                                                    @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                    @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class=" col-lg-12 col-sm-12">
+                                                <div class="row">
+                                                    <div class=" col-lg-6 col-sm-6">
+                                                        <div class="form-group">
+                                                            @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                                            <label class="col-sm-12 fs-6 text-success" for="Default Inv Memo">
+                                                                Check Back Balance
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class=" col-lg-6 col-sm-6">
+                                                        <div class="form-group">
+
+                                                            @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "%0.00", id = "Pricing " } })
+                                                            @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-8  col px-md-5 mt-3 ">
+                                        <div class="row  border border-dark ">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <div class="row">
+                                                    <div class=" col-lg-4 col-sm-4">
+                                                        <div class="form-group  mt-5 fs-6">
+                                                            <label class=" fs-6 text-primary">Schedule Message</label>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class=" col-lg-4 col-sm-4">
+                                                        <div class="form-group  mt-4 ">
+                                                            <label class=" text-primary">From</label>
+                                                            @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                            @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger db" })
+                                                        </div>
+                                                    </div>
+                                                    <div class=" col-lg-4 col-sm-4">
+                                                        <div class="form-group  mt-4 ">
+                                                            <label class=" text-primary"> To </label>
+                                                            @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                            @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger db" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-sm-12">
+                                                <div class="row">
+                                                    <div class="form-group ">
+                                                        @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                        @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class=" col-lg-4 col-sm-4 border border-dark mt-3">
+                                        <div class="form-group mt-4">
+                                            @Html.CheckBox("UseDefaultInvMemo", false, new { @id = "Default Inv Memo", })
+                                            <label class="dim col-sm-8 fs-5 text-primary" for="Default Inv Memo">
+                                                Pop Up Message
+                                            </label>
+                                        </div>
+                                        <div class=" col-lg-12 col-sm-12 ">
+                                            <div class="form-group">
+                                                @Html.EditorFor(model => model.CustomerClassification.GroupName, new { htmlAttributes = new { @class = "form-control ", placeholder = "$0.00", id = "Pricing " } })
+                                                @Html.ValidationMessageFor(model => model.CustomerClassification.GroupName, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@*AddProvider*@
+<div id="addprovider" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Provider </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">Add Name </label>
+                        <input class="form-control" type="text" placeholder="Name" id="providername" />
+                        <label class="text-danger db" style="display:none" id="msgprovidername">Enter Provider Name</label>
+                    </div>
+                    <button type="button" onclick="addproviderdata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*CustomerType*@
+<div id="addcustomertype" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add TypeName </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">Add TypeName </label>
+                        <input class="form-control" type="text" placeholder="Customer Type " id="customertype" />
+                        <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Customer TypeName </label>
+                    </div>
+                    <button type="button" onclick="addcustomertypedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@*Add Customer Satet*@
+<div id="addcustomerstate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Customer State   </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">StateName </label>
+                        <input class="form-control" type="text" placeholder="StateName" id="StateName" />
+                        <label class="text-danger db" style="display:none" id="msgStateName">Enter State Name</label>
+                    </div>
+                    <button type="button" onclick="addcustomerstatedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*Add Driving License State*@
+<div id="adddrivinglicensestate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Driving License State   </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">Name </label>
+                        <input class="form-control" type="text" placeholder="Name" id="driverlicensestatename" />
+                        <label class="text-danger db" style="display:none" id="msgDrivingStateName">Enter  Driving State Name</label>
+                    </div>
+                    <button type="button" onclick="adddriverlicensestatedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*AddBarCode*@
+<div id="addbarcode" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Barcode </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">Add Barcode </label>
+                        <input class="form-control" type="text" placeholder="Barcode" id="barcodenumber" />
+                        <label class="text-danger db" style="display:none" id="msggroupname">Enter Barcode </label>
+                    </div>
+                    <button type="button" onclick="" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*AddSalesman*@
+<div id="addsalesman" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Sales Man </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="salesmanname"> Name </label>
+                        <input class="form-control" type="text" placeholder="SalesMan Name" id="salesmanname" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanname">Enter Sales Man Name</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmanaddress"> Address </label>
+                        <input class="form-control" type="text" placeholder="SalesMan Address" id="salesmanaddress" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanaddress">Enter Sales Man Address </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmancity"> City </label>
+                        <input class="form-control" type="text" placeholder="SalesMan City" id="salesmancity" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanCity">Enter Sales Man City</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmanstate">State </label>
+                        <input class="form-control" type="text" placeholder="SalesManState" id="salesmanstate" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanState">Enter Sales Man State </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmanPhone">Phone </label>
+                        <input class="form-control" type="number" placeholder="SalesMan Phone" id="salesmanPhone" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanPhone">Enter Sales Man Phone</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmanmobile"> Mobile </label>
+                        <input class="form-control" type="text" placeholder="SalesMan Mobile" id="salesmanmobile" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanMobile">Enter Sales Man Mobile </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="groupname"> Email </label>
+                        <input class="form-control" type="text" placeholder="SalesMan Email" id="salesmanemail" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanEmail">Enter Sales Man Email </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesmancountry"> Country </label>
+                        <input class="form-control" type="text" placeholder="SalesMan Country" id="salesmancountry" />
+                        <label class="text-danger db" style="display:none" id="msgsalesmanCountry">Enter Sales Man Country </label>
+                    </div>
+
+                    <button type="button" onclick="addsalesmandata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*AddShippedVia*@
+<div id="addshippedvia" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Shipped Via </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="ShippedType">Type </label>
+                        <input class="form-control" type="text" placeholder="Shipped Type " id="ShippedType" />
+                        <label class="text-danger db" style="display:none" id="msgshippedvia">Enter Shipped Type </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="Shippeddate">CreateDate </label>
+                        <input class="form-control" type="date" placeholder="Shipped Date " id="Shippeddate" />
+                        <label class="text-danger db" style="display:none" id="msgshippedvia">Enter Shipped CreateDate </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="ShipNumber">ShipNumber </label>
+                        <input class="form-control" type="text" placeholder="ShipNumber " id="ShipNumber" />
+                        <label class="text-danger db" style="display:none" id="msgshippedvia">Enter ShipNumber </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="Reference">Reference </label>
+                        <input class="form-control" type="text" placeholder="Reference " id="Reference" />
+                        <label class="text-danger db" style="display:none" id="msgshippedvia">Enter ShipReference </label>
+                    </div>
+                    <button type="button" onclick="addshipmentpurchasedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*AddRouteName*@
+<div id="addroutename" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Route Name </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="routename">RouteName </label>
+                        <input class="form-control" type="text" placeholder="Route Name" id="routename" />
+                        <label class="text-danger db" style="display:none" id="msgroutename">Enter Route Name</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeCreateDate">CreateDate </label>
+                        <input class="form-control" type="date" placeholder="CreateDate" id="routeCreateDate" />
+                        <label class="text-danger db" style="display:none" id="msgroutecreatedate">Enter Route CreateDate</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="InitialLocation">InitialLocation</label>
+                        <input class="form-control" type="text" placeholder="InitialLocation" id="InitialLocation" />
+                        <label class="text-danger db" style="display:none" id="msgrouteinitilalocation">Enter InitialLocation</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="DesignationLocation">DesignationLocation </label>
+                        <input class="form-control" type="text" placeholder="DesignationLocation" id="DesignationLocation" />
+                        <label class="text-danger db" style="display:none" id="msgroutedesignationlocation">Enter Route DesignationLocation</label>
+                    </div>
+                    <button type="button" onclick="addroutedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*AddDriverName*@
+<div id="adddrivername" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Driver Name </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="drivername">Name </label>
+                        <input class="form-control" type="text" placeholder="Driver Name" id="drivername" />
+                        <label class="text-danger db" style="display:none" id="msggroupname">Enter Driver Name</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverEmail">Email  </label>
+                        <input class="form-control" type="text" placeholder="Driver Email " id="driverEmail " />
+                        <label class="text-danger db" style="display:none" id="msgEmail ">Enter Driver Email </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverMobile">Mobile </label>
+                        <input class="form-control" type="number" placeholder="Driver Mobile" id="driverMobile" />
+                        <label class="text-danger db" style="display:none" id="msgMobile">Enter Driver Mobile</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverPhone">Phone </label>
+                        <input class="form-control" type="number" placeholder="Driver Phone" id="driverPhone" />
+                        <label class="text-danger db" style="display:none" id="msgPhone">Enter Driver Phone</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverCity">City  </label>
+                        <input class="form-control" type="text" placeholder="Driver City " id="driverCity " />
+                        <label class="text-danger db" style="display:none" id="msgcityname">Enter Driver City </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverCountry">Country </label>
+                        <input class="form-control" type="text" placeholder="Driver Country" id="driverCountry" />
+                        <label class="text-danger db" style="display:none" id="msgcountryname">Enter Driver Country</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverDrivingLicenseNumber">DrivingLicenseNumber </label>
+                        <input class="form-control" type="text" placeholder="Driver DrivingLicenseNumber" id="driverDrivingLicenseNumber" />
+                        <label class="text-danger db" style="display:none" id="msggDrivingLicenseNumber">Enter Driver DrivingLicenseNumber</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="driverRegisteredOn">RegisteredOn </label>
+                        <input class="form-control" type="text" placeholder="Driver RegisteredOn" id="driverRegisteredOn" />
+                        <label class="text-danger db" style="display:none" id="msggroupname">Enter Driver RegisteredOn</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverVehicleNumber">VehicleNumber </label>
+                        <input class="form-control" type="text" placeholder="Driver VehicleNumber" id="driverVehicleNumber" />
+                        <label class="text-danger db" style="display:none" id="msgVehicleNumber">Enter Driver VehicleNumber</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverAddress">Address</label>
+                        <input class="form-control" type="text" placeholder="Driver Address" id="driverAddress" />
+                        <label class="text-danger db" style="display:none" id="msgDriverAddresse">Enter Driver Address</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="driverAddress1">Address1 </label>
+                        <input class="form-control" type="text" placeholder="Driver Address1 " id="driverAddress1 " />
+                        <label class="text-danger db" style="display:none" id="msgDriverAddresse">Enter DriverAddress1 </label>
+                    </div>
+                    <button type="button" onclick="adddriverdata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*AddGroup*@
+<div id="addgroup" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Group </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">Add Name</label>
+                        <input class="form-control" type="text" placeholder="Name" id="groupname" />
+                        <label class="text-danger db" style="display:none" id="msggroupname">Enter Group Name</label>
+                    </div>
+                    <button type="button" onclick="addgroupdata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*AddSubGroup*@
+<div id="addsubgroup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Sub Group </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">  SubGroupName </label>
+                        <input class="form-control" type="text" placeholder=" Sub Group Name" id="subgroupname" />
+                        <label class="text-danger db" style="display:none" id="msgsubgroupname">Enter Sub Group Name</label>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-10 col-sm-10">
+                                <label for="parentgroupname">  ParentGroupName </label>
+                                <select class="form-control" id="parentgroupname">
+                                    <option value="Select">Select</option>
+                                </select>
+                                <label class="text-danger db" style="display:none" id="msgparentGroupNamename">EnterParentGroupName</label>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 py-4">
+                                <i class="mdi mdi-plus text-primary" onclick="subgroupmodalclose()"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="button" onclick="addsubgroupdata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*AddZone*@
+<div id="addzone" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add zone </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="zonename">Name </label>
+                        <input class="form-control" type="text" placeholder="Zone Name" id="zonename" />
+                        <label class="text-danger db" style="display:none" id="msgzonename">Enter Zone Name</label>
+                    </div>
+                    <button type="button" onclick="addzonedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*AddBusinessType*@
+<div id="addbusinesstype" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Business Type  </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="groupname">TypeName </label>
+                        <input class="form-control" type="text" placeholder="BusinessType" id="businesstype" />
+                        <label class="text-danger db" style="display:none" id="msgbusinesstype">Enter Business Type Name</label>
+                    </div>
+                    <button type="button" onclick="addbusinesstypedata()" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#deleteicon").hide();
+        $("#createicon").hide();
+        $("#attachmentsicon").hide();
+        $("#editicon").hide();
+        $("#printicon").hide();
+        $("#companyvalidation").text("").hide();
+        $("#fnamevalidation").text("").hide();
+        $("#lastvalidation").text("").hide();
+        $("#emailvalidation").text("").hide();
+        $("#ssnvalidation").text("").hide();
+        $.ajax({
+                url: '@Url.Action("ShowGroup", "Customer")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        debugger
+                        $('#parentgroupname').html('');
+                        var options = '';
+                        options += ' <option value="Select">Select</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].value + '">' + data[i].text + '</option>';
+                        }
+                        $('#parentgroupname').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+        });
+        AppendAllMissions(event);
+        });
+
+
+
+    function AppendAllMissions(event) {
+        $.ajax({
+            type: "GET",
+            url: "/Customer/AutoCompleteSearchCustomer",
+            async: false,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                var inner = '';
+                var opts = jQuery.parseJSON(JSON.stringify(data));
+                if (opts.length > 0) {
+                    //$("#matchedCharityTemplate").show();
+                }
+                //$('#ddlAllMission').empty();
+                console.log(opts);
+                $.each(opts, function (i, d) {
+                    console.log(i);
+                    inner = '';
+                    inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCustomerByID(' + d.id + ')";>';
+                   // if (i == 0) {
+                        inner += '<div class="searchheader">Company Name</div></br>';
+                   // }
+                    inner += '<div class="item_name di w-50" data-rel="' + d.id + '">' + d.company + '</div></br>';
+                    inner += '</div>';
+                    // $("#listallmissions").modal('show');
+                    $("#listallmissions").append(inner);
+
+
+                });
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+    };
+
+    function GetAllMatchedItems(event) {
+
+        var naming = $(".searchname").val();
+        if (naming == "") {
+            $(".item_name").parent().hide();
+        }
+        else {
+            var text = naming;
+            var items = $(".item_name");
+            //first, hide all:
+            items.parent().hide();
+
+            //show only those matching user input:
+            items.filter(function () {
+                return $(this).text().toLowerCase().indexOf(text) == 0;
+            }).parent().show();
+        }
+
+    };
+
+
+    function GetCustomerByID(id) {
+        $.ajax({
+           type: "GET",
+            url: '@Url.Action("GetCustomerByID", "Customer")',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data != null) {
+
+
+                    var iconhtml = '';
+                    iconhtml += '<img class="hide-icon" src="~/images/attach.png" style="width:50px" title="Attachments" />';
+                    iconhtml += '<img class="hide-icon" src="~/images/delete.png" style="width:50px" title="Delete" onclick="DeleteCustomer()" />';
+                    iconhtml += '<img class="hide-icon saveexisting" src="~/images/edit.png" style="width:50px" title="Edit" onclick="UpdateExistingCustomer()" />';
+                    iconhtml += '<img class="hide-icon" src="~/images/printer.png" style="width:50px" title="Print" />';
+                    $("#defaultlisticons").append(iconhtml);
+
+                    var itennumberhtml = '';
+                    itennumberhtml += '<h3>';
+                    itennumberhtml += '<label id="itemlabel">Customer Number:</label><span id="customernumberfound" class="itemnumberbox di"></span></br>';
+                    itennumberhtml += '<label id="qtylabel" class="mg-t-2">Prev. Balance:</label><span id="prebalance" class="itemnumberbox di ml-2"></span></br>';
+                    itennumberhtml += ' </h3>';
+                    $("#existingitemnumber").append(itennumberhtml);
+
+
+
+                    $("#customerinformationid").val(data.id)
+                    $("#customernumberfound").text(data.customerCode)
+                    //$("#txtcustomercode").html("CustomerNumber:" + data.customerCode);
+                    // $("#txtbalance").val(data.balance);
+                    $("#prebalance").text(data.balance);
+                    $("#companyname").val(data.company);
+                    if (data.gender != null) {
+                        var Gender = new Option(data.gender, data.gender);
+                        Gender.selected = true;
+                        $("#txtgender").append(Gender);
+                    }
+                    $("#txtFirstName").val(data.firstName);
+                    $("#txtLastName").val(data.lastName);
+                    $("#StretNumber").val(data.street);
+                    $("#txtcity").val(data.city);
+                    if (data.state != null && data.stateId != null) {
+                        var customerstate = new Option(data.state, data.stateId);
+                        customerstate.selected = true;
+                        $("#state").append(customerstate);
+                    }
+                    $("#txtzipcode").val(data.zip);
+                    $("#Country").val(data.country);
+                    if (data.checkAddress) {
+                        $("#CheckAdress").prop("checked", true)
+                    }
+                    else {
+                        $("#CheckAdress").prop("unchecked", false)
+                    }
+                    $("#phonenumber").val(data.phone);
+                    $("#txtfax").val(data.fax);
+                    $("#txtcell").val(data.cell);
+                    if (data.provider != null && data.providerId != null) {
+                        var Provider = new Option(data.provider, data.providerId);
+                        Provider.selected = true;
+                        $("#ProviderID").append(Provider);
+                    }
+                    if (data.customerType != null && data.customerTypeId != null) {
+                        var Customertype = new Option(data.customerType, data.customerTypeId);
+                        Customertype.selected = true;
+                        $("#customertype").append(Customertype);
+                    }
+                    $("#other").val(data.other);
+                    $("#txtowneraddress").val(data.ownerAddress);
+                    $("#txtvehiclenumber").val(data.vehicleNumber);
+                    $("#email").val(data.email);
+                    $("#Website").val(data.website);
+                    $("#txtdob").val(data.dob);
+                    $("#Taxidfein").val(data.taxIdfein);
+                    $("#Stateidnumber").val(data.stateIdnumber);
+                    $("#Ssn").val(data.ssn);
+                    $("#TobaccoLiscenese").val(data.tobaccoLicenseNumber);
+                    $("#vendor").val(data.vendor);
+                    $("#txtdrivingnumber").val(data.drivingLicenseNumber);
+                    if (data.drivingLicenseState != null && data.drivingLicenseStateId != null) {
+                        var DrivingLicenseState = new Option(data.drivingLicenseState, data.drivingLicenseStateId);
+                        DrivingLicenseState.selected = true;
+                        $("#txtdrivinglicensestate").append(DrivingLicenseState);
+                    }
+                    $("#txtcigarettelicensenumber").val(data.cigaretteLicenseNumber);
+                    $("#dea").val(data.dea);
+                    if (data.authorized) {
+                        $("#Authorized").prop("checked", true)
+                    }
+                    else {
+                        $("#Authorized").prop("unchecked", false)
+                    }
+                    $("#memo").val(data.memo);
+                    if (data.customerClassification != null) {
+                        if (data.customerClassification.groupName != null && data.customerClassification.groupId != null) {
+                            var Group = new Option(data.customerClassification.groupName, data.customerClassification.groupId);
+                            Group.selected = true;
+                            $("#Group").append(Group);
+                        }
+                        if (data.customerClassification.subGroupName != null && data.customerClassification.subGroupId != null) {
+                            var SubGroup = new Option(data.customerClassification.subGroupName, data.customerClassification.subGroupId);
+                            SubGroup.selected = true;
+                            $("#SubGroup").append(SubGroup);
+                        }
+                        if (data.customerClassification.zone != null && data.customerClassification.zoneId != null) {
+                            var zone = new Option(data.customerClassification.zone, data.customerClassification.zoneId);
+                            zone.selected = true;
+                            $("#Zone").append(zone);
+                        }
+                        if (data.customerClassification.businessType != null && data.customerClassification.businessTypeId != null) {
+                            var businessType = new Option(data.customerClassification.businessType, data.customerClassification.businessTypeId);
+                            businessType.selected = true;
+                            $("#BusinessType").append(businessType);
+                        }
+                        if (data.customerClassification.salesman != null && data.customerClassification.salesmanId != null) {
+                            var salesman = new Option(data.customerClassification.salesman, data.customerClassification.salesmanId);
+                            salesman.selected = true;
+                            $("#SalesMan").append(salesman);
+                        }
+                        if (data.customerClassification.shippedVia != null && data.customerClassification.shippedViaId != null) {
+                            var shippedVia = new Option(data.customerClassification.shippedVia, data.customerClassification.shippedViaId);
+                            shippedVia.selected = true;
+                            $("#ShippedVia").append(shippedVia);
+                        }
+                        if (data.customerClassification.routeName != null && data.customerClassification.routeId != null) {
+                            var routeName = new Option(data.customerClassification.routeName, data.customerClassification.routeId);
+                            routeName.selected = true;
+                            $("#Route").append(routeName);
+                        }
+                        if (data.customerClassification.routeDeliveryDay != null) {
+                            var routeDeliveryDay = new Option(data.customerClassification.routeDeliveryDay, data.customerClassification.routeDeliveryDay);
+                            routeDeliveryDay.selected = true;
+                            $("#routedeliveryday").append(routeDeliveryDay);
+                        }
+                        if (data.customerClassification.driverName != null && data.customerClassification.driverId != null) {
+                            var driverName = new Option(data.customerClassification.driverName, data.customerClassification.driverId);
+                            driverName.selected = true;
+                            $("#Driver").append(driverName);
+                        }
+                        if (data.customerClassification.outOfStateCustomer) {
+                            $("#txtOutOfstateCustomer").prop("checked", true)
+                        }
+                        else {
+                            $("#txtOutOfstateCustomer").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.addtoMaillingList) {
+                            $("#txtAddToMailingList").prop("checked", true)
+                        }
+                        else {
+                            $("#txtAddToMailingList").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.addtoemailTextList) {
+                            $("#txtaddtoemailtextlist").prop("checked", true)
+                        }
+                        else {
+                            $("#txtaddtoemailtextlist").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.rejectPromotion) {
+                            $("#txtrejectpromotion").prop("checked", true)
+                        }
+                        else {
+                            $("#txtrejectpromotion").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.viewInvoicePrevBalance) {
+                            $("#txtViewInvoicePrevBalance").prop("checked", true)
+                        }
+                        else {
+                            $("#txtViewInvoicePrevBalance").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.viewRetailandDiscount) {
+                            $("#txtViewRetailandDiscount").prop("checked", true)
+                        }
+                        else {
+                            $("#txtViewRetailandDiscount").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.barCode != null && data.customerClassification.barCodeId != null) {
+                            var barCode = new Option(data.customerClassification.barCode, data.customerClassification.barCodeId);
+                            barCode.selected = true;
+                            $("#txtbarcode").append(barCode);
+                        }
+                        $("#txtdefaultinvoicecopies").val(data.customerClassification.defaultInvoiceCopies);
+                        if (data.customerClassification.specialInvoiceCustom) {
+                            $("#txtSpecialInvoiceCustom").prop("checked", true)
+                        }
+                        else {
+                            $("#txtSpecialInvoiceCustom").prop("unchecked", false)
+                        }
+                        if (data.customerClassification.shiptoReference != null && data.customerClassification.shiptoReferenceId != null) {
+                            var shiptoReference = new Option(data.customerClassification.shiptoReference, data.customerClassification.shiptoReferenceId);
+                            shiptoReference.selected = true;
+                            $("#ShipToReference").append(shiptoReference);
+                        }
+                        if (data.customerClassification.useDefaultInvMemo) {
+                            $("#defaultinvmemo").prop("checked", true)
+                        }
+                        else {
+                            $("#defaultinvmemo").prop("unchecked", false)
+                        }
+                        $("#txtOtherReferenceNumber").val(data.customerClassification.invoiceMemo);
+                        $("#comapnyname").val(data.customerClassification.otherCustomerReference);
+                    }
+
+                    //$("#editicon").show();
+                    //$("#deleteicon").show();
+                    //$("#addicon").hide();
+
+                    $("#itemlabel").show();
+                    $("#qtylabel").show();
+                    $("#listallmissions").empty();
+                }
+            },
+            error: function () {
+
+            },
+        });
+    }
+
+    function closemodal() {
+        $("#adddrivername").modal('hide');
+        $("#addbarcode").modal('hide');
+        $("#addcustomertype").modal('hide');
+        $("#addroutedeliveryday").modal('hide');
+        $("#addroutename").modal('hide');
+        $("#addshippedvia").modal('hide');
+        $("#addsalesman").modal('hide');
+        $("#addgroup").modal('hide');
+        $("#addsubgroup").modal('hide');
+        $("#addzone").modal('hide');
+        $("#addbusinesstype").modal('hide');
+        $("#addprovider").modal('hide');
+        $("#addcustomerstate").modal('hide');
+        $("#adddrivinglicensestate").modal('hide');
+    }
+
+    function addproviderdata()
+    {
+        var ProviderName = $("#providername").val();
+        var providerdata = {};
+        providerdata = new FormData();
+        providerdata.append("Name", ProviderName);
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddProvider", "Customer")",
+            data: providerdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+    }
+    function addcustomerstatedata()
+    {
+        var CustomerStateName = $("#StateName").val();
+        var CustomerStatedata = {};
+        CustomerStatedata = new FormData();
+        CustomerStatedata.append("StateName", CustomerStateName);
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddCustomerState", "Customer")",
+            data: CustomerStatedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+    }
+    function addcustomertypedata()
+    {
+        var TypeName = $("#customertype").val();
+        var TypeNamedata = {};
+        TypeNamedata = new FormData();
+        TypeNamedata.append("TypeName", TypeName);
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddCustomerType", "Customer")",
+            data: TypeNamedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+    }
+    function adddriverlicensestatedata()
+    {
+        var Name = $("#driverlicensestatename").val();
+        var Driverlicensestatedata = {};
+        Driverlicensestatedata = new FormData();
+        Driverlicensestatedata.append("Name", Name);
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddDrivingLicenseState", "Customer")",
+            data: Driverlicensestatedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+    }
+function subgroupmodalclose() {
+        $("#addsubgroup").modal('hide');
+        $("#addgroup").modal('show');
+    }
+function addgroupdata()
+    {
+        var Name = $("#groupname").val();
+        var Groupdata = {};
+        Groupdata = new FormData();
+        Groupdata.append("Name", Name);
+        $.confirm({
+            title: 'Add New Group!',
+            content: 'Are you sure to Add New Group?',
+            buttons: {
+                confirm: function () {
+                    $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddGroup", "Customer")",
+            data: Groupdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addsubgroupdata()
+    {
+        var SubGroupName = $("#subgroupname").val();
+        var GroupID = $("#parentgroupname").val();
+        debugger
+        var SubGroupdata = {};
+        SubGroupdata = new FormData();
+        SubGroupdata.append("SubGroupName", SubGroupName);
+        SubGroupdata.append("GroupID", GroupID);
+        $.confirm({
+            title: 'Add New SubGroup!',
+            content: 'Are you sure to Add New SubGroup?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddSubGroup", "Customer")",
+            data: SubGroupdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addzonedata()
+    {
+        var Name = $("#zonename").val();
+        var zonedata = {};
+        zonedata = new FormData();
+        zonedata.append("Name", Name);
+        $.confirm({
+            title: 'Add New Zone!',
+            content: 'Are you sure to Add New Zone?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddZone", "Customer")",
+                         data: zonedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addbusinesstypedata()
+    {
+        var TypeName = $("#businesstype").val();
+        var businesstypedata = {};
+        businesstypedata = new FormData();
+        businesstypedata.append("TypeName", TypeName);
+        $.confirm({
+            title: 'Add New Business Type!',
+            content: 'Are you sure to Add New Business Type?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddBusinessType", "Customer")",
+                         data: businesstypedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addsalesmandata()
+    {
+        var Name = $("#salesmanname").val();
+        var Address = $("#salesmanaddress").val();
+        var City = $("#salesmancity").val();
+        var State = $("#salesmanstate").val();
+        var Phone = $("#salesmanPhone").val();
+        var Mobile = $("#salesmanmobile").val();
+        var Email = $("#salesmanemail").val();
+        var Country = $("#salesmancountry").val();
+        var salesmandata = {};
+        salesmandata = new FormData();
+        salesmandata.append("Name", Name);
+        salesmandata.append("Address", Address );
+        salesmandata.append("City", City);
+        salesmandata.append("State", State);
+        salesmandata.append("Phone", Phone);
+        salesmandata.append("Mobile", Mobile);
+        salesmandata.append("Email", Email);
+        salesmandata.append("Country", Country);
+        $.confirm({
+            title: 'Add New SalesMan!',
+            content: 'Are you sure to Add New SalesMan?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddSalesman", "Customer")",
+                         data: salesmandata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addshipmentpurchasedata()
+    {
+        var Type = $("#ShippedType").val();
+        var CreateDate = $("#Shippeddate").val();
+        var ShipNumber = $("#ShipNumber").val();
+        var Reference = $("#Reference").val();
+        var shipmentpurchasedata = {};
+        shipmentpurchasedata = new FormData();
+        shipmentpurchasedata.append("Type", Type);
+        shipmentpurchasedata.append("CreateDate", CreateDate );
+        shipmentpurchasedata.append("ShipNumber", ShipNumber);
+        shipmentpurchasedata.append("Reference", Reference);
+
+        $.confirm({
+            title: 'Add New Shipped Via!',
+            content: 'Are you sure to Add New Shipped Via?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddShipmentPurchase", "Customer")",
+                         data: shipmentpurchasedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function addroutedata()
+    {
+        var RouteName = $("#routename").val();
+        var CreateDate = $("#routeCreateDate").val();
+        var InitialLocation = $("#InitialLocation").val();
+        var DesignationLocation = $("#DesignationLocation").val();
+        var routedata = {};
+        routedata = new FormData();
+        routedata.append("RouteName", RouteName);
+        routedata.append("CreateDate", CreateDate );
+        routedata.append("InitialLocation", InitialLocation);
+        routedata.append("DesignationLocation", DesignationLocation);
+
+        $.confirm({
+            title: 'Add New Route!',
+            content: 'Are you sure to Add New Route?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddRoute", "Customer")",
+                         data: routedata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+    function adddriverdata()
+    {
+        var Name = $("#drivername").val();
+        var Email = $("#driverEmail").val();
+        var Mobile = $("#driverMobile").val();
+        var Phone = $("#driverPhone").val();
+        var City = $("#driverCity").val();
+        var Country = $("#driverCountry").val();
+        var DrivingLicenseNumber = $("#driverDrivingLicenseNumber").val();
+        var RegisteredOn = $("#driverRegisteredOn").val();
+        var VehicleNumber = $("#driverVehicleNumber").val();
+        var Address = $("#driverAddress").val();
+        var Address1 = $("#driverAddress1").val();
+        var driverdata = {};
+        driverdata = new FormData();
+        driverdata.append("Name", Name);
+        driverdata.append("Email", Email );
+        driverdata.append("Mobile", Mobile);
+        driverdata.append("Phone", Phone);
+        driverdata.append("City", City);
+        driverdata.append("Country", Country);
+        driverdata.append("DrivingLicenseNumber", DrivingLicenseNumber);
+        driverdata.append("RegisteredOn", RegisteredOn);
+        driverdata.append("VehicleNumber", VehicleNumber);
+        driverdata.append("Address", Address);
+        driverdata.append("Address1", Address1);
+
+        $.confirm({
+            title: 'Add New Route!',
+            content: 'Are you sure to Add New Route?',
+            buttons: {
+                confrim: function () {
+                     $.ajax({
+            type: "POST",
+            url: "@Url.Action("AddDriver", "Customer")",
+                         data: driverdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    closemodal();
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+        });
+                },
+                cancel: function () {}
+            }
+        });
+
+    }
+
+
+    function UpdateExistingCustomer() {
+        var id = $("#customerinformationid").val();
+        var customercode=$("#txtcustomercode").val();
+        var balance=$("#txtbalance").val();
+        var company = $("#companyname").val();
+        var gender = $("#txtgender").val();
+        var firstname=$("#txtFirstName").val();
+        var lastname=$("#txtLastName").val();
+        var streetnumber=$("#StretNumber").val();
+        var city=$("#txtcity").val();
+        var customerstateid = $("#state").val();
+        var zipcode=$("#txtzipcode").val();
+        var country = $("#Country").val();
+        var checkAddress;
+        if ($("#CheckAdress").prop('checked') == true) {
+             checkAddress = true;
+        }
+        else {
+             checkAddress = false;
+        }
+        var phone=$("#phonenumber").val();
+        var fax=$("#txtfax").val();
+        var cell = $("#txtcell").val();
+        var providerid=$("#ProviderID").val();
+        var customertypeid = $("#customertype").val();
+        var other=$("#other").val();
+        var owneraddress=$("#txtowneraddress").val();
+        var vehicleNumber=$("#txtvehiclenumber").val();
+        var email=$("#email").val();
+        var website=$("#Website").val();
+        var dob=$("#txtdob").val();
+        var taxIdfein=$("#Taxidfein").val();
+        var stateIdnumber=$("#Stateidnumber").val();
+        var ssn=$("#Ssn").val();
+        var tobaccoLicenseNumber=$("#TobaccoLiscenese").val();
+        var vendor=$("#vendor").val();
+        var drivingLicenseNumber=$("#txtdrivingnumber").val();
+        var drivingLicenseStateId = $("#txtdrivinglicensestate").val();
+        var cigaretteLicenseNumber=$("#txtcigarettelicensenumber").val();
+        var dea = $("#dea").val();
+        var authorized;
+        if ($("#CheckAdress").prop('checked') == true) {
+            authorized = true;
+        }
+        else {
+            authorized = false;
+        }
+        var memo=$("#memo").val();
+        var groupId = $("#Group").val();
+        var subGroupId = $("#SubGroup").val();
+        var zoneId = $("#Zone").val();
+        var businessTypeId = $("#BusinessType").val();
+        var salesmanId = $("#SalesMan").val();
+        var shippedViaId = $("#ShippedVia").val();
+        var routeId = $("#Route").val();
+        var routeDeliveryDay = $("#routedeliveryday").val();
+        var driverId = $("#Driver").val();
+        var outOfStateCustomer;
+        if ($("#txtOutOfstateCustomer").prop('checked') == true) {
+            outOfStateCustomer = true;
+        }
+        else {
+            outOfStateCustomer = false;
+        }
+        var addtoMaillingList;
+        if ($("#txtAddToMailingList").prop('checked') == true) {
+            addtoMaillingList = true;
+        }
+        else {
+            addtoMaillingList = false;
+        }
+        var addtoemailTextList;
+        if ($("#txtaddtoemailtextlist").prop('checked') == true) {
+            addtoemailTextList = true;
+        }
+        else {
+            addtoemailTextList = false;
+        }
+        var rejectPromotion;
+        if ($("#txtrejectpromotion").prop('checked') == true) {
+            rejectPromotion = true;
+        }
+        else {
+            rejectPromotion = false;
+        }
+        var viewInvoicePrevBalance;
+        if ($("#txtViewInvoicePrevBalance").prop('checked') == true) {
+            viewInvoicePrevBalance = true;
+        }
+        else {
+            viewInvoicePrevBalance = false;
+        }
+        var viewRetailandDiscount;
+        if ($("#txtViewRetailandDiscount").prop('checked') == true) {
+            viewRetailandDiscount = true;
+        }
+        else {
+            viewRetailandDiscount = false;
+        }
+        var barcodeid = $("#txtbarcode").val();
+        var defaultInvoiceCopies = $("#txtdefaultinvoicecopies").val();
+        var specialInvoiceCustom;
+        if ($("#txtSpecialInvoiceCustom").prop('checked') == true) {
+            specialInvoiceCustom = true;
+        }
+        else {
+            specialInvoiceCustom = false;
+        }
+        var shiptoReferenceId = $("#ShipToReference").val();
+        var useDefaultInvMemo;
+        if ($("#defaultinvmemo").prop('checked') == true) {
+            useDefaultInvMemo = true;
+        }
+        else {
+            useDefaultInvMemo = false;
+        }
+        var alldata = {};
+        alldata = new FormData();
+        alldata.append("Id", id);
+        alldata.append("CustomerCode", customercode);
+        alldata.append("Balance", balance);
+        alldata.append("Company", company);
+        alldata.append("Gender", gender);
+        alldata.append("FirstName", firstname);
+        alldata.append("LastName", lastname);
+        alldata.append("Street", streetnumber);
+        alldata.append("City", city);
+        alldata.append("StateId", customerstateid);
+        alldata.append("Zip", zipcode);
+        alldata.append("Country", country);
+        alldata.append("CheckAddress", checkAddress);
+        alldata.append("Phone", phone);
+        alldata.append("Fax", fax);
+        alldata.append("Cell ", cell);
+        alldata.append("ProviderId", providerid);
+        alldata.append("CustomerTypeId", customertypeid);
+        alldata.append("Other", other);
+        alldata.append("OwnerAddress", owneraddress);
+        alldata.append("VehicleNumber", vehicleNumber);
+        alldata.append("Email", email);
+        alldata.append("Website", website);
+        alldata.append("Dob", dob);
+        alldata.append("TaxIdfein", taxIdfein);
+        alldata.append("StateIdnumber", stateIdnumber);
+        alldata.append("Ssn", ssn);
+        alldata.append("TobaccoLicenseNumber", tobaccoLicenseNumber);
+        alldata.append("Vendor", vendor);
+        alldata.append("DrivingLicenseNumber", drivingLicenseNumber);
+        alldata.append("DrivingLicenseStateId", drivingLicenseStateId);
+        alldata.append("CigaretteLicenseNumber", cigaretteLicenseNumber);
+        alldata.append("Dea", dea);
+        alldata.append("Authorized", authorized);
+        alldata.append("Memo", memo);
+        alldata.append("CustomerClassification.GroupId", groupId);
+        alldata.append("CustomerClassification.SubGroupId", subGroupId);
+        alldata.append("CustomerClassification.ZoneId", zoneId);
+        alldata.append("CustomerClassification.BusinessTypeId", businessTypeId);
+        alldata.append("CustomerClassificationSalesmanId", salesmanId);
+        alldata.append("CustomerClassification.ShippedViaId", shippedViaId);
+        alldata.append("CustomerClassification.RouteId", routeId);
+        alldata.append("CustomerClassification.RouteDeliveryDay", routeDeliveryDay);
+        alldata.append("CustomerClassification.DriverId", driverId);
+        alldata.append("CustomerClassification.OutOfStateCustomer", outOfStateCustomer);
+        alldata.append("CustomerClassification.AddtoMaillingList", addtoMaillingList);
+        alldata.append("CustomerClassification.AddtoemailTextList", addtoemailTextList);
+        alldata.append("CustomerClassification.RejectPromotion", rejectPromotion);
+        alldata.append("CustomerClassification.ViewInvoicePrevBalance", viewInvoicePrevBalance);
+        alldata.append("CustomerClassification.ViewRetailandDiscount", viewRetailandDiscount);
+        alldata.append("CustomerClassification.BarCodeId", barcodeid);
+        alldata.append("CustomerClassification.DefaultInvoiceCopies", defaultInvoiceCopies);
+        alldata.append("CustomerClassification.SpecialInvoiceCustom", specialInvoiceCustom);
+        alldata.append("CustomerClassification.ShiptoReferenceId", shiptoReferenceId);
+        alldata.append("CustomerClassification.UseDefaultInvMemo", useDefaultInvMemo);
+        alldata.append("CustomerClassification.CustomerInfoId", id);
+        alldata.append("CustomerClassification.CustomerCode", customercode);
+
+
+
+                     $.confirm({
+                title: 'Update Existing Customer!',
+                content: 'Are you sure to update existing customer?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                type: "POST",
+            url: "@Url.Action("EditCustomerInformation", "Customer")",
+            data: alldata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data == "true") {
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            },
+            error: function () {
+
+            },
+            });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+
+    }
+    $("#searchbutton").on('click', function () {
+        $("#searchcompany").val();
+
+        var companyname = $("#searchcompany").val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("SearchDataByCompanyName", "Customer")",
+            data: {
+                name: companyname
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+
+
+                    var iconhtml = '';
+                    iconhtml += '<img class="hide-icon" src="~/images/attach.png" style="width:50px" title="Attachments" />';
+                    iconhtml += '<img class="hide-icon" src="~/images/delete.png" style="width:50px" title="Delete" onclick="DeleteCustomer()" />';
+                    iconhtml += '<img class="hide-icon saveexisting" src="~/images/edit.png" style="width:50px" title="Edit" onclick="UpdateExistingItems()" />';
+                    iconhtml += '<img class="hide-icon" src="~/images/printer.png" style="width:50px" title="Print" />';
+                    $("#defaultlisticons").append(iconhtml);
+
+                    var itennumberhtml = '';
+                    itennumberhtml += '<h3>';
+                    itennumberhtml += '<label id="itemlabel">Customer Number:</label><span id="customernumberfound" class="itemnumberbox di"></span></br>';
+                    itennumberhtml += '<label id="qtylabel" class="mg-t-2">Prev. Balance:</label><span id="prebalance" class="itemnumberbox di ml-2"></span></br>';
+                    itennumberhtml += ' </h3>';
+                    $("#existingitemnumber").append(itennumberhtml);
+
+
+
+                    $("#customerinformationid").val(data.id)
+                    $("#customernumberfound").val(data.customerCode)
+                    //$("#txtcustomercode").html("CustomerNumber:" + data.customerCode);
+                   // $("#txtbalance").val(data.balance);
+                   $("#prebalance").val(data.balance);
+                    $("#companyname").val(data.company);
+                    if (data.gender != null) {
+                        var Gender = new Option(data.gender, data.gender);
+                        Gender.selected = true;
+                        $("#txtgender").append(Gender);
+                    }
+                    $("#txtFirstName").val(data.firstName);
+                    $("#txtLastName").val(data.lastName);
+                    $("#StretNumber").val(data.street);
+                    $("#txtcity").val(data.city);
+                    if (data.state != null && data.stateId != null) {
+                        var customerstate = new Option(data.state, data.stateId);
+                        customerstate.selected = true;
+                        $("#state").append(customerstate);
+                    }
+                    $("#txtzipcode").val(data.zip);
+                    $("#Country").val(data.country);
+                    if (data.checkAddress) {
+                        $("#CheckAdress").prop("checked", true)
+                    }
+                    else {
+                        $("#CheckAdress").prop("unchecked", false)
+                    }
+                    $("#phonenumber").val(data.phone);
+                    $("#txtfax").val(data.fax);
+                    $("#txtcell").val(data.cell);
+                    if (data.provider != null && data.providerId != null) {
+                        var Provider = new Option(data.provider, data.providerId);
+                        Provider.selected = true;
+                        $("#ProviderID").append(Provider);
+                    }
+                    if (data.customerType != null && data.customerTypeId != null) {
+                        var Customertype = new Option(data.customerType, data.customerTypeId);
+                        Customertype.selected = true;
+                        $("#customertype").append(Customertype);
+                    }
+                    $("#other").val(data.other);
+                    $("#txtowneraddress").val(data.ownerAddress);
+                    $("#txtvehiclenumber").val(data.vehicleNumber);
+                    $("#email").val(data.email);
+                    $("#Website").val(data.website);
+                    $("#txtdob").val(data.dob);
+                    $("#Taxidfein").val(data.taxIdfein);
+                    $("#Stateidnumber").val(data.stateIdnumber);
+                    $("#Ssn").val(data.ssn);
+                    $("#TobaccoLiscenese").val(data.tobaccoLicenseNumber);
+                    $("#vendor").val(data.vendor);
+                    $("#txtdrivingnumber").val(data.drivingLicenseNumber);
+                    if (data.drivingLicenseState != null && data.drivingLicenseStateId != null) {
+                        var DrivingLicenseState = new Option(data.drivingLicenseState, data.drivingLicenseStateId);
+                        DrivingLicenseState.selected = true;
+                        $("#txtdrivinglicensestate").append(DrivingLicenseState);
+                    }
+                    $("#txtcigarettelicensenumber").val(data.cigaretteLicenseNumber);
+                    $("#dea").val(data.dea);
+                    if (data.authorized) {
+                        $("#Authorized").prop("checked", true)
+                    }
+                    else {
+                        $("#Authorized").prop("unchecked", false)
+                    }
+                    $("#memo").val(data.memo);
+                    if (data.customerClassification.groupName != null && data.customerClassification.groupId != null) {
+                        var Group = new Option(data.customerClassification.groupName, data.customerClassification.groupId);
+                        Group.selected = true;
+                        $("#Group").append(Group);
+                    }
+                    if (data.customerClassification.subGroupName != null && data.customerClassification.subGroupId != null) {
+                        var SubGroup = new Option(data.customerClassification.subGroupName, data.customerClassification.subGroupId);
+                        SubGroup.selected = true;
+                        $("#SubGroup").append(SubGroup);
+                    }
+                    if (data.customerClassification.zone != null && data.customerClassification.zoneId != null) {
+                        var zone = new Option(data.customerClassification.zone, data.customerClassification.zoneId);
+                        zone.selected = true;
+                        $("#Zone").append(zone);
+                    }
+                    if (data.customerClassification.businessType != null && data.customerClassification.businessTypeId != null) {
+                        var businessType = new Option(data.customerClassification.businessType, data.customerClassification.businessTypeId);
+                        businessType.selected = true;
+                        $("#BusinessType").append(businessType);
+                    }
+                    if (data.customerClassification.salesman != null && data.customerClassification.salesmanId != null) {
+                        var salesman = new Option(data.customerClassification.salesman, data.customerClassification.salesmanId);
+                        salesman.selected = true;
+                        $("#SalesMan").append(salesman);
+                    }
+                    if (data.customerClassification.shippedVia != null && data.customerClassification.shippedViaId != null) {
+                        var shippedVia = new Option(data.customerClassification.shippedVia, data.customerClassification.shippedViaId);
+                        shippedVia.selected = true;
+                        $("#ShippedVia").append(shippedVia);
+                    }
+                    if (data.customerClassification.routeName != null && data.customerClassification.routeId != null) {
+                        var routeName = new Option(data.customerClassification.routeName, data.customerClassification.routeId);
+                        routeName.selected = true;
+                        $("#Route").append(routeName);
+                    }
+                    if (data.customerClassification.routeDeliveryDay != null) {
+                        var routeDeliveryDay = new Option(data.customerClassification.routeDeliveryDay, data.customerClassification.routeDeliveryDay);
+                        routeDeliveryDay.selected = true;
+                        $("#routedeliveryday").append(routeDeliveryDay);
+                    }
+                    if (data.customerClassification.driverName != null && data.customerClassification.driverId != null) {
+                        var driverName = new Option(data.customerClassification.driverName, data.customerClassification.driverId);
+                        driverName.selected = true;
+                        $("#Driver").append(driverName);
+                    }
+                    if (data.customerClassification.outOfStateCustomer) {
+                        $("#txtOutOfstateCustomer").prop("checked", true)
+                    }
+                    else {
+                        $("#txtOutOfstateCustomer").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.addtoMaillingList) {
+                        $("#txtAddToMailingList").prop("checked", true)
+                    }
+                    else {
+                        $("#txtAddToMailingList").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.addtoemailTextList) {
+                        $("#txtaddtoemailtextlist").prop("checked", true)
+                    }
+                    else {
+                        $("#txtaddtoemailtextlist").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.rejectPromotion) {
+                        $("#txtrejectpromotion").prop("checked", true)
+                    }
+                    else {
+                        $("#txtrejectpromotion").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.viewInvoicePrevBalance) {
+                        $("#txtViewInvoicePrevBalance").prop("checked", true)
+                    }
+                    else {
+                        $("#txtViewInvoicePrevBalance").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.viewRetailandDiscount) {
+                        $("#txtViewRetailandDiscount").prop("checked", true)
+                    }
+                    else {
+                        $("#txtViewRetailandDiscount").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.barCode != null && data.customerClassification.barCodeId!=null) {
+                        var barCode = new Option(data.customerClassification.barCode, data.customerClassification.barCodeId);
+                        barCode.selected = true;
+                        $("#txtbarcode").append(barCode);
+                    }
+                    $("#txtdefaultinvoicecopies").val(data.customerClassification.defaultInvoiceCopies);
+                    if (data.customerClassification.specialInvoiceCustom) {
+                        $("#txtSpecialInvoiceCustom").prop("checked", true)
+                    }
+                    else {
+                        $("#txtSpecialInvoiceCustom").prop("unchecked", false)
+                    }
+                    if (data.customerClassification.shiptoReference != null && data.customerClassification.shiptoReferenceId != null) {
+                        var shiptoReference = new Option(data.customerClassification.shiptoReference, data.customerClassification.shiptoReferenceId);
+                        shiptoReference.selected = true;
+                        $("#ShipToReference").append(shiptoReference);
+                    }
+                    if (data.customerClassification.useDefaultInvMemo) {
+                        $("#defaultinvmemo").prop("checked", true)
+                    }
+                    else {
+                        $("#defaultinvmemo").prop("unchecked", false)
+                    }
+                    $("#txtOtherReferenceNumber").val(data.customerClassification.invoiceMemo);
+                    $("#comapnyname").val(data.customerClassification.otherCustomerReference);
+                    $("#editicon").show();
+                    $("#deleteicon").show();
+                    $("#addicon").hide();
+                }
+            },
+            error: function () {
+
+            },
+        });
+    });
+    $("#editicon").on('click', function () {
+
+    });
+
+
+    $("#deleteicon").on('click', function () {
+
+    });
+
+    $("#infotab").on('click', function () {
+        $("#panelheading").text("Customers");
+    });
+    $("#classificationtab").on('click', function () {
+        $("#panelheading").text("Customer Classification");
+    });
+    $("#billinginfotab").on('click', function () {
+        $("#panelheading").text("Customer Billing Info");
+    });
+
+
+    function triggerAddCustomer() {
+
+
+        $("#ListappenedTabs").hide();
+        var iconsavehtml = '';
+        iconsavehtml += '<img class="hard-refresh" src="~/images/reload.png" style="width:50px" title="Reload" onclick="ReloadPage()"/>';
+        iconsavehtml += '<img class="saverecord" src="~/images/save.png" style="width:50px" title="Save" onclick="SaveCustomer()"/>';
+        $("#onsaveicon").append(iconsavehtml);
+
+        $("#onsaveicon").show();
+        $("#onlisticon").removeClass('di');
+        $("#onlisticon").hide();
+        $("#existingitemnumber").hide();
+
+        var newitemnumberhtml = '';
+        newitemnumberhtml += '<h3>';
+        newitemnumberhtml += '<label id="newitemlabel">Customer Number:</label>';
+        newitemnumberhtml += '<span id="newcustomercode" class="itemnumberbox di">'+ '@ViewBag.CustomerCode' +'</span></br >';
+        newitemnumberhtml += '</h3>';
+
+        $("#newitemnumber").append(newitemnumberhtml);
+        $("#addappendTabs").show();
+        $("#newitemnumber").show();
+        $("#newitems").show();
+        $("#exitingitems").hide();
+        $("#financial-main").hide();
+        $("#supplier-main").hide();
+        $("#purchase-main").hide();
+        $("#sale-main").hide();
+        $("#feature-main").hide();
+        $("#tool-main").hide();
+
+    };
+    function ReloadPage() {
+        location.reload();
+    };
+
+    function SaveCustomer() {
+
+        var IsValid = true;
+     var companyname = $("#companyname").val();
+     var gender =  $("#txtgender").val();
+      var firstname =  $("#txtFirstName").val();
+       var lastname = $("#txtLastName").val();
+       var street1number = $("#StretNumber").val();
+       var street2number = $("#streetNumber").val();
+       var city = $("#txtcity").val();
+       var state = $("#state").val();
+       var zipcode = $("#txtzipcode").val();
+       var country = $("#Country").val();
+       var ischeckedAddress = $("#CheckAdress").is(':checked');
+       var phonenumber = $("#phonenumber").val();
+       var providerid = $("#ProviderID").val();//
+        var customertype = $("#customertype").val();//
+       var other = $("#other").val();
+       var ownerAddress = $("#txtowneraddress").val();
+       var vehiclenumber = $("#txtvehiclenumber").val();
+       var email = $("#email").val();
+       var website = $("#Website").val();
+       var dob = $("#txtdob").val();
+       var taxidfein = $("#Taxidfein").val();
+       var stateidnumber = $("#Stateidnumber").val();
+       var ssn = $("#Ssn").val();
+       var tobaccolicense = $("#TobaccoLiscenese").val();
+       var vendor = $("#vendor").val();
+       var drivingnumber = $("#txtdrivingnumber").val();
+       var drivingLicenseState = $("#txtdrivinglicensestate").val();
+      var cigrateLicensenumber =  $("#txtcigarettelicensenumber").val();
+      var dae =  $("#dea").val();
+      var authorized =  $("#Authorized").is(':checked');
+       var memo = $("#memo").val();
+        var fax = $("#txtfax").val();
+        var cell = $("#txtcell").val();
+        var customerCode = $("#newcustomercode").text();
+        ///classification
+       var group = $("#Group").val();
+       var shiptoreference = $("#ShipToReference").val();
+       var subgroup = $("#SubGroup").val();
+       var zone = $("#Zone").val();
+       var bsuinesstype = $("#BusinessType").val();
+       var salesman = $("#SalesMan").val();
+       var shippedvia = $("#ShippedVia").val();
+       var route =  $("#Route").val();
+       var routedelivery =  $("#routedeliveryday").val();
+       var driver =  $("#Driver").val();
+       var Isoutofstatecustomer = $("#txtOutOfstateCustomer").is(':checked');
+       var Isaddtomailing =  $("#txtAddToMailingList").is(':checked');
+       var Isaddtoemailext =   $("#txtaddtoemailtextlist").is(':checked');
+       var IsRejectPromotion = $("#txtrejectpromotion").is(':checked');
+       var Isdefault = $("#defaultinvmemo").is(':checked');
+       var otherreference = $("#txtOtherReferenceNumber").val();
+       var invoicememo = $("#txtinvoicememo").val();
+       var IsviewinvoicepreBalance = $("#txtViewInvoicePrevBalance").is(':checked');
+       var Isviewretaildiscount = $("#txtViewRetailandDiscount").is(':checked');
+      var barcode =   $("#txtbarcode").val();
+       var defaultinvoicecopies =  $("#txtdefaultinvoicecopies").val();
+        var isspecialinvoicecustomer = $("#txtSpecialInvoiceCustom").is(':checked');
+
+        if (ssn == "" || ssn == "undefined") {
+            $("#ssnvalidation").text("Please Enter Item Name");
+            $("#ssnvalidation").show();
+            $("#Ssn").focus();
+            IsValid = false;
+        } else {
+            $("#ssnvalidation").text("").hide();
+        }
+        if (email == "" || email == "undefined") {
+            $("#emailvalidation").text("Please Enter Item Name");
+            $("#emailvalidation").show();
+            $("#email").focus();
+            IsValid = false;
+        } else {
+            $("#emailvalidation").text("").hide();
+        }
+        if (lastname == "" || lastname == "undefined") {
+            $("#lastvalidation").text("Please Enter Item Name");
+            $("#lastvalidation").show();
+            $("#txtLastName").focus();
+            IsValid = false;
+        } else {
+            $("#lastvalidation").text("").hide();
+        }
+        if (firstname == "" || firstname == "undefined") {
+            $("#fnamevalidation").text("Please Enter Item Name");
+            $("#fnamevalidation").show();
+            $("#txtFirstName").focus();
+            IsValid = false;
+        } else {
+            $("#fnamevalidation").text("").hide();
+        }
+        if (companyname == "" || companyname == "undefined") {
+            $("#companyvalidation").text("Please Enter Item Name");
+            $("#companyvalidation").show();
+            $("#companyname").focus();
+            IsValid = false;
+        } else {
+            $("#companyvalidation").text("").hide();
+        }
+
+
+
+
+
+
+        var data = {};
+        data = new FormData();
+        if (IsValid) {
+        data.append("Company", companyname);
+        data.append("FirstName", firstname);
+        data.append("LastName", lastname);
+        data.append("Street", street1number);
+        data.append("City", city);
+        data.append("State", state);
+        data.append("Zip", zipcode);
+        data.append("Country", country);
+        data.append("CheckAddress", ischeckedAddress);
+        data.append("Phone", phonenumber);
+        data.append("Fax",fax);
+        data.append("Cell",cell);
+        data.append("Vendor", vendor);
+        data.append("ProviderId", providerid);
+        //data.append("Provider",);
+        data.append("Other", other);
+        data.append("Email", email);
+        data.append("Website", website);
+        data.append("TaxIdfein", taxidfein);
+        data.append("StateIdnumber", stateidnumber);
+        data.append("TobaccoLicenseNumber", tobaccolicense);
+        data.append("CigaretteLicenseNumber", cigrateLicensenumber);
+        data.append("Dea", dae);
+        data.append("Memo", memo);
+        data.append("CustomerTypeId", customertype);
+        data.append("Dob", dob);
+        data.append("Ssn", ssn);
+        data.append("DrivingLicenseNumber", drivingnumber);
+        //data.append("DrivingLicenseStateId",);
+        data.append("DrivingLicenseState", drivingLicenseState);
+        data.append("OwnerAddress", ownerAddress);
+            data.append("BusinessAddress", street2number);
+        data.append("VehicleNumber", vehiclenumber);
+        data.append("Authorized", authorized);
+        data.append("CustomerCode", customerCode);
+       // data.append("Balance",);
+        data.append("Gender", gender);
+        data.append("StateId", state);
+        //data.append("AccountNumber",);
+        data.append("CustomerClassification.GroupId", group);
+        data.append("CustomerClassification.SubGroupId", subgroup);
+        data.append("CustomerClassification.ZoneId", zone);
+        data.append("CustomerClassification.BusinessTypeId", bsuinesstype);
+        data.append("CustomerClassification.SalesmanId", salesman);
+        data.append("CustomerClassification.ShippedViaId", shippedvia);
+        data.append("CustomerClassification.RouteId", route);
+        data.append("CustomerClassification.RouteDeliveryDay", routedelivery);
+        data.append("CustomerClassification.DriverId", driver);
+        data.append("CustomerClassification.OtherCustomerReference", otherreference);
+        data.append("CustomerClassification.ShiptoReferenceId", shiptoreference);
+        data.append("CustomerClassification.OutOfStateCustomer", Isoutofstatecustomer);
+        data.append("CustomerClassification.AddtoMaillingList", Isaddtomailing);
+        data.append("CustomerClassification.AddtoemailTextList", Isaddtoemailext);
+        data.append("CustomerClassification.RejectPromotion", IsRejectPromotion);
+        data.append("CustomerClassification.ViewInvoicePrevBalance", IsviewinvoicepreBalance);
+        data.append("CustomerClassification.ViewRetailandDiscount", Isviewretaildiscount);
+        data.append("CustomerClassification.BarCodeId", barcode);
+        data.append("CustomerClassification.DefaultInvoiceCopies", defaultinvoicecopies);
+        data.append("CustomerClassification.SpecialInvoiceCustom", isspecialinvoicecustomer);
+        data.append("CustomerClassification.InvoiceMemo", invoicememo);
+
+
+                     $.confirm({
+                title: 'Save New Customer!',
+                content: 'Are you sure to save new customer?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                url: '@Url.Action("NewCustomer", "Customer")',
+                type: "POST",
+                 data: data,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data == true) {
+
+                        window.location = '@Url.Action("NewCustomer", "Customer")';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+        }
+
+    }
+
+    function DeleteCustomer() {
+         var id = $("#customerinformationid").val();
+
+
+               $.confirm({
+                title: 'Delete Customer!',
+                content: 'Are you sure to delete this customer?',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+            type: "DELETE",
+            url: "@Url.Action("DeleteCustomerInformation", "Customer")",
+            data: {
+                id:id
+            },
+            dataType: "json",
+            success: function (data) {
+                 if (data == true) {
+                      window.location = '@Url.Action("NewCustomer", "Customer")';
+                }
+            }
+        });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+    }
+</script>

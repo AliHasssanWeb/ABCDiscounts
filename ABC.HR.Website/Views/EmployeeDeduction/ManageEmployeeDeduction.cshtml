@@ -1,0 +1,199 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpDeduction>
+
+@{
+    ViewData["Title"] = "ManageEmpDeduction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div>
+    <a asp-action="AddEmployeeDeduction"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee Deduction</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Manage Deductions</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="dedeuctionssss" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                Employee Name
+                                            </th>
+                                            <th>
+                                                Deduction Type
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Reason)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Amount)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsApprove)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{var i = 0; }
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+
+                                                    @foreach (var item1 in ViewBag.EmployeeName)
+                                                    {
+                                                        if (item1.EmployeeId == item.EmployeeId)
+                                                        {
+                                                            <td> @item1.FullName </td>
+                                                        }
+                                                    }
+                                                    <td>
+                                                        @foreach (var itemdedtype in ViewBag.EmpDeductioType)
+                                                        {
+                                                            if (itemdedtype.EmpDeductionTypeId == item.EmpDeductionTypeId)
+                                                            {
+
+                                                                @itemdedtype.EmpDeductionTypeName
+
+                                                            }
+
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Date)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsApprove == true)
+                                                        {
+
+
+                                                            <span>Approve</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Approve</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a title="Edit"><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateEmployeeDeduction", "EmployeeDeduction", new { id = item.EmpDeductionId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeleteDed(@item.EmpDeductionId)"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#dedeuctionssss').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["responseofAddDeduction"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddDeduction"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateDeduction"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateDeduction"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteDeduction"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteDeduction"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDeleteDed(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeleteEmployeeDeduction/" + id,
+
+                        success: function () {
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageEmployeeDeduction';
+                            }, 500);
+                            //window.location.href = "/HumanResource/Employees/ManageTaxType/";
+
+
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

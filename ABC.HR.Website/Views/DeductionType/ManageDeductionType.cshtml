@@ -1,0 +1,175 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpDeductionType>
+
+@{
+    ViewData["Title"] = "ManageAllowanceType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div>
+    <a asp-action="AddDeductionType"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee Deduction Type</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">ManageAllowanceType</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="deductiontypo" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.EmpDeductionTypeName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AmountLimit)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsActive)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @{var i = 0; }
+
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.EmpDeductionTypeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AmountLimit)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsActive == true)
+                                                        {
+
+
+                                                            <span>Active</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Active</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateDeductionType", "DeductionType", new { id = item.EmpDeductionTypeId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        @*<a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteDeductionType", "Employees", new { id = item.EmpDeductionTypeId })': null"></i></a>*@
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeleteDeduction(@item.EmpDeductionTypeId)"></i></a>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#deductiontypo').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+
+@if (TempData["responseofAddDeductionType"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddDeductionType"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateDeductionType"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateDeductionType"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteDeductionType"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteDeductionType"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDeleteDeduction(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeleteDeductionType/" + id,
+
+                        success: function () {
+
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageDeductionType';
+                            }, 500);
+
+
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

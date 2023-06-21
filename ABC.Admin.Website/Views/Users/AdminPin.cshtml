@@ -1,0 +1,320 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.SecurityKey>
+
+@{
+    ViewData["Title"] = "AdminPin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<style>
+    label.error {
+        color: red;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div>
+            <h4 style="display:inline-block" class="card-title">Administrator Pin </h4>
+            <button class="btn btn-warning mt-3 mb-4" style="float:right" data-bs-toggle="modal" data-bs-target="#approve-register">Generate Pin</button>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="pending-1" role="tabpanel" aria-labelledby="pending-tab">
+                <table id="order-listing" class="col-12">
+                    <thead>
+                        <tr role="row">
+                            <td style="font-weight:600">Sr#</td>
+
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Access PIN
+                            </th>
+                            <th>
+                                Access Type
+                            </th>
+                            <th>
+                                Status<small>(Active/InActive)</small>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var i = 0;
+                        }
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+
+                                i = i + 1;
+                                <tr class="odd">
+
+                                    <td class="sorting_1">@i</td>
+
+                                    <td>@item.UserName</td>
+                                    <td>@item.UserEmail</td>
+                                    <td>@item.KeyPin</td>
+                                    <td>@item.Type</td>
+                                    @if(item.Active==true){
+                                        <td><input type="checkbox" id="@("active"+i)" checked onclick="ChangeStatus('@item.SecurityKeyId','@i')"></td>
+                                    }else if(item.Active==false){
+                                        <td><input id="@("active"+i)" type="checkbox" onclick="ChangeStatus('@item.SecurityKeyId','@i')"></td>
+                                    }
+                                    
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="approve-register" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Add New User </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Select Admin User:</label>
+                    @Html.DropDownList("UserId", (IEnumerable<SelectListItem>)ViewBag.Admins, "--Choose Admin --", new { @class = "form-control", id = "selectadmin" })
+                    <span id="selectadminvalidate" class="text-danger db"></span>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Select Account Access Type:</label>
+                    <select name="type" id="selectaccounttype" class="v-textfield v-widget v-has-width form-control">
+                        <option value="0">-Select Access Level-</option>
+                        <option value="PO">Purchase Order</option>
+                        <option value="SO">Sale Order</option>
+                        <option value="FullAccess">Full Access</option>
+                        <option value="CreditAllow">Credit Allow</option>
+                    </select>
+                    <span id="selectaccounttypevalidate" class="text-danger db"></span>
+
+                </div>
+                <div class="form-group superbox">
+                    <label for="recipient-name" class="col-form-label">Pin</label>
+                    <input class="form-control txtinput" id="pin" type="number" />
+                    <span class="text-danger field-validation-error db" id="ValMsgAdminpin" style="font-size: 15px !important;"></span>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="registeremployee" onclick="approveregister()">Generate Pin</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function ChangeStatus(keyid, num) {
+        
+        var checkBox = document.getElementById('active'+num);
+        if (checkBox.checked) {
+          var status=1;
+        }else{
+            var status = 0;
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ChangeAdminStatus", "Users")',
+            data: {
+                keyid: keyid,
+                status:status
+            },
+            dataType: "json",
+            async: false,
+            cache: false,
+            success: function (result) {
+                if (result = "Updated Sucessfully"){
+                    toastr.success("Status Changed Sucessfully");
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                }else{
+                    toastr.error("Something Went Wrong");
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+
+
+    var table = null;
+    $(document).ready(function () {
+        table = $("#order-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+        var approvetable = $("#approve-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+    });
+
+
+    $("#selectrole").on('change', function () {
+        debugger;
+
+
+        if ($("#selectrole option:selected")[0].value == "--Choose Role For Employee --" || $("#selectrole option:selected")[0].value == "") {
+            $("#selectrolevalidate").text("Please select role");
+            $("#selectrolevalidate").show();
+        } else {
+            var id = $("#selectrole option:selected").val();
+            var empId = parseInt(id);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("SupervisorGet", "Users")',
+                data: {
+                    id: empId,
+                },
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function (result) {
+                    console.log(result);
+                    if (result.length > 0) {
+                        $("#pin").attr("disabled", true);
+                        $("#pin").val(result[0].accessPin);
+                    }
+                    else {
+                        $("#pin").attr("disabled", false);
+                        $("#pin").val('');
+                    }
+                },
+                error: function () {
+                }
+            });
+
+        }
+    });
+
+    function approveregister() {
+
+        debugger;
+        var isvalid = true;
+        var employeedata = {};
+        employeedata = new FormData();
+
+        var accountType = $("#selectaccounttype option:selected").val();
+        var id = $("#selectadmin option:selected").val();
+        var userID = parseInt(id);
+        var pin = $("#pin").val();
+
+        if ($("#selectaccounttype option:selected")[0].value == "0") {
+            $("#selectaccounttypevalidate").text('Please Select Account Access Type').show();
+            isvalid = false;
+        }else{
+            $("#selectaccounttypevalidate").hide();
+        }
+
+        if ($("#selectadmin option:selected")[0].value == "") {
+            $("#selectadminvalidate").text('Please Select Account').show();
+            isvalid = false;
+        }else{
+            $("#selectadminvalidate").hide();
+        }
+
+        if (pin == "") {
+            $("#ValMsgAdminpin").text('Please Enter Pin').show();
+            isvalid = false;
+
+        } else {
+            $("#ValMsgAdminpin").hide();
+        }
+
+
+
+
+
+        employeedata.append("UserId", id);
+        employeedata.append("Type", accountType);
+        employeedata.append("KeyPin", pin);
+
+
+        if(isvalid){
+
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddNewAdminPinUser", "Users")',
+            data: employeedata,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (msgss) {
+                console.log(msgss);
+                if (msgss == true || msgss == "true") {
+                    toastr.success('User Added');
+                    $("#approve-register").modal("hide");
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 2000);
+                }
+                else {
+                    toastr.error('User already available');
+                }
+            },
+            error: function (error) {
+                console.log("error");
+            },
+        });
+        }
+        
+
+    }
+
+
+
+    function closemodal() {
+        $("#approve-register").modal('hide');
+    };
+
+</script>

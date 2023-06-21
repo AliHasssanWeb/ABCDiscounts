@@ -1,0 +1,41 @@
+﻿@model ABC.EFCore.Repository.Edmx.Group
+@{
+    ViewData["Title"] = "UpdateGroup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+ <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update Model</h4>
+
+            @using (Html.BeginForm("UpdateGroup", "Items", FormMethod.Post, new { @class = "forms-sample" }))
+            {
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Name</label>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+
+                </div>
+                <button type="submit" class="btn btn-lg btn-dark me-3"><p style="color:white">Submit</p></button>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+

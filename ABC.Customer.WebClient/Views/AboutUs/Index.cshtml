@@ -1,0 +1,248 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Product>
+@{
+    ViewBag.Title = "AboutUs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    @@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+    body {
+        /*background-color: #d6d2d2;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300*/
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px
+    }
+
+    .btn-custom {
+        background-color: #64b3f4;
+    }
+
+    .text-custom {
+        color: #64b3f4;
+    }
+
+    .percent {
+        padding: 5px;
+        background-color: #64b3f4;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 14px;
+        height: 35px;
+        width: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer
+    }
+
+    .wishlist {
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: #eee;
+        padding: 10px;
+        cursor: pointer
+    }
+
+    .img-container {
+        position: relative
+    }
+
+        .img-container .first {
+            position: absolute;
+            width: 100%
+        }
+
+        .img-container img {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px
+        }
+
+    .product-detail-container {
+        padding: 10px
+    }
+
+    .ratings i {
+        color: #a9a6a6
+    }
+
+    .ratings span {
+        color: #a9a6a6
+    }
+
+    label.radio {
+        cursor: pointer
+    }
+
+        label.radio input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            pointer-events: none
+        }
+
+        label.radio span {
+            height: 25px;
+            width: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #64b3f4;
+            color: #64b3f4;
+            font-size: 10px;
+            border-radius: 50%;
+            text-transform: uppercase
+        }
+
+        label.radio input:checked + span {
+            border-color: #64b3f4;
+            background-color: #64b3f4;
+            color: #fff
+        }
+</style>
+
+
+@*/////carousal style/////*@
+
+<style>
+    .carousel-wrap {
+        margin: 90px auto;
+        padding: 0 5%;
+        width: 100%;
+        position: relative;
+    }
+
+    /* fix blank or flashing items on carousel */
+    .owl-carousel .item {
+        position: relative;
+        z-index: 100;
+        -webkit-backface-visibility: hidden;
+    }
+
+    /* end fix */
+    .owl-nav > div {
+        margin-top: -26px;
+        position: absolute;
+        top: 50%;
+        color: #cdcbcd;
+    }
+
+    .owl-nav i {
+        font-size: 52px;
+    }
+
+    .owl-nav .owl-prev {
+        left: -30px;
+    }
+
+    .owl-nav .owl-next {
+        right: -30px;
+    }
+</style>
+
+
+
+
+<div class="container">
+    <!-- //inner banner -->
+    <!-- breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">About Us</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <!-- //breadcrumbs -->
+        <div class="col-lg-12">
+            <h5 class="head_agileinfo text-center text-capitalize mt-3 mb-3">
+                <span>A</span>bout Us
+            </h5>
+        </div>
+
+        <div class="row ms-2 mb-3">
+
+            <video style="margin-left: 18px;width: 71rem;" width="1075" height="350" controls>
+                <source src="~/Video/AbcVideo.mp4" type="video/mp4">
+                <source src="~/Video/AbcVideo.mp4" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
+
+        </div>
+        <div class="row mb-3" style=" background: #BED0E9; width:99.8%;margin-left:2px;">
+
+            <div class="text-center col-lg-5 p-0">
+
+                <img src="~/images/AboutUs.jpg" alt="Aboutus image" style="width:100%;" />
+            </div>
+            <div class="col-lg-6">
+                <p style="padding: 5em 2em; color:black">As one of North Carolina’s fastest growing wholesale distributor, ABC Discounts has been the leading convenience store supplier and distributor of tobacco, cigarette, vape, candy, and other novelty products in the triad area. We feel proud to service a handsome portfolio of more than a thousand satisfied customers, while holding the maximum market share in our area. ABC Discounts pays special attention to the customers’ needs while keeping in mind the changing market trends and developments. .</p>
+            </div>
+
+        </div>
+        <div class="mt-5" style="background: #eee; font-size: 15px; padding: 6em 2em;">
+            <h5 class="head_agileinfo text-center text-capitalize ">
+                <span>W</span>ho We Are
+            </h5>
+            <p class="pt-4" style="font-size: 15px;  ">
+                Our ultimate motive of affordability is sustained under the operation of a strong and dedicated team. We supply products in bulk to a diverse customer base from all facets of the industry including stores, gas stations, convenient stores and smoke shops. Additionally, we offer free delivery services to further reflect on our commitment of product variety, efficient service, relevant technology and ultra-competitive pricing. Our programs are centered around the objective of offering customers the ability to obtain their entire store needs from just one reliable source. Moreover, we are willing to go to any limits to satisfy the needs of our customers.
+            </p>
+            <p class="pt-4" style="font-size: 15px;  ">
+                Our consistent growth pattern is evident of our passion and hard work. For over 7 years, the family-like environment cultivated at ABC Discounts has helped expand and strengthen our footprints in different surrounding markets.
+            </p>
+        </div>
+    </div>
+    @*<div class="text-left" style="width:80%;">
+
+
+        </div>*@
+
+    <div class="container">
+        <div class="carousel-wrap">
+           
+            <div class="owl-carousel">
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        navText: [
+            "<i class='fa fa-caret-left'></i>",
+            "<i class='fa fa-caret-right'></i>"
+        ],
+        autoplay: true,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            1000: {
+                items: 5
+            }
+        }
+    })
+</script>

@@ -1,0 +1,222 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpTax>
+
+@{
+    ViewData["Title"] = "ManageAttendance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div>
+    <a asp-action="AddEmployeeTax"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee Tax</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Manage Employee Tax </h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="taxxxxemp" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                Employee Name
+                                            </th>
+
+                                            <th>
+                                                Tax Type
+                                            </th>
+                                            <th>
+                                                Range
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Amount)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Reason)
+                                            </th>
+
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsApprove)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @{var i = 0; }
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+
+                                                i = i + 1;
+                                                <tr>
+
+                                                    <td>
+                                                        @i
+                                                    </td>
+
+                                                    @foreach (var emp in ViewBag.EmployeeNo)
+                                                    {
+                                                        if (emp.EmployeeId == item.EmployeeId)
+                                                        {
+                                                            <td>
+                                                                @emp.FullName
+                                                            </td>
+                                                        }
+
+                                                    }
+
+
+
+
+                                                    @foreach (var ln in ViewBag.EmpTaxType)
+                                                    {
+                                                        if (ln != null)
+                                                        {
+                                                            if (ln.EmpTaxTypeId == item.EmpTaxTypeId)
+                                                            {
+                                                            <td>@ln.EmpTaxTypeName</td>
+                                                            }
+                                                        }
+
+                                                    }
+                                                    @foreach (var ln in ViewBag.EmpTaxType)
+                                                    {
+                                                        if (ln != null)
+                                                        {
+                                                            if (ln.EmpTaxTypeId == item.EmpTaxTypeId)
+                                                            {
+                                                            <td>@ln.SalaryRange</td>
+                                                            }
+                                                        }
+
+                                                    }
+
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Amount)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Date)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsApprove == true)
+                                                        {
+
+
+                                                            <span>Approve</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Approve</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a title="Edit"><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateEmployeeTax", "EmployeeTax", new { id = item.EmpTaxId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeleteTax(@item.EmpTaxId)"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#taxxxxemp').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["responseofAddTax"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddTax"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateTax"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateTax"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteTax"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteTax"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDeleteTax(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeleteEmployeeTax/" + id,
+
+                        success: function () {
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageEmployeeTax';
+                            }, 500);
+                            //window.location.href = "/HumanResource/Employees/ManageTaxType/";
+
+
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

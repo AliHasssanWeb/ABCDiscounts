@@ -1,0 +1,171 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.AspNetUser>
+@{
+    ViewBag.Title = "BlockUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/AddUser" aria-controls="overview" aria-selected="true">Admin</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/ManageUser" aria-controls="overview" aria-selected="true">Existing Admins</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Users/BlockUser" role="tab" aria-selected="false">BlockUser</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/ChangePassword" role="tab" aria-selected="false">ChangePassword</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/AddRole" role="tab" aria-selected="false">Role</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/ManageRoles" role="tab" aria-selected="false">Existing Roles</a>
+        </li>
+         <li class="nav-item">
+            <a class="nav-link " href="~/Activities/ActivityLogs" role="tab" aria-selected="false">AdminActivity Logs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Activities/TerminalLogs" role="tab" aria-selected="false">TerminalLogs</a>
+        </li>
+
+    </ul>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">All Users</h4>
+        <div class="row">
+            <div class="col-12">
+                        <div class="row">
+                        <div class="col-sm-12">
+                <div class="table-responsive">
+                                <table id="order-listing" class="table dataTable" role="grid" aria-describedby="order-listing_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Order #: activate to sort column descending" style="width: 51.8281px;">Sr No.</th>
+                                            <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Purchased On: activate to sort column ascending" style="width: 97.8438px;">First Name</th>
+                                            <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Customer: activate to sort column ascending" style="width: 67.6875px;">Last Name</th>
+                                            <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Ship to: activate to sort column ascending" style="width: 49.4062px;">Email</th>
+                                            <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Base Price: activate to sort column ascending" style="width: 74.0625px;">Phone number</th>
+                                           @* <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Purchased Price: activate to sort column ascending" style="width: 112.953px;">Role</th>*@
+                                            @*<th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 61.9375px;">UnBlock/Block</th>*@
+
+                                    </thead>
+
+                                    @{var i = 0;}
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr class="odd">
+                                                    <td class="sorting_1">@i</td>
+                                                    <td>@item.Firstname</td>
+                                                    <td>@item.Lastname</td>
+                                                    <td>@item.Email</td>
+                                                    <td>@item.Mobile</td>
+                                                   @* <td>@item.RoleName</td>*@
+                                                    @*<td>
+                                                        <label class="switch">
+                                                            <input type="checkbox" >
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>*@
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

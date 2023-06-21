@@ -1,0 +1,98 @@
+@model ABC.EFCore.Repository.Edmx.FaqValidation
+@{
+    ViewBag.Title = "Faqs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--Jquery Calendr-->
+    <link href="styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
+    <!-- Js Stylesheet -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @if (TempData["response"] != null)
+    {
+        <script>
+            $(document).ready(function() {
+                var success = '@((TempData["response"] != null).ToString())';
+                if (success == 'false' || success == false) {
+                    toastr.error('@TempData["response"].ToString()')
+                } else {
+                    toastr.success('@TempData["response"].ToString()')
+                }
+            });
+        </script>
+    }
+    <title>FAQs</title>
+    <style>
+        .form-row {
+            margin-top: 20px;
+        }
+        .Fee {
+            margin-top: 25px;
+            padding: 25px;
+            display: none;
+            color: #fff;
+            /*border: 1px solid grey;*/
+        }
+        .card{
+            border:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+        @using (Html.BeginForm(Html.BeginForm("Faqs", "Faqs", FormMethod.Post)))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Add FAQ's</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label>Title</label>
+                                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control text-box single-line", @placeholder = "Title" })
+                                        @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+                                    </div>
+                                 </div>
+                                  <div class="row mt-2">
+                                    <div class="col-md-8">
+                                        <label>Description</label>
+                                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Description",@style="height:85px;resize: none;" })
+                                        @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+                                        @*<textarea class="form-control" id="Address" name="Address" placeholder="Address" style="height:65px"></textarea>*@
+                                    </div>
+                                </div>
+                                    <div class="col-lg-12 "style="float:right">
+                                        @Html.CheckBox("IsPublic",false,new{@class="ms-2 mt-1",@style="float:right"})
+                                        <label style="float:right">Publish</label>                                  
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 pb-3"  >
+                        <button type="submit" class="btn btn-primary pt-1 pb-2" style="color:white; font-size:15px; height:30px;float:right;padding:35px;height:40px">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+  
+    
+</body>
+</html>

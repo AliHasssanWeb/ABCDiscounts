@@ -1,0 +1,1591 @@
+﻿
+@{
+    ViewData["Title"] = "CartOutNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+  
+    <link href="~/code/web.assets_common.min.css" rel="stylesheet" />
+    <link href="https://absol8.odoo.com//web/static/lib/fontawesome/fonts/fontawesome-webfont.woff2?v=4.7.0" rel="stylesheet" />
+    <link href="~/code/website.assets_editor.min.css" rel="stylesheet" />
+    <link href="~/code/web.assets_frontend.min.css" rel="stylesheet" />
+    <script src="~/code/web.assets_common_lazy.min.js"></script>
+    <script src="~/code/web.assets_common_minimal.min.js"></script>
+    <script src="~/code/web.assets_frontend_lazy.min.js"></script>
+    <script src="~/code/web.assets_frontend_minimal.min.js"></script>
+    <script src="~/code/website.assets_editor.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="wizard">
+                                <div class="progress-wizard">
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step10" class="progress-wizard-step active">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Review Order</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step20" class="progress-wizard-step disabled">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Address</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step40" class="progress-wizard-step disabled">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Confirm Order</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-8 oe_cart">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="mb16 table table-striped table-sm js_cart_lines" id="cart_products">
+                                <thead>
+                                    <tr>
+                                        <th class="td-img">Product</th>
+                                        <th ></th>
+                                        <th class="text-center td-qty">
+                                            Quantity
+                                        </th>
+                                        <th class="text-center td-price">Price</th>
+                                        <th class="text-center td-action"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td align="center" class="td-img">
+                                            <span><img src="~/images/camel-filters.gif" class="img rounded o_image_64_max" alt="asdasd" loading="lazy"></span>
+                                        </td>
+                                        <td class="td-product_name">
+                                            <div>
+                                                <a href="#">
+                                                    <strong >asdasd</strong>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="text-center td-qty">
+                                            <div class="css_quantity input-group mx-auto justify-content-center">
+                                                <div class="input-group-prepend">
+                                                    <a class="btn btn-link js_add_cart_json d-none d-md-inline-block" href="#">
+                                                        <i class="fa fa-minus"></i>
+                                                    </a>
+                                                </div>
+                                                <input type="text" class="js_quantity form-control quantity">
+                                                <div class="input-group-append">
+                                                    <a class="btn btn-link float_left js_add_cart_json d-none d-md-inline-block">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center td-price" name="price">
+                                            <span><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                        </td>
+                                        <td class="td-action">
+                                            <a href="#" aria-label="Remove from cart" title="Remove from cart" class="js_delete_product no-decoration"> <small><i class="fa fa-trash-o"></i></small></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="clearfix"></div>
+                            <a role="button" href="#" class="btn btn-secondary mb32 d-none d-xl-inline-block">
+                                <span class="fa fa-chevron-left"></span>
+                                <span class="">Continue Shopping</span>
+                            </a>
+                            <a role="button" class="btn btn-primary float-right d-none d-xl-inline-block" href="#">
+                                <span class="">Process Checkout</span>
+                                <span class="fa fa-chevron-right"></span>
+                            </a>
+                            <div class="oe_structure" id="oe_structure_website_sale_cart_1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-4" id="o_cart_summary">
+                    <div class="card js_cart_summary">
+                        <div class="card-body">
+                            <h4 class="d-none d-xl-block">Order Total</h4>
+                            <hr class="d-none d-xl-block">
+                            <div>
+                                <div id="cart_total" class="">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr id="empty">
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                            </tr>
+                                            <tr id="order_total_untaxed">
+                                                <td class="text-right border-0">Subtotal:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total_taxes">
+                                                <td class="text-right border-0">Taxes:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">0.17</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total">
+                                                <td class="text-right"><strong>Total:</strong></td>
+                                                <td class="text-xl-right">
+                                                    <strong class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a role="button" class="btn btn-secondary float-right d-none d-xl-inline-block" href="#">
+                                    <span>Process Checkout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-xl-none mt8">
+                        <a role="button" href="#" class="btn btn-secondary mb32">
+                            <span class="fa fa-chevron-left"></span>
+                            Continue<span class="d-none d-md-inline"> Shopping</span>
+                        </a>
+                        <a role="button" class="btn btn-primary float-right" href="#">
+                            <span class="">Process Checkout</span>
+                            <span class="fa fa-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+      @*  =============================================================================================*@
+
+
+
+
+   <div class="container oe_website_sale py-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="wizard">
+                                <div class="progress-wizard">
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step10" class="progress-wizard-step complete">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Review Order</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step20" class="progress-wizard-step active">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Address</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step40" class="progress-wizard-step disabled">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Confirm Order</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-xl-auto order-xl-2 d-none d-xl-block">
+                    <div class="card" style="border:1px solid !important;">
+                        <div class="card-body p-xl-0">
+                            <div class="toggle_summary d-xl-none">
+                                <b >Your order: </b> <span id="amount_total_summary" class="monetary_field" ><span class="oe_currency_value">1.17</span>&nbsp;Rs.</span>
+                                <span class="fa fa-chevron-down fa-border float-right" role="img" aria-label="Details" title="Details"></span>
+                            </div>
+                            <div class="toggle_summary_div d-none d-xl-block">
+                                <table class="table table-striped table-sm" id="cart_products">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0 td-img">Product</th>
+                                            <th class="border-top-0"></th>
+                                            <th class="border-top-0 td-qty">Quantity</th>
+                                            <th class="border-top-0 text-center td-price">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-img text-center">
+                                                <span><img src="~/images/camel-filters.gif" class="img rounded o_image_64_max" alt="" loading="lazy"></span>
+                                            </td>
+                                            <td class="td-product_name">
+                                                <div>
+                                                    <strong>asdasd</strong>
+                                                </div>
+                                            </td>
+                                            <td class="td-qty">
+                                                <div>1.0</div>
+                                            </td>
+                                            <td class="text-center td-price">
+                                                <span style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="cart_total" class="">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr id="empty">
+                                                <td rowspan="10" class="border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                            </tr>
+                                            <tr id="order_total_untaxed">
+                                                <td class="text-right border-0">Subtotal:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total_taxes">
+                                                <td class="text-right border-0">Taxes:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;" ><span class="oe_currency_value">0.17</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total">
+                                                <td class="text-right"><strong>Total:</strong></td>
+                                                <td class="text-xl-right">
+                                                    <strong class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl order-xl-1 oe_cart">
+                    <div>
+                        <h2 class="o_page_header mt8" >Shipping Address </h2>
+                        <form action="#" method="post" class="checkout_autoformat">
+                            <div class="form-row">
+                                <div class="form-group  col-lg-12 div_name">
+                                    <label class="col-form-label" for="name" style=" font-size: 20px !important; ">Name</label>
+                                    <input type="text" name="name" class="form-control ">
+                                </div>
+                                <div class="w-100"></div>
+                                <div id="div_email" class="form-group  col-lg-6">
+                                    <label for="email" class="col-form-label label-optional"style=" font-size: 20px !important; ">Email</label>
+                                    <input type="email" name="email" class="form-control ">
+                                </div>
+                                <div id="div_phone" class="form-group  col-lg-6">
+                                    <label class="col-form-label" for="phone" style=" font-size: 20px !important; ">Phone</label>
+                                    <input type="tel" name="phone" class="form-control ">
+                                </div>
+                                <div class="w-100"></div>
+                                <div class="w-100"></div>
+                                <div class="form-group  col-lg-12 div_street">
+                                    <label class="col-form-label" for="street" style=" font-size: 20px !important; ">Street <span class="d-none d-md-inline" > and Number</span></label>
+                                    <input type="text" name="street" class="form-control">
+                                </div>
+                                <div class="form-group  col-lg-12 div_street2">
+                                    <label class="col-form-label label-optional" style=" font-size: 20px !important; "for="street2" >Street 2</label>
+                                    <input type="text" name="street2" class="form-control ">
+                                </div>
+                                <div class="w-100"></div>
+                                <div class="form-group  col-md-8 div_city">
+                                    <label class="col-form-label"style=" font-size: 20px !important; " for="city">City</label>
+                                    <input type="text" name="city" class="form-control ">
+                                </div>
+                                <div class="form-group  col-md-4 div_zip">
+                                    <label class="col-form-label label-optional"style=" font-size: 20px !important; " for="zip">Zip Code</label>
+                                    <input type="text" name="zip" class="form-control ">
+                                </div>
+                                <div class="w-100"></div>
+                                <div class="form-group  col-lg-6 div_country">
+                                    <label class="col-form-label"style=" font-size: 20px !important; " for="country_id">Country</label>
+                                    <select id="country_id" name="country_id" class="form-control " >
+                                        <option value="">Country...</option>
+                                        <option value="3">
+                                            Afghanistan
+                                        </option>
+                                        <option value="6">
+                                            Albania
+                                        </option>
+                                        <option value="62">
+                                            Algeria
+                                        </option>
+                                        <option value="11">
+                                            American Samoa
+                                        </option>
+                                        <option value="1">
+                                            Andorra
+                                        </option>
+                                        <option value="8">
+                                            Angola
+                                        </option>
+                                        <option value="5">
+                                            Anguilla
+                                        </option>
+                                        <option value="9">
+                                            Antarctica
+                                        </option>
+                                        <option value="4">
+                                            Antigua and Barbuda
+                                        </option>
+                                        <option value="10">
+                                            Argentina
+                                        </option>
+                                        <option value="7">
+                                            Armenia
+                                        </option>
+                                        <option value="14">
+                                            Aruba
+                                        </option>
+                                        <option value="13">
+                                            Australia
+                                        </option>
+                                        <option value="12">
+                                            Austria
+                                        </option>
+                                        <option value="16">
+                                            Azerbaijan
+                                        </option>
+                                        <option value="32">
+                                            Bahamas
+                                        </option>
+                                        <option value="23">
+                                            Bahrain
+                                        </option>
+                                        <option value="19">
+                                            Bangladesh
+                                        </option>
+                                        <option value="18">
+                                            Barbados
+                                        </option>
+                                        <option value="36">
+                                            Belarus
+                                        </option>
+                                        <option value="20">
+                                            Belgium
+                                        </option>
+                                        <option value="37">
+                                            Belize
+                                        </option>
+                                        <option value="25">
+                                            Benin
+                                        </option>
+                                        <option value="27">
+                                            Bermuda
+                                        </option>
+                                        <option value="33">
+                                            Bhutan
+                                        </option>
+                                        <option value="29">
+                                            Bolivia
+                                        </option>
+                                        <option value="30">
+                                            Bonaire, Sint Eustatius and Saba
+                                        </option>
+                                        <option value="17">
+                                            Bosnia and Herzegovina
+                                        </option>
+                                        <option value="35">
+                                            Botswana
+                                        </option>
+                                        <option value="34">
+                                            Bouvet Island
+                                        </option>
+                                        <option value="31">
+                                            Brazil
+                                        </option>
+                                        <option value="105">
+                                            British Indian Ocean Territory
+                                        </option>
+                                        <option value="28">
+                                            Brunei Darussalam
+                                        </option>
+                                        <option value="22">
+                                            Bulgaria
+                                        </option>
+                                        <option value="21">
+                                            Burkina Faso
+                                        </option>
+                                        <option value="24">
+                                            Burundi
+                                        </option>
+                                        <option value="116">
+                                            Cambodia
+                                        </option>
+                                        <option value="47">
+                                            Cameroon
+                                        </option>
+                                        <option value="38">
+                                            Canada
+                                        </option>
+                                        <option value="52">
+                                            Cape Verde
+                                        </option>
+                                        <option value="123">
+                                            Cayman Islands
+                                        </option>
+                                        <option value="40">
+                                            Central African Republic
+                                        </option>
+                                        <option value="214">
+                                            Chad
+                                        </option>
+                                        <option value="46">
+                                            Chile
+                                        </option>
+                                        <option value="48">
+                                            China
+                                        </option>
+                                        <option value="54">
+                                            Christmas Island
+                                        </option>
+                                        <option value="39">
+                                            Cocos (Keeling) Islands
+                                        </option>
+                                        <option value="49">
+                                            Colombia
+                                        </option>
+                                        <option value="118">
+                                            Comoros
+                                        </option>
+                                        <option value="42">
+                                            Congo
+                                        </option>
+                                        <option value="45">
+                                            Cook Islands
+                                        </option>
+                                        <option value="50">
+                                            Costa Rica
+                                        </option>
+                                        <option value="97">
+                                            Croatia
+                                        </option>
+                                        <option value="51">
+                                            Cuba
+                                        </option>
+                                        <option value="53">
+                                            Curaçao
+                                        </option>
+                                        <option value="55">
+                                            Cyprus
+                                        </option>
+                                        <option value="56">
+                                            Czech Republic
+                                        </option>
+                                        <option value="44">
+                                            Côte d'Ivoire
+                                        </option>
+                                        <option value="41">
+                                            Democratic Republic of the Congo
+                                        </option>
+                                        <option value="59">
+                                            Denmark
+                                        </option>
+                                        <option value="58">
+                                            Djibouti
+                                        </option>
+                                        <option value="60">
+                                            Dominica
+                                        </option>
+                                        <option value="61">
+                                            Dominican Republic
+                                        </option>
+                                        <option value="63">
+                                            Ecuador
+                                        </option>
+                                        <option value="65">
+                                            Egypt
+                                        </option>
+                                        <option value="209">
+                                            El Salvador
+                                        </option>
+                                        <option value="87">
+                                            Equatorial Guinea
+                                        </option>
+                                        <option value="67">
+                                            Eritrea
+                                        </option>
+                                        <option value="64">
+                                            Estonia
+                                        </option>
+                                        <option value="69">
+                                            Ethiopia
+                                        </option>
+                                        <option value="72">
+                                            Falkland Islands
+                                        </option>
+                                        <option value="74">
+                                            Faroe Islands
+                                        </option>
+                                        <option value="71">
+                                            Fiji
+                                        </option>
+                                        <option value="70">
+                                            Finland
+                                        </option>
+                                        <option value="75">
+                                            France
+                                        </option>
+                                        <option value="79">
+                                            French Guiana
+                                        </option>
+                                        <option value="174">
+                                            French Polynesia
+                                        </option>
+                                        <option value="215">
+                                            French Southern Territories
+                                        </option>
+                                        <option value="76">
+                                            Gabon
+                                        </option>
+                                        <option value="84">
+                                            Gambia
+                                        </option>
+                                        <option value="78">
+                                            Georgia
+                                        </option>
+                                        <option value="57">
+                                            Germany
+                                        </option>
+                                        <option value="80">
+                                            Ghana
+                                        </option>
+                                        <option value="81">
+                                            Gibraltar
+                                        </option>
+                                        <option value="88">
+                                            Greece
+                                        </option>
+                                        <option value="83">
+                                            Greenland
+                                        </option>
+                                        <option value="77">
+                                            Grenada
+                                        </option>
+                                        <option value="86">
+                                            Guadeloupe
+                                        </option>
+                                        <option value="91">
+                                            Guam
+                                        </option>
+                                        <option value="90">
+                                            Guatemala
+                                        </option>
+                                        <option value="82">
+                                            Guernsey
+                                        </option>
+                                        <option value="85">
+                                            Guinea
+                                        </option>
+                                        <option value="92">
+                                            Guinea-Bissau
+                                        </option>
+                                        <option value="93">
+                                            Guyana
+                                        </option>
+                                        <option value="98">
+                                            Haiti
+                                        </option>
+                                        <option value="95">
+                                            Heard Island and McDonald Islands
+                                        </option>
+                                        <option value="236">
+                                            Holy See (Vatican City State)
+                                        </option>
+                                        <option value="96">
+                                            Honduras
+                                        </option>
+                                        <option value="94">
+                                            Hong Kong
+                                        </option>
+                                        <option value="99">
+                                            Hungary
+                                        </option>
+                                        <option value="108">
+                                            Iceland
+                                        </option>
+                                        <option value="104">
+                                            India
+                                        </option>
+                                        <option value="100">
+                                            Indonesia
+                                        </option>
+                                        <option value="107">
+                                            Iran
+                                        </option>
+                                        <option value="106">
+                                            Iraq
+                                        </option>
+                                        <option value="101">
+                                            Ireland
+                                        </option>
+                                        <option value="103">
+                                            Isle of Man
+                                        </option>
+                                        <option value="102">
+                                            Israel
+                                        </option>
+                                        <option value="109">
+                                            Italy
+                                        </option>
+                                        <option value="111">
+                                            Jamaica
+                                        </option>
+                                        <option value="113">
+                                            Japan
+                                        </option>
+                                        <option value="110">
+                                            Jersey
+                                        </option>
+                                        <option value="112">
+                                            Jordan
+                                        </option>
+                                        <option value="124">
+                                            Kazakhstan
+                                        </option>
+                                        <option value="114">
+                                            Kenya
+                                        </option>
+                                        <option value="117">
+                                            Kiribati
+                                        </option>
+                                        <option value="250">
+                                            Kosovo
+                                        </option>
+                                        <option value="122">
+                                            Kuwait
+                                        </option>
+                                        <option value="115">
+                                            Kyrgyzstan
+                                        </option>
+                                        <option value="125">
+                                            Laos
+                                        </option>
+                                        <option value="134">
+                                            Latvia
+                                        </option>
+                                        <option value="126">
+                                            Lebanon
+                                        </option>
+                                        <option value="131">
+                                            Lesotho
+                                        </option>
+                                        <option value="130">
+                                            Liberia
+                                        </option>
+                                        <option value="135">
+                                            Libya
+                                        </option>
+                                        <option value="128">
+                                            Liechtenstein
+                                        </option>
+                                        <option value="132">
+                                            Lithuania
+                                        </option>
+                                        <option value="133">
+                                            Luxembourg
+                                        </option>
+                                        <option value="147">
+                                            Macau
+                                        </option>
+                                        <option value="141">
+                                            Madagascar
+                                        </option>
+                                        <option value="155">
+                                            Malawi
+                                        </option>
+                                        <option value="157">
+                                            Malaysia
+                                        </option>
+                                        <option value="154">
+                                            Maldives
+                                        </option>
+                                        <option value="144">
+                                            Mali
+                                        </option>
+                                        <option value="152">
+                                            Malta
+                                        </option>
+                                        <option value="142">
+                                            Marshall Islands
+                                        </option>
+                                        <option value="149">
+                                            Martinique
+                                        </option>
+                                        <option value="150">
+                                            Mauritania
+                                        </option>
+                                        <option value="153">
+                                            Mauritius
+                                        </option>
+                                        <option value="246">
+                                            Mayotte
+                                        </option>
+                                        <option value="156">
+                                            Mexico
+                                        </option>
+                                        <option value="73">
+                                            Micronesia
+                                        </option>
+                                        <option value="138">
+                                            Moldova
+                                        </option>
+                                        <option value="137">
+                                            Monaco
+                                        </option>
+                                        <option value="146">
+                                            Mongolia
+                                        </option>
+                                        <option value="139">
+                                            Montenegro
+                                        </option>
+                                        <option value="151">
+                                            Montserrat
+                                        </option>
+                                        <option value="136">
+                                            Morocco
+                                        </option>
+                                        <option value="158">
+                                            Mozambique
+                                        </option>
+                                        <option value="145">
+                                            Myanmar
+                                        </option>
+                                        <option value="159">
+                                            Namibia
+                                        </option>
+                                        <option value="168">
+                                            Nauru
+                                        </option>
+                                        <option value="167">
+                                            Nepal
+                                        </option>
+                                        <option value="165">
+                                            Netherlands
+                                        </option>
+                                        <option value="160">
+                                            New Caledonia
+                                        </option>
+                                        <option value="170">
+                                            New Zealand
+                                        </option>
+                                        <option value="164">
+                                            Nicaragua
+                                        </option>
+                                        <option value="161">
+                                            Niger
+                                        </option>
+                                        <option value="163">
+                                            Nigeria
+                                        </option>
+                                        <option value="169">
+                                            Niue
+                                        </option>
+                                        <option value="162">
+                                            Norfolk Island
+                                        </option>
+                                        <option value="120">
+                                            North Korea
+                                        </option>
+                                        <option value="143">
+                                            North Macedonia
+                                        </option>
+                                        <option value="148">
+                                            Northern Mariana Islands
+                                        </option>
+                                        <option value="166">
+                                            Norway
+                                        </option>
+                                        <option value="171">
+                                            Oman
+                                        </option>
+                                        <option value="177">
+                                            Pakistan
+                                        </option>
+                                        <option value="184">
+                                            Palau
+                                        </option>
+                                        <option value="172">
+                                            Panama
+                                        </option>
+                                        <option value="175">
+                                            Papua New Guinea
+                                        </option>
+                                        <option value="185">
+                                            Paraguay
+                                        </option>
+                                        <option value="173">
+                                            Peru
+                                        </option>
+                                        <option value="176">
+                                            Philippines
+                                        </option>
+                                        <option value="180">
+                                            Pitcairn Islands
+                                        </option>
+                                        <option value="178">
+                                            Poland
+                                        </option>
+                                        <option value="183">
+                                            Portugal
+                                        </option>
+                                        <option value="181">
+                                            Puerto Rico
+                                        </option>
+                                        <option value="186">
+                                            Qatar
+                                        </option>
+                                        <option value="188">
+                                            Romania
+                                        </option>
+                                        <option value="190">
+                                            Russian Federation
+                                        </option>
+                                        <option value="191">
+                                            Rwanda
+                                        </option>
+                                        <option value="187">
+                                            Réunion
+                                        </option>
+                                        <option value="26">
+                                            Saint Barthélémy
+                                        </option>
+                                        <option value="198">
+                                            Saint Helena, Ascension and Tristan da Cunha
+                                        </option>
+                                        <option value="119">
+                                            Saint Kitts and Nevis
+                                        </option>
+                                        <option value="127">
+                                            Saint Lucia
+                                        </option>
+                                        <option value="140">
+                                            Saint Martin (French part)
+                                        </option>
+                                        <option value="179">
+                                            Saint Pierre and Miquelon
+                                        </option>
+                                        <option value="237">
+                                            Saint Vincent and the Grenadines
+                                        </option>
+                                        <option value="244">
+                                            Samoa
+                                        </option>
+                                        <option value="203">
+                                            San Marino
+                                        </option>
+                                        <option value="192">
+                                            Saudi Arabia
+                                        </option>
+                                        <option value="204">
+                                            Senegal
+                                        </option>
+                                        <option value="189">
+                                            Serbia
+                                        </option>
+                                        <option value="194">
+                                            Seychelles
+                                        </option>
+                                        <option value="202">
+                                            Sierra Leone
+                                        </option>
+                                        <option value="197">
+                                            Singapore
+                                        </option>
+                                        <option value="210">
+                                            Sint Maarten (Dutch part)
+                                        </option>
+                                        <option value="201">
+                                            Slovakia
+                                        </option>
+                                        <option value="199">
+                                            Slovenia
+                                        </option>
+                                        <option value="193">
+                                            Solomon Islands
+                                        </option>
+                                        <option value="205">
+                                            Somalia
+                                        </option>
+                                        <option value="247">
+                                            South Africa
+                                        </option>
+                                        <option value="89">
+                                            South Georgia and the South Sandwich Islands
+                                        </option>
+                                        <option value="121">
+                                            South Korea
+                                        </option>
+                                        <option value="207">
+                                            South Sudan
+                                        </option>
+                                        <option value="68">
+                                            Spain
+                                        </option>
+                                        <option value="129">
+                                            Sri Lanka
+                                        </option>
+                                        <option value="182">
+                                            State of Palestine
+                                        </option>
+                                        <option value="195">
+                                            Sudan
+                                        </option>
+                                        <option value="206">
+                                            Suriname
+                                        </option>
+                                        <option value="200">
+                                            Svalbard and Jan Mayen
+                                        </option>
+                                        <option value="212">
+                                            Swaziland
+                                        </option>
+                                        <option value="196">
+                                            Sweden
+                                        </option>
+                                        <option value="43">
+                                            Switzerland
+                                        </option>
+                                        <option value="211">
+                                            Syria
+                                        </option>
+                                        <option value="208">
+                                            São Tomé and Príncipe
+                                        </option>
+                                        <option value="227">
+                                            Taiwan
+                                        </option>
+                                        <option value="218">
+                                            Tajikistan
+                                        </option>
+                                        <option value="228">
+                                            Tanzania
+                                        </option>
+                                        <option value="217">
+                                            Thailand
+                                        </option>
+                                        <option value="223">
+                                            Timor-Leste
+                                        </option>
+                                        <option value="216">
+                                            Togo
+                                        </option>
+                                        <option value="219">
+                                            Tokelau
+                                        </option>
+                                        <option value="222">
+                                            Tonga
+                                        </option>
+                                        <option value="225">
+                                            Trinidad and Tobago
+                                        </option>
+                                        <option value="221">
+                                            Tunisia
+                                        </option>
+                                        <option value="224">
+                                            Turkey
+                                        </option>
+                                        <option value="220">
+                                            Turkmenistan
+                                        </option>
+                                        <option value="213">
+                                            Turks and Caicos Islands
+                                        </option>
+                                        <option value="226">
+                                            Tuvalu
+                                        </option>
+                                        <option value="232">
+                                            USA Minor Outlying Islands
+                                        </option>
+                                        <option value="230">
+                                            Uganda
+                                        </option>
+                                        <option value="229">
+                                            Ukraine
+                                        </option>
+                                        <option value="2">
+                                            United Arab Emirates
+                                        </option>
+                                        <option value="231">
+                                            United Kingdom
+                                        </option>
+                                        <option value="233">
+                                            United States
+                                        </option>
+                                        <option value="234">
+                                            Uruguay
+                                        </option>
+                                        <option value="235">
+                                            Uzbekistan
+                                        </option>
+                                        <option value="242">
+                                            Vanuatu
+                                        </option>
+                                        <option value="238">
+                                            Venezuela
+                                        </option>
+                                        <option value="241">
+                                            Vietnam
+                                        </option>
+                                        <option value="239">
+                                            Virgin Islands (British)
+                                        </option>
+                                        <option value="240">
+                                            Virgin Islands (USA)
+                                        </option>
+                                        <option value="243">
+                                            Wallis and Futuna
+                                        </option>
+                                        <option value="66">
+                                            Western Sahara
+                                        </option>
+                                        <option value="245">
+                                            Yemen
+                                        </option>
+                                        <option value="248">
+                                            Zambia
+                                        </option>
+                                        <option value="249">
+                                            Zimbabwe
+                                        </option>
+                                        <option value="15">
+                                            Åland Islands
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group  col-lg-6 div_state" style="display: none">
+                                    <label class="col-form-label" for="state_id">State / Province</label>
+                                    <select name="state_id" class="form-control ">
+                                        <option value="">State / Province...</option>
+                                    </select>
+                                </div>
+                                <div class="w-100"></div>
+                            </div>
+                            <input type="hidden" name="csrf_token">
+                            <input type="hidden" name="submitted">
+                            <input type="hidden" name="partner_id">
+                            <input type="hidden" name="callback">
+                            <input type="hidden" name="field_required">
+                            <div class="d-flex justify-content-between">
+                                <a role="button" class="btn btn-secondary mb32" href="#">
+                                    <i class="fa fa-chevron-left"></i>
+                                    <span>Back</span>
+                                </a>
+                                <a role="button" href="#" class="btn btn-primary mb32 a-submit a-submit-disable a-submit-loading">
+                                    <span>Next</span>
+                                    <i class="fa fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      @*  =====================================================================================================================*@
+ <div class="container oe_website_sale py-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="wizard">
+                                <div class="progress-wizard">
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step10" class="progress-wizard-step complete">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Review Order</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step20" class="progress-wizard-step active">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Address</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step40" class="progress-wizard-step disabled">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Confirm Order</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-auto order-xl-2 d-none d-xl-block">
+                    <div class="card" style="border:1px solid !important">
+                        <div class="card-body p-xl-0">
+                            <div class="toggle_summary d-xl-none">
+                                <b>Your order: </b> <span id="amount_total_summary" class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</span>
+                                <span class="fa fa-chevron-down fa-border float-right" role="img"></span>
+                            </div>
+                            <div class="toggle_summary_div d-none d-xl-block">
+                                <table class="table table-striped table-sm" id="cart_products">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0 td-img">Product</th>
+                                            <th class="border-top-0"></th>
+                                            <th class="border-top-0 td-qty">Quantity</th>
+                                            <th class="border-top-0 text-center td-price">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-img text-center">
+                                                <span><img src="~/images/camel-filters.gif" class="img rounded o_image_64_max" alt="" loading="lazy"></span>
+                                            </td>
+                                            <td class="td-product_name">
+                                                <div>
+                                                    <strong>hello</strong>
+                                                </div>
+                                            </td>
+                                            <td class="td-qty">
+                                                <div>1.0</div>
+                                            </td>
+                                            <td class="text-center td-price">
+                                                <span style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="cart_total" class="">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr id="empty">
+                                                <td rowspan="10" class="border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                            </tr>
+                                            <tr id="order_total_untaxed">
+                                                <td class="text-right border-0">Subtotal:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total_taxes">
+                                                <td class="text-right border-0">Taxes:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">0.17</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total">
+                                                <td class="text-right"><strong>Total:</strong></td>
+                                                <td class="text-xl-right">
+                                                    <strong class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl order-xl-1 oe_cart">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3 class="o_page_header mt8">Billing Address</h3>
+                        </div>
+                        <div class="col-lg-6 one_kanban">
+                            <form action="#" method="POST" class="d-none">
+                                <input type="hidden" name="csrf_token">
+                                <input type="hidden" name="partner_id">
+                                <input type="submit">
+                            </form>
+                            <div class="card border border-primary">
+                                <div class="card-body" style="min-height: 130px;">
+                                    <a href="#" class="btn btn-link float-right p-0 js_edit_address no-decoration" role="button" title="Edit this address" aria-label="Edit this address"><i class="fa fa-edit"></i></a>
+                                    <address class="mb-0" itemscope="itemscope">
+                                        <div>
+                                            <span itemprop="name">absol, gulzar ahmad</span>
+                                        </div>
+                                        <div itemprop="address" itemscope="itemscope">
+                                            <div class="d-flex align-items-baseline">
+                                                <span class="w-100 o_force_ltr d-block" itemprop="streetAddress">Ferozewattwan<br>sdasdasdas<br>Ferozewattwan  39180<br>Pakistan</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                        </div>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3 class="o_page_header mt16 mb4">Shipping Address</h3>
+                        </div>
+                    </div>
+                    <div class="row all_shipping">
+                        <div class="col-lg-12">
+                            <div class="row mt8">
+                                <div class="col-md-12 col-lg-12 one_kanban">
+                                    <form action="#" method="post" class="">
+                                        <input type="hidden" name="csrf_token">
+                                        <a role="button" style="border:none!important;" href="#" class="a-submit btn btn-secondary mb-2 btn-block">
+                                            <i class="fa fa-plus-square"></i>
+                                            <span>Add an address</span>
+                                        </a>
+                                    </form>
+                                </div>
+                                <div class="col-md-12 col-lg-6 one_kanban mb-2">
+                                    <form action="/shop/checkout" method="POST" class="d-none">
+                                        <input type="hidden" name="csrf_token">
+                                        <input type="hidden" name="partner_id">
+                                        <input type="hidden" name="callback">
+                                        <input type="submit">
+                                    </form>
+                                    <div class="card border border-primary">
+                                        <div class="card-body" style="min-height: 130px;">
+                                            <address class="mb-0" itemscope="itemscope">
+                                                <div>
+                                                    <span itemprop="name">absol, gulzar ahmad</span>
+                                                </div>
+                                                <div itemprop="address" itemscope="itemscope">
+                                                    <div class="d-flex align-items-baseline">
+                                                        <span class="w-100 o_force_ltr d-block" itemprop="streetAddress">Ferozewattwan<br>sdasdasdas<br>Ferozewattwan  39180<br>Pakistan</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a role="button" style="border:none!important;" href="#" class="btn btn-secondary mb32">
+                            <i class="fa fa-chevron-left"></i>
+                            <span>Return to Cart</span>
+                        </a>
+                        <a role="button" href="#" class="btn btn-primary mb32">
+                            <span>Confirm</span>
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+          @*  =========================================================================================================*@
+    <div class="container oe_website_sale py-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="wizard">
+                                <div class="progress-wizard">
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step10" class="progress-wizard-step complete">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Review Order</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step20" class="progress-wizard-step complete">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Address</div>
+                                        </div>
+                                    </a>
+                                    <a class="no-decoration" href="#">
+                                        <div id="wizard-step40" class="progress-wizard-step active">
+                                            <div class="progress-wizard-bar d-none d-md-block"></div>
+                                            <span class="progress-wizard-dot d-none d-md-inline-block"></span>
+                                            <div class="text-center progress-wizard-steplabel">Confirm Order</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-auto order-xl-2">
+                    <div class="card" style="border: 1px solid !important">
+                        <div class="card-body p-xl-0">
+                            <div class="toggle_summary d-xl-none">
+                                <b>Your order: </b> <span id="amount_total_summary" class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</span>
+                                <span class="fa fa-chevron-down fa-border float-right" role="img" aria-label="Details" title="Details"></span>
+                            </div>
+                            <div class="toggle_summary_div d-none d-xl-block">
+                                <table class="table table-striped table-sm" id="cart_products">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0 td-img">Product</th>
+                                            <th class="border-top-0"></th>
+                                            <th class="border-top-0 td-qty">Quantity</th>
+                                            <th class="border-top-0 text-center td-price">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="td-img text-center">
+                                                <span><img src="~/images/chesterfield-red.gif" class="img rounded o_image_64_max" alt="hello" loading="lazy"></span>
+                                            </td>
+                                            <td class="td-product_name">
+                                                <div>
+                                                    <strong>hello</strong>
+                                                </div>
+                                            </td>
+                                            <td class="td-qty">
+                                                <div>1.0</div>
+                                            </td>
+                                            <td class="text-center td-price">
+                                                <span style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="cart_total" class="">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr id="empty">
+                                                <td rowspan="10" class="border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                                <td class="col-md-2 col-3 border-0"></td>
+                                            </tr>
+                                            <tr id="order_total_untaxed">
+                                                <td class="text-right border-0">Subtotal:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total_taxes">
+                                                <td class="text-right border-0">Taxes:</td>
+                                                <td class="text-xl-right border-0">
+                                                    <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">0.17</span>&nbsp;Rs.</span>
+                                                </td>
+                                            </tr>
+                                            <tr id="order_total">
+                                                <td class="text-right"><strong>Total:</strong></td>
+                                                <td class="text-xl-right">
+                                                    <strong class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl order-xl-1 oe_cart">
+                    <div id="address_on_payment">
+                        <div class="card" style="border: 1px solid !important">
+                            <div class="card-body" id="shipping_and_billing">
+                                <a class="float-right no-decoration" href="#"><i class="fa fa-edit"></i> Edit</a>
+                                <div>
+                                    <b>Billing &amp; Shipping: </b>
+                                    <span class="address-inline">
+                                        <address class="mb-0" itemscope="itemscope">
+                                            <div itemprop="address" itemscope="itemscope">
+                                                <div class="d-flex align-items-baseline">
+                                                    <span class="w-100 o_force_ltr d-block" itemprop="streetAddress">Ferozewattwan, sdasdasdas, Ferozewattwan  39180, Pakistan</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                            </div>
+                                        </address>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure clearfix mt-3"></div>
+                    <div id="payment_method" class="mt-3">
+                        <h3 class="mb24">Pay with </h3>
+                        <form name="o_payment_checkout" class="o_payment_form mt-3 clearfix">
+                            <div class="card" style="border: 1px solid !important">
+                                <div class="card-body o_payment_option_card">
+                                    <label>
+                                        <input name="o_payment_radio" type="radio" checked="checked" class="d-none">
+                                        <span class="payment_option_name">
+                                            <b>Wire Transfer</b>
+                                        </span>
+                                    </label>
+                                    <ul class="payment_icon_list float-right list-inline" data-max-icons="3">
+                                    </ul>
+                                </div>
+                                <div name="o_payment_inline_form" class="card-footer d-none" id="o_payment_acquirer_inline_form_14">
+                                </div>
+                            </div>
+                            <div name="o_checkbox_container" class="custom-control custom-checkbox mt-2 o_accept_tc_button"></div>
+                            <div class="float-left mt-2">
+                                <a role="button" style="border:none !important" href="#" class="btn btn-secondary">
+                                    <i class="fa fa-chevron-left"></i> Return to Cart
+                                </a>
+                            </div>
+                            <div class="float-right mt-2">
+                                <button name="o_payment_submit_button" type="submit" class="btn btn-primary" data-icon-class="fa-chevron-right">
+                                    Pay Now <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+         @*   =======================================================================*@
+    <div class="container oe_website_sale py-2">
+        <h1><b><span>Order</span> <em>S00003</em> </b></h1>
+        <div class="row">
+            <div class="col-12 col-xl">
+                <div class="oe_cart">
+                    <div class="oe_structure clearfix mt-3"></div>
+                    <h3 class="text-left mt-3">
+                        <strong>Payment Information:</strong>
+                    </h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    Wire Transfer
+                                </td>
+                                <td class="text-right" width="100">
+                                    <strong>Total:</strong>
+                                </td>
+                                <td class="text-right" width="100">
+                                    <strong><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="oe_website_sale_tx_status mt-3">
+                        <div class="oe_website_sale_tx_status mt-3">
+                            <div class="card bg-info">
+                                <div class="card-header">
+                                    <a role="button" class="btn btn-sm btn-link text-white float-right" href="#">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <h3 >Please use the following transfer details</h3><h4>Bank Accounts</h4><ul></ul><h4>Communication</h4><p class="text-white">Please use the order name as communication reference.</p>
+                                </div>
+                                <div class="card-body">
+                                    <b>Communication: </b><span>S00003</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3" style="border:1px solid!important">
+                        <div class="card-body">
+                            <div>
+                                <b>Billing  &amp; Shipping: </b><span class="address-inline">
+                                    <address class="mb-0">
+                                        <div itemprop="address">
+                                            <div class="d-flex align-items-baseline">
+                                                <span class="w-100 o_force_ltr d-block">Ferozewattwan, sdasdasdas, Ferozewattwan  39180, Pakistan</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                        </div>
+                                    </address>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure mt-3"></div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-auto">
+                <div class="card" style="border: 1px solid !important">
+                    <div class="card-body p-xl-0">
+                        <div class="toggle_summary d-xl-none">
+                            <b>Your order: </b> <span class="monetary_field"><span class="oe_currency_value">1.17</span>&nbsp;Rs.</span>
+                            <span class="fa fa-chevron-down fa-border float-right"></span>
+                        </div>
+                        <div class="toggle_summary_div d-none d-xl-block">
+                            <table class="table table-striped table-sm" id="cart_products">
+                                <thead>
+                                    <tr>
+                                        <th class="border-top-0 td-img">Product</th>
+                                        <th class="border-top-0"></th>
+                                        <th class="border-top-0 td-qty">Quantity</th>
+                                        <th class="border-top-0 text-center td-price">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td-img text-center">
+                                            <span><img src="~/images/chesterfield-red.gif" class="img rounded o_image_64_max" alt="hello" loading="lazy"></span>
+                                        </td>
+                                        <td class="td-product_name">
+                                            <div>
+                                                <strong>hello</strong>
+                                            </div>
+                                        </td>
+                                        <td class="td-qty">
+                                            <div>1.0</div>
+                                        </td>
+                                        <td class="text-center td-price">
+                                            <span><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div id="cart_total" class="">
+                                <table class="table">
+                                    <tbody>
+                                        <tr id="empty">
+                                            <td rowspan="10" class="border-0"></td>
+                                            <td class="col-md-2 col-3 border-0"></td>
+                                            <td class="col-md-2 col-3 border-0"></td>
+                                        </tr>
+                                        <tr id="order_total_untaxed">
+                                            <td class="text-right border-0">Subtotal:</td>
+                                            <td class="text-xl-right border-0">
+                                                <span style="white-space: nowrap;"><span class="oe_currency_value">1.00</span>&nbsp;Rs.</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="order_total_taxes">
+                                            <td class="text-right border-0">Taxes:</td>
+                                            <td class="text-xl-right border-0">
+                                                <span class="monetary_field" style="white-space: nowrap;"><span class="oe_currency_value">0.17</span>&nbsp;Rs.</span>
+                                            </td>
+                                        </tr>
+                                        <tr id="order_total">
+                                            <td class="text-right"><strong>Total:</strong></td>
+                                            <td class="text-xl-right">
+                                                <strong><span class="oe_currency_value">1.17</span>&nbsp;Rs.</strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

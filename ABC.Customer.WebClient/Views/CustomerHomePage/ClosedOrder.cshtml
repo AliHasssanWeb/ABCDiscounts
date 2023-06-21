@@ -1,0 +1,73 @@
+@model IEnumerable<ABC.EFCore.Repository.Edmx.CustomerOrder>
+@{
+    ViewData["Title"] = "PendingOrder";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.error('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+<script>
+    function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        }
+</script>
+
+<div class="card mx-5 my-3">
+    <div class="card-title">
+        <h4 class="text-center mt-3">Closed Orders</h4>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Serial No:</th>
+                        <th scope="col">Invoice#:</th>
+                        <th scope="col">Delivered Status:</th>
+                        <th scope="col">Customer:</th>
+                        <th scope="col">Gross Amount:</th>
+                        <th scope="col">Order Date:</th>
+                        <th scope="col">Action:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int i = 1;}
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                        <th scope="row">@i</th>
+                        <td>@item.TicketId</td>
+                        <td>@item.Delivered</td>
+                        <td>@item.CustomerName</td>
+                        <td>$@item.OrderAmount</td>
+                        <td>@item.OrderDate</td>
+                        <td> @*<button class="btn btn-primary btn-sm">View Details</button>*@
+                            <a class="btn btn-sm btn-primary"  href='@Url.Action("OrderDetails", "CustomerHomePage", new { id = @item.TicketId, type="Closed" })': null">View Details</a>
+                        </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+   
+

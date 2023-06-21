@@ -1,0 +1,255 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model ABC.EFCore.Repository.Edmx.EmpTax
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div class="row container">
+    <div class="col-md-12">
+        @*<form asp-action="AddEmployeeAllowance">*@
+
+        @*<form method="post" action="@Url.Action("AddEmployeeAllowance","/HumanResource/Employees")">*@
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeId" id="employeeIdd"
+                        class="form-control"
+                        asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                    <option disabled selected>--- SELECT EMPLOYEE---</option>
+                </select>
+                <small id="emppId" class="text-danger text-info"></small>
+                @*<input asp-for="EmployeeId" class="form-control" />*@
+                 
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="EmpTaxTypeId" class="control-label"></label>
+                <select asp-for="EmpTaxTypeId" id="empTaxTypeIdd"
+                        class="form-control"
+                        asp-items="@(new SelectList(ViewBag.EmpTaxType,"Value", "Text"))">
+                    <option disabled selected>--- SELECT TAX TYPE---</option>
+
+                </select>
+                <small id="taxTypeIdd" class="text-danger text-info"></small>
+                @*<input asp-for="AllowanceTypeId" class="form-control" />*@
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="Date" class="control-label"></label>
+                <input  class="form-control" id="mydate" type="date"/>
+                
+                <small id="datted" class="text-danger text-info"></small>
+
+            </div>
+
+            <div class="form-group col-md-6">
+                <label  class="control-label">Auto Caluculated On TaxType Selection</label>
+                <input id="amoount" class="form-control" type="number"/>
+             
+                <small id="ptamounnt" class="text-danger text-info"></small>
+            </div>
+        </div>
+
+        <div class="row">
+
+
+            <div class="form-group col-md-8">
+
+                <label asp-for="Reason" class="control-label"></label>
+                <textarea  id="txreason" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>
+                 
+                <small id="reasoon" class="text-danger text-info"></small>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label asp-for="IsApprove" class="control-label"></label>
+                <input id="isApprovee" type="checkbox" checked />
+                 
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            <input type="button" value="Create" onclick="SavePartialTax()" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+            <button type="button" class="btn btn-lg btn-dark me-3 wd-40" data-dismiss="modal" style="color:whitesmoke">Close</button>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+@*<script>
+        $(function () {
+
+            $('#submitalo').on('click', function (evt) {
+                debugger
+                evt.preventDefault();
+                var url = "/HumanResource/Employees/AddEmployeeAllowance"
+                $.post('/HumanResource/Employees/AddEmployeeAllowance', $('#myForm').serialize(), function () {
+                    alert('Posted using jQuery');
+                });
+            });
+        });
+    </script>*@
+
+
+
+<script>
+    function SavePartialTax() {
+
+        debugger
+        var Employee = $("#employeeIdd").val();
+        var TaxType = $("#empTaxTypeIdd").val();
+        var Date = $("#mydate").val();
+        var Amount = $("#amoount").val();
+        var Reason = $("#txreason").val();
+
+        if (Employee == null) {
+            $("#emppId").html("<ul><li>Please Select Employee.</li> </ul>");
+            return false;
+        }
+        else if (TaxType == null) {
+
+            $("#taxTypeIdd").html("<ul><li>Please enter TaxType here.</li> </ul>");
+            $("#emppId").html("");
+            return false;
+        }
+        else if (Date == "") {
+            $("#datted").html("<ul><li>Please fill Date field</li> </ul>");
+            $("#taxTypeIdd").html("");
+
+            return false;
+
+
+        }
+
+
+        else if (Amount == "") {
+
+            $("#ptamounnt").html("<ul><li>Please enter amount here.</li> </ul>");
+            $("#datted").html("");
+            return false;
+        }
+
+
+
+        else if (Reason == "") {
+            $("#reasoon").html("<ul><li>Please fill Reason field</li> </ul>");
+            $("#ptamounnt").html("");
+
+            return false;
+
+        }
+        $.ajax({
+
+            type: "POST",
+            url: '@Url.Action("AddEmployeeTax", "EmployeeTax")',
+            //url: "https://localhost:44372/PayRoll/EmployeeTax/AddEmployeeTax",
+            //url: "https://apps.ab-sol.net/abc.pos/PayRoll/EmployeeTax/AddEmployeeTax",
+            data: { EmployeeId: $("#employeeIdd").val(), EmpTaxTypeId: $("#empTaxTypeIdd").val(), Date: $("#mydate").val(), Amount: $("#amoount").val(), Reason: $("#txreason").val(), IsApprove: $("#isApprovee").val() },
+            //       contentType: "application/json; charset=utf-8",
+            //     dataType: "json",
+            success: function (data) {
+                $("#emppId").html("");
+                $("#taxTypeIdd").html("");
+                $("#datted").html("");
+                $("#reasoon").html("");
+
+                $("#employeeIdd").val("");
+                $("#empTaxTypeIdd").val("");
+                $("#mydate").val("");
+                $("#amoount").val("");
+                $("#txreason").val("");
+
+                toastr.success("Saved Successfully");
+            }
+        });
+    }
+</script>
+
+<script>
+    
+
+
+    $(document).on('focusout', '#empTaxTypeIdd', function () {
+
+
+        var empidsal = $("#employeeIdd").val();
+
+
+        $.ajax({
+            type: "GET",
+            url: "GetEmplyeeSalary",
+            data: { "empidforsal": empidsal },
+            dataType: "json",
+            success: function (data) {
+                debugger
+
+                if (checkisvage == true) {
+                   // var byhoursalary12 = parseInt(dailyWagesChargesAmountperhour) * parseInt(totolattendendedhourssss);
+                    var obj2 = 0;
+                }
+                else {
+                    var obj2 = data[0].salary;
+                }
+                
+
+
+                var empidsal = $("#empTaxTypeIdd").val();
+
+
+                $.ajax({
+                    type: "GET",
+                    url: "CalculatEmployeeTax",
+                    data: { "empidforallonce": empidsal },
+                    dataType: "json",
+                    success: function (data1) {
+                        debugger
+                        var obj3 = data1[0].amountLimit;
+                        var obj3perc = obj3 / 100
+                        var finalvalue = obj2 * obj3perc;
+                        $("#amoount").val(finalvalue);
+
+
+                    }, error: function (err) {
+
+                    }
+
+                });
+
+
+                //$("#empsalary").val(obj2);
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+    });
+
+</script>

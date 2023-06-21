@@ -1,0 +1,391 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Customerdata>
+@{
+    ViewData["Title"] = "customer_approval";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel='stylesheet' type='text/css'>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:1250px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button"onclick="modeldismiss()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <img style="float:right" src="~/images/a1.jpg" class="rounded-circle" alt="User Image" />
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <br><span> Name : <span id="fullName" ></span></span><br />
+                        <br><span> Email :<span id="email"></span></span><br />
+                        <br><span> Phone :<span id="phone"></span></span><br />
+                        <br><span> Mobile :<span id="mobile"> </span></span><br />
+                        <br><span> Address :<span id="address"> </span></span><br />
+                       
+                        <br> <span> Image By Path :<span id="imageByPath"> </span></span><br />
+                        <br> <span>Customer Code :<span id="customerCode"> </span></span><br />
+                        <br> <span>Driving license :<span id="drivingLicense"></span></span><br />
+                        <br> <span> Discount :<span id="discount"> </span></span><br />
+                        <br><span> TaxExempt :<span id="taxExempt"> </span></span><br />
+
+
+
+                    </div>
+                    <div class="col-md-3">
+
+                        <br> <span>Bussiness Name :<span id="businessName"> </span></span><br />
+                        <br> <span> Customer Type :<span id=""> </span></span><br />
+                        <br><span> Tobacco License :<span id="tobaccoLicenseNumber"> </span></span><br />
+                        <br> <span> Cigratte License :<span id="cigratteLicenceNumber"></span></span><br />
+                        <br> <span>Driving License :<span id="drivingLicenseState"> </span></span><br />
+                        <br><span> City :<span id="city"> </span ></span><br />
+                        <br> <span>Registration_Type :<span id="registrationType"> </span></span><br />
+                        <br><span>Mailing_Address :<span id="mailingAddress"> </span></span><br />
+                        <br> <span>Business_Address :<span id="businessAddress"> </span></span><br />
+                        <br> <span> Terms_Condition :<span id="termsCondition"> </span></span><br />
+                        <br><span>Postal_Code :<span id="postalCode"> </span></span><br />
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+
+                        <br><span>Account Number :<span id="accountNumber"> </span></span><br />
+                        <br><span>Account Id :<span id="accountId"> </span></span><br />
+                        <br><span>Account Title :<span id="accountTitle"> </span></span><br />
+                        <br><span>Admin Approvel :<span id="adminApproval"> </span></span><br />
+                        <br><span> Customer State :<span id="customerState"> </span></span><br />
+                        <br><span> StateReSaleTaxID :<span id="stateResaleTaxId"> </span></span><br />
+                        <br><span>FromScreen :<span id="fromScreen"> </span></span><br />
+                        <br><span>  Password_Hash :<span id="passwordHash"> </span></span><br />
+                        <br><span>Company :<span id="company"> </span></span><br />
+                        <br><span> Street :<span id="street"> </span></span><br />
+                        <br><span>Country :<span id="country"> </span></span><br />
+
+                    </div>
+
+                    <div class="col-md-3">
+                      
+                        <br><span>Other :<span id="other"> </span></span><br />
+                        <br><span> Website :<span id="website"> </span></span><br />
+                        <br><span>Tax_IDFEIN :<span id="taxIdfein"> </span></span><br />
+                        <br><span> Fax :<span id="fax"> </span></span><br />
+                        <br><span>Provider :<span id="provider"> </span></span><br />
+                        <br><span>Vendor :<span id="vendor"> </span></span><br />
+                        <br><span>DEA :<span id="dea"> </span></span><br />
+                        <br><span>Memo :<span id="memo"> </span></span><br />
+                        <br><span>Status:<span id="status"> </span></span><br />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="modeldismiss()" data-dismiss="modal">Close</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive m-t-40 m-t-400">
+    <table class="demo-foo-addrow2 table table-bordered table m-b-0 toggle-arrow-tiny example23" cellspacing="0" width="100%">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Driving License</th>
+                <th>Customer Code</th>
+                <th>CustomerType</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>@item.DrivingLicense</td>
+                        <td>@item.CustomerCode</td>
+                        <td>@item.CustomerType</td>
+                        <td style="width:21em;">
+
+
+                            <button class="btn btn-primary ">
+                                <a style="font-size: 28px;color:mediumaquamarine;" onclick="submitblacklist('@item.CustomerId')" data-toggle="tooltip" data-original-title="Reject"> Reject<i class="fa fa-send "></i> </a>
+                            </button>
+
+                            <a class="btn btn-primary" onclick="customerdetail('@item.CustomerId')">
+                                info
+                                </a>
+
+                                @* <a>@Html.ActionLink(" ", "systemuserinfo", "admin", null, null, "", new { tid = item.AccountId }, new { @class = "fa fa-info-circle fontsizee", title = "info" })</a>*@
+                                @*   <button type="button" onclick="customerdetail('@item.CustomerId')" class="btn btn-primary">*@
+                                @*</button>*@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Driving License</th>
+                <th>Customer Code</th>
+                <th>CustomerType</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="~/Admin/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+
+    function submitapprove(count) {
+
+        var id = count;
+        alert(id);
+
+        $.ajax
+            (
+                {
+                    type: "GET",
+                    url: "/admin/approve",
+                    contentType: "Application/json;charset=utf-8",
+                    data: { accountid: id },
+                    success: function (response) {
+                        console.log("result", response);
+                        approvedisplaysweet();
+                        setTimeout(function () {
+                            location.reload(true);
+
+                        }, 1000);
+
+                        /*      setTimeout(displaysweet, 1000);*/
+
+
+
+
+
+
+                    },
+
+
+                }
+            );
+        $("#purposalform").addClass("in-down");
+        $('#purposalform').show();
+
+    }
+
+    function submitblacklist(count) {
+
+        var id = count;
+
+
+        $.ajax
+            (
+                {
+                    type: "GET",
+                    url: "/admin/blacklist",
+                    contentType: "Application/json;charset=utf-8",
+                    data: { accountid: id },
+                    success: function (response) {
+                        console.log("result", response);
+                        blackdisplaysweet();
+                        setTimeout(function () {
+                            location.reload(true);
+
+                        }, 1000);
+
+                        /*      setTimeout(displaysweet, 1000);*/
+
+
+
+
+
+
+                    },
+
+
+                }
+            );
+        $("#purposalform").addClass("in-down");
+        $('#purposalform').show();
+
+    }
+    function approvedisplaysweet() {
+        var icon = "success";
+        if (status == "success") {
+            icon = "success";
+        }
+
+        var config = {}
+        config.icon = icon;
+        config.title = "Success";
+        config.text = "User Approved SuccessFully";
+
+        Swal.fire(config);
+
+    }
+
+    function blackdisplaysweet() {
+        var icon = "success";
+        if (status == "success") {
+            icon = "success";
+        }
+
+        var config = {}
+        config.icon = icon;
+        config.title = "Success";
+        config.text = "User BlackListed SuccessFully";
+
+        Swal.fire(config);
+
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+
+
+    function modeldismiss() {
+        $("#exampleModal").modal('hide');
+
+    }
+    $('#purposalform').hide();
+    function customerdetail(count) {
+        var id = count;
+
+        $("#exampleModal").modal('show');
+
+        $.ajax
+            (
+
+                {
+                    type: "GET",
+
+                    url: "/admin/getcustomerinfo",
+                    contentType: "Application/json;charset=utf-8",
+                    data: {accountid: id },
+                    success: function (data) {
+                        console.log("result", data);
+
+                        /*    document.getElementById("myImageID").src = "~/projectimages/manivectoricon.jpg";*/
+                        $('#accountNumber').text(data[0].accountNumber);
+                        $('#email').text(data[0].email);
+                      
+                        $('#accountId').text(data[0].accountId);
+                        $('#accountTitle').text(data[0].accountTitle);
+                        $('#address').text(data[0].address);
+                        $('#adminApproval').text(data[0].adminApproval);
+                        $('#businessAddress').text(data[0].businessAddress);
+                        $('#businessName').text(data[0].businessName);
+                        $('#cigratteLicenceNumber').text(data[0].cigratteLicenceNumber);
+                        $('#city').text(data[0].city);
+                        $('#company').text(data[0].company);
+                        $('#country').text(data[0].country);
+                        $('#customerCode').text(data[0].customerCode);
+                        $('#customerId').text(data[0].customerId);
+                        $('#customerState').text(data[0].customerState);
+                        $('#customerType').text(data[0].customerType);
+                        $('#discount').text(data[0].discount);
+                        $('#drivingLicense').text(data[0].drivingLicense);
+                        $('#drivingLicenseState').text(data[0].drivingLicenseState);
+                        $('#email').text(data[0].email);
+                        $('#fax').text(data[0].fax);
+                        $('#fromScreen').text(data[0].fromScreen);
+                        $('#fullName').text(data[0].fullName);
+                        $('#imageByPath').text(data[0].imageByPath);
+                        $('#mailingAddress').text(data[0].mailingAddress);
+                        $('#memo').text(data[0].memo);
+                        $('#mobile').text(data[0].mobile);
+                        $('#other').text(data[0].other);
+                        $('#passwordHash').text(data[0].passwordHash);
+                        $('#phone').text(data[0].phone);
+                        $('#postalCode').text(data[0].postalCode);
+                        $('#profileImage').text(data[0].profileImage);
+                        $('#provider').text(data[0].provider);
+                        $('#registrationType').text(data[0].registrationType);
+                        $('#stateResaleTaxId').text(data[0].stateResaleTaxId);
+                        $('#taxExempt').text(data[0].taxExempt);
+                        $('#taxIdfein').text(data[0].taxIdfein);
+                        $('#termsCondition').text(data[0].termsCondition);
+                        $('#tobaccoLicenseNumber').text(data[0].tobaccoLicenseNumber);
+                        $('#vendor').text(data[0].vendor);
+                        $('#website').text(data[0].website);
+                       
+
+
+                        //$("#verified").text(data.productList[0].status);
+                        //$("#passppt").text(data.flavourList[0].prefferedPackageType);
+                        //$("#pflightdate").text(data.flavourList[0].flightDate);
+                        //$("#pavailableweight").text(data.flavourList[0].availableWeight);
+                        //$("#pppk").text(data.flavourList[0].pricePerKG + " " + data.flavourList[0].currency);
+                        //$("#ptocity").text(data.flavourList[0].city);
+                        //$("#ptocountry").text(data.flavourList[0].country);
+                        //$("#ptoairport").text(data.flavourList[0].toAirport);
+                        //$("#pfromairport").text(data.flavourList[0].fromAirport);
+                        //$("#pfromcity").text(data.flavourList[0].fromCity);
+                        //$("#pfromcountry").text(data.flavourList[0].fromCountry);
+                        //$("#isnego").text(data.flavourList[0].isNegotionable);
+
+
+
+
+                    },
+
+
+                }
+            );
+
+
+
+
+
+       
+
+    }
+
+</script>

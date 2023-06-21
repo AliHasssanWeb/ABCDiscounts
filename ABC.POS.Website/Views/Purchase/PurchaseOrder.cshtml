@@ -1,0 +1,2250 @@
+﻿@model ABC.EFCore.Repository.Edmx.Purchase
+@{
+    ViewData["Title"] = "PurchesGrid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+
+
+<style>
+    .mdi-window-close {
+        color: red;
+    }
+
+    .btn-primary {
+        color: white !important;
+    }
+
+    .dropitem {
+        background: #e9ecef;
+        opacity: 1;
+        border: 0;
+        outline: 1px solid #dee2e6;
+        font-weight: 400;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Purchase/PurchaseOrder" aria-controls="overview" aria-selected="true">PurchaseOrder</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Purchase/AllPurchaseInvoices" aria-controls="overview" aria-selected="true">Purchase Invoices</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Account/Payables" role="tab" aria-selected="false">Payables</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Account/Paying" role="tab" aria-selected="false">Payment</a>
+        </li>
+
+    </ul>
+</div>
+<script>
+    function myFunc() {
+
+        $("#selectItem").val('');
+
+        $("#txtProductName").val('');
+        $("#txtProductCode").val('');
+        $("#txtProductBarCode").val('');
+        $("#txtSku").val('');
+        $("#selectQuntityUnit").val('');
+        $("#txtPurchaseDate").val('');
+        $("#txtQuntityPack").val('');
+        $("#txtUnitPrice").val('');
+        $("#txtQuntity").val('');
+        $("#txtTotalAmount").val('');
+        $("#txtGrossAmount").val('');
+        $("#txtVatTax").val('');
+        $("#txtQuantity").val('');
+        $("#txtUnitprice").val('');
+        $("#txtTotalAmount").val('');
+
+    }
+    function AddPurchaseOrder() {
+
+        var PurchaseOrder = {};
+        var isValid = false;
+        var VendorId = $("#VendorId").val();
+        var txtProductName = $("#txtProductName").val();
+        var txtProductCode = $("#txtProductCode").val();
+        var txtProductBarCode = $("#txtProductBarCode").val();
+        var txtSku = $("#txtSku").val();
+        var selectQuntityUnit = $("#selectQuntityUnit").val();
+        var txtPurchaseDate = $("#txtPurchaseDate").val();
+        var txtQuntityPack = $("#txtQuntityPack").val();
+        var txtUnitPrice = $("#txtUnitPrice").val();
+        var txtQuntity = $("#txtQuntity").val();
+        var txtTotalAmount = $("#txtTotalAmount").val();
+        var txtGrossAmount = $("#txtGrossAmount").val();
+        var txtVatTax = $("#txtVatTax").val();
+    }
+</script>
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"></h4>
+            <div class="row">
+                <h5>
+
+                    Invoice Number: @ViewBag.PurchaseCode
+                    <input value="@ViewBag.PurchaseCode" type="hidden" id="invoicenumber" />
+                </h5>
+                <br />
+                @*<div>
+                        <a href="@Url.Action("GeneratePdfpurchaselist","Purchase",new {area="Inventory" })" style="color: white; float: right" class="btn btn-success ignoreForPdf">Print</a>
+                    </div>*@
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Item</label>
+                        @Html.DropDownList("ItemId", (IEnumerable<SelectListItem>)ViewBag.Items, "--Choose Item--", new { @class = "col-sm-11 dropitem form-control", id = "selectItem" })
+                        @Html.ValidationMessageFor(model => model.ItemId, "", new { @class = "text-danger db", id = "ValMsgselectItem" })
+                        <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addleavetype"></i>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+
+                        <label class="dim col-sm-4">Supplier</label>
+                        @Html.DropDownList("VendorId", (IEnumerable<SelectListItem>)ViewBag.Vendors, "--Choose Supplier--", new { @class = "form-control", id = "selectsupplier" })
+                        @Html.ValidationMessageFor(model => model.VendorId, "", new { @class = "text-danger db", id = "ValMsgVendorId" })
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+
+                        <label class="dim col-sm-4">Store</label>
+                        @Html.DropDownList("StoreId", (IEnumerable<SelectListItem>)ViewBag.store, "--Choose Store--", new { @class = "form-control", id = "selectstore" })
+                        @Html.ValidationMessageFor(model => model.StoreId, "", new { @class = "text-danger db", id = "ValMsgstoreId" })
+                        <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addstore"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+
+                        <label class="dim col-sm-4">WareHouse</label>
+                        @Html.DropDownList("WareHouseId", (IEnumerable<SelectListItem>)ViewBag.warehouse, "--Choose WareHouse--", new { @class = "form-control", id = "selectwarehouse" })
+                        @Html.ValidationMessageFor(model => model.WareHouseId, "", new { @class = "text-danger db", id = "ValMsgwareId" })
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">SKU</label>
+                        @Html.EditorFor(model => model.Sku, new { htmlAttributes = new { @class = "form-control", placeholder = "SKU", id = "txtSku" } })
+                        @Html.ValidationMessageFor(model => model.Sku, "", new { @class = "text-danger db" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Item Name</label>
+                        @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Item Name", id = "txtProductName" } })
+                        @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger db", id = "ValMsgProductName" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductName" style="font-size:12px;"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Item Code</label>
+                        @Html.EditorFor(model => model.ProductCode, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Product Code", id = "txtProductCode" } })
+                        @Html.ValidationMessageFor(model => model.ProductCode, "", new { @class = "text-danger db" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductCode" style="font-size:12px;"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-5">Item BarCode</label>
+                        @Html.EditorFor(model => model.ProductBarCode, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Product BarCode", id = "txtProductBarCode" } })
+                        @Html.ValidationMessageFor(model => model.ProductBarCode, "", new { @class = "text-danger db" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductBarCode" style="font-size:12px;"></label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity Unit</label>
+                        @Html.DropDownList("QuantityUnit", new SelectList(ViewBag.QuantityUnit, "QuantityId", "QuantityUnit"), "--- Select Quantity Unit ---", new { @class = "form-control", id = "selectQunatityUnit" })
+                        @Html.ValidationMessageFor(model => model.QuantityUnit, "", new { @class = "text-danger db", id = "valselectQunatityUnit" })
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity Pack</label>
+                        @Html.EditorFor(model => model.QuantityPack, new { htmlAttributes = new { @class = "form-control", placeholder = "Quantity Pack", id = "txtQuntityPack" } })
+                        @Html.ValidationMessageFor(model => model.QuantityPack, "", new { @class = "text-danger db" })
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Tax</label>
+                        @Html.EditorFor(model => model.VatTax, new { htmlAttributes = new { @class = "form-control", placeholder = "Tax", id = "txtVatTax" } })
+                        @Html.ValidationMessageFor(model => model.VatTax, "", new { @class = "text-danger db" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity</label>
+                        <input type="number" oninput="calculate()" class="form-control txtinput col-sm-10" id="txtQuantity" placeholder="Quantity" />
+                        @*//  @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Quantity", id = "txtQuntity" } })*@
+
+                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger db", id = "ValMsgQuantity" })
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Unit Charge</label>
+                        <input type="Text" id="txtUnitprice" oninput="calculate()" class="form-control txtinput col-sm-10" placeholder="Unit Charge" />
+                        @*@Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", placeholder = "Unit Charge", id = "txtUnitPrice" } })*@
+                        @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger db", id = "valmsgunitprice" })
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Total Amount</label>
+                        @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Total Amount", id = "txtTotalAmount" } })
+                        <label class="text-danger field-validation-error db" id="ValMsgTotalAmount" style="font-size:12px;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            @Html.CheckBox("Cash", false, new { id = "idcash" })
+                            @Html.ValidationMessageFor(model => model.Cash, "", new { @class = "text-danger db" })
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-check-label">
+                                Cash
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            @Html.CheckBox("Credit", false, new { id = "idcredit" })
+                            @Html.ValidationMessageFor(model => model.Credit, "", new { @class = "text-danger db" })
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-check-label">
+                                Credit
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class=" col-sm-10">
+
+                        <a></a><input type='button' onclick="myFunc();" value='Refresh' class="btn btn-primary send-btn pull-right btn-wd" />
+                    </div>
+                    <div class=" col-sm-2">
+                        <a class="btn btn-primary send-btn btn-wd pull-right btn-wd" data-added="0" onclick="inertRowsTogrid()" style="color: white"> Add</a>
+                        <div class="text-danger" id="errorPacket"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Purchase Cart</h5>
+        </div>
+        <div class="card-block">
+            <div class="table-responsive">
+                <table id="zero-configuration1" class="display table nowrap table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ItemName</th>
+                            <th>ItemCode</th>
+                            <th>BarCode</th>
+                            @*<th>QuantityPack</th>*@
+                            <th>Quantity</th>
+                            <th>UnitPrice</th>
+                            <th>TotalAmount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="ml-auto col-md-6">
+
+                </div>
+                <div class="ml-auto col-md-4">
+
+                </div>
+                <div class="ml-auto col-md-2" style="margin-top: 10px;">
+                    <span class="btn btn-primary btn-wd send-btn" id="cmdContinue" onclick="InsertPurchaseDetails()">Save<i class="las la-arrow-right pl-3"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*ModelWorking*@
+
+    <div id="addleavetype" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Add Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modelbody">
+
+                    <ul class="nav nav-tabs" style="border-bottom: 1px solid #ebedf2;" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="false">Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile-1" role="tab" aria-controls="profile-1" aria-selected="false">Financial</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="home-1" role="tabpanel" aria-labelledby="home-tab">
+
+                            <div class="row">
+                                <h3>
+                                    Item Number:<input type="text" value="" class="col-md-4" id="itemnumber" readonly style="border:none" />
+                                </h3>
+                                <br />
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Name</label>
+                                        <input type="text" class="form-control" placeholder="Name" id="name" />
+                                        <label class="text-danger db" style="display:none" id="msgname">Enter Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Location</label>
+
+                                        <input type="text" class="form-control" placeholder="Location" id="location" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">SalesLimit</label>
+
+                                        <input type="number" class="form-control" placeholder="SalesLimit" id="saleslimit" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="">
+                                            Category
+                                        </label>
+                                        <select class="form-control" id="itemcategoryid">
+                                            <option>--------Select-------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="itemcategoryname" value="" />
+                                        <label class="text-danger db" style="display:none" id="msgitemcategoryname">Select Category Name</label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Manufacture</label>
+                                        <select class="form-control" id="brandid">
+                                            <option>--------Select-------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="brandname" value="" />
+                                        <label class="text-danger db" style="display:none" id="msgbrandname">Select Manufacture Name </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-8">MSAReportAs (00001)</label>
+                                        <select class="form-control">
+                                            <option>------Select---------</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Sub Category</label>
+                                        <select class="form-control" id="itemsubcategoryid">
+                                            <option>--------Select-------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="itemsubcategoryname" value="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Family</label>
+                                        <select class="form-control" id="familyid">
+                                            <option>--------Select-------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="familyname" value="" />
+                                        <label class="text-danger db" style="display:none" id="msgfamilyname">Select Family Name</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">StateReportAs</label>
+                                        <select class="form-control" id="statereportas">
+                                            <option>------Select---------</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">UnitCharge</label>
+                                        <input type="number" class="form-control" placeholder="UnitCharge" id="unitcharge" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">QtyUnit</label>
+
+                                        <input type="number" class="form-control" placeholder="QtyUnit" id="qtyunit" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">UnitRetail</label>
+
+                                        <input type="number" class="form-control" placeholder="UnitRetail" id="unitretail" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">BarCode</label>
+
+                                        <input type="text" class="form-control" placeholder="BarCode" id="barcode" />
+                                        <label class="text-danger db" style="display:none" id="msgbarcode">Enter Barcode</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Retail</label>
+
+                                        <input type="number" class="form-control" placeholder="Retail" id="retail" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">ReportingWeight</label>
+
+                                        <input type="text" class="form-control" placeholder="ReportingWeight" id="reportingweight" />
+                                        <label class="text-danger db" style="display:none" id="msgreportingweight">Enter Reporting Weight</label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-6">QuantityCase</label>
+
+                                        <input type="number" class="form-control" placeholder="QtyCase" id="qtycase" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">QuantityPallet</label>
+
+                                        <input type="number" class="form-control" , placeholder="QuantityPallet" ,id="quantitypallet" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">SingleUnitMSA</label>
+
+                                        <input type="text" class="form-control" placeholder="SingleUnitMSA" id="singleunitmsa" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Group</label>
+                                        <select class="form-control" id="groupid">
+                                            <option>------Select---------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="groupname" value="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Model</label>
+                                        <select class="form-control" id="modelid">
+                                            <option>------Select---------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="modelname" value="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Color</label>
+                                        <select class="form-control" id="colorid">
+                                            <option>------Select---------</option>
+                                        </select>
+                                        <input type="hidden" class="form-control" id="colorname" value="" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row offset-sm-9">
+                                <button type="button" class="btn btn-lg btn-dark me-3 wd-30" id="validationchk"><p style="color:white">Next</p></button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Qty In Stock</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="QtyinStock" id="qtyinstock" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Adjustment</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="Adjustment" id="adjustment" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Cost</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="Cost" id="cost" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Unit Retail</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="UnitRetail" id="unitretail1" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Profit</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="ProfitPercentage" id="profitpercentage" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">MfgPromotion</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="MfgPromotion" id="mfgpromotion" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">AddToCost%</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="AddtoCostPercenatge" id="addtocostpercenatge" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Unit Charge</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="UnitCharge" id="unitcharge1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">UnitPrice</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="UnitPrice" id="unitprice" />
+                                            <label class="text-danger db" style="display:none;" id="msgunitprice">Enter UnitPrice</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">Quantity Unit</label>
+                                        <div class="col-sm-8">
+                                            <select id="select1" class="form-control">
+                                                <option>--------Select-------</option>
+
+                                                <option value="1">Loose</option>
+                                                <option value="2">Pack</option>
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-5">Units In Pack</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" placeholder="UnitsInPack" id="unitsinpack" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">OutofstateCost</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="OutofstateCost" id="outofstatecost" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="">OutOfStateRetail</label>
+                                        <div class="col-sm-8">
+
+                                            <input type="number" class="form-control" placeholder="OutofstateRetail" id="outofstateretail" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label class="form-check-label">
+                                                TaxOnPurchase
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" class="form-control" id="taxonpurchase" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label class="form-check-label">
+                                                TaxExempt
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+
+                                            <input type="checkbox" class="form-control" id="taxexempt" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label class="form-check-label">
+                                                ShippingEnable
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" class="form-control" id="shippingenable" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label class="form-check-label">
+                                                TaxonSale
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" class="form-control" id="taxonsale" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row offset-9">
+                                <button type="button" class="btn btn-lg btn-dark me-3 wd-50" id="Itemsubmit"><p style="color:white">Submit</p></button>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*@Modal Store@*@
+    <div id="addstore" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Add Store</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="Storename">Add Store</label>
+                            <input class="form-control" type="text" placeholder="Store Name" id="storename" />
+                            <label class="text-danger db" style="display:none" id="msgstore">Enter Store Name</label>
+                        </div>
+                        <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="storesubmit"><p style="color:white">Submit</p></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*Modal Supplier*@
+    <div id="addsupplier" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Add Supplier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-8">
+                            <h3>
+                                Supplier Number: @ViewBag.VendorCode
+                                @*@Html.HiddenFor(model => model.VendorCode, new { @class = "form-control" })*@
+
+                            </h3>
+
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-5">Accounts</label>
+                                    <select class="form-control" id="accountid">
+                                        <option>------Select---------</option>
+                                    </select>
+                                    <input type="hidden" class="form-control" id="accountname" value="" />
+                                    <label class="text-danger db" style="display:none" id="msgaccountname">Choose State </label>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-6">Full Name</label>
+                                        <input class="form-control" type="text" placeholder="Full Name" id="fullname" />
+                                        <label class="text-danger db" style="display:none" id="msgfullname">Enter Full Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+
+                                        <label class="dim col-sm-4">Email</label>
+                                        <input class="form-control" type="email" placeholder="Email" id="eemail" />
+                                        <label class="text-danger db" style="display:none" id="msgeemail">Enter Email</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-4">Phone</label>
+                                        <input class="form-control" type="number" placeholder="Phone" id="phone" />
+                                        <label class="text-danger db" style="display:none" id="msgphone">Enter Phone</label>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-4">Mobile</label>
+                                        <input class="form-control" type="number" placeholder="Mobile" id="mobile" />
+                                        <label class="text-danger db" style="display:none" id="msgmobile">Enter Mobile</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label class="dim col-sm-6">DrivingLicense</label>
+                                        <input class="form-control" type="text" placeholder="Driving License" id="drivinglicense" />
+                                        <label class="text-danger db" style="display:none" id="msgdrivinglicense">Enter Driving License</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-4">
+                            <label class="dim col-sm-4">ProfileImage</label>
+                            <div class="row">
+                                <img src="~/images/useravatar.png" alt="" style="border:1px solid groove; height:90px; max-width:45%;" id="preview" />
+                            </div>
+                            <input type="file" class="form-control" name="ProfileImage" id="ProfileImage" for="ProfileImage" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-8">
+                            <div class="form-group">
+                                <label class="dim col-sm-8">Address</label>
+                                <input class="form-control" type="text" placeholder="Address" id="address" />
+                                <label class="text-danger db" style="display:none" id="msgaddress">Enter Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="form-group">
+
+                                <label class="dim col-sm-4">Tax ID</label>
+                                <input class="form-control" type="text" placeholder="Tax ID" id="taxid" />
+                                <label class="text-danger db" style="display:none" id="msgtaxid">Enter Tax ID</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="form-group">
+                                <label class="dim col-sm-4">IRS</label>
+                                <input class="form-control" type="text" placeholder="IRS" id="irs" />
+                                <label class="text-danger db" style="display:none" id="msgirs">Enter IRS</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="form-group">
+                                <label class="dim col-sm-4">Discount %</label>
+                                <input class="form-control" type="text" placeholder="Discount" id="discount" />
+                                <label class="text-danger db" style="display:none" id="msgdiscount">Enter Discount</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">State</label>
+                                <span id="stateid">
+                                    @*@Html.DropDownList("StateName", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })*@
+                                    @*<option>--------Choose State-------</option>*@
+                                </span>
+                                <input type="hidden" class="form-control" id="statename" value="" />
+                                <label class="text-danger db" style="display:none" id="msgstatename">Choose State </label>
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4 col-sm-4">
+
+                            <div class="form-group">
+                                <label class="col-sm-5">Driving License State</label>
+
+                                <span id="driving_license_stateid">
+                                    @*@Html.DropDownList("StateName", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })*@
+                                    @*<option>--------Choose State-------</option>*@
+                                </span>
+                                <input type="hidden" class="form-control" id="driving_license_statename" value="" />
+                                <label class="text-danger db" style="display:none" id="msgdriving_licensename">Choose Driving License State </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <div class="form-group">
+                                <label class="dim col-sm-4">TaxExempt</label>
+                                <input class="form-control" type="text" placeholder="Tax Exempt" id="taxexempt" />
+                                <label class="text-danger db" style="display:none" id="msgtaxexempt">Enter Tax Exempt</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4"></div>
+                        <div class="col-lg-4 col-sm-4"></div>
+                        <div class="col-lg-4 col-sm-4">
+                            <button type="submit" onclick="addsuppliershortcut();" class="btn btn-lg btn-dark float-end wd-40 validationchksupplier"><p style="color:white">Submit</p></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*modal supplier end*@
+
+
+
+
+    @*Modal Store*@
+    <div id="addstore" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Add Store</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="Storename">Add Store</label>
+                            <input class="form-control" type="text" placeholder="Store Name" id="storename" />
+                            <label class="text-danger db" style="display:none" id="msgstorename">Enter Store Name</label>
+                        </div>
+                        <button type="button" onclick="addstorearray();" class="btn btn-dark text-white mx-auto col-md-3 validationchkstore"><p style="color:white">Submit</p></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*modal Store end*@
+
+
+
+    @* WareHouse Shortcut modal *@
+
+    <div id="addwarehouse" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Add Item Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">WareHouse Name</label>
+                            <input class="form-control" type="text" placeholder="WareHouse Name" id="warehousename" />
+                            <label class="text-danger db" style="display:none" id="msgwarehousename">Enter WareHouse Name</label>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">WareHouse Phone</label>
+                            <input class="form-control" type="number" placeholder="WareHouse Phone" id="warehousephone" />
+                            <label class="text-danger db" style="display:none" id="msgwarehousephone">Enter WareHouse Phone</label>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Concerned Person</label>
+                            <input class="form-control" type="text" placeholder="Concerned Person" id="concernedperson" />
+                            <label class="text-danger db" style="display:none" id="msgconcernedperson">Enter Concerned Person</label>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">WareHouse Address</label>
+                            <input class="form-control" type="text" placeholder="WareHouse Address" id="warehouseaddress" />
+                            <label class="text-danger db" style="display:none" id="msgwarehouseaddress">Enter WareHouse Address</label>
+
+                        </div>
+                        <button type="submit" onclick="addearehouseshortcut();" id="validationchkwarehouse" class="btn btn-dark text-white mx-auto col-md-3"><p style=color:white>Submit</p></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    @section scripts{
+        <script>
+            var sernum = 1;
+            var PurchaseDetails = [];
+            function inertRowsTogrid() {
+
+                var isValid = false;
+                var prQuantity = $("#txtQuantity").val();
+                var prtUnitprice = $("#txtUnitprice").val();
+
+                if (prQuantity != "" && prQuantity != "undefined") {
+                    $("#ValMsgQuantity").hide();
+                    isValid = true;
+
+                } else {
+                    $("#ValMsgQuantity").first().focus();
+                    $("#ValMsgQuantity").text("Quantity Is Required.");
+                    $("#ValMsgQuantity").show();
+                    isValid = false;
+                }
+                if (prtUnitprice != "" && prtUnitprice != "undefined") {
+
+                    $("#valmsgunitprice").hide();
+                    isValid = true;
+
+                } else {
+                    $("#valmsgunitprice").first().focus();
+                    $("#valmsgunitprice").text("Unitprice Is Required.");
+                    $("#valmsgunitprice").show();
+                    isValid = false;
+                }
+
+                if ($('#selectItem option:selected').val() != "--Choose Item--" && $('#selectItem option:selected').val() != "") {
+                    $("#ValMsgselectItem").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#ValMsgselectItem").first().focus();
+                    $("#ValMsgselectItem").text("Please Select Item.");
+                    $("#ValMsgselectItem").show();
+                    isValid = false;
+                }
+                if ($('#selectsupplier option:selected').val() != "--Choose Supplier--" && $('#selectsupplier option:selected').val() != '') {
+                    $("#ValMsgVendorId").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#ValMsgVendorId").first().focus();
+                    $("#ValMsgVendorId").text("Please Select Supplier.");
+                    $("#ValMsgVendorId").show();
+                    isValid = false;
+                }
+                if ($('#selectstore option:selected').val() != "--Choose Store--" && $('#selectstore option:selected').val() != '') {
+                    $("#ValMsgstoreId").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#ValMsgstoreId").first().focus();
+                    $("#ValMsgstoreId").text("Please Select Store.");
+                    $("#ValMsgstoreId").show();
+                    isValid = false;
+                }
+
+                if ($('#selectQunatityUnit option:selected').val() != "--- Select Quantity Unit ---" && $('#selectQunatityUnit option:selected').val() != "") {
+                    $("#valselectQunatityUnit").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#valselectQunatityUnit").first().focus();
+                    $("#valselectQunatityUnit").text("Please Select QunatityUnit.");
+                    $("#valselectQunatityUnit").show();
+                    isValid = false;
+                }
+                if (prQuantity == "" || prtUnitprice == "" || $('#selectsupplier option:selected').val() == "" || $('#selectQunatityUnit option:selected').val() == "" || $('#selectItem option:selected').val() == "" || storeid == "") {
+                    isValid = false;
+                }
+
+                if (isValid == true) {
+
+                    var item = $("#selectItem").val();
+                    var supplier = $("#selectsupplier").val();
+                    var itemname = $("#txtProductName").val();
+                    var itemcode = $("#txtProductCode").val();
+                    var itembarcode = $("#txtProductBarCode").val();
+                    var sku = $("#txtSku").val();
+                    var Quantityunit = $("#selectQunatityUnit").val();
+                    var quantitypack = $("#txtQuantityPack").val();
+                    var quantity = $("#txtQuantity").val();
+                    var unitprice = $("#txtUnitprice").val();
+                    var totalamount = $("#txtTotalAmount").val();
+                    var invoicenumber = $("#invoicenumber").val();
+                    var iscash = $("#idcash").is(':checked');
+                    var iscredit = $("#idcredit").is(':checked');
+                    var storeid = $("#selectstore").val();
+                    var warehouseid = $("#selectwarehouse").val();
+
+                    var Purchase = {};
+                    if (PurchaseDetails.length > 0) {
+                        $.each(PurchaseDetails, function (index, value) {
+
+                            if (value.ItemId == item) {
+                                $("#ValMsgselectItem").first().focus();
+                                $("#ValMsgselectItem").text("Item already Selected.");
+                                $("#ValMsgselectItem").show();
+                                isValid = false;
+                                return false;
+                            }
+                        });
+                    }
+                    if (isValid) {
+                        $('#zero-configuration1').append('<tr>' +
+                            '<td>' + sernum + '</td>' +
+                            '<td style="display:none;">' + item + '</td>' +
+                            '<td style="display:none;">' + supplier + '</td>' +
+                            '<td>' + itemname + '</td>' +
+                            '<td>' + itemcode + '</td>' +
+                            '<td>' + itembarcode + '</td>' +
+                            '<td style="display:none;">' + sku + '</td>' +
+                            '<td style="display:none;">' + Quantityunit + '</td>' +
+                            '<td style="display:none;">' + quantitypack + '</td>' +
+                            '<td>' + quantity + '</td>' +
+                            '<td>' + unitprice + '</td>' +
+                            '<td>' + totalamount + '</td>' +
+                            '<td style="display:none;">' + invoicenumber + '</td>' +
+                            '<td style="display:none;">' + iscredit + '</td>' +
+                            '<td style="display:none;">' + iscash + '</td>' +
+                            '<td style="display:none;">' + storeid + '</td>' +
+                            '<td style="display:none;">' + warehouseid + '</td>' +
+                            '<td><a style="cursor:pointer" onclick="DeleteItem(this)"><span><i   class="mdi mdi-trash-can"></i></span></a></td></tr>');
+                        Purchase.ItemId = item;
+                        Purchase.VendorId = supplier;
+                        Purchase.ItemName = itemname;
+                        Purchase.ProductCode = itemcode;
+                        Purchase.ProductBarCode = itembarcode;
+                        Purchase.Sku = sku;
+                        Purchase.QuantityUnit = Quantityunit;
+                        Purchase.QuantityPack = quantitypack;
+                        Purchase.Quantity = quantity;
+                        Purchase.UnitPrice = unitprice;
+                        Purchase.TotalAmount = totalamount;
+                        Purchase.InvoiceNumber = invoicenumber;
+                        Purchase.Credit = iscredit;
+                        Purchase.Cash = iscash;
+                        Purchase.StoreId = storeid;
+                        Purchase.warehouseid = warehouseid;
+                        PurchaseDetails.push(Purchase);
+                        myFunc();
+                    }
+
+
+                }
+
+            }
+            sernum++;
+        </script>
+        <script>
+            function DeleteItem(ctl) {
+                $(ctl).parents("tr").remove();
+            }
+            $('input.percon').on('change', function () {
+                $('input.percon').not(this).prop('checked', false);
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#selectItem").change(function () {
+                    var val = $(this).val();
+                    $.ajax({
+                        type: "GET",
+                         url: '@Url.Action("GetItemByID", "Purchase")',
+                       /* url: "/Inventory/Purchase/GetItemByID",*/
+                        data: {
+                            id: val
+                        },
+                        //async: false,
+                        dataType: 'json',
+                        //cache: true,
+                        success: function (data) {
+                            console.log(data);
+                            $('#txtProductName').val(data.name);
+                            $('#txtProductCode').val(data.productCode);
+                            $('#txtProductBarCode').val(data.barCode);
+                            $('#txtSku').val(data.sku);
+                            $('#txtUnitprice').val(data.unitCharge);
+                            $("#txtProductName").attr("disabled", "true");
+                            $("#txtProductCode").attr("disabled", "true");
+                            $("#txtProductBarCode").attr("disabled", "true");
+                            $("#txtSku").attr("disabled", "true");
+                            $("#txtUnitPrice").attr("disabled", "true");
+                        },
+                        error: function (xhr, status, error) {
+                            var errorMessage = xhr.status + ': ' + xhr.statusText
+                        },
+                    });
+                });
+            });
+
+            $(function () {
+                $("#selectQunatityUnit").change(function () {
+                    var selectuantity = $('#selectQunatityUnit option:selected').text();
+                    if (selectuantity == "Loose") {
+                        $("#txtQuntityPack").attr("disabled", "true");
+                    } else {
+                        $("#txtQuntityPack").removeAttr("disabled");
+                    }
+
+                });
+            });
+
+        </script>
+        <script>
+
+            function calculate() {
+                var myBox1 = $('#txtUnitprice').val();
+                var myBox2 = $('#txtQuantity').val();
+                $('#txtTotalAmount').val();
+                var myResult = myBox1 * myBox2;
+                $('#txtTotalAmount').val(myResult);
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+
+                $("#txtQuntityPack").attr("disabled", "true");
+                $("#txtTotalAmount").attr("disabled", "true");
+            });
+        </script>
+        <script>
+            function InsertPurchaseDetails() {
+
+                var PurchaseDetails = new Array();
+                $("#zero-configuration1 TBODY TR").each(function () {
+                    var row = $(this);
+                    var Purchase = {};
+                    Purchase.ItemId = row.find("TD").eq(1).html();
+                    Purchase.VendorId = row.find("TD").eq(2).html();
+                    Purchase.ItemName = row.find("TD").eq(3).html();
+                    Purchase.ProductCode = row.find("TD").eq(4).html();
+                    Purchase.ProductBarCode = row.find("TD").eq(5).html();
+                    Purchase.Sku = row.find("TD").eq(6).html();
+                    Purchase.QuantityUnit = row.find("TD").eq(7).html();
+                    Purchase.QuantityPack = row.find("TD").eq(8).html();
+                    Purchase.Quantity = row.find("TD").eq(9).html();
+                    Purchase.UnitPrice = row.find("TD").eq(10).html();
+                    Purchase.TotalAmount = row.find("TD").eq(11).html();
+                    Purchase.InvoiceNumber = row.find("TD").eq(12).html();
+                    Purchase.Credit = row.find("TD").eq(13).html();
+                    Purchase.Cash = row.find("TD").eq(14).html();
+                    Purchase.StoreId = row.find("TD").eq(15).html();
+                    Purchase.WareHouseId = row.find("TD").eq(16).html();
+                    PurchaseDetails.push(Purchase);
+                });
+                console.log(PurchaseDetails);
+
+                $.ajax({
+                    type: "POST",
+                     url: '@Url.Action("AddPurchaseOrderList", "Purchase")',
+                  //  url: "/Inventory/Purchase/AddPurchaseOrderList",
+                    data: JSON.stringify(PurchaseDetails),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        myFunctionyesno();
+                    }
+                });
+            }
+            function reload() {
+                location.reload();
+            }
+            function myFunctionyesno() {
+                var invoicenumber = $("#invoicenumber").val();
+
+                var txt;
+                var r = confirm("Purchased Items Successfully! Do You Want To Take a Print");
+                if (r == true) {
+                    /* $.post("/Inventory/Purchase/GeneratePdfpurchase", { invoicenumber: invoicenumber });*/
+                    location.reload();
+
+                } else {
+                    location.reload();
+
+                }
+
+            }
+        </script>
+
+        <script>
+        /*GetItemList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetItemList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#itemcategoryid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#itemcategoryid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetItemname*/
+        $("#itemcategoryid").on('change', function () {
+            var ItemCategoryID = $("#itemcategoryid").val();
+            if (ItemCategoryID != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetItemNameByID",
+                    data: {
+                        id: ItemCategoryID
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                         $('#itemcategoryname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetBrandsList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetBrandsList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#brandid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#brandid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+        /*GetBrandname*/
+        $("#brandid").on('change', function () {
+            var brandid = $("#brandid").val();
+
+            if (brandid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetBrandNameById",
+                    data: {
+                        id: brandid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#brandname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetSubItemList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetSubItemList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#itemsubcategoryid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].subCategory + '</option>';
+                        }
+                        $('#itemsubcategoryid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetSubItemname*/
+        $("#itemsubcategoryid").on('change', function () {
+            var itemsubcategoryid = $("#itemsubcategoryid").val();
+            debugger
+            if (itemsubcategoryid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetSubItemNameById",
+                    data: {
+                        id: itemsubcategoryid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#itemsubcategoryname').val(data.subCategory);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetModelList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetModelList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#modelid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#modelid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetModelname*/
+        $("#modelid").on('change', function () {
+            var modelid = $("#modelid").val();
+            debugger
+            if (modelid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetModelNameById",
+                    data: {
+                        id: modelid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#modelname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetGroupList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetGroupList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#groupid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#groupid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetGroupname*/
+        $("#groupid").on('change', function () {
+            var groupid = $("#groupid").val();
+            debugger
+            if (groupid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetGroupNameById",
+                    data: {
+                        id: groupid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#groupname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetColorList*/
+        $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetColorList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#colorid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#colorid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetColorname*/
+        $("#colorid").on('change', function () {
+            var colorid = $("#colorid").val();
+            debugger
+            if (colorid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetColorNameById",
+                    data: {
+                        id: colorid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#colorname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetArticleList*/
+        $(document).ready( function () {
+
+            $.ajax({
+                url: '@Url.Action("GetArticleList", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#familyid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].articleTypeName + '</option>';
+                        }
+                        $('#familyid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetArticlename*/
+        $("#familyid").on('change', function () {
+            var familyid = $("#familyid").val();
+            debugger
+            if (familyid != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetArticleNameById",
+                    data: {
+                        id: familyid
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#familyname').val(data.articleTypeName);
+                        debugger
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+        /*GetItemNumber*/
+        $(document).ready( function () {
+
+            $.ajax({
+                url: '@Url.Action("GetItemNumber", "Purchase")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $('#itemnumber').val(data);
+                },
+                error: function () {
+
+                }
+            });
+        });
+        var isValid = false;
+
+
+        $("#validationchk").on('click', function () {
+            var Name = $("#name").val();
+            var ReportingWeight = $("#reportingweight").val();
+            var BarCode = $("#barcode").val();
+            var ItemCategoryID = $("#itemcategoryid").val();
+            var BrandID = $("#brandid").val();
+            var FamilyID = $("#familyid").val();
+
+            if (Name != null && Name != "" && Name != "undefined") {
+                $('#msgname').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgname').show();
+                isValid = false;
+            }
+            if (ItemCategoryID != null && ItemCategoryID != "" && ItemCategoryID != "undefined" && ItemCategoryID != "------Select---------") {
+                $('#msgitemcategoryname').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgitemcategoryname').show();
+                isValid = false;
+            }
+            if (BarCode != null && BarCode != "" && BarCode != "undefined") {
+                $('#msgbarcode').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgbarcode').show();
+                isValid = false;
+            }
+            if (FamilyID != null && FamilyID != "" && FamilyID != "undefined" && FamilyID !="------Select---------") {
+                $('#msgfamilyname').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgfamilyname').show();
+                isValid = false;
+            }
+
+            if (BrandID != null && BrandID != "" && BrandID != "undefined" && BrandID !="------Select---------") {
+                $('#msgbrandname').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgbrandname').show();
+                isValid = false;
+            }
+            if (ReportingWeight != null && ReportingWeight != "" && ReportingWeight != "undefined") {
+                $('#msgreportingweight').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgreportingweight').show();
+                isValid = false;
+            }
+            if (isValid == true && $('#msgreportingweight').css("display") == "none"
+                && $('#msgbrandname').css("display") == "none" && $('#msgfamilyname').css("display") == "none"
+                && $('#msgbarcode').css("display") == "none" && $('#msgitemcategoryname').css("display") == "none"
+                && $('#msgname').css("display") == "none") {
+                debugger
+                $("#home-1").removeClass("active");
+                $("#profile-1").addClass("active show");
+            }
+        });
+
+        $("#Itemsubmit").on('click', function () {
+            var Name = $("#name").val();
+            var ReportingWeight = $("#reportingweight").val();
+            var BarCode = $("#barcode").val();
+            var ItemCategoryID = $("#itemcategoryid").val();
+            var CategoryName = $("#itemcategoryname").val();
+            var BrandID = $("#brandid").val();
+            var BrandName = $("#brandname").val();
+            var UnitPrice = $("#unitprice").val();
+            var FamilyID = $("#familyid").val();
+            var Family = $("#familyname").val();
+            var ItemNumber = $("#itemnumber").val();
+            var QtyUnit = $("#qtyunit").val();
+            var UnitsInPack = $("#unitsinpack").val();
+            var SalesLimit = $("#saleslimit").val();
+            var Adjustment = $("#adjustment").val();
+            var MfgPromotion = $("#mfgpromotion").val();
+            var AddtoCostPercenatge = $("#addtocostpercenatge").val();
+            var OutofstateCost = $("#outofstatecost").val();
+            var OutofstateRetail = $("#outofstateretail").val();
+            var SingleUnitMSA = $("#singleunitmsa").val();
+            var ArticleID = $("#familyid").val();
+            var Location = $("#location").val();
+            var ProfitPercentage = $("#profitpercentage").val();
+            var Retail = $("#retail").val();
+            var GroupId = $("#groupid").val();
+            var GroupName = $("#groupname").val();
+            var Cost = $("#cost").val();
+            var QtyinStock = $("#qtyinstock").val();
+            var ColorId = $("#colorid").val();
+            var ColorName = $("#colorname").val();
+            var ItemSubCategoryId = $("#itemsubcategoryid").val();
+            var SubCatName = $("#itemsubcategoryname").val();
+            var ModelId = $("#modelid").val();
+            var ModelName = $("#modelname").val();
+
+            if (isValid) {
+
+                $("#home-1").removeClass("active");
+                $("#profile-1").addClass("active show");
+            }
+            else {
+                $("#profile-1").removeClass("active");
+                $("#home-1").addClass("active show");
+            }
+
+
+            if (UnitPrice != null && UnitPrice != "" && UnitPrice != "undefined") {
+                $('#msgunitprice').hide();
+                isValid = true;
+            }
+            else {
+                $('#msgunitprice').show();
+                isValid = false;
+            }
+
+            if ($('#taxexempt').prop('checked')) {
+                var TaxExempt = true;
+            }
+            else {
+                var TaxExempt = false;
+            }
+            if ($('#shippingenable').prop('checked')) {
+                var ShippingEnable = true;
+            }
+            else {
+                var ShippingEnable = false;
+            }
+
+            if ($('#taxonpurchase').prop('checked')) {
+                var TaxOnPurchase = true;
+            }
+            else {
+                var TaxOnPurchase = false;
+            }
+            if ($('#taxonsale').prop('checked')) {
+                var TaxonSale = true;
+            }
+            else {
+                var TaxonSale = false;
+            }
+
+            var record = {};
+            record = new FormData();
+
+            if (isValid) {
+                record.append("Name", Name);
+                record.append("ItemNumber", ItemNumber);
+                record.append("ItemCategoryID", ItemCategoryID);
+                record.append("CategoryName", CategoryName)
+                record.append("BrandID", BrandID);
+                record.append("BrandName", BrandName);
+                record.append("FamilyID", FamilyID);
+                record.append("Family", Family);
+                record.append("BarCode", BarCode);
+                record.append("ReportingWeight", ReportingWeight);
+                record.append("UnitPrice", UnitPrice);
+                record.append("TaxonSale", TaxonSale);
+                record.append("TaxOnPurchase", TaxOnPurchase);
+                record.append("TaxExempt", TaxExempt);
+                record.append("ShippingEnable", ShippingEnable);
+            $.ajax({
+                url: '@Url.Action("AddItem", "Purchase")',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addleavetype").modal('hide');
+                        window.location = '@Url.Action("PurchaseOrder", "Purchase")';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+        }
+    });
+
+            function addsuppliershortcut() {
+                var FullName = $("#fullname").val();
+                var Email = $("#eemail").val();
+                var Phone = $("#phone").val();
+                var Mobile = $("#mobile").val();
+                var DrivingLicense = $("#drivinglicense").val();
+                var Address = $("#address").val();
+                var Tax_ID = $("#taxid").val();
+                var IRS = $("#irs").val();
+                var Discount = $("#discount").val();
+                var TaxExempt = $("#taxexempt").val();
+
+                var supplierdata = {};
+                Supplierdata = new FormData();
+
+                if (isValid) {
+                    supplierdata.append("FullName", FullName);
+                    supplierdata.append("Email", Email);
+                    supplierdata.append("Phone", Phone);
+                    supplierdata.append("Mobile", Mobile)
+                    supplierdata.append("DrivingLicense", DrivingLicense);
+                    supplierdata.append("Address", Address);
+                    supplierdata.append("Tax_ID", Tax_ID);
+                    supplierdata.append("IRS", IRS);
+                    supplierdata.append("Discount", Discount);
+                    supplierdata.append("TaxExempt", TaxExempt);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("AddVendorShortcut", "Purchase")",
+                        data: supplierdata,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            console.log(data);
+                            if (data == "Add Successfully") {
+                                $("#addsupplier").modal('hide');
+                                window.location = '@Url.Action("PurchaseOrder", "Purchase")';
+                            }
+                        },
+                        error: function () {
+
+                        },
+                    });
+                }
+
+            }
+
+
+
+            function addstorearray()
+            {
+
+                var StoreName = $("#storename").val();
+                var Storedata = {};
+                Storedata = new FormData();
+                Storedata.append("StoreName", StoreName);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AddStoreShortcut", "Purchase")",
+                    data: Storedata,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        reload();
+                        console.log(data);
+                        if (datda =="Add Successfully") {
+                            $("#addstore").modal('hide');
+                            window.location = '@Url.Action("PurchaseOrder", "Purchase")';
+                        }
+                    },
+                    error: function () {
+
+                    },
+                });
+            }
+
+             function addearehouseshortcut()
+             {
+                 debugger;
+                 var WareHouseName = $("#warehousename").val();
+                 var Phone = $("#warehousephone").val();
+                 var ConcernedPersonName = $("#concernedperson").val();
+                 var Address = $("#warehouseaddress").val();
+
+                var Warehousedata = {};
+                 Warehousedata = new FormData();
+
+                 Warehousedata.append("WareHouseName", WareHouseName);
+                 Warehousedata.append("Phone", Phone);
+                 Warehousedata.append("ConcernedPersonName", ConcernedPersonName);
+                 Warehousedata.append("Address", Address);
+                 console.log(Warehousedata);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AddWareHouseshortcut", "Purchase")",
+                    data: Warehousedata,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        location.reload();
+
+                    },
+                    error: function () {
+
+                    },
+                });
+            }
+
+
+            //validation for shortcut supplier
+            $(".validationchksupplier").on('click', function () {
+                debugger;
+                var AccountID = $("#accountid").val();
+                var FullName = $("#fullname").val();
+                var Email = $("#eemail").val();
+                var Phone = $("#phone").val();
+                var Mobile = $("#mobile").val();
+                var DrivingLicense = $("#drivinglicense").val();
+                var Address = $("#address").val();
+                var TaxID = $("#taxid").val();
+                var IRS = $("#irs").val();
+                var Discount = $("#discount").val();
+                var StateName = $("#statename").val();
+                var DrivingLicenseState = $("#driving_license_stateid").val();
+                var TaxExempt = $("#taxexempt").val();
+
+                if (AccountID != null && AccountID != "" && AccountID != "undefined" && AccountID != "------Select---------") {
+                    $('#msgaccountname').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgaccountname').show();
+                    isValid = false;
+                } if (FullName != null && FullName != "" && FullName != "undefined") {
+                    $('#msgfullname').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgfullname').show();
+                    isValid = false;
+                }
+                if (Email != null && Email != "" && Email != "undefined") {
+                    $('#msgeemail').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgeemail').show();
+                    isValid = false;
+                }
+                if (Phone != null && Phone != "" && Phone != "undefined") {
+                    $('#msgphone').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgphone').show();
+                    isValid = false;
+                }
+                if (Mobile != null && Mobile != "" && Mobile != "undefined") {
+                    $('#msgmobile').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgmobile').show();
+                    isValid = false;
+                }
+
+                if (DrivingLicense != null && DrivingLicense != "" && DrivingLicense != "undefined") {
+                    $('#msgdrivinglicense').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgdrivinglicense').show();
+                    isValid = false;
+                }
+                if (Address != null && Address != "" && Address != "undefined") {
+                    $('#msgaddress').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgaddress').show();
+                    isValid = false;
+                }
+                if (StateName != null && StateName != "" && StateName != "undefined" && StateName != "------Select---------") {
+                    $('#msgstatename').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgstatename').show();
+                    isValid = false;
+                }
+                if (DrivingLicenseState != null && DrivingLicenseState != "" && DrivingLicenseState != "undefined" && DrivingLicenseState != "------Select---------") {
+                    $('#msgdriving_licensename').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgdriving_licensename').show();
+                    isValid = false;
+                }
+                if (TaxExempt != null && TaxExempt != "" && TaxExempt != "undefined") {
+                    $('#msgtaxexempt').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgtaxexempt').show();
+                    isValid = false;
+                }
+                if (Discount != null && Discount != "" && Discount != "undefined") {
+                    $('#msgdiscount').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgdiscount').show();
+                    isValid = false;
+                }
+                if (IRS != null && IRS != "" && IRS != "undefined") {
+                    $('#msgirs').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgirs').show();
+                    isValid = false;
+                }
+                if (TaxID != null && TaxID != "" && TaxID != "undefined") {
+                    $('#msgtaxid').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgtaxid').show();
+                    isValid = false;
+                }
+                if (isValid == true && $('#msgreportingweight').css("display") == "none"
+                    && $('#msgbrandname').css("display") == "none" && $('#msgfamilyname').css("display") == "none"
+                    && $('#msgbarcode').css("display") == "none" && $('#msgitemcategoryname').css("display") == "none"
+                    && $('#msgname').css("display") == "none") {
+                    debugger
+                    $("#home-1").removeClass("active");
+                    $("#profile-1").addClass("active show");
+                }
+            });
+
+            //validation for shortcut Store
+            $(".validationchkstore").on('click', function () {
+                var StoreName = $("#storename").val();
+
+
+                if (StoreName != null && StoreName != "" && StoreName != "undefined") {
+                    $('#msgstorename').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgstorename').show();
+                    isValid = false;
+                }
+            });
+
+            //validation for shortcut warehouse
+            $("#validationchkwarehouse").on('click', function () {
+                var WarehouseName = $("#warehousename").val();
+                var WarehousePhone = $("#warehousephone").val();
+                var ConcernedPerson = $("#concernedperson").val();
+                var WarehouseAddress = $("#warehouseaddress").val();
+
+
+                if (WarehouseName != null && WarehouseName != "" && WarehouseName != "undefined") {
+                    $('#msgwarehousename').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgwarehousename').show();
+                    isValid = false;
+                }
+                if (WarehousePhone != null && WarehousePhone != "" && WarehousePhone != "undefined") {
+                    $('#msgwarehousephone').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgwarehousephone').show();
+                    isValid = false;
+                }
+                if (ConcernedPerson != null && ConcernedPerson != "" && ConcernedPerson != "undefined") {
+                    $('#msgconcernedperson').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgconcernedperson').show();
+                    isValid = false;
+                }
+                if (WarehouseAddress != null && WarehouseAddress != "" && WarehouseAddress != "undefined") {
+                    $('#msgwarehouseaddress').hide();
+                    isValid = true;
+                }
+                else {
+                    $('#msgwarehouseaddress').show();
+                    isValid = false;
+                }
+            });
+
+        </script>
+
+        <script>
+
+            //get accounts stortcut
+
+            $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetVendorList", "Vendor")',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+
+                    if (data.length > 0)
+                    {
+
+                        $('#accountid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+
+                            options += '<option value="' + data[i].VendorID + '">' + data[i].fullName + '</option>';
+                        }
+                        $('#accountid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+            });
+
+
+            /*GetAccountName*/
+
+
+            $("#accountid").on('change', function () {
+
+                var ItemCategoryID = $("#accountid").val();
+                if (ItemCategoryID != null) {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetVendorNameByID", "Vendor")',
+                        data: {
+                            id: ItemCategoryID
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            $('#accountname').val(data.name);
+                        },
+                        error: function () {
+
+                        }
+                    });
+                }
+            });
+
+
+
+        </script>
+
+        <script>
+            function closemodal() {
+                $("#addleavetype").modal('hide');
+            }
+
+        </script>
+    }

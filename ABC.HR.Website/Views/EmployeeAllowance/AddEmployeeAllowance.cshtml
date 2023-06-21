@@ -1,0 +1,167 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpAllowance*@
+@model ABC.HR.Domain.Entities.ValidateAllowance
+
+@{
+    ViewData["Title"] = "AddAllownce";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="~/lib/chosen_v1.8.7/chosen.css" rel="stylesheet" />*@
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container .select2-selection--single {
+        height: 32px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 10px;
+    }
+    .Serchloan {
+        width: 100% !important;
+    }
+</style>
+
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " href="~/EmployeeTax/AddEmployeeTax" aria-controls="overview" aria-selected="true">Add Tax</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="~/EmployeeAllowance/AddEmployeeAllowance" role="tab" aria-selected="false">Add Allowance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeDeduction/AddEmployeeDeduction" role="tab" aria-selected="false">Add Deduction</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/EmployeeLeave/AddEmployeeLeave" role="tab" aria-selected="false">Add Leave</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/EmployeeLoan/AddEmployeeLoan" role="tab" aria-selected="false">Add Loan</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/EmployeeAttendance/AddEmployeeAttendance" role="tab" aria-selected="false">Add Attendance</a>
+        </li>
+
+    </ul>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Add Allownce For Employee</h1>
+
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="AddEmployeeAllowance">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId"
+                                    class="form-control Serchallownc"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            @*<input asp-for="EmployeeId" class="form-control" />*@
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="AllowanceTypeId" class="control-label"></label>
+                            <select asp-for="AllowanceTypeId"
+                                    class="form-control Serchallownc"
+                                    asp-items="@(new SelectList(ViewBag.AllownceTypes,"Value", "Text"))">
+                                <option disabled selected>--- SELECT ALLOWANCE TYPE---</option>
+
+                            </select>
+                            @*<input asp-for="AllowanceTypeId" class="form-control" />*@
+                            <span asp-validation-for="AllowanceTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" class="form-control tax_class" type="number" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" type="date" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="form-group col-md-8">
+
+                            <label asp-for="Reason" class="control-label"></label>
+                            @*<textarea asp-for="Reason" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>*@
+                            <textarea asp-for="Reason" class="form-control" style="min-height: 5rem;"></textarea>
+
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            @*<input asp-for="IsApprove" type="checkbox" checked />*@
+                            @Html.CheckBox("IsApprove", true)
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageEmployeeAllowance">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+
+<script src="~/lib/chosen_v1.8.7/docsupport/jquery-1.12.4.min.js"></script>
+@*<script src="~/lib/chosen_v1.8.7/chosen.jquery.js"></script>*@
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+
+    //$(".Serchallownc").chosen();
+    $(".Serchallownc").select2();
+</script>
+
+<script>
+    var inputBox = document.querySelector(".tax_class");
+
+    var invalidChars = [
+        "-",
+        "+",
+        "e",
+        ",",
+    ];
+
+    inputBox.addEventListener("keydown", function (e) {
+        if (invalidChars.includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+</script>

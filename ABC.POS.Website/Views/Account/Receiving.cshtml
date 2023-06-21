@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewData["Title"] = "Receiving";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<ABC.EFCore.Repository.Edmx.Receiving>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#order-listing').DataTable();
+            $("table").removeClass("no-footer");
+        });
+    </script>
+
+    @if (TempData["response"] != null)
+    {
+        <div class="alert-success" id="msgalert">
+            @TempData["response"].ToString()
+        </div>
+    }
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Sale/SaleOrder" aria-controls="overview" aria-selected="true">Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Sale/AllSaleInvoices" aria-controls="overview" aria-selected="true">Sales Invoices</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Account/Receivables" role="tab" aria-selected="false">Receiables</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Account/Receiving" role="tab" aria-selected="false">Receipt</a>
+        </li>
+
+    </ul>
+</div>
+    <div class="card">
+        <div class="card-body">
+            @*<div>
+                    <a href="@Url.Action("GeneratePdfReceivables","Account",new {area="Finance" })" style="color: white; float: right" class="btn btn-success ignoreForPdf">Print</a>
+                </div>*@
+            <h4 class="card-title">Receiving</h4>
+            <div class="row">
+                <div class="col-12">
+                        
+                            <div class="row">
+                            <div class="col-sm-12">
+                    <div class="table-responsive">
+                                    <table id="order-listing" class="table dataTable " role="grid" aria-describedby="order-listing_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>
+                                                    SER
+                                                </th>
+                                                <th>
+                                                    Invoice Number
+                                                </th>
+
+                                                <th>
+                                                    Account Name
+                                                </th>
+                                                <th>
+                                                    Account Number
+                                                </th>
+                                                <th>
+                                                    Payment type
+                                                </th>
+
+                                                <th>
+                                                    Debit
+                                                </th>
+                                                <th>
+                                                    Credit
+                                                </th>
+
+                                                <th>
+                                                    Detail
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        @{var i = 0; }
+                                        <tbody>
+                                            @if (Model != null)
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+                                                    i = i + 1;
+                                                    <tr class="odd">
+                                                        <td class="sorting_1">@i</td>
+                                                        <td>@item.InvoiceNumber</td>
+                                                        <td>@item.AccountName</td>
+                                                        <td>@item.AccountNumber</td>
+                                                        <td>@item.PaymentType</td>
+                                                        <td>@item.Debit</td>
+                                                        <td>@item.Credit</td>
+                                                        <td>Detail</td>
+
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+        setTimeout(function () {
+            $("#msgalert").hide();
+        }, 3500);
+    </script>
+
+
+
+
+

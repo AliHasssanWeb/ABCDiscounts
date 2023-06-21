@@ -1,0 +1,139 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.CustomerInformation>
+@{ ViewData["Title"] = "Rejected Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+
+@if (TempData["Msg"] != null)
+{
+<div class="alert-success" style="max-width: 46%;" id="msgalert">
+    @TempData["Msg"].ToString()
+</div>}
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link" href="~/Customers/ManageCustomer" aria-controls="overview" aria-selected="true">Pending Customers</a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link"  href="~/Customers/ApprovedCustomer" aria-controls="overview" aria-selected="true">Approved Customers</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link active ps-0"  href="~/Customers/RejectedCustomer" aria-controls="overview" aria-selected="true">Rejected Customers</a>
+        </li>
+    </ul>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Rejected Customers</h4>
+        <div class="row">
+            <div class="col-12">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table id="order-listing" class="table dataTable" role="grid" aria-describedby="order-listing_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>Sr#</th>
+                                                <th>
+                                                    CustomerCode
+                                                </th>
+                                                <th>
+                                                    Full Name
+                                                </th>
+
+
+                                                <th>
+                                                    Company Name
+                                                </th>
+
+                                                <th>
+                                                    Email
+                                                </th>
+                                                <th>
+                                                    From Screen
+                                                </th>
+                                                <th>
+                                                    Details
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        @{var i = 0; }
+                                        <tbody>
+                                            @if (Model != null)
+                                            {
+                                                foreach (var item in Model)
+                                                {
+                                                    i = i + 1;
+                                <tr class="odd">
+                                    <td class="sorting_1">@i</td>
+                                    <td>@item.CustomerCode</td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.Company</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.FromScreen</td>
+                                       <td>
+                                   <a class="btn btn-dark py-2 btnDetails" style="color:white; font-size:15px; height:30px;" href="@Url.Action("CustomerDetail", "Customers", new { id = item.Id })"><i class="fa fa-eye"></i></a>
+                                    </td>
+
+                                </tr>}
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#order-listing tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+     function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        }
+    
+    </script>

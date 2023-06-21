@@ -1,0 +1,484 @@
+﻿@*@{
+        ViewData["Title"] = "mail";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+
+@*<div class="container">
+        <div class="row">
+            <div style="width:30%;">
+                <div style="text-align: center;">
+                    <img src="~/images/logo ABCd-01.png" style="max-height:10rem" alt="Alternate Text" />
+                </div>
+                <div style="font-size: 18px;">
+                    <h2 style="text-align: center;">Order Confirmation</h2>
+                    <br />
+                    <p >Hello Alex,</p>
+                    <br />
+                    <br />
+                    <p>Thank you for placing your order with ABC Discounts. Your order and payment details are indicated below. If you would like to view additional details of your order, please visit order history.</p>
+                </div>
+
+                <div class="order-detail" style="margin-top:40px;">
+                    <h2 class="text-center">Your Order</h2>
+                    <br />
+                    <p><h5 style="display:inline">Order Date:</h5> <span style="font-size:17px;">04/12/2022</span></p>
+                    <p><h5 style="display:inline">Transaction ID:</h5> <span style="font-size:17px;">5627261817</span></p>
+                    <p><h5 style="display:inline">Web Order ID:</h5> <span style="font-size:17px;">5627261817</span></p>
+                </div>
+                <div class="deliveryDate-section"style="margin-top:50px;">
+                    <div style="width:50%;float:left;">
+                        <h5>Delivery Date</h5>
+                        <span style="color:red">4/15/2022</span>
+                    </div>
+                    <div style="width:50%;float:right;">
+                        <h5>Payment Details</h5>
+                        <span>Payment On Delivery</span>
+                    </div>
+                </div>
+                <div class="deliveryAddress-section" style="padding-top:5rem;">
+                    <h4>Delivery Address</h4>
+                    <p>ABC Discounts</p>
+                    <br />
+                    <p>
+                        ACCOUNT/OUTLET # 0602404682 <br />1055 GATEWOOD AVE <br />GREENSBORO 27405-7201
+                    </p>
+                </div>
+
+
+            </div>
+            <div class="col-lg-6"></div>
+        </div>
+    </div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var html = "";
+
+    html += '<div style="margin:0px!important;padding:0px!important;box-sizing:border-box">';
+    html += ' <div style="display:none;font-size:1px;color:rgb(254,254,254);line-height:1px;font-family:Helvetica,Arial,sans-serif;max-height:0px;max-width:0px;opacity:0;overflow:hidden;box-sizing:border-box">';
+    html += 'We have got your order! Here are your order and payment details .';
+    html += '</div>';
+    html += '<span id="m_7273872973732431438x_j_id0:emailTemplate:j_id7:j_id8:j_id11:j_id12:j_id19" style="box-sizing:border-box">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" bgcolor="#ededed" style="box-sizing:border-box;min-width:5px;border:none">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="15" style="font-size:15px;line-height:15px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" bgcolor="#ededed" style="padding:20px 0px 0px;border-top-right-radius:15px;border-top-left-radius:15px;background:rgb(237,237,237);box-sizing:border-box;min-width:5px;border:none" valign="top">';
+    html += '<a href="" style="text-decoration:none;box-sizing:border-box;color:rgb(0,102,147)">';
+    html += '<img src="~/images/ABC-Logo-removebg-preview.png" style="height:10rem;">';
+    html += '</a>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td bgcolor="#ffffff" style="border-top-right-radius:15px;border-top-left-radius:15px;box-sizing:border-box;min-width:5px;border:none">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="30" style="font-size:15px;line-height:15px;border-top-right-radius:15px;border-top-left-radius:15px;box-sizing:border-box;min-width:5px;border:none">';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" style="font-size:36px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">';
+    html += 'Order Confirmation';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="left" style="padding:0px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:none">';
+    html += 'Hello Alison,';
+    html += '<br style="box-sizing:border-box">';
+    html += '<br style="box-sizing:border-box">';
+    html += '<br style="box-sizing:border-box">';
+    html += 'Thank you for placing your order with ABC Discounts. Your order and payment details are indicated below. If you would like to view additional details of your order, please visit order history.';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="40" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" style="padding:0px 20px;font-size:28px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">';
+    html += 'Your Order';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="left" style="padding:0px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:none">';
+    html += 'Order Date: 04/12/2022';
+    html += '<br style="box-sizing:border-box">Transaction ID: 2192895899';
+    html += '<br style="box-sizing:border-box">Web Order ID: O-0023682354';
+    html += '<br style="box-sizing:border-box">';
+    html += '<br style="box-sizing:border-box">';
+    html += '<br style="box-sizing:border-box">';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">';
+    html += '<table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">';
+    html += '<thead style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<th align="left" bgcolor="#ffffff" style="box-sizing:border-box;background:rgb(236,236,236);border:0px solid rgb(221,221,221)" valign="top" width="50%">';
+    html += '<table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="center" style="box-sizing:border-box;min-width:5px;border:none" width="500">';
+    html += '<table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="10" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">';
+    html += '<table align="center" border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">';
+    html += '<tbody style="box-sizing:border-box">';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);width:250px;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">';
+    html += 'Delivery Date:';
+    html += '</td>';
+    html += '<td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);width:250px;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">';
+    html += '<div style="text-align:left;box-sizing:border-box">Payment Details</div>';
+    html += '</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td height="5" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>';
+    html += '</tr>';
+    html += '<tr style="box-sizing:border-box">';
+    html += '<td align="left" style="padding:0px 20px;font-size:18px;line-height:24px;font-family:Arial,sans-serif;font-weight:bold;color:rgb(255,0,0);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">';
+    html += '4/15/2022';
+    html += '</td>';
+    html += '<td align="left" style="padding:0px 20px;font-size:18px;line-height:24px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">';
+    html += '<div style="text-align:left;box-sizing:border-box">';
+    html += 'Payment on Delivery';
+    html += '</div>';
+    html += '</td>';
+    html += '';
+    html += '';
+    html += '';
+    html += '';
+    html += '';
+    html += '';
+
+
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr style="box-sizing:border-box">
+                    <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                        <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                            <tbody style="box-sizing:border-box">
+                                <tr style="box-sizing:border-box">
+                                    <td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                        <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                            <tbody style="box-sizing:border-box">
+                                                <tr style="box-sizing:border-box">
+                                                    <td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                        <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                                            <tbody style="box-sizing:border-box">
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td height="20" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td align="left" style="padding:0px 20px;font-size:22px;line-height:26px;font-family:Arial,sans-serif;font-weight:normal;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">
+                                                                        Delivery Address:
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td height="5" style="font-size:5px;line-height:5px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td align="left" style="padding:0px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                                                        <span id="" style="box-sizing:border-box">
+                                                                            ABC DISCOUNTS
+                                                                            <br style="box-sizing:border-box">
+                                                                        </span>
+                                                                        <br style="box-sizing:border-box">ACCOUNT/OUTLET #&nbsp;0602404682
+                                                                        <br style="box-sizing:border-box">1055 GATEWOOD AVE
+                                                                        <br style="box-sizing:border-box">GREENSBORO 27405-7201
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td height="60" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td align="center" style="font-size:28px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:none">Order Details</td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box"><td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td></tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="box-sizing:border-box">
+                    <td align="center" bgcolor="#ededed" style="padding:0px;box-sizing:border-box;min-width:5px;border:none">
+                        <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                            <tbody style="box-sizing:border-box">
+                                <tr style="box-sizing:border-box">
+                                    <td bgcolor="#ffffff" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                        <table border="0" cellpadding="0" cellspacing="0" style="box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="100%">
+                                            <tbody style="box-sizing:border-box">
+                                                <tr style="box-sizing:border-box">
+                                                    <td height="10" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:92%;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                                            <tbody style="box-sizing:border-box">
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Product</td>
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <br style="box-sizing:border-box">
+                                                                    </td>
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);width:20%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:center;box-sizing:border-box">Quantity</div>
+                                                                    </td>
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(51,51,51);width:20%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:center;box-sizing:border-box">Price</div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box"><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td><td style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td></tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">125522 Coca-Cola Zero Sugar Cherry Bottles, 20 fl oz, 24 Pack</td>
+                                                                    <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)"><br style="box-sizing:border-box"></td>
+                                                                    <td style="padding:0px 20px 10px;font-size:18px;line-height:24px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)"><div style="text-align:center;box-sizing:border-box">3</div></td>
+                                                                    <td style="padding:0px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);text-align:right;vertical-align:top;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="box-sizing:border-box">$64.80</div>
+                                                                        <div style="font-size:12px;line-height:24px;color:rgb(244,0,0);white-space:nowrap;box-sizing:border-box">You Saved: $74.16</div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr style="box-sizing:border-box">
+                                                    <td height="20" style="font-size:20px;line-height:20px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                        <span style="box-sizing:border-box">&nbsp;</span>
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:92%;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show;max-width:100%" width="500">
+                                                            <tbody style="box-sizing:border-box">
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">&nbsp;</td>
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">Subtotal:</td>
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;border-width:2px 0px 0px;border-color:rgb(218,218,218) rgb(221,221,221) rgb(221,221,221);border-style:solid;box-sizing:border-box;min-width:5px">
+                                                                        <div style="text-align:right;box-sizing:border-box">$64.80</div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Min. Order Charge:</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:right;box-sizing:border-box">$0.00</div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Delivery Charge:</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:right;box-sizing:border-box">$0.00</div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Tax / Deposits:</td>
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:right;box-sizing:border-box">$0.00</div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <strong style="box-sizing:border-box;font-weight:700">Order Total:</strong>
+                                                                    </td>
+                                                                    <td bgcolor="#ededed" style="padding:5px 20px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:right;box-sizing:border-box">
+                                                                            <strong style="box-sizing:border-box;font-weight:700">$64.80</strong>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="box-sizing:border-box">
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:15%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:60%;text-align:right;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">Total Saved:</td>
+                                                                    <td style="padding:10px 20px 5px;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);width:25%;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                                                                        <div style="text-align:right;color:rgb(244,0,0);box-sizing:border-box">$74.16</div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr style="box-sizing:border-box">
+                                                    <td height="40" style="font-size:40px;line-height:40px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                                </tr>
+                                                <tr style="box-sizing:border-box"><td style="padding:0px 20px;font-size:12px;line-height:16px;font-family:Helvetica,Arial,sans-serif;color:rgb(80,80,80);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">*Final amount will be determined at delivery</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="box-sizing:border-box">
+                    <td align="center" bgcolor="#ededed" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                        <table align="center" bgcolor="#424242" border="0" cellspacing="0" style="max-width:500px;padding:0px 10px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                            <tbody style="box-sizing:border-box">
+                                <tr style="box-sizing:border-box">
+                                    <td bgcolor="#424242" height="10" style="font-size:10px;line-height:10px;box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">&nbsp;</td>
+                                </tr>
+                                <tr style="box-sizing:border-box">
+                                    <td align="center" bgcolor="#424242" style="padding:0px 5%;font-size:18px;line-height:25px;font-family:Helvetica,Arial,sans-serif;color:rgb(255,255,255);background:rgb(66,66,66);box-sizing:border-box;min-width:5px;border:none">
+                                        Questions? Chat with the ABC Discounts Support Team online or call us at
+                                        <a style="color:rgb(255,255,255);text-decoration:none;box-sizing:border-box" rel="noopener noreferrer">&nbsp;800-438-0686</a> from 8AM-6PM (ET).
+                                    </td>
+                                </tr>
+                                <tr style="box-sizing:border-box">
+                                    <td bgcolor="#424242" height="10" style="font-size:10px;line-height:10px;border-bottom-right-radius:15px;border-bottom-left-radius:15px;box-sizing:border-box;min-width:5px;border:none">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="box-sizing:border-box">
+                    <td align="center" bgcolor="#ededed" style="box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                        <table border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                            <tbody style="box-sizing:border-box">
+                                <tr style="box-sizing:border-box">
+                                    <td align="center" style="background-color:rgb(220,220,220);padding:20px;border-bottom-right-radius:15px;border-bottom-left-radius:15px;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                                            <tbody style="box-sizing:border-box">
+                                                <tr style="box-sizing:border-box">
+                                                    <td align="left" style="font-size:15px;line-height:18px;font-weight:bold;font-family:Arial,Helvetica,Montserrat,sans-serif;color:rgb(244,0,0)!important;text-decoration:none!important;box-sizing:border-box;min-width:5px;border:1px solid rgb(221,221,221)" valign="middle">
+                                                        <a href="" shape="rect" style="color:rgb(244,0,0);text-decoration:none;box-sizing:border-box">
+                                                            TERMS &amp; CONDITIONS&nbsp;
+                                                        </a>
+                                                        <br style="box-sizing:border-box">
+                                                        <br style="box-sizing:border-box">
+                                                        <a href="" shape="rect" style="color:rgb(244,0,0);text-decoration:none;box-sizing:border-box">PRIVACY POLICY</a>
+                                                    </td>
+                                                    <td align="center" style="font-size:12px;line-height:18px;font-family:Arial,Helvetica,Montserrat,sans-serif;color:rgb(102,102,102);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)" valign="middle">
+                                                        <img src="~/images/ABC-Logo-removebg-preview.png" style="height:10rem;" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="box-sizing:border-box">
+                            <p style="padding:0px 0px 0px 20px;font-size:11px;font-weight:300;line-height:15px;margin-top:1px;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important;box-sizing:border-box;color:rgb(68,68,68)">© 2022 ABC Discounts, all rights reserved.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="box-sizing:border-box">
+                    <td align="center" bgcolor="#ededed" style="padding:10px 0px;background:rgb(237,237,237);box-sizing:border-box;min-width:5px;border:0px solid rgb(221,221,221)">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="max-width:500px;box-sizing:border-box;border:none;border-collapse:collapse;empty-cells:show" width="100%">
+                            <tbody style="box-sizing:border-box">
+                                <tr style="box-sizing:border-box">
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
+</div>
+</script>
+
+

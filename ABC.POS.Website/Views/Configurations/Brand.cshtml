@@ -1,0 +1,76 @@
+﻿@model ABC.EFCore.Repository.Edmx.Brand
+@{
+    ViewBag.Title = "Brands";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Configurations/ItemCategory" aria-controls="overview" aria-selected="true">ItemsCategory</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Configurations/ItemSubCategory" aria-controls="overview" aria-selected="true">Items SubCategory</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Configurations/Brand" role="tab" aria-selected="false">Manufacture</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Configurations/ArticleType" role="tab" aria-selected="false">ItemFamily</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Configurations/WareHouses" role="tab" aria-selected="false">AddWareHouse</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Configurations/Store" role="tab" aria-selected="false">AddStore</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Configurations/AddTerminal" role="tab" aria-selected="false">Terminal</a>
+        </li>
+
+    </ul>
+</div>
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Brand</h4>
+           
+            @using (Html.BeginForm("AddBrand", "Configurations", FormMethod.Post, new { @class = "forms-sample" }))
+            {
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Brand</label>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Brand" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+
+                </div>
+
+
+                <button type="submit" class="btn btn-dark me-2"><p style=color:white>Submit</p></button>
+              
+            }
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+
+
+
+
+
+

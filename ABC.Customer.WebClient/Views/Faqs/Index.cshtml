@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Faq>
+@{
+    ViewBag.Title = "Faqs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h2 {
+        font-family: Arial, Verdana;
+        font-weight: 800;
+        font-size: 2.5rem;
+        color: #091f2f;
+        text-transform: uppercase;
+    }
+
+    .accordion-section .panel-default > .panel-heading {
+        border: 0;
+        background: #f4f4f4;
+        padding: 0;
+    }
+
+    .accordion-section .panel-default .panel-title a {
+        display: block;
+        color:#555;
+        text-transform:uppercase;
+        font-weight:bold;
+        font-size: 22px;
+    }
+
+        .accordion-section .panel-default .panel-title a:after {
+            font-family: 'FontAwesome';
+            font-style: normal;
+            font-size: 3rem;
+            content: "\f106";
+            color: #555;
+            float: right;
+            margin-top: -12px;
+        }
+
+        .accordion-section .panel-default .panel-title a.collapsed:after {
+            content: "\f107";
+        }
+
+    .accordion-section .panel-default .panel-body {
+        font-size: 1.2rem;
+    }
+</style>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home",new{@area="Home"})">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">FAQs</li>
+        </ol>
+    </nav>
+    <!-- //inner banner -->
+    <!-- FAQ-help-page -->
+
+    <br />
+
+
+    <section class="accordion-section clearfix mt-3" aria-label="Question Accordions">
+        <div class="container">
+
+            <h2>Frequently Asked Questions </h2>
+            <br />
+            @if(Model != null)
+            {
+                var i = 1;
+                foreach (var item in Model)
+                {
+                    if(item.IsPublic == true)
+                    {
+                       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading p-3 mb-3" role="tab" id="heading@(i)">
+                                <h3 class="panel-title">
+                                    <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)">
+                                        @item.Title
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapse@(i)" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading@(i)">
+                                <div class="panel-body px-3 mb-4">
+                                    <p>@item.Description </p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    i++; 
+                    }
+                    
+                }
+            }
+           
+
+        </div>
+    </section>
+</div>

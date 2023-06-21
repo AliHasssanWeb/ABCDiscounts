@@ -1,0 +1,204 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpPayRoll>
+
+@{
+    ViewData["Title"] = "ManageEmpPayRoll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<div>
+    <a asp-action="AddPayRoll"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee PayRoll</i></Span></a>
+
+
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Employee PayRoll Approval</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="order-listing_length"><label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div><div class="row">
+                            <div class="col-sm-12">
+                                <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsApprove)
+                                            </th>
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                Name of Employee
+                                            </th>
+                                            <th>
+                                                From Date
+                                            </th>
+                                            <th>
+                                                To Date
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.DisperseDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.BasicSalary)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Allowances)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Deductions)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Loans)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Taxes)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.TotalSalary)
+                                            </th>
+
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{var i = 0;}
+                                        @if (Model != null)
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @if (item.IsApprove == true)
+                                                        {
+                                                            <input onclick="Func(this)" data-val="true" data-val-required="The IsApprove field is required." id="@item.EmpPayRollId" name="@item.EmpPayRollId" type="checkbox" checked>
+                                                        }
+                                                        else
+                                                        { <input onclick="Func(this)" data-val="true" data-val-required="The IsApprove field is required." id="@item.EmpPayRollId" name="@item.EmpPayRollId" type="checkbox">}
+
+                                                    </td>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    @foreach (var item1 in ViewBag.EmployeeName)
+                                                    {
+                                                        if (item1.EmployeeId == item.EmployeeId)
+                                                        {
+                                                            <td> @item1.FullName </td>
+                                                        }
+                                                    }
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FromDate)
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ToDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.DisperseDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.BasicSalary)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Allowances)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Deductions)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Loans)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Taxes)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TotalSalary)
+                                                    </td>
+
+
+                                                </tr>
+                                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+@if (TempData["responseofAddTax"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddTax"].ToString()");</script>
+
+}
+
+
+
+
+
+<script>
+
+    function Func(e) {
+
+
+        swal({
+            title: "Do you Want to Approve this PayRoll?",
+            //text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "ModifyPayRollApproval",
+                        data: {
+
+                            IsApprove: e.checked,
+                            EmpPayRollId: e.id
+
+                        },
+
+                        success: function () {
+                            toastr.success("Record Modified");
+
+                        }
+                    });
+                } else {
+
+                    toastr.info("No Change Detected");
+                    window.setTimeout(function () {
+                        window.location.href = 'PayRollApproval';
+                    }, 500);
+                }
+            });
+
+
+    }
+
+
+
+
+   
+</script>
+
+
+

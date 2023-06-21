@@ -1,0 +1,110 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+	<PropertyGroup>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+	</PropertyGroup>
+  <ItemGroup>
+    <None Include="Views\AllowanceType\AddAllowanceType.cshtml" />
+    <None Include="Views\AllowanceType\ManageAllowanceType.cshtml" />
+    <None Include="Views\AllowanceType\UpdateAllowanceType.cshtml" />
+    <None Include="Views\DeductionType\AddDeductionType.cshtml" />
+    <None Include="Views\DeductionType\ManageDeductionType.cshtml" />
+    <None Include="Views\DeductionType\UpdateDeductionType.cshtml" />
+    <None Include="Views\EmployeeAllowance\AddEmployeeAllowance.cshtml" />
+    <None Include="Views\EmployeeAllowance\AllowanceApproval.cshtml" />
+    <None Include="Views\EmployeeAllowance\ManageEmployeeAllowance.cshtml" />
+    <None Include="Views\EmployeeAllowance\UpdateEmployeeAllowance.cshtml" />
+    <None Include="Views\EmployeeAttendance\AddEmployeeAttendance.cshtml" />
+    <None Include="Views\EmployeeAttendance\AttendanceApproval.cshtml" />
+    <None Include="Views\EmployeeAttendance\ManageEmployeeAttendance.cshtml" />
+    <None Include="Views\EmployeeAttendance\UpdateEmployeeAttendance.cshtml" />
+    <None Include="Views\EmployeeAttendance\UploadAttendance.cshtml" />
+    <None Include="Views\EmployeeDeduction\AddEmployeeDeduction.cshtml" />
+    <None Include="Views\EmployeeDeduction\DeductionApproval.cshtml" />
+    <None Include="Views\EmployeeDeduction\ManageEmployeeDeduction.cshtml" />
+    <None Include="Views\EmployeeDeduction\UpdateEmployeeDeduction.cshtml" />
+    <None Include="Views\EmployeeLeave\AddEmployeeLeave.cshtml" />
+    <None Include="Views\EmployeeLeave\LeaveApproval.cshtml" />
+    <None Include="Views\EmployeeLeave\ManageEmployeeLeave.cshtml" />
+    <None Include="Views\EmployeeLeave\UpdateEmployeeLeave.cshtml" />
+    <None Include="Views\EmployeeLoan\AddEmployeeLoan.cshtml" />
+    <None Include="Views\EmployeeLoan\LoanApproval.cshtml" />
+    <None Include="Views\EmployeeLoan\ManageEmployeeLoan.cshtml" />
+    <None Include="Views\EmployeeLoan\UpdateEmployeeLoan.cshtml" />
+    <None Include="Views\EmployeePayRoll\AddPayRoll.cshtml" />
+    <None Include="Views\EmployeePayRoll\EmployeePayRollDetail-bk1.cshtml" />
+    <None Include="Views\EmployeePayRoll\GeneratePayRoll.cshtml" />
+    <None Include="Views\EmployeePayRoll\ManagePayRoll.cshtml" />
+    <None Include="Views\EmployeePayRoll\PartialAddEmployeeAllowance.cshtml" />
+    <None Include="Views\EmployeePayRoll\PartialAddEmployeeDeduction.cshtml" />
+    <None Include="Views\EmployeePayRoll\PartialAddEmployeeLoan.cshtml" />
+    <None Include="Views\EmployeePayRoll\PartialAddEmployeeTax.cshtml" />
+    <None Include="Views\EmployeePayRoll\PayRollApproval.cshtml" />
+    <None Include="Views\EmployeePayRoll\PayRollPdfView.cshtml" />
+    <None Include="Views\EmployeePayRoll\PaySlipByDate.cshtml" />
+    <None Include="Views\EmployeeTaxConfiguration\AddTaxConfiguration.cshtml" />
+    <None Include="Views\EmployeeTaxConfiguration\ManageTaxConfiguration.cshtml" />
+    <None Include="Views\EmployeeTaxConfiguration\UpdateTaxConfiguration.cshtml" />
+    <None Include="Views\EmployeeTax\AddEmployeeTax.cshtml" />
+    <None Include="Views\EmployeeTax\ManageEmployeeTax.cshtml" />
+    <None Include="Views\EmployeeTax\TaxApproval.cshtml" />
+    <None Include="Views\EmployeeTax\UpdateEmployeeTax.cshtml" />
+    <None Include="Views\LeaveType\AddLeaveType.cshtml" />
+    <None Include="Views\LeaveType\ManageLeaveType.cshtml" />
+    <None Include="Views\LeaveType\UpdateLeaveType.cshtml" />
+    <None Include="Views\LoanType\AddLoanType.cshtml" />
+    <None Include="Views\LoanType\ManageLoanType.cshtml" />
+    <None Include="Views\LoanType\UpdateLoanType.cshtml" />
+    <None Include="Views\TaxType\AddTaxType.cshtml" />
+    <None Include="Views\TaxType\ManageTaxType.cshtml" />
+    <None Include="Views\TaxType\UpdateTaxType.cshtml" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ABC.EFCore\ABC.EFCore.csproj" />
+    <ProjectReference Include="..\ABC.HR.API\ABC.HR.API.csproj" />
+    <ProjectReference Include="..\ABC.HR.Domain\ABC.HR.Domain.csproj" />
+    <ProjectReference Include="..\ABC.Shared\ABC.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\ExcelFiles\" />
+    <Folder Include="wwwroot\images\suppliers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
+  </ItemGroup>
+
+</Project>

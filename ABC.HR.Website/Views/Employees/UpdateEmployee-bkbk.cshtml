@@ -1,0 +1,2460 @@
+﻿@model ABC.EFCore.Repository.Edmx.Employee
+@{
+    ViewData["Title"] = "Add Employee Contract";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    function checkYesContractor() {
+        $("#YesContractor").prop("checked", true);
+        $("#NoContractor").prop("checked", false);
+    }
+    function checkNoContractor() {
+        $("#YesContractor").prop("checked", false);
+        $("#NoContractor").prop("checked", true);
+    }
+</script>
+<style>
+    .line {
+        border-left: 2px solid black;
+        height: 105px;
+    }
+
+    .hrline {
+        border-bottom: 2px solid black;
+    }
+
+    input {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Employees/RegisterEmployee" aria-controls="overview" aria-selected="true">RegisterEmployee</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Employees/AddEmployeeLeaveEntitle" role="tab" aria-selected="false">AddEmployeeLeaveEntitle</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Employees/AddEmployeeDocuments" role="tab" aria-selected="false">AddEmployeeDocuments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Employees/AddEmployeeContract" role="tab" aria-selected="false">AddEmployeeContract</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Employees/CreateEmployeeSettlement" role="tab" aria-selected="false">CreateEmployeeSettlement</a>
+        </li>
+    </ul>
+</div>
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"] .ToString()
+    </div>
+}
+@using (Html.BeginForm("UpdateEmployee", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title text-center">Add Employee</h4>
+            <div class="row mx-3 px-3">
+                <p class="hrline"></p>
+                <div class="col-md-4">
+                    <h1>
+                        Form W-4 (2017)
+                    </h1>
+                    <p class="hrline"></p>
+                    <p>
+                        <b>Purpose.</b> Complete Form W-4 so that your
+                        employer can withhold the correct federal income
+                        tax from your pay. Consider completing a new Form
+                        W-4 each year and when your personal or financial
+                        situation changes.
+                    </p>
+                    <p>
+                        <b>Exemption from withholding.</b> If you are exempt,
+                        complete only lines 1, 2, 3, 4, and 7 and sign the
+                        form to validate it. Your exemption for 2017 expires
+                        February 15, 2018. See Pub. 505, Tax Withholding
+                        and Estimated Tax.
+                    </p>
+                    <p>
+                        <b>Note:</b> If another person can claim you as a dependent
+                        on his or her tax return, you can’t claim exemption
+                        from withholding if your total income exceeds $1,050
+                        and includes more than $350 of unearned income (for
+                        example, interest and dividends).
+                    </p>
+                    <p>
+                        <b>Exceptions.</b> An employee may be able to claim
+                        exemption from withholding even if the employee is
+                        a dependent, if the employee:
+                        <ul>
+                            <li>Is age 65 or older</li>
+                            <li>Is blind, or</li>
+                            <li>
+                                Will claim adjustments to income; tax credits; or
+                                itemized deductions, on his or her tax return.
+                                The exceptions don’t apply to supplemental wages
+                                greater than $1,000,000.
+
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <b>Basic instructions.</b> If you aren’t exempt, complete
+                        the Personal Allowances Worksheet below. The
+                        worksheets on page 2 further adjust your
+                        withholding allowances based on itemized
+                        deductions, certain credits, adjustments to income,
+                        or two-earners/multiple jobs situations.
+                        Complete all worksheets that apply. However, you
+                        may claim fewer (or zero) allowances. For regular
+                        wages, withholding must be based on allowances
+                        you claimed and may not be a flat amount or
+                        percentage of wages.
+                    </p>
+                    <p>
+                        <b>Head of household.</b> Generally, you can claim head
+                        of household filing status on your tax return only if
+                        you are unmarried and pay more than 50% of the
+                        costs of keeping up a home for yourself and your
+                        dependent(s) or other qualifying individuals. See
+                        Pub. 501, Exemptions, Standard Deduction, and
+                        Filing Information, for information.
+                    </p>
+                    <p>
+                        <b>Tax credits.</b> You can take projected tax credits into
+                        account in figuring your allowable number of
+                        withholding allowances. Credits for child or dependent
+                        care expenses and the child tax credit may be claimed
+                        using the Personal Allowances Worksheet below.
+                        See Pub. 505 for information on converting your other
+                        credits into withholding allowances
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <b>Nonwage income.</b> If you have a large amount of
+                        nonwage income, such as interest or dividends,
+                        consider making estimated tax payments using Form
+                        1040-ES, Estimated Tax for Individuals. Otherwise,
+                        you may owe additional tax. If you have pension or
+                        annuity income, see Pub. 505 to find out if you should
+                        adjust your withholding on Form W-4 or W-4P.
+                    </p>
+                    <p>
+                        <b>Two earners or multiple jobs.</b> If you have a
+                        working spouse or more than one job, figure the
+                        total number of allowances you are entitled to claim
+                        on all jobs using worksheets from only one Form
+                        W-4. Your withholding usually will be most accurate
+                        when all allowances are claimed on the Form W-4
+                        for the highest paying job and zero allowances are
+                        claimed on the others. See Pub. 505 for details.
+                    </p>
+                    <p>
+                        <b>Nonresident alien.</b> If you are a nonresident alien, see
+                        Notice 1392, Supplemental Form W-4 Instructions for
+                        Nonresident Aliens, before completing this form.
+                    </p>
+                    <p>
+                        <b>Check your withholding.</b> After your Form W-4 takes
+                        effect, use Pub. 505 to see how the amount you are
+                        having withheld compares to your projected total tax
+                        for 2017.See Pub. 505, especially if your earnings
+                        exceed $130,000(Single) or $180,000(Married).
+
+                    </p>
+
+                    <p>
+                        <b>Future developments.</b>Information about any future
+                        developments affecting Form W-4(such as
+                        legislation enacted after we release it) will be posted
+                        at www.irs.gov / w4.
+                    </p>
+                </div>
+                <p class="hrline"></p>
+            </div>
+            <div class="row mx-3 px-3">
+                <p class="text-center"><b>Personal Allowances Worksheet</b>(Keep for your records.)</p>
+                <p class="hrline"></p>
+                <ol type="A">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter “1” for <b>yourself</b> if no one else can claim you as a dependent.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>A</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter “1” if:
+                                    <ul class="mx-5">
+                                        <li>You’re single and have only one job; or</li>
+                                        <li>You’re married, have only one job, and your spouse doesn’t work; or</li>
+                                        <li>Your wages from a second job or your spouse’s wages (or the total of both) are $1,500 or less.</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>B</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter “1” for your <b>spouse</b>. But, you may choose to enter “-0-” if you are married and have either a working spouse or more
+                                    than one job. (Entering “-0-” may help you avoid having too little tax withheld.)
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>C</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter number of <b>dependents</b> (other than your spouse or yourself) you will claim on your tax return.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>D</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter “1” if you will file as <b>head of household</b> on your tax return (see conditions under Head of household above).
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>E</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter “1” if you have at least $2,000 of <b>child or dependent care expenses</b> for which you plan to claim a credit.
+                                </p>
+                                <p>(<b>Note:</b> Do <b>not</b> include child support payments. See Pub. 503, Child and Dependent Care Expenses, for details.) </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>F</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Child Tax Credit</b> (including additional child tax credit). See Pub. 972, Child Tax Credit, for more information.
+                                    <ul>
+                                        <li>
+                                            If your total income will be less than $70,000 ($100,000 if married), enter “2” for each eligible child; then less “1” if you
+                                            have two to four eligible children or less “2” if you have five or more eligible children.
+                                        </li>
+                                        <li>
+                                            If your total income will be between $70,000 and $84,000 ($100,000 and $119,000 if married), enter “1” for each eligible child.
+                                        </li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>G</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>Add lines A through G and enter total here. (<b>Note:</b> This may be different from the number of exemptions you claim on your tax return.)</p>
+                                <p>
+                                    For accuracy,<b> complete all worksheets that apply.</b>
+                                    <ul>
+                                        <li>
+                                            If you plan to <b>itemize</b> or <b>claim adjustments to income</b> and want to reduce your withholding, see the
+                                            <b>
+                                                Deductions and Adjustments Worksheet
+                                            </b> on page 2.
+                                        </li>
+                                        <li>
+                                            If you are <b>single and have more than one job or are married and you and your spouse both work</b> and the combined
+                                            earnings from all jobs exceed $50,000 ($20,000 if married), see the Two-Earners/Multiple Jobs Worksheet on page 2
+                                            to avoid having too little tax withheld.
+                                        </li>
+                                        <li>
+                                            If neither of the above situations applies, <b>stop here</b> and enter the number from line H on line 5 of Form W-4 below.
+                                        </li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>H</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+                <p class="hrline"></p>
+            </div>
+
+            <div class="row px-3 mx-3">
+                <p class="text-center"><b>Separate here and give Form W-4 to your employer. Keep the top part for your records</b></p>
+                <p class="hrline"></p>
+                <div class="col-md-3">
+                    <P>Form &ensp;&ensp;<b>W-4</b><br />Department of the Treasury<br /> Internal Revenue Service.</P>
+                </div>
+                <div class="col-md-7 line">
+                    <h5 class="text-center"><b>Employee’s Withholding Allowance Certificate</b></h5>
+                    <p>
+                        <b>
+                            Whether you are entitled to claim a certain number of allowances or exemption from withholding is
+                            subject to review by the IRS. Your employer may be required to send a copy of this form to the IRS
+                        </b>
+                    </p>
+                </div>
+                <div class="col-md-2 line">
+                    <P>OMB No. 1545-0074<br /><h1>2017</h1></P>
+                </div>
+
+                <p class="hrline"></p>
+            </div>
+
+            <div class="row mx-3">
+                <ol type="1">
+                    <li>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Your first name</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", id = "txtempwhtfirstname" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.FirstName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Your middle name</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name", id = "txtempwhtmiddlename" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MiddleName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Your last name</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", id = "txtempwhtlastname" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.LastName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+                    <li>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Your social security number</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "social security number", id = "txtempwhtSsn" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Ssn, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Home address (number and street or rural route)</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "social security number", id = "txtempwhtaddress" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Address, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="">
+                                    Marital Status:
+                                </label>
+                                @Html.DropDownList("MartialStatus", new List<SelectListItem>
+                                    {
+                                    new SelectListItem{ Text="Single", Value = "Single" },
+                                    new SelectListItem{ Text="Married", Value = "Engaged" },
+                                    new SelectListItem{ Text="Married, but withhold at higher Single rate", Value = "MarriedBut" },
+
+                                    }, "--Choose Marital Status--", new { @class = "form-control", id = "MarriedStatus" }
+                                       )
+                                @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MarriedStatus, "", new { @class = "text-danger db" })
+                                <p>
+                                    <b>Note:</b> If married, but legally separated, or spouse is a nonresident alien, select the Single .
+                                </p>
+                            </div>
+                            <div class="col-md-6 row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "txtempwhtcity" } })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.City, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State", id = "txtempwhtstate" } })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.State, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>ZipCode</label>
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "ZipCode", id = "txtempwhtzipcode" } })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.ZipCode, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <br />
+                            <p>
+                                If your last name differs from that shown on your social security card,
+                                check here. You must call 1-800-772-1213 for a replacement card.
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Total number of allowances you are claiming (from line H above or from the applicable worksheet on page 2).
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>5</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Additional amount, if any, you want withheld from each paycheck.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>6</b></span>&ensp;
+                                @Html.EditorFor(model => model.EmployeeWithHoldingTax.AdditionalAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "AdditionalAmount", id = "txtempwhtadditionalamount", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.AdditionalAmount, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    I claim exemption from withholding for 2017, and I certify that I meet both of the following conditions for exemption.
+                                </p>
+                                <ul>
+                                    <li>
+                                        Last year I had a right to a refund of all federal income tax withheld because I had no tax liability, <b>and</b>
+                                    </li>
+                                    <li>
+                                        This year I expect a refund of <b>all</b> federal income tax withheld because I expect to have <b>no</b> tax liability.
+                                        If you meet both conditions, write “Exempt” here
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <br />
+                                <span><b>7</b></span>&ensp;<input type="number" />
+                            </div>
+                            <p class="hrline"></p>
+                            <p>Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.</p>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>
+                                            <b>Employee’s signature</b><br />
+                                            (This form is not valid unless you sign it.)
+                                        </label>
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.EmployeeSignature, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployeeSignature", id = "txtempwhtsignature" } })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.EmployeeSignature, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <div class="form-group">
+                                        <label><b>Date</b></label>
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.Date, new { htmlAttributes = new { @class = "form-control", placeholder = "Date", id = "txtempwhtdate" } })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Date, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <p>Employer’s name and address (Employer: Complete lines 8 and 10 only if sending to the IRS.) </p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        <b>Employer’s name</b>
+                                    </label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployerName", id = "txtempwhtfullname" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.FullName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>
+                                    <b>Employer’s address</b>
+                                </label>
+                                @Html.EditorFor(model => model.EmployeeWithHoldingTax.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployeeAddress", id = "txtempwhtaddress" } })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    <b>Office code (optional)</b>
+                                </label>
+                                @Html.EditorFor(model => model.EmployeeWithHoldingTax.EmployeeOfficeCode, new { htmlAttributes = new { @class = "form-control", placeholder = "OfficeCode", id = "txtempwhtofficecode" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.EmployeeOfficeCode, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    <b>Employer identification number (EIN)</b>
+                                </label>
+                                @Html.EditorFor(model => model.EmployeeWithHoldingTax.Ein, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer identification number (EIN)", id = "txtempwhtein" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Ein, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </li>
+
+                </ol>
+                <p class="hrline"></p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><b>For Privacy Act and Paperwork Reduction Act Notice, see page 2.</b></p>
+                    </div>
+                    <div class="col-md-6 row">
+                        <div class="col-md-6">
+                            <p style="float:right">Cat. No. 10220Q</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="float:right">Form <b>W-4</b> (2017)</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="hrline"></p>
+                <p class="text-center"><b>Deductions and Adjustments Worksheet</b></p>
+                <p class="hrline"></p>
+            </div>
+            <div class="row mx-3">
+                <p><b>Note:</b> Use this worksheet only if you plan to itemize deductions or claim certain credits or adjustments to income.</p>
+                <ol type="1">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter an estimate of your 2017 itemized deductions. These include qualifying home mortgage interest, charitable contributions, state
+                                    and local taxes, medical expenses in excess of 10% of your income, and miscellaneous deductions. For 2017, you may have to reduce
+                                    your itemized deductions if your income is over $313,800 and you’re married filing jointly or you’re a qualifying widow(er); $287,650
+                                    if you’re head of household; $261,500 if you’re single, not head of household and not a qualifying widow(er); or $156,900 if you’re
+                                    married filing separately. See Pub. 505 for details
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>1</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter:
+                                </p>
+                                <ul>
+                                    <li>
+                                        <p>$12,700 if married filing jointly or qualifying widow(er)</p>
+                                    </li>
+                                    <li>
+                                        <p>$9,350 if head of household</p>
+                                    </li>
+                                    <li>
+                                        <p>$6,350 if single or married filing separately</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>2</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Subtract</b> line 2 from line 1. If zero or less, enter “-0-”
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>3</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter an estimate of your 2017 adjustments to income and any additional standard deduction (see Pub. 505)
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>4</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Add</b> lines 3 and 4 and enter the total. (Include any amount for credits from the Converting Credits to
+                                    Withholding Allowances for 2017 Form W-4 worksheet in Pub. 505.)
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>5</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter an estimate of your 2017 nonwage income (such as dividends or interest)
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>6</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Subtract</b> line 6 from line 5. If zero or less, enter “-0-”
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>7</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Divide</b> the amount on line 7 by $4,050 and enter the result here. Drop any fraction
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>8</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter the number from the Personal Allowances Worksheet, line H, page 1
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>9</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Add</b> lines 8 and 9 and enter the total here. If you plan to use the Two-Earners/Multiple Jobs Worksheet,
+                                    also enter this total on line 1 below. Otherwise, stop here and enter this total on Form W-4, line 5, page 1
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>10</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                </ol>
+                <p class="hrline"></p>
+                <p class="text-center">
+                    <b>Two-Earners/Multiple Jobs Worksheet (See Two earners or multiple jobs on page 1.)</b>
+                </p>
+                <p class="hrline"></p>
+            </div>
+            <div class="row mx-3">
+                <p><b>Note:</b>  Use this worksheet only if the instructions under line H on page 1 direct you here.</p>
+                <ol type="1">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter the number from line H, page 1 (or from line 10 above if you used the Deductions and Adjustments Worksheet)
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>1</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Find the number in Table 1 below that applies to the LOWEST paying job and enter it here. However, if
+                                    you are married filing jointly and wages from the highest paying job are $65,000 or less, do not enter more
+                                    than “3”
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>2</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    If line 1 is <b>more than or equal</b> to line 2, subtract line 2 from line 1. Enter the result here (if zero, enter
+                                    “-0-”) and on Form W-4, line 5, page 1. <b>Do not</b> use the rest of this worksheet
+                                </p>
+                                <p>
+                                    <b>Note:</b>If line 1 is <b>less than</b> line 2, enter “-0-” on Form W-4, line 5, page 1. Complete lines 4 through 9 below to
+                                    figure the additional withholding amount necessary to avoid a year-end tax bill.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>3</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+
+                                    Enter the number from line 2 of this worksheet
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>4</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Enter the number from line 1 of this worksheet
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>5</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Subtract</b> line 5 from line 4
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>6</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Find the amount in <b>Table 2</b> below that applies to the <b>HIGHEST</b> paying job and enter it here
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>7</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    <b>Multiply</b> line 7 by line 6 and enter the result here. This is the additional annual withholding needed
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>8</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    Divide line 8 by the number of pay periods remaining in 2017. For example, divide by 25 if you are paid every two
+                                    weeks and you complete this form on a date in January when there are 25 pay periods remaining in 2017. Enter
+                                    the result here and on Form W-4, line 6, page 1. This is the additional amount to be withheld from each paycheck
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <span><b>9</b></span>&ensp;<input type="number" />
+                            </div>
+                        </div>
+
+                    </li>
+
+                </ol>
+                <p class="hrline"></p>
+                <div class="row mx-3">
+                    <div class="col-md-6">
+
+                        <img src="/images/HR/Table1.png" alt="" class="" />
+                    </div>
+                    <div class="col-md-6">
+
+                        <img src="/images/HR/Table2.png" alt="" class="" />
+                    </div>
+                </div>
+
+                <div class="row mx-3">
+                    <br />
+                    <div class="col-md-6">
+                        <p>
+                            <b>Privacy Act and Paperwork Reduction Act Notice.</b> We ask for the information on this form
+                            to carry out the Internal Revenue laws of the United States. Internal Revenue Code sections
+                            3402(f)(2) and 6109 and their regulations require you to provide this information; your employer
+                            uses it to determine your federal income tax withholding. Failure to provide a properly
+                            completed form will result in your being treated as a single person who claims no withholding
+                            allowances; providing fraudulent information may subject you to penalties. Routine uses of
+                            this information include giving it to the Department of Justice for civil and criminal litigation; to
+                            cities, states, the District of Columbia, and U.S. commonwealths and possessions for use in
+                            administering their tax laws; and to the Department of Health and Human Services for use in
+                            the National Directory of New Hires. We may also disclose this information to other countries
+                            under a tax treaty, to federal and state agencies to enforce federal nontax criminal laws, or to
+                            federal law enforcement and intelligence agencies to combat terrorism.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            You are not required to provide the information requested on a form that is
+                            subject to the Paperwork Reduction Act unless the form displays a valid OMB
+                            control number. Books or records relating to a form or its instructions must be
+                            retained as long as their contents may become material in the administration of
+                            any Internal Revenue law. Generally, tax returns and return information are
+                            confidential, as required by Code section 6103.
+                            The average time and expenses required to complete and file this form will vary
+                            depending on individual circumstances. For estimated averages, see the
+                            instructions for your income tax return.
+                            If you have suggestions for making this form simpler, we would be happy to hear
+                            from you. See the instructions for your income tax return.
+                        </p>
+                    </div>
+                    <p class="hrline"></p>
+                </div>
+            </div>
+            <div class="row mx-3">
+                <div class="col-md-3">
+                    <br />
+                    <p class="text-center">Web<br />12-14</p>
+                </div>
+
+                <div class="line col-md-9">
+                    <h1>NC-4EZ</h1>
+                    <h3>
+                        Employee's Withholding<br />
+                        Allowance Certificate
+                    </h3>
+                </div>
+            </div>
+            <div class="row mx-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Social Security Number</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Social Security Number", id = "txtempwhtSsn" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Ssn, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="">
+                                Marital Status:
+                            </label>
+                            @Html.DropDownList("MartialStatus", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Single", Value = "Single" },
+                                new SelectListItem{ Text="Married", Value = "Engaged" },
+                                new SelectListItem{ Text="Married, but withhold at higher Single rate", Value = "MarriedBut" },
+
+                                }, "--Choose Marital Status--", new { @class = "form-control", id = "MarriedStatus" }
+                                   )
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MarriedStatus, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Your first name</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", id = "txtempwhtfirstname" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.FirstName, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Your middle name</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name", id = "txtempwhtmiddlename" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MiddleName, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Your last name</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", id = "txtempwhtlastname" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.LastName, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Addrees</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address", id = "txtempwhtaddress" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Address, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Country</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.Country, new { htmlAttributes = new { @class = "form-control", placeholder = "Country", id = "txtempwhtcountry" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Country, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>City</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "txtempwhtcity" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.City, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>State</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.State, new { htmlAttributes = new { @class = "form-control", placeholder = "Address", id = "txtempwhtaddress" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.State, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>ZipCode</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "ZipCode", id = "txtempwhtzipcode" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.ZipCode, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Country (if not U.S)</label>
+                            @Html.EditorFor(model => model.EmployeeWithHoldingTax.Country, new { htmlAttributes = new { @class = "form-control", placeholder = "Country", id = "txtempwhtcountry" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Country, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <p><b>FORM NC-4EZ:</b>Please use this form if you:</p>
+                    <p>_plan to claim the N.C. standard deduction.</p>
+                    <p>_plan to claim no tax credits or only the credit for childern.</p>
+                    <p>_Prefer not to complete the extended Form NC-4.</p>
+                    <p>_Qualify to claim exempt status (See lines 3 or 4 below)</p>
+                    <br />
+                    <p>
+                        <b>If you are a nonresident align you must use Form NC-4 NRA.</b><br /><br />You may complete Form NC-4, if you plan to claim N.C. itemized
+                        deductions, federal adjustment to income, or N.C. deductions.<br /><br />
+                    </p>
+                    <p>
+                        If you do not plan to claim the credit for childern, enter zero (0) on line 1. If you plan to claim the credit for childern,
+                        use the table below for your for filing status, amount of income, and number of childern under age of 17 to determine the number
+                        of allowances to enter on line 1. For married taxpayers, only 1 spouse may claim the allowance for the credit for each child.
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="/images/HR/Single.png" alt="" />
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/images/HR/married.png" alt="" />
+                    </div>
+                    <div class="col-md-4">
+                        <img src="/images/HR/headof.png" alt="" />
+
+                    </div>
+                    <p class="hrline"></p>
+                </div>
+                <div class="row my-3">
+                    <h3 class="text-center">DIRECT DEPOSIT AUTHORIZATION FORM</h3>
+                    <div class="row">
+                        <p>
+                            I,&ensp;<label class="hrline col-md-3">
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.DepositName, new { htmlattributes = new { @class = "border-0 col-md-12", id = "txtdepositname" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.DepositName, "", new { @class = "text-danger db" })
+                            </label>&ensp;&ensp;,hereby:
+                        </p>
+                        <p>
+                            @Html.CheckBox("EmployeeDdauthorization.Authorize", false, new { id = "authorize" })
+                            @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Authorize, "", new { @class = "text-danger db", type = "checkbox" })
+                            <b>authorize</b> my employer,
+                            <label class="hrline col-md-3">
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.EmployerName, new { htmlattributes = new { @class = "border-0 col-md-12", id = "txtemployername" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.EmployerName, "", new { @class = "text-danger db" })
+                            </label>
+                            and its agents,including financial institutions, to initiate electronic credit entries, and if necessary, debit entries and adjustments for any
+                            credit entries in error to my checking and/or savings accounts listed below. This authorization will remain in effect until I have informed my employer
+                            in writing that I wish to cancel it and my employer has had reasonable time to effect such cancellation.I understand I should contact my bank to verify
+                            receipt of funds.
+                        </p>
+                        <p>
+                            @Html.CheckBox("EmployeeDdauthorization.Revise", false, new { id = "revise" })
+                            @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Revise, "", new { @class = "text-danger db" })
+                            <b>revise</b> direct deposit bank account(s) as indicated below.
+                        </p>
+                        <p>
+                            @Html.CheckBox("EmployeeDdauthorization.Cancel", false, new { id = "cancel" })
+                            @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Cancel, "", new { @class = "text-danger db" })
+                            <b>cancel</b> direct deposit of my paycheck completely. This cancellation is to take effect immediately and
+                            remain in full force and effect until the Company has received written notification from me of authorization
+                            to deposit my paycheck automatically.I acknowledge that I will now receive paychecks for which I am responsible for depositing and/or cashing.
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.EmployeeDdauthorization.Signature, new { htmlAttributes = new { @class = "form-control" } })
+                                </label>
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.Signature, new { htmlAttributes = new { @class = "form-control", placeholder = "Signature", id = "directsignature" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Signature, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    @Html.LabelFor(model => model.EmployeeDdauthorization.Date, new { htmlAttributes = new { @class = "form-control" } })
+                                </label>
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.Date, new { htmlAttributes = new { @class = "form-control", id = "directdate" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Date, "", new { @class = "text-danger db" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <table class="border border-dark">
+                        <thead>
+
+                            <tr class="border border-dark">
+                                <th class="col-md-6 text-center border border-dark">
+                                    Remaining Balance to 1st Account
+                                    @Html.CheckBox("EmployeeDdauthorization.RemainingBalance", false, new { id = "remainingbalance" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.RemainingBalance, "", new { @class = "text-danger db" })
+                                </th>
+                                <th class="col-md-6 text-center border border-dark">
+                                    Use Percentage
+                                    @Html.CheckBox("EmployeeDdauthorization.UsePercentage", false, new { id = "usepercentage" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.UsePercentage, "", new { @class = "text-danger db", type = "checkbox" })
+                                </th>
+                            </tr>
+                            <tr class="border border-dark">
+                                <td class="border border-dark">
+                                    <table style="min-width:100%;">
+                                        <tr>
+                                            <td class="col-md-2 border border-dark">
+                                                PayOrder
+                                            </td>
+                                            <td class="col-md-7 text-center border border-dark">
+                                                Bank Name/Address/Phone
+                                            </td>
+                                            <td class="col-md-3 text-center border border-dark">
+                                                Acct. Type
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-4 text-center border border-dark">
+                                                Routing/Account Numbers
+                                            </td>
+                                            <td class="col-md-4 text-center border border-dark">
+                                                Amount
+                                            </td>
+                                            <td class="col-md-4 text-center border border-dark">
+                                                Pct.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr class="border border-dark">
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-2 text-center border border-dark">
+                                                1
+                                            </td>
+                                            <td class="col-md-7 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankNameOne, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Bank Name", id = "directbanknameone" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankNameOne, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AddressOne, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Adress", id = "directaddressone" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AddressOne, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PhoneOne, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Phone", id = "directphoneone", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PhoneOne, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-3 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AccTypeOne, new { htmlAttributes = new { @class = "form-control", placeholder = "Acct. Type", id = "directaccttypeone" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AccTypeOne, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankRoutingOne, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Rtg", id = "directbankroutingone" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankRoutingOne, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAccNumberOne, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Acct", id = "directbankaccnumberone" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAccNumberOne, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAmountOne, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount", id = "directamountone", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAmountOne, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PctOne, new { htmlAttributes = new { @class = "form-control", placeholder = "Pct", id = "directpctone", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PctOne, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="border border-dark">
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-2 text-center border border-dark">
+                                                2
+                                            </td>
+                                            <td class="col-md-7 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankNameTwo, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Bank Name", id = "directbanknametwo" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankNameTwo, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AddressTwo, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Adress", id = "directaddresstwo" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AddressTwo, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PhoneTwo, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Phone", id = "directphonetwo", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PhoneTwo, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-3 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AccTypeTwo, new { htmlAttributes = new { @class = "form-control", placeholder = "Acct. Type", id = "directaccttypetwo" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AccTypeTwo, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankRoutingTwo, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Rtg", id = "directbankroutingtwo" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankRoutingTwo, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAccNumberTwo, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Acct", id = "directbankaccnumbertwo" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAccNumberTwo, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAmountTwo, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount", id = "directamounttwo", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAmountTwo, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PctTwo, new { htmlAttributes = new { @class = "form-control", placeholder = "Pct", id = "directpcttwo", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PctTwo, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="border border-dark">
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-2 text-center border border-dark">
+                                                3
+                                            </td>
+                                            <td class="col-md-7 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankNameThree, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Bank Name", id = "directbanknamethree" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankNameThree, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AddressThree, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Adress", id = "directaddressthree" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AddressThree, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PhoneThree, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Phone", id = "directphonethree", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PhoneThree, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-3 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.AccTypeThree, new { htmlAttributes = new { @class = "form-control", placeholder = "Acct. Type", id = "directaccttypethree" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.AccTypeThree, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="border border-dark">
+                                    <table>
+                                        <tr>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankRoutingThree, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Rtg", id = "directbankroutingthree" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankRoutingThree, "", new { @class = "text-danger db" })
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAccNumberThree, new { htmlAttributes = new { @class = "form-control my-3", placeholder = "Acct", id = "directbankaccnumberthree" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAccNumberThree, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.BankAmountThree, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount", id = "directbankamountthree", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.BankAmountThree, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td class="col-md-4 border border-dark">
+                                                @Html.EditorFor(model => model.EmployeeDdauthorization.PctThree, new { htmlAttributes = new { @class = "form-control", placeholder = "Pct", id = "directpactthree", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PctThree, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row my-3">
+                        <p class="col-md-8">Contractors are limited to one bank.</p>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.EmployeeDdauthorization.Total, new { htmlAttributes = new { @class = "form-control", placeholder = "Total", id = "directaccttypeone", type = "number" } })
+                            @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Total, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="row my-3 border border-dark">
+                        <p class="my-2">Please attach a voided check for each bank account to which funds will be deposit. Do not use deposit slip.</p>
+                        <div class="row my-3">
+                            <div class="offset-md-8 col-md-4">
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.CheckDate, new { htmlAttributes = new { @class = "form-control", id = "checkdate" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.CheckDate, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-8 row">
+                                <p class="col-md-4">
+                                    Pay to the order of
+                                </p>
+                                <p class="hrline col-md-8">
+                                    @Html.EditorFor(model => model.EmployeeDdauthorization.PayTo, new { htmlattributes = new { @class = "border-0 col-md-12", id = "payto" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.PayTo, "", new { @class = "text-danger db" })
+                                </p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p>
+                                    $ &ensp;
+                                    @Html.EditorFor(model => model.EmployeeDdauthorization.CheckAmount, new { htmlattributes = new { @class = "border col-md-11", id = "checkamount", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.CheckAmount, "", new { @class = "text-danger db" })
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="row mx-3">
+                            <div id="container" class="hrline col-md-10 pt-3"></div>
+                            <div class="col-md-2">
+                                <p><br /><b>Dollars</b></p>
+                            </div>
+                        </div>
+
+                        <div class="row my-3">
+                            <p class="col-md-1">
+                                Bank
+                            </p>
+                            <label class="hrline col-md-11">
+                                @Html.EditorFor(model => model.EmployeeDdauthorization.Bank, new { htmlattributes = new { @class = "border-0 col-md-12", id = "bank" } })
+                                @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Bank, "", new { @class = "text-danger db" })
+                            </label>
+                        </div>
+
+                        <div class="row my-3">
+                            <p class="col-md-7">
+                                Memo
+                                <label class="hrline col-md-10">
+                                    @Html.EditorFor(model => model.EmployeeDdauthorization.Memo, new { htmlattributes = new { @class = "border-0 col-md-12", id = "Memo" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeDdauthorization.Memo, "", new { @class = "text-danger db" })
+                                </label>
+                            </p>
+                        </div>
+                        <br />
+                        <p>
+                            <b>Notice:</b> Government regulations have changed regarding the use of direct deposit. As a result, the employer cannot offer direct direct deposit of funds to either:
+                            <br />. a foreign bank, or
+                            <br />. a U.S financial institution where the entire amount will be forwarded to a bank account in another country.
+                            <br />Employees or contractors associated with such foreign organizations will not be eligible for direct deposit.
+                        </p>
+                    </div>
+                </div>
+                @*<div class="row">
+                        <img src="/images/HR/DDAF.png" alt="" />
+                    </div>
+                    <div class="row">
+                        <img src="/images/HR/DDAF1.png" alt="" />
+                    </div>
+                    <div class="row">
+                        <img src="/images/HR/DDAF2.png" alt="" />
+                        <p class="hrline"></p>
+                    </div>*@
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="/images/HR/EEV.png" alt="" />
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Employment Eligibility Verification</h3>
+                        <p class="text-center">
+                            <b>Department of Homeland Security</b><br />
+                            U.S. Citizenship and Immigration Services
+                        </p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h3>
+                            USCIS<br />
+                            Form I-9
+                        </h3>
+                        <p>
+                            OMB No. 1615-0047<br />
+                            Expires 03/31/2016
+                        </p>
+                    </div>
+                    <p class="hrline"></p>
+                </div>
+                <div class="row">
+                    <p><b>START HERE. Read instructions carefully before completing this form. The instructions must be available during completion of this form.</b></p>
+                    <p>
+                        <b>ANTI-DISCRIMINATION NOTICE:</b> It is illegal to discriminate against work-authorized individuals. Employers <b>CANNOT</b> specify which
+                        document(s) they will accept from an employee. The refusal to hire an individual because the documentation presented has a future
+                        expiration date may also constitute illegal discrimination.
+                    </p>
+                    <p class="hrline"></p>
+                    <p>
+                        <b>Section 1. Employee Information and Attestation</b> (Employees must complete and sign Section 1 of Form I-9 no later
+                        than the first day of employment, but not before accepting a job offer.)
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Your last name</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", id = "txtempevlastname" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.LastName, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Your first name</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", id = "txtempevfirstname" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.FirstName, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Your middle name</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name", id = "txtempevmiddlename" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.MiddleName, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Address (Street Number and Name)</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address", id = "txtempevaddress" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Address, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Apt. Number</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.AptNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Apt.Number", id = "txtempevaptnumber" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.AptNumber, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>City</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "txtempevcity" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.City, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>State</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State", id = "txtempevstate" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.State, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> Zip Code</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = " Zip Code", id = "txtempevzipcode" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.ZipCode, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.Dob, new { htmlAttributes = new { @class = "form-control", placeholder = "Date of Birth", id = "txtempevDob" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Dob, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>U.S Social Security Number</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Social Security Number", id = "txtempevSsn" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Ssn, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> E-mail Address</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.Email, new { htmlAttributes = new { @class = "form-control", placeholder = " Email", id = "empemail" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Email, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Telephone Number</label>
+                                @Html.EditorFor(model => model.EmploymentEligibilityVerification.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", id = "txtempevphone" } })
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Phone, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <p>
+                            <b>
+                                I am aware that federal law provides for imprisonment and/or fines for false statements or use of false documents in
+                                connection with the completion of this form.<br />
+                                I attest, under penalty of perjury, that I am (check one of the following):
+                            </b>
+                        </p>
+                        <div class="row">
+                            <div class="form-group">
+                                @Html.CheckBox("EmploymentEligibilityVerification.Citizen", false)
+                                @*Html.EditorFor(model => model.EmploymentEligibilityVerification.Citizen.Value, new { htmlAttributes = new { @class = "form-control", id = "txtempevcitizen", type = "checkbox" } })*@
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Citizen, "", new { @class = "text-danger db" })
+                                <label for="Citizen">&ensp; A citizen of the United States.</label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                @Html.CheckBox("EmploymentEligibilityVerification.NoCitizen", false)
+                                @*Html.EditorFor(model => model.EmploymentEligibilityVerification.NoCitizen.Value, new { htmlAttributes = new { @class = "form-control", id = "txtempevnocitizen", type = "checkbox" } })*@
+                                @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.NoCitizen, "", new { @class = "text-danger db" })
+                                <label for="NoCitizen">
+                                    &ensp; A noncitizen national of the United States (See instructions).
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-md-8">
+                                    @Html.CheckBox("EmploymentEligibilityVerification.Lawful", false)
+                                    @*Html.EditorFor(model => model.EmploymentEligibilityVerification.Lawful.Value, new { htmlAttributes = new { @class = "form-control", id = "txtempevLawful", type = "checkbox" } })*@
+                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Lawful, "", new { @class = "text-danger db" })
+                                    <label for="Lawful">
+                                        &ensp; A lawful permanent resident (Alien Registration Number/USCIS Number):
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.LawfulNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Alien Registration Number/USCIS Number", id = "txtempevlawfulnumber" } })
+                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.LawfulNumber, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-md-8">
+                                    @Html.CheckBox("EmploymentEligibilityVerification.AllienAuthorized", false)
+                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.AllienAuthorized, "", new { @class = "text-danger db" })
+                                    <label for="lawful">
+                                        &ensp; An alien authorized to work until (expiration date, if applicable).
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.Expirationdate, new { htmlAttributes = new { @class = "form-control", placeholder = "Expirationdate", id = "txtempevexpirationdate" } })
+                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Expirationdate, "", new { @class = "text-danger db" })
+                                </div>
+                                <p><b>(See instructions)</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>
+                                For aliens authorized to work, provide your Alien Registration Number/USCIS Number OR Form I-94 Admission Number:
+                            </p>
+                            <ol type="1">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p>Alien Registration Number/USCIS Number</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.EditorFor(model => model.EmploymentEligibilityVerification.AllienRegNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Alien Registration Number/USCIS Number", id = "txtempevallienregnumber" } })
+                                            @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.AllienRegNumber, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                    <p class="text-center"><b>OR</b></p>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p> Form I-94 Admission Number:</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.EditorFor(model => model.EmploymentEligibilityVerification.AdmissionNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Form I-94 Admission Number", id = "txtempevadmissionnumber" } })
+                                            @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.AdmissionNumber, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p>
+                                                If you obtained your admission number from CBP in connection with your arrival in the United
+                                                States, include the following:
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Foreign Passport Number:</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.ForeignPassportNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Foreign Passport Number", id = "txtempevforiegnpassportnumber" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.ForeignPassportNumber, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Country of Issuance</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.CountryIssuance, new { htmlAttributes = new { @class = "form-control", placeholder = "Country of Issuance", id = "txtempevcountryissuance" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.CountryIssuance, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Signature of Employee</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.EmployeeSignature, new { htmlAttributes = new { @class = "form-control", placeholder = "Signature of Employee", id = "txtempevemployeesignature" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.EmployeeSignature, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Date</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.Date, new { htmlAttributes = new { @class = "form-control", id = "txtempevcountryissuance" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.Date, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        <b>Preparer and/or Translator Certification</b> (To be completed and signed if Section 1 is prepared by a person other than the
+                                        employee.)
+                                    </p>
+                                    <p>
+                                        <b>
+                                            I attest, under penalty of perjury, that I have assisted in the completion of this form and that to the best of my knowledge the
+                                            information is true and correct.
+                                        </b>
+
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Signature of Preparer or Translator</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.SignatureOfTransferer, new { htmlAttributes = new { @class = "form-control", placeholder = "Signature of Preparer or Translator", id = "txtempevsignatureoftransferer" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.SignatureOfTransferer, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <p>Date</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareDate, new { htmlAttributes = new { @class = "form-control", id = "txtempevpreparedate" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareDate, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>Last Name (Family Name)</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "LastName", id = "txtempevpreparelastname" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareLastName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>FirstName</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "FirstName", id = "txtempevpreparefirstname" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareFirstName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>Address (Street Number and Name) </p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Address (Street Number and Name) ", id = "txtempevprepareaddress" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareAddress, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>City or Town </p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareCity, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "txtempevpreparecity" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareCity, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>State</p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareState, new { htmlAttributes = new { @class = "form-control", placeholder = "State", id = "txtempevpreparestate," } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareState, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <p>ZipCode </p>
+                                                <div class="col-md-12">
+                                                    @Html.EditorFor(model => model.EmploymentEligibilityVerification.PrepareZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "ZipCode", id = "txtempevpreparezipcode" } })
+                                                    @Html.ValidationMessageFor(model => model.EmploymentEligibilityVerification.PrepareZipCode, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="hrline"></p>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="row">
+                            <p>
+                                <b>
+                                    Section 2. Employer or Authorized Representative Review and Verification
+                                    (Employers or their authorized representative must complete and sign Section 2 within 3 business days of the employee's first day of employment. You
+                                    must physically examine one document from List A OR examine a combination of one document from List B and one document from List C as listed on
+                                    the "Lists of Acceptable Documents" on the next page of this form. For each document you review, record the following information: document title,
+                                    issuing authority, document number, and expiration date, if any.)
+                                </b>
+                            </p>
+
+                            <div class="row my-3">
+                                <p class="text-center"><b>Identity</b></p>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>DocumentTitle</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.DocumentTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "DocumentTitle", id = "txtempardocumenttitle," } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.DocumentTitle, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>Issuing Authority</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.IssuingAuthority, new { htmlAttributes = new { @class = "form-control", placeholder = "IssuingAuthority", id = "txtemparissuingauthority" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.IssuingAuthority, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>DocumentNumber </p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.DocumentNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "DocumentNumber", id = "txtempardocumentnumber" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.DocumentNumber, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>ExpirationDate </p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.ExpirationDate, new { htmlAttributes = new { @class = "form-control", id = "txtemparExpirationDate" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.ExpirationDate, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <p class="text-center"><b>Employment Authorization</b></p>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>DocumentTitle</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.EmpAuthDocumentTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "DocumentTitle", id = "txtempardocumenttitle," } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.EmpAuthDocumentTitle, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>Issuing Authority</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.EmpAuthIssuingAuthority, new { htmlAttributes = new { @class = "form-control", placeholder = "IssuingAuthority", id = "txtemparissuingauthority" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.EmpAuthIssuingAuthority, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>DocumentNumber </p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.EmpAuthDocumentNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "DocumentNumber", id = "txtempardocumentnumber" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.EmpAuthDocumentNumber, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <p>ExpirationDate </p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.EmpAuthExpirationDate, new { htmlAttributes = new { @class = "form-control", id = "txtemparexpirationdate" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.EmpAuthExpirationDate, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                                <b>
+                                    Certification<br />
+
+                                    I attest, under penalty of perjury, that (1) I have examined the document(s) presented by the above-named employee, (2) the
+                                    above-listed document(s) appear to be genuine and to relate to the employee named, and (3) to the best of my knowledge the
+                                    employee is authorized to work in the United States
+                                </b>
+                            </p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>First day of employment</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.FirstDate, new { htmlAttributes = new { @class = "form-control", id = "txtemparFirstDate" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.FirstDate, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>Signature</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.Signature, new { htmlAttributes = new { @class = "form-control", placeholder = "Signature", id = "txtemparSignature" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.Signature, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>Date</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.Date, new { htmlAttributes = new { @class = "form-control", id = "txtempardate" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.Date, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>Title of Employer</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.EmpTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Title of Employer", id = "txtemparemptitle" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.EmpTitle, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>LastName</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", id = "txtemparlastname" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.LastName, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>FirstName</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", id = "txtemparfirstname" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.FirstName, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>Organization Name</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.OrgName, new { htmlAttributes = new { @class = "form-control", placeholder = "Organization Name", id = "txtemparorgname" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.OrgName, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>Organization Address</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.OrgAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Organization Address", id = "txtemparorgaddress" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.OrgAddress, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>City</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "txtemparCity" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.City, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>State</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State", id = "txtemparstate" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.State, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <p>ZipCode</p>
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.employeeAuthorizedRepresentative.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "ZipCode", id = "txtemparZipCode" } })
+                                            @Html.ValidationMessageFor(model => model.employeeAuthorizedRepresentative.ZipCode, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="hrline"></p>
+                            <p>
+                                <b> Section 3. Reverification and Rehires</b> (To be completed and signed by employer or authorized representative.)
+                            </p>
+                            <div class="row">
+                                <ol type="A">
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <p>New Name (if applicable)</p>
+                                                    <div class="col-md-12">
+
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.NewName, new { htmlAttributes = new { @class = "form-control", placeholder = "New Name", id = "txtemparnewname" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.NewName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <p>FirstName</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", id = "txtemparfirstname" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.FirstName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <p>LastName</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", id = "txtemparlastname" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.LastName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <p>MiddleName</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name", id = "txtemparmiddlename" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.MiddleName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <p>Date of Rehire</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.DateofRehire, new { htmlAttributes = new { @class = "form-control", type = "date", id = "txtempardateofrehire" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.DateofRehire, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            If employee's previous grant of employment authorization has expired, provide the information for the document from List A or List C the employee
+                                            presented that establishes current employment authorization in the space provided below
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Document Title</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.DocumentTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Document Title", id = "txtempardocumenttitle" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.DocumentTitle, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Document Number</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.DocumentNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Document Number", id = "txtempardocumentnumber" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.DocumentNumber, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Expiration Date</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.ExpirationDate, new { htmlAttributes = new { @class = "form-control", id = "txtempardocumentnumber" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.ExpirationDate, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <b>
+                                                I attest, under penalty of perjury, that to the best of my knowledge, this employee is authorized to work in the United States, and if
+                                                the employee presented document(s), the document(s) I have examined appear to be genuine and to relate to the individual.
+                                            </b>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Signature</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.Signature, new { htmlAttributes = new { @class = "form-control", placeholder = "Signature", id = "txtemparsignature" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.Signature, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Date</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.Date, new { htmlAttributes = new { @class = "form-control", id = "txtempardate" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.Date, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <p>Name</p>
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.EmployeeReverificationAndRehire.EmpName, new { htmlAttributes = new { @class = "form-control", placeholder = "Name", id = "txtemparempname" } })
+                                                        @Html.ValidationMessageFor(model => model.EmployeeReverificationAndRehire.EmpName, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="hrline"></p>
+                                    </li>
+
+                                </ol>
+                            </div>
+                            <div class="row">
+                                <p class="text-center"><b>North Carolina New Hire Reporting Form</b></p>
+                                <p>
+                                    Effective October 1, 1997, North Carolina employers are required to report certain information about employees who have
+                                    been newly hired, rehired, or have returned to work. Employers must either (1) complete this form, (2) submit a copy of
+                                    the employeeís IRS W-4 form with the employeeís date of birth and date of hire filled out on this form, or (3) submit the
+                                    information by magnetic tape or floppy diskette.
+                                </p>
+                                <p class="text-center">
+                                    This form may be reproduced as necessary.
+                                </p>
+                                <div class="row my-3">
+                                    <div class="col-md-6">
+                                        <img src="/images/HR/SendCompleteForm.png" alt="" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="/images/HR/Example.png" alt="" style="float:right" />
+                                    </div>
+
+                                </div>
+
+                                <div class="panel panel-primary ">
+                                    <div class="panel-heading">Employer Information</div>
+                                    <div class="panel-body">
+
+                                        <div class="row ">
+
+                                            <div class="col-md-12">
+                                                @*<a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Employees", new { id = item.EmployeeId })" id="btnhrDetails">Detail</a>*@
+                                                <button type="button" class="btn btn-outline-success" style="font-size:14px; float:right; height:50%; width:14%;" onclick="GetEmployer()">Get details from system</button>
+                                                <div class="form-group">
+                                                    <label class="">Federal Employer ID Number (FEIN) <b>(Please enter the same pin used to report the employee's quarterly wages.)</b></label>
+                                                    <div class="col-md-6">
+                                                        @Html.EditorFor(model => model.FederalEmployeeId, new { htmlAttributes = new { @class = "form-control ", placeholder = "Federal Employer ID", id = "FedEmp" } })
+                                                        @Html.ValidationMessageFor(model => model.FederalEmployeeId, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">State ID:</label><br />
+                                                    @Html.EditorFor(model => model.EmployerState, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer State", id = "State" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerState, "", new { @class = "text-danger db" })
+                                                    @*@Html.DropDownList("EmployerState", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control", @Readonly = "readonly" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="">Employer Name (Include middle initial):</label>
+                                                    @Html.EditorFor(model => model.EmployerName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer name", id = "EmpName" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="">Employer Payroll Address:</label>
+                                                    @Html.EditorFor(model => model.PayrolAddress, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Payrol Address", id = "PayRollAddress" } })
+                                                    @Html.ValidationMessageFor(model => model.PayrolAddress, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Employer City:</label>
+                                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "EmpCity" } })
+                                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Zip Code (5 digit):</label>
+                                                    @Html.EditorFor(model => model.EmployerZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code", id = "ZipCode" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerZipCode, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Phone (optional):</label>
+                                                    @Html.EditorFor(model => model.EmployerPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", type = "number", autocomplete = "false", id = "EmpPhone" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Extension:</label>
+                                                    @Html.EditorFor(model => model.Extention, new { htmlAttributes = new { @class = "form-control", placeholder = "Extention", type = "number", autocomplete = "false", id = "EmpExt" } })
+                                                    @Html.ValidationMessageFor(model => model.Extention, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Employer Fax (Optional):</label>
+                                                    @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Fax", type = "number", autocomplete = "false", id = "Fax" } })
+                                                    @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Email:</label>
+                                                    @Html.EditorFor(model => model.EmployerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", id = "Email" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerEmail, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-primary ">
+                                    <div class="panel-heading">Employee Information</div>
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="">Employee Social Secuirty Number (Ssn):</label>
+                                                    @Html.EditorFor(model => model.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Social Secuirty Number", } })
+                                                    @Html.ValidationMessageFor(model => model.Ssn, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="">Is this employee an Independent Contractor?</label>
+                                                    <div class="col-md-2">
+                                                        @Html.CheckBox("YesContractor", false)
+                                                        @*Html.EditorFor(model => model.YesContractor.Value, new { @class = "form-check-input ", id = "YesContractor", onclick = "checkYesContractor()", type = "checkbox" })*@
+                                                        @Html.ValidationMessageFor(model => model.YesContractor, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                    <div class="col-md-2" style="margin-left:-40px">
+                                                        <label class="form-check-label">
+                                                            Yes
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-2" style="margin-left:20px">
+                                                        @Html.CheckBox("NoContractor", false)
+                                                        @*Html.EditorFor(model => model.NoContractor.Value, new { @class = "form-check-input ", id = "NoContractor", onclick = "checkNoContractor()", type = "checkbox" })*@
+                                                        @Html.ValidationMessageFor(model => model.NoContractor, "", new { @class = "text-danger db" })
+                                                    </div>
+                                                    <div class="col-md-2" style="margin-left:-40px">
+                                                        <label class="form-check-label">
+                                                            No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="">Employee Name (Include middle initial):</label>
+                                                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employee name", } })
+                                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="">Address</label>
+                                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", } })
+                                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row ">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Employee City</label>
+                                                    @Html.EditorFor(model => model.EmployeeCity, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployeeCity" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployeeCity, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="dim col-sm-6">Employee State</label>
+                                                    @Html.EditorFor(model => model.EmployerState, new { htmlAttributes = new { @class = "form-control", placeholder = "state" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployerState, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Zip Code (5 digit):</label>
+                                                    @Html.EditorFor(model => model.EmployeeZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code" } })
+                                                    @Html.ValidationMessageFor(model => model.EmployeeZipCode, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Date of Hire </label>
+                                                    @Html.EditorFor(model => model.DateofHire, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                                    @Html.ValidationMessageFor(model => model.DateofHire, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Date of Birth </label>
+                                                    @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                                    @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Mobile</label>
+                                                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile", type = "number", autocomplete = "false" } })
+                                                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Phone</label>
+                                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", type = "number", autocomplete = "false" } })
+                                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Email</label>
+                                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", } })
+                                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="">Driving License</label>
+                                                    @Html.EditorFor(model => model.DrivingLisence, new { htmlAttributes = new { @class = "form-control", placeholder = "Driving Lisence", } })
+                                                    @Html.ValidationMessageFor(model => model.DrivingLisence, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-lg-4 col-sm-4">
+                                                <div class="form-group row">
+                                                    <label class=""> Employee Image</label>
+                                                    <input type="file" name="file" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <button type="submit" class="offset-md-9 col-md-3 btn btn-primary" style="color:white">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#martialstatus").change(function () {
+            debugger
+            if ($("#martialstatus option:selected")[0].value == "Married") {
+
+                $("#SpouseName").attr("disabled", false);
+                $("#NoofChildren").attr("disabled", false);
+
+            } else {
+                $("#SpouseName").attr("disabled", true);
+                $("#NoofChildren").attr("disabled", true);
+            }
+        })
+    })
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+    $('input.percon').on('change', function () {
+        $('input.percon').not(this).prop('checked', false);
+    });
+
+
+    function GetEmployer() {
+        $.ajax({
+            type: "GET",
+            url: "/Administration/AbcDiscounts/GetEmployerForAjax",
+            contentType: "application/json;",
+            async: false,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                if (data != "false.") {
+                    if (data.federalEmployeeId != null) {
+                        $('#FedEmp').val(data.federalEmployeeId);
+                        $('#FedEmp').attr("disabled", true);
+                    }
+                    if (data.employerState != null) {
+                        $('#State').val(data.employerState);
+                        $('#State').attr("disabled", true);
+                    }
+                    if (data.employerName != null) {
+                        $('#EmpName').val(data.employerName);
+                        $('#EmpName').attr("disabled", true);
+                    }
+                    if (data.payrolAddress != null) {
+                        $('#PayRollAddress').val(data.payrolAddress);
+                        $('#PayRollAddress').attr("disabled", true);
+                    }
+                    if (data.city != null) {
+                        $('#EmpCity').val(data.city);
+                        $('#EmpCity').attr("disabled", true);
+                    }
+                    if (data.employerZipCode != null) {
+                        $('#ZipCode').val(data.employerZipCode);
+                        $('#ZipCode').attr("disabled", true);
+                    }
+                    if (data.employerPhone != null) {
+                        $('#EmpPhone').val(data.employerPhone);
+                        $('#EmpPhone').attr("disabled", true);
+                    }
+                    if (data.extention != null) {
+                        $('#EmpExt').val(data.extention);
+                        $('#EmpExt').attr("disabled", true);
+                    }
+                    if (data.fax != null) {
+                        $('#Fax').val(data.fax);
+                        $('#Fax').attr("disabled", true);
+                    }
+                    if (data.employerEmail != null) {
+                        $('#Email').val(data.employerEmail);
+                        $('#Email').attr("disabled", true);
+                    }
+                }
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+
+</script>
+<script>
+    var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+    var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+    $('#checkamount').on('keydown keyup', function () {
+        inWords($('#checkamount').val());
+    });
+
+    function inWords(num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        $('#container').text(str);
+        debugger
+    }
+</script>

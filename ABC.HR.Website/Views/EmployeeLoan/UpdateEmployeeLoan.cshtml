@@ -1,0 +1,93 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpLoan*@
+@model ABC.HR.Domain.Entities.ValidateEmpLoan
+
+
+@{
+    ViewData["Title"] = "AddLoan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Update Loan For Employee</h1>
+
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="UpdateEmployeeLoan">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            @*<input asp-for="EmployeeId" class="form-control" />*@
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmpLoanTypeId" class="control-label"></label>
+                            <select asp-for="EmpLoanTypeId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.EmpLoanType,"Value", "Text"))">
+                                <option disabled selected>--- SELECT LOAN TYPE---</option>
+
+                            </select>
+                            @*<input asp-for="AllowanceTypeId" class="form-control" />*@
+                            <span asp-validation-for="EmpLoanTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="form-group col-md-8">
+
+                            <label asp-for="Reason" class="control-label"></label>
+                            <textarea asp-for="Reason" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            <input asp-for="IsApprove" type="checkbox" checked />
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageEmployeeLoan">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}

@@ -1,0 +1,124 @@
+﻿
+@model ABC.HR.Domain.Entities.ValidateEmpPayRoll
+
+@{
+    ViewData["Title"] = "";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<style>
+    #grandtotal td {
+        width: 5.5rem;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Generate PayRoll Report</h1>
+        <h4 style="color:red" id="showerror"></h4>
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="GeneratePayRoll" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="FromDate" class="control-label"></label>
+
+                            <input asp-for="FromDate" class="form-control" type="date" />
+                            <span asp-validation-for="FromDate" class="text-danger"></span>
+                        </div>
+
+                        @*<div class="form-group col-md-4">
+                                <label asp-for="ToDate" class="control-label"></label>
+
+                                <input asp-for="ToDate" class="form-control" type="date"/>
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>*@
+
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Contract Type</label>
+
+                            <select asp-for="Month" class="form-control">
+                                <option disabled selected>---Select Contract Type</option>
+                                <option value="Permanent">Permanent</option>
+                            </select>
+                            <span asp-validation-for="Month" class="text-danger"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" id="MyEmployeegene" />
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <a asp-action="ManagePayRoll">Back to List</a>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<h4>Instructions</h4>
+<ul>
+    <li>Make Sure To Upload The Employees Attendance</li>
+    <li>Add The Employee Tax Configurations</li>
+</ul>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
+
+
+@if (TempData["RecordGenerate"] != null)
+
+{
+
+    @*<script>toastr.info("@TempData["RecordGenerate"].ToString()");</script>*@
+    <script>
+        $("#showerror").html("Record Not Added");
+
+
+    </script>
+
+}
+
+
+
+
+@*<script>
+        $(document).on('click', '#MyEmployeegene', function () {
+
+            $.ajax({
+                type: "POST",
+                url: "GeneratePayRoll",
+                dataType: "json",
+                success: function (data) {
+
+                    console.log(data);
+
+                }, error: function (err) {
+
+                }
+
+            });
+
+        });
+
+    </script>*@

@@ -1,0 +1,238 @@
+﻿@model ABC.POS.Website.Models.InvoiceSaleModel
+@{
+    ViewData["Title"] = "SaleInvoice";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Receipt example</title>
+    <style>
+
+        * {
+            font-size: 14px;
+            font-family: 'Times New Roman';
+        }
+
+        td,
+        th,
+        tr,
+        table {
+            width: 270px;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            td.description,
+            th.description {
+                width: 75px;
+                max-width: 75px;
+            }
+
+            td.quantity,
+            th.quantity {
+                width: 40px;
+                max-width: 40px;
+                word-break: break-all;
+            }
+
+            td.price,
+            th.price {
+                width: 40px;
+                max-width: 40px;
+                word-break: break-all;
+            }
+
+        .centered {
+            text-align: center;
+            align-content: center;
+            font-weight: bold;
+        }
+
+        .ticket {
+            width: 300px;
+            max-width: 300px;
+        }
+
+        .contact {
+            text-align: center;
+            align-content: center;
+            font-weight: bold;
+        }
+
+        img {
+            max-width: inherit;
+            width: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div id="Grid">
+        <div class="ticket" style="border:1px solid">
+
+            <p class="centered">
+                ABC DISCOUNT LLC
+                <br />1055 GATEWOOD AVENUE
+                <br />GREENSBORO, NC 27405
+            </p>
+            <p class="contact">
+                Tel(336) 412-2800 FAX (336) 412-2801
+                <br />
+                <br />
+                <span style="float: left; margin-left: 15px;">
+                    Invoice:<b>@Model.InvoiceTotal.InvoiceNumber</b>
+                </span>
+                <span style="float: right; margin-right: 15px;">
+                    Date:<b>@DateTime.Now</b>
+                </span>
+            </p>
+
+            <hr style="height:1px;border-width:0;color:black;background-color:black; width: 272px;">
+            <p style="float: left; margin-left: 15px; font-weight: bold;    margin-top: -4px !important;">
+                Customer:@Model.InvoiceTotal.SupplierNumber
+            </p>
+            <br />
+            <div style="height: 75px;width: 100px;margin-left: 39px;  margin-bottom: -20px;">
+                <p style="word-break: break-all;">
+                  Address: @Model.InvoiceTotal.BusinessAddress
+                </p>
+            </div>
+            <table>
+
+
+                @foreach (var item in Model.SaleOrders)
+                {
+                    <tr style=" border-top: 1px solid black; ">
+
+                        <td class="quantity">
+                            <span style="float: left; font-weight: bold;">@item.ItemNumber-</span>
+                            <span style="float: left; font-weight: bold;">@item.ItemName</span>
+                            <br />
+                            <br />
+                            <div style="width:100%">
+                                <span style="float: left !important; width: 25%;">
+                                    $@item.Price
+                                </span>
+                                <span style="margin-left: 40px; width: 25%;">
+                                    @item.RingerQuantity
+                                </span><b>@@</b>
+                                <span style="width: 15%;">
+                                    $@item.AmountRetail
+                                </span>
+                                <b>-</b>
+                                @if(Convert.ToDouble(item.InDiscount) > 0){
+                                <span style="float: right; width: 25%;">$@item.InDiscount</span>
+                                }else if(Convert.ToDouble(item.OutDiscount) > 0){
+                                <span style="float: right; width: 25%;">$@item.OutDiscount %</span>
+                                }
+                                <b> </b>
+                                <span style="float: right; width: 25%;">$@item.Total</span>
+                            </div>
+                            <br />
+                          
+                        </td>
+
+                    </tr>
+                }
+
+
+
+            </table>
+
+            <hr style="height:1px;border-width:0;color:black;background-color:black; width: 272px;">
+           <table style="width: 266px;margin-left: 20px">
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Item Sold</th>
+                    <td colspan="2" style="border:1px solid; text-align: center; font-weight: bold;">&nbsp;@Model.SaleOrders.Count()</td>
+
+                </tr>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub Total</th>
+                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.SubTotal</td>
+
+                </tr>
+                <tr>
+                    <th>&nbsp;Other/Charges</th>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Other</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Charges</td>
+                </tr>
+                  <tr>
+                    <th>&nbsp;Tax/Freight</th>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Tax</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Freight</td>
+                </tr>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Discount</th>
+                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Discount</td>
+
+                </tr>
+                <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Bill</th>
+                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Total</td>
+
+                </tr>
+            </table>
+            <br />
+            <table style="border:1px solid; width: 274px !important; height: 50px !important;">
+                <tr>
+                    <th style="border-right: 1px solid ">Payment</th>
+                    <th style="border-right: 1px solid ">Type</th>
+                    <th style="width: 500px !important">CK/Card Number</th>
+                </tr>
+                <tr>
+                    <td style="border-right: 1px solid;text-align: right; font-weight: bold; ">$@Model.InvoiceTotal.Total</td>
+                    <td style="border-right: 1px solid ">Cash</td>
+                    <td></td>
+
+                </tr>
+            </table>
+            <br />
+            <table style="width: 266px;margin-left: 20px">
+                <tr>
+                    <th>&nbsp;Amount Applied</th>
+                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;width: 925px !important;">&nbsp;$@Model.InvoiceTotal.Total</td>
+
+                </tr>
+               @* <tr>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change</th>
+                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;">&nbsp;$0.00</td>
+
+                </tr>
+                <tr>
+                    <th style="font-size: 18px !important">&nbsp;&nbsp;&nbsp;Amount Due</th>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$0.00</td>
+
+                </tr>*@
+            </table>
+            <br />
+            <br />
+            <br />
+            <p style="text-align: center;font-size:11px;font-weight: bold;">
+                Thanks for your Shopping At ABC Discount LLC
+                <br />No EXCHANGE NO REFEND ON VAPE
+            </p>
+        </div>
+    </div>
+    @*@using (Html.BeginForm("Export", "Purchase", FormMethod.Post))
+        {
+            <input type="hidden" name="GridHtml" />
+            <input type="submit" id="btnSubmit" value="Export" style="display:none" />
+        }
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("input[name='GridHtml']").val($("#Grid").html());
+                $("#btnSubmit").click();
+            });
+        </script>*@
+</body>
+
+</html>
+

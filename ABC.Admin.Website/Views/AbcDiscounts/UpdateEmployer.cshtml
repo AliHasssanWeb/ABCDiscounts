@@ -1,0 +1,142 @@
+﻿@model ABC.EFCore.Repository.Edmx.Employer
+@{
+    ViewData["Title"] = "Update Employer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="~/Content/Profile_page (1).css" rel="stylesheet" />
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.error('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+
+@using (Html.BeginForm("UpdateEmployer", "AbcDiscounts", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @*@Html.HiddenFor(model => model.Id)*@
+
+    <div class="container">
+        <div class="row gutters">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2 text-primary">Employer Details</h6>
+                                <br />
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>Federal Employer ID Number (FEIN)<b>(Please enter the same pin used to report the employee's quarterly wages.)</b> </label>
+                                    <div class="col-md-6">
+                                        @Html.EditorFor(model => model.FederalEmployeeId, new { htmlAttributes = new { @class = "form-control", placeholder = "Federal Employee Id" } })
+                                        @Html.ValidationMessageFor(model => model.FederalEmployeeId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Employer Name (Include middle initial):</label>
+                                    @Html.EditorFor(model => model.EmployerName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Name", } })
+                                    @Html.ValidationMessageFor(model => model.EmployerName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    @Html.EditorFor(model => model.EmployerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Email", } })
+                                    @Html.ValidationMessageFor(model => model.EmployerEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>Phone (Optional):</label>
+                                    @Html.EditorFor(model => model.EmployerPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Phone", } })
+                                    @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>Extension:</label>
+                                    @Html.EditorFor(model => model.Extention, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Extension", } })
+                                    @Html.ValidationMessageFor(model => model.Extention, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>Employer Fax (Optional):</label>
+                                    @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Fax", } })
+                                    @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mt-3 mb-2 text-primary">Address</h6>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="form-group">
+                                    <label>Employer Payroll Address:</label>
+                                    @Html.EditorFor(model => model.PayrolAddress, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Employer Payroll Address" } })
+                                    @Html.ValidationMessageFor(model => model.PayrolAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>Employer City</label>
+                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer City" } })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>Zip Code</label>
+                                    @Html.EditorFor(model => model.EmployerZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Zip Code", } })
+                                    @Html.ValidationMessageFor(model => model.EmployerZipCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-group">
+                                    <label>State ID:</label>
+                                    @Html.DropDownList("EmployerState", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-top:10px;">
+                                <div class="text-right">
+
+                                    <button type="submit" value="userprofile" class="btn btn-primary" style="color:white">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+

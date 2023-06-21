@@ -1,0 +1,117 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.Group>
+@{
+    ViewData["Title"] = "ManageGroup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div>
+
+    <a href="@Url.Action("AddGroup","Items")"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Group</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">All Group</h4>
+        <div class="row">
+            <div class="col-12">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                    <table id="order-listing" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+                                        <thead>
+                                            <tr role="row">
+
+                                                <th>
+                                                    Sr No.
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+
+                                                <th>
+                                                    Action
+                                                </th>
+
+
+                                            </tr>
+                                        </thead>
+                                        @{var i = 0; }
+                                        <tbody>
+                                            @if (Model != null)
+                                            {
+                                                @foreach (var item in Model)
+                                                {
+                                                    i = i + 1;
+                                                    <tr class="odd">
+                                                        <td class="sorting_1">@i</td>
+                                                        <td>@item.Name</td>
+                                                        <td>
+                                                            @if (item.Name == "Others")
+                                                            {
+                                                                <a><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateGroup", "Items", new { id = item.Id })': null"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateGroup", "Items", new { id = item.Id })': null"></i></a>
+                                                                <a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteGroup", "Items", new { id = item.Id })': null"></i></a>
+                                                            }
+
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#order-listing tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
+
+

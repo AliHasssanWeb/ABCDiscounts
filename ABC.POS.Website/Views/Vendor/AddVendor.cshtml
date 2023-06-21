@@ -1,0 +1,189 @@
+﻿@model ABC.EFCore.Repository.Edmx.Vendor
+@{
+    ViewData["Title"] = "Add Vendor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+@if (TempData["response"] != null)
+{
+ <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"></h4>
+            <form asp-action="AddVendor" class="form-sample" method="post" enctype="multipart/form-data">
+                <p class="card-description">
+                    <b>Register a Supplier</b>
+                </p>
+                <div class="row">
+                    <div class="col-lg-8 col-sm-8">
+                        <h3>
+                            Supplier Number: @ViewBag.VendorCode
+                            @Html.HiddenFor(model => model.VendorCode, new { @class = "form-control" })
+
+                        </h3>
+                        <div class="col-lg-4 col-sm-4">
+                            <div class="form-group">
+                                <label class="dim col-sm-4">Acccounts</label>
+                                @Html.DropDownList("AccountId", (IEnumerable<SelectListItem>)ViewBag.Account, "--Choose State--", new { @class = "form-control" })
+
+                                @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="form-group">
+                                    <label class="dim col-sm-6">Full Name</label>
+                                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstName" } })
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger db" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="form-group">
+
+                                    <label class="dim col-sm-4">Email</label>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control ", placeholder = "Email", id = "txtEmail" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-4">Phone</label>
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control ", placeholder = "Phone", id = "txtPhone", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-4">Mobile</label>
+                                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control ", placeholder = "Mobile", id = "txtMobile", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-6">DrivingLicense</label>
+                                    @Html.EditorFor(model => model.DrivingLicense, new { htmlAttributes = new { @class = "form-control ", placeholder = "DrivingLicense", id = "txtDrivingLicense" } })
+                                    @Html.ValidationMessageFor(model => model.DrivingLicense, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <label class="dim col-sm-4">ProfileImage</label>
+                        <div class="row">
+                            <img src="~/images/useravatar.png" alt="" style="border:1px solid groove; height:90px; max-width:45%;" id="preview" />
+                        </div>
+                        <input type="file" class="form-control" name="ProfileImage" id="ProfileImage" asp-for="ProfileImage" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-sm-8">
+                        <div class="form-group">
+                            <label class="dim col-sm-8">Address</label>
+                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control longtxt", placeholder = "Address", id = "txtAddress" })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+
+                            <label class="dim col-sm-4">Tax ID</label>
+                            @Html.EditorFor(model => model.TaxId, new { htmlAttributes = new { @class = "form-control ", placeholder = "Tax ID", id = "txtTaxID" } })
+                            @Html.ValidationMessageFor(model => model.TaxId, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+                            <label class="dim col-sm-4">IRS</label>
+                            @Html.EditorFor(model => model.Irs, new { htmlAttributes = new { @class = "form-control ", placeholder = "IRS", id = "txtIRS" } })
+                            @Html.ValidationMessageFor(model => model.Irs, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+                            <label class="dim col-sm-4">Discount %</label>
+                            @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control ", placeholder = "Discount", id = "txtDiscount", type = "number" } })
+                            @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+                            <label class="dim col-sm-4">State</label>
+                            @Html.DropDownList("StateName", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.StateName, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-sm-5">
+                        <div class="form-group">
+                            <label class="dim col-sm-5">Driving License State</label>
+                            @Html.DropDownList("DrivingLicenseState", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose Driving License State--", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.DrivingLicenseState, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    @*<div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+                            <label class="dim col-sm-4">Acccounts</label>
+                            @Html.DropDownList("AccountId", (IEnumerable<SelectListItem>)ViewBag.Account, "--Choose State--", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>*@
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-3">
+                        <div class="form-group">
+                            <label class="dim col-sm-4">TaxExempt</label>
+                            @Html.EditorFor(model => model.TaxExempt.Value, new { htmlAttributes = new { @class = "form-control ", id = "chkTaxExempt", type="checkbox" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4"></div>
+                    <div class="col-lg-4 col-sm-4"></div>
+                    <div class="col-lg-4 col-sm-4 fr">
+                        <button type="submit" class="btn btn-lg btn-dark me-3 wd-50"><p style="color:white">Submit</p></button>
+                        <button type="submit" class="btn btn-lg btn-light me-3 wd-40"><p>Cancel</p></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+
+</script>

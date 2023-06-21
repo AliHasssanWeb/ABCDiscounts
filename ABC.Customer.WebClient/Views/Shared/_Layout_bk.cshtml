@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<html lang="zxx">
+
+
+<!-- Mirrored from p.w3layouts.com/demos_new/template_demo/09-08-2018/fashion_hub-demo_Free/1005640873/web/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 09 Sep 2021 18:18:40 GMT -->
+
+<head>
+    <title>ABC Discounts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="keywords" content="ABC Discounts" />
+
+    <!-- Custom Theme files -->
+    <link href="~/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+    <!-- shop css -->
+    <link href="~/css/shop.css" type="text/css" rel="stylesheet" media="all">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <!-- Owl-Carousel-CSS -->
+    <link href="~/css/style.css" type="text/css" rel="stylesheet" media="all">
+    <!-- font-awesome icons -->
+    <link href="~/css/fontawesome-all.min.css" rel="stylesheet">
+    <!-- //Custom Theme files -->
+    <!-- online-fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Elsie+Swash+Caps:400,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+    <!-- //online-fonts -->
+</head>
+
+<body>
+
+    <script async src='~/js/autotrack.js'></script>
+
+    <meta name="robots" content="noindex">
+    <div>
+        <link rel="stylesheet" href="~/assests/css/font-awesome.min.css">
+
+        <!-- New toolbar-->
+        <style>
+            * {
+                box-sizing: border-box;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            }
+
+
+            #w3lDemoBar.w3l-demo-bar {
+                top: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 9999;
+                padding: 40px 5px;
+                padding-top: 70px;
+                margin-bottom: 70px;
+                background: #0D1326;
+                border-top-left-radius: 9px;
+                border-bottom-left-radius: 9px;
+            }
+
+                #w3lDemoBar.w3l-demo-bar a {
+                    display: block;
+                    color: #e6ebff;
+                    text-decoration: none;
+                    line-height: 24px;
+                    opacity: .6;
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+
+                #w3lDemoBar.w3l-demo-bar span.w3l-icon {
+                    display: block;
+                }
+
+                #w3lDemoBar.w3l-demo-bar a:hover {
+                    opacity: 1;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .w3l-icon svg {
+                    color: #e6ebff;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .responsive-icons {
+                    margin-top: 30px;
+                    border-top: 1px solid #41414d;
+                    padding-top: 40px;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .demo-btns {
+                    border-top: 1px solid #41414d;
+                    padding-top: 30px;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .responsive-icons a span.fa {
+                    font-size: 26px;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .no-margin-bottom {
+                    margin-bottom: 0;
+                }
+
+            .toggle-right-sidebar span {
+                background: #0D1326;
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+                color: #e6ebff;
+                border-radius: 50px;
+                font-size: 26px;
+                cursor: pointer;
+                opacity: .5;
+            }
+
+            .pull-right {
+                float: right;
+                position: fixed;
+                right: 0px;
+                top: 70px;
+                width: 90px;
+                z-index: 99999;
+                text-align: center;
+            }
+            /* ============================================================
+            RIGHT SIDEBAR SECTION
+            ============================================================ */
+
+            #right-sidebar {
+                width: 90px;
+                position: fixed;
+                height: 100%;
+                z-index: 1000;
+                right: 0px;
+                top: 0;
+                margin-top: 60px;
+                -webkit-transition: all .5s ease-in-out;
+                -moz-transition: all .5s ease-in-out;
+                -o-transition: all .5s ease-in-out;
+                transition: all .5s ease-in-out;
+                overflow-y: auto;
+            }
+
+
+            /* ============================================================
+            RIGHT SIDEBAR TOGGLE SECTION
+            ============================================================ */
+
+            .hide-right-bar-notifications {
+                margin-right: -300px !important;
+                -webkit-transition: all .3s ease-in-out;
+                -moz-transition: all .3s ease-in-out;
+                -o-transition: all .3s ease-in-out;
+                transition: all .3s ease-in-out;
+            }
+
+
+
+            @@media (max-width: 992px) {
+                #w3lDemoBar.w3l-demo-bar a.desktop-mode {
+                    display: none;
+                }
+            }
+
+            @@media (max-width: 767px) {
+                #w3lDemoBar.w3l-demo-bar a.tablet-mode {
+                    display: none;
+                }
+            }
+
+            @@media (max-width: 568px) {
+                #w3lDemoBar.w3l-demo-bar a.mobile-mode {
+                    display: none;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .responsive-icons {
+                    margin-top: 0px;
+                    border-top: none;
+                    padding-top: 0px;
+                }
+
+                #right-sidebar, .pull-right {
+                    width: 90px;
+                }
+
+                #w3lDemoBar.w3l-demo-bar .no-margin-bottom-mobile {
+                    margin-bottom: 0;
+                }
+            }
+
+            .collapse .navbar-nav .nav-item {
+                margin: 0 20px;
+            }
+
+            /*-------------------AUTO COMPLETE CSS -----------*/
+
+            /*the container must be positioned relative:*/
+            .autocomplete {
+                position: relative;
+                display: inline-block;
+            }
+
+            .autocomplete-items {
+                position: absolute;
+                border: 1px solid #d4d4d4;
+                border-bottom: none;
+                border-top: none;
+                z-index: 99;
+                /*position the autocomplete items to be the same width as the container:*/
+                top: 100%;
+                left: 0;
+                right: 0;
+            }
+
+                .autocomplete-items div {
+                    padding: 10px;
+                    cursor: pointer;
+                    background-color: #fff;
+                    border-bottom: 1px solid #d4d4d4;
+                }
+
+                    /*when hovering an item:*/
+                    .autocomplete-items div:hover {
+                        background-color: #e9e9e9;
+                    }
+
+            /*when navigating through the items using the arrow keys:*/
+            .autocomplete-active {
+                background-color: DodgerBlue !important;
+                color: #ffffff;
+            }
+        </style>
+
+    </div>
+
+    <!---728x90--->
+    <!-- header -->
+    <header>
+        <div class="container">
+            <!-- top nav -->
+            <nav class="top_nav d-flex pt-3 pb-1">
+                <!-- logo -->
+                <h1>
+                    <a class="navbar-brand" href="@Url.Action("Index","Home",new { @area="Home"})">
+                        A<span>bc</span>
+                        D<span>iscount</span>
+                    </a>
+                    <img src="~/images/logo2.png" alt=" ">
+                </h1>
+                <!-- //logo -->
+                <div class="w3ls_right_nav ml-auto d-flex">
+                    <!-- search form -->
+                    <form class="nav-search form-inline my-0 form-control" action="#" method="post">
+                        <select class="form-control input-lg mx-2" name="category">
+                            <option value="all">Search our store</option>
+                            <optgroup label="Cigratte">
+                                <option value="Kool">Kool</option>
+                                <option value="Winston">Winston</option>
+                                <option value="Maverick">Maverick</option>
+                                <option value="Santa Fe">Santa Fe</option>
+                                <option value="Newport">Newport</option>
+                            </optgroup>
+                            <optgroup label="Cigar">
+                                <option value="Arturo Fuente">Arturo Fuente</option>
+                                <option value="Cohiba">Cohiba</option>
+                                <option value="Padron">Padron</option>
+                                <option value="Acid">Acid</option>
+                                <option value="Macanudo Cafe">Macanudo Cafe</option>
+                            </optgroup>
+
+                        </select>
+                        <div class="autocomplete " style="width:210px;">
+                            <input class="form-control" list="select" id="myInput" type="text" name="myCountry" placeholder="" hidden="hidden" onkeyup="GetAllMatchedMissionsText(event)" />
+
+                            <div class="form-control input-lg mx-auto dropdown w-100" id="searchdropdown" style=" display:inline-block; position:absolute"></div>
+
+
+                        </div>
+                        @*<input class="form-control" hidden="hidden" id="txtSearch"  />*@
+                        <button class="btn btn-outline-secondary  ml-3 my-sm-0" id="btnSearch" type="button" value="Search">Search</button>
+                    </form>
+                    <!-- search form -->
+                    <div class="nav-icon d-flex">
+                        <!-- sigin and sign up -->
+                        <a class="text-dark login_btn align-self-center mx-3" href='@Url.Action("Login", "Account",new { @area="Security"})'>
+                            <i class="far fa-user"></i>
+                        </a>
+                        <!-- sigin and sign up -->
+                        <!-- shopping cart -->
+
+                        <div class="cart-mainf">
+                            <div class="hubcart hubcart2 cart cart box_1">
+                                <form action="#" method="post">
+                                    <input type="hidden" name="cmd" value="_cart">
+                                    <input type="hidden" name="display" value="1">
+                                    <button class="btn top_hub_cart mt-3" type="submit" name="submit" value="" title="Cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- //shopping cart ends here -->
+                    </div>
+                </div>
+            </nav>
+            <!-- //top nav -->
+            <!-- bottom nav -->
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto text-center">
+                        <li class="active nav-item">
+                            <a class="nav-link  active" href='@Url.Action("Index","Home",new{@area="Home"})'>
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("AboutUS","AboutUs",new {@area="Home" })">About</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown">Item</a>
+                            <div class="dropdown-menu mt-3" style="width:max-content">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <a class="dropdown-item" href="#"><h3>Cigratte</h3></a>
+                                        <a class="dropdown-item" href="#">Marlboro</a>
+                                        <a class="dropdown-item" href="#">Newport</a>
+                                        <a class="dropdown-item" href="#">Pall Mall Box</a>
+                                        <a class="dropdown-item" href="#">Santa Fe</a>
+                                        <a class="dropdown-item" href="#">Winston</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="dropdown-item" href="#"><h3>Cigar</h3></a>
+                                        <a class="dropdown-item" href="#">Arturo Fuente</a>
+                                        <a class="dropdown-item" href="#">Padron</a>
+                                        <a class="dropdown-item" href="#">Perdomo</a>
+                                        <a class="dropdown-item" href="#">Romeo Y Julieta</a>
+                                        <a class="dropdown-item" href="#">Rocky Patel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Faqs","Faqs",new {@area="Home" })">Faqs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("ContactUs","ContactUs",new {@area="Home" })">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- //bottom nav -->
+        </div>
+        <!-- //header container -->
+    </header>
+    <!-- //header -->
+    <!---728x90--->
+    <div>
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+    <!-- footer -->
+    <footer>
+        <div class="footerv2-w3ls">
+            <div class="footer-w3lagile-innerr">
+                <!-- footer-top -->
+                <div class="container-fluid">
+                    <div class="row  footer-v2grids w3-agileits">
+                        <div class="col-lg-4 col-sm-6 footer-v2grid">
+                            <h4 class="text-center">Categories</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul>
+
+                                        <li>
+                                            <a href="#">Cigratte</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Kool</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Winston</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Maverick</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Santa Fe</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Newport</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+
+                                        <li>
+                                            <a href="#">Cigar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Arturo Fuente</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Cohiba</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Padron</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Acid</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Macanudo Cafe</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6 footer-v2grid">
+                            <h4 class="text-center">Quick Links</h4>
+                            <ul class="text-center">
+
+                                <li>
+                                    <a href="@Url.Action("AboutUS","AboutUs",new {@area="Home" })">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ContactUS","ContactUs",new {@area="Home" })">Contact Us</a>
+                                </li>
+                                <li>
+                                    <a href="#">Help</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Faqs","Faqs",new {@area="Home" })">Faqs</a>
+                                </li>
+                                <li>
+                                    <a href="#">Terms of use</a>
+                                </li>
+                                <li>
+                                    <a href="#">Privacy Policy</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6 footer-v2grid my-lg-0 my-5">
+                            <h4 class="text-center">Get in Touch</h4>
+                            <ul class="text-center">
+                                <li>
+                                    <i class="fa fa-map-marker"></i>
+                                    <a href="#">123 Sebastian, USA.</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-mobile"></i>
+                                    <a href="#">333 222 3333</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone"></i>
+                                    <a href="#">+222 11 4444</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-envelope-o"></i>
+                                    <a href="mailto:example@mail.com"> mail@example.com</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- //footer-top -->
+                <div class="footer-bottomv2 py-5">
+                    <div class="container">
+                        <ul class="bottom-links-agile">
+                            <li>
+                                <a href="@Url.Action("Index","Home",new {@area="Home" })">Home</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("AboutUS","AboutUs",new {@area="Home" })">About Us</a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("ContactUs","ContactUs",new {@area="Home" })">Contact</a>
+                            </li>
+
+                        </ul>
+                        <h3 class="text-center follow">Follow Us</h3>
+                        <ul class="social-iconsv2 agileinfo">
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fab fa-google-plus-g"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid py-5 footer-copy_w3ls">
+                <div class="d-lg-flex justify-content-between">
+                    <div class="mt-2 sub-some align-self-lg-center">
+                        <h5>Payment Method</h5>
+                        <ul class="mt-4">
+                            <li class="list-inline-item">
+                                <img src="~/images/pay2.png" alt="">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="~/images/pay5.png" alt="">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="~/images/pay3.png" alt="">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="~/images/pay7.png" alt="">
+                            </li>
+                            <li class="list-inline-item">
+                                <img src="~/images/pay8.png" alt="">
+                            </li>
+                            <li class="list-inline-item ">
+                                <img src="~/images/pay9.png" alt="">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="cpy-right align-self-center">
+                        <h2 class="agile_btxt">
+                            <a href="@Url.Action("Index","Home",new {@area="Home" })">
+                                <span>A</span>bc
+                                <span>D</span>iscount
+                            </a>
+                        </h2>
+                        <p>
+                            © 2021 ABC Discounts. All rights reserved | Design by
+                            <a href="http://ab-sol.net/">Absolute Solutions</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- //footer -->
+    <!---728x90--->
+
+    <script src="~/js/jquery-2.2.3.min.js"></script>
+
+    <!-- Product slider Owl-Carousel-JavaScript -->
+    <script src="~/js/owl.carousel.js"></script>
+    <script>
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            items: 4,
+            loop: false,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: false,
+            responsive: {
+                320: {
+                    items: 1,
+                },
+                568: {
+                    items: 2,
+                },
+                991: {
+                    items: 3,
+                },
+                1050: {
+                    items: 4
+                }
+            }
+        });
+    </script>
+    <!-- //Product slider Owl-Carousel-JavaScript -->
+    <!-- cart-js -->
+    <script src="~/js/minicart.js">
+    </script>
+    <script>
+        hub.render();
+
+        hub.cart.on('new_checkout', function (evt) {
+            var items, len, i;
+
+            if (this.subtotal() > 0) {
+                items = this.items();
+
+                for (i = 0, len = items.length; i < len; i++) { }
+            }
+        });
+
+        $(document).ready(function () {
+
+            $("#searchdropdown").hide();
+            $("#btnSearch").click(function () {
+                $("#myInput").attr("hidden", false);
+                //$("#select").attr("hidden", false);
+            });
+
+            $.ajax({
+            url: '@Url.Action("GetEmployerJson", "Home",new{@area="Home"})',
+            async: false,
+            contentType: "application/json;",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+              
+                $.each(data, function (index, item) {
+                    var html = '';
+                    html += '<div class="cp" onclick="ItemSelect()">';
+                    html += '<span class="item_name" data-rel=' + item.id + '>' + item.name + '</span>';
+                    html += '</div>';
+                    $("#searchdropdown").append(html);
+                });
+            },
+            error: function (error) {
+                alert(error);
+            }
+                  });
+
+        });
+
+
+
+        function GetAllMatchedMissionsText(event) {
+            var naming = $("#myInput").val();
+            console.log(naming);
+            if (naming == "") {
+                $(".item_name").parent().hide();
+                $("#searchdropdown").hide();
+            }
+            else {
+                console.log(naming);
+
+                var text = naming;
+                var items = $(".item_name");
+                //first, hide all:
+                items.parent().hide();
+
+                //show only those matching user input:
+                items.filter(function () {
+                    return $(this).text().toLowerCase().indexOf(text) == 0;
+                }).parent().show();
+                $("#searchdropdown").show();
+            }
+        };
+
+        function ItemSelect() {
+
+        };
+
+    </script>
+    <!-- //cart-js -->
+    <!-- start-smooth-scrolling -->
+    <script src="~/js/move-top.js"></script>
+    <script src="~/js/easing.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                },
+                    1000);
+            });
+        });
+    </script>
+    <!-- //end-smooth-scrolling -->
+    <!-- smooth-scrolling-of-move-up -->
+    <script>
+        $(document).ready(function () {
+
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
+        });
+
+
+
+
+    </script>
+    <script src="~/js/SmoothScroll.min.js"></script>
+
+    <script src="~/js/bootstrap.js"></script>
+
+
+    @*<script>
+        $(document).ready(function () {
+                   $.get("@Url.Action("GetEmployerJson", "Home",new { @area="Home"})", function (data, status) {
+                       console.log(data);
+                       var obj = JSON.stringify(data);
+                       for (var i = 0; i < data.length; i++) {
+                           //array.push(data[i].name);
+                           array.push(data);
+                       }
+                   });
+               });
+           </script>*@
+
+
+
+    <script>
+        /*        $("#EmpName").on('change', function () {*/
+
+
+
+    </script>
+
+    @*<script>
+            function autocomplete(inp, arr) {
+
+                var currentFocus;
+                inp.addEventListener("input", function (e) {
+                    var a, b, i, val = this.value;
+                    closeAllLists();
+                    if (!val) { return false; }
+                    currentFocus = -1;
+                    a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items");
+                    this.parentNode.appendChild(a);
+                    for (i = 0; i < arr.length; i++) {
+                        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            b = document.createElement("DIV");
+                            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                            b.innerHTML += arr[i].substr(val.length);
+                            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                            b.addEventListener("click", function (e) {
+                                inp.value = this.getElementsByTagName("input")[0].value;
+                                closeAllLists();
+                            });
+                            a.appendChild(b);
+                        }
+                    }
+                });
+                inp.addEventListener("keydown", function (e) {
+                    var x = document.getElementById(this.id + "autocomplete-list");
+                    if (x) x = x.getElementsByTagName("div");
+                    if (e.keyCode == 40) {
+                        currentFocus++;
+                        addActive(x);
+                    } else if (e.keyCode == 38) {
+                        currentFocus--;
+                        addActive(x);
+                    } else if (e.keyCode == 13) {
+                        e.preventDefault();
+                        if (currentFocus > -1) {
+                            if (x) x[currentFocus].click();
+                        }
+                    }
+                });
+                function addActive(x) {
+                    if (!x) return false;
+                    removeActive(x);
+                    if (currentFocus >= x.length) currentFocus = 0;
+                    if (currentFocus < 0) currentFocus = (x.length - 1);
+                    x[currentFocus].classList.add("autocomplete-active");
+                }
+                function removeActive(x) {
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].classList.remove("autocomplete-active");
+                    }
+                }
+                function closeAllLists(elmnt) {
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                        if (elmnt != x[i] && elmnt != inp) {
+                            x[i].parentNode.removeChild(x[i]);
+                        }
+                    }
+                }
+                document.addEventListener("click", function (e) {
+                    closeAllLists(e.target);
+                });
+            }
+            var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia",
+                "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
+                "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil",
+                "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde",
+                "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica",
+                "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+                "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji",
+                "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar",
+                "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras",
+                "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica",
+                "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+                "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia",
+                "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia",
+                "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles",
+                "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine",
+                "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania",
+                "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia",
+                "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea",
+                "South Sudan", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden",
+                "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago",
+                "Tunisia", "Turkey", "Turkmenistan", "Turks & Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+                "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)",
+                "Yemen", "Zambia", "Zimbabwe"];
+            autocomplete(document.getElementById("myInput"), countries);
+        </script>*@
+
+
+</body>
+</html>

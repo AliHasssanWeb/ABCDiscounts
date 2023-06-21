@@ -1,0 +1,206 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpAllowanceType>
+
+@{
+    ViewData["Title"] = "ManageAllowanceType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+
+<div>
+    <a asp-action="AddAllowanceType"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee Allownce Type</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">ManageAllowanceType</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        @*<div class="row"><div class="col-sm-12 col-md-6">
+                            <div class="dataTables_length" id="order-listing_length">
+                            <label>Show <select name="order-listing_length" aria-controls="order-listing" class="custom-select custom-select-sm form-control"><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="-1">All</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="order-listing_filter" class="dataTables_filter"><label><input type="search" class="form-control" placeholder="Search" aria-controls="order-listing"></label></div></div></div>*@
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="allowncetype" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AllowanceTypeName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.AmountLimit)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsActive)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @{var i = 0; }
+
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AllowanceTypeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.AmountLimit)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsActive == true)
+                                                        {
+
+
+                                                            <span>Active</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Active</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a title="Edit Record"><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateAllowanceType", "AllowanceType", new { id = item.EmpAllowanceTypeId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        @*<a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteAllowanceType", "Employees", new { id = item.EmpAllowanceTypeId })': null"></i></a>*@
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete(@item.EmpAllowanceTypeId)"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        @*<div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="order-listing_info" role="status" aria-live="polite">Showing 1 to 10 of 10 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="order-listing_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="order-listing_previous"><a href="#" aria-controls="order-listing" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="order-listing" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="order-listing_next"><a href="#" aria-controls="order-listing" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#allowncetype').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+
+@if (TempData["responseofAddAllownceType"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddAllownceType"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateAllowanceType"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateAllowanceType"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteAllowanceType"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteAllowanceType"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDelete(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        //url: "/AllowanceType/DeleteAllowanceType/" + id,
+                        url: "DeleteAllowanceType/" + id,
+                        //swal("Poof! Your imaginary file has been deleted!", {
+                        //    icon: "success",
+                        //});
+                        success: function () {
+
+                            
+                            toastr.success("Record Deleted");
+
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageAllowanceType';
+                            }, 500);
+                            // listcovertype.ajax.reload();
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+
+        //swal({
+        //    title: "Are you sure?",
+        //    text: "Once deleted, you will not be able to recover this file!",
+        //    icon: "warning",
+        //    buttons: true,
+        //    dangerMode: true,
+        //})
+        //    .then((willDelete) => {
+        //        if (willDelete) {
+        //            swal("Poof! Your file is Deleted!", {
+        //                icon: "info",
+        //            });
+
+        //            //toastr.success("Record Deleted");
+        //        } else {
+        //            swal("Poof! Your file is safe!", {
+        //                icon: "info",
+        //            });
+        //            //toastr.info("Your file is safe!");
+        //        }
+        //    });
+
+
+
+        //return confirm('Are you sure you want to delete?');
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

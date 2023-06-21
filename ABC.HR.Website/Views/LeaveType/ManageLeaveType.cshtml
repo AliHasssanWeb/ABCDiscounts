@@ -1,0 +1,171 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpLeaveType>
+
+@{
+    ViewData["Title"] = "ManageAllowanceType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+
+<div>
+    <a asp-action="AddLeaveType"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Leave Type</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">ManageAllowanceType</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="Leavetypesssemp" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.LeaveTypeName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.LeaveLimit)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsActive)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @{var i = 0; }
+
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LeaveTypeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Description)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LeaveLimit)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsActive == true)
+                                                        {
+
+
+                                                            <span>Active</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Active</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateLeaveType", "LeaveType", new { id = item.EmpLeaveTypeId })': null"></i></a>&nbsp;&nbsp;&nbsp;
+                                                        @*<a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteLeaveType", "Employees", new { id = item.EmpLeaveTypeId })': null"></i></a>*@
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeleteLeave(@item.EmpLeaveTypeId)"></i></a>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#Leavetypesssemp').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["responseofAddLeaveType"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddLeaveType"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdateLeaveType"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdateLeaveType"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeleteleaveType"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeleteleaveType"].ToString()");</script>
+
+}
+
+<script>
+    function ConfirmDeleteLeave(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeleteLeaveType/" + id,
+
+                        success: function () {
+
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManageLeaveType';
+                            }, 500);
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>

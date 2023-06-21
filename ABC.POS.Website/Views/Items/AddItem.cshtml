@@ -1,0 +1,1097 @@
+﻿@model ABC.EFCore.Repository.Edmx.Product
+@{
+    ViewData["Title"] = "Add Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<style>
+    .dropadditemCategory {
+        background: #e9ecef;
+        opacity: 1;
+        border: 0;
+        outline: 1px solid #dee2e6;
+        font-weight: 400;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Items/AddItem" aria-controls="overview" aria-selected="true">AddItem</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/Index" aria-controls="overview" aria-selected="true">Existing Items</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/AddGroup" role="tab" aria-selected="false">Group</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/AddColor" role="tab" aria-selected="false">Color</a>
+        </li> <li class="nav-item">
+                  <a class="nav-link " href="~/Items/AddModel" role="tab" aria-selected="false">Model</a>
+        </li> 
+        
+    </ul>
+</div>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("AddItem", "Items", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Item</h4>
+            <ul class="nav nav-tabs" style="border-bottom: 1px solid #ebedf2;" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="false">Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile-1" role="tab" aria-controls="profile-1" aria-selected="false">Financial</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade active show" id="home-1" role="tabpanel" aria-labelledby="home-tab">
+
+                    <div class="row">
+                        <h3>
+                            Item Number: @ViewBag.ItemNumber
+                            @Html.HiddenFor(model => model.ItemNumber, new { @class = "form-control" })
+
+                        </h3>
+                        <br />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Name</label>
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name", } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">Location</label>
+                                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", placeholder = "Location", } })
+                                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="">SalesLimit</label>
+                                @Html.EditorFor(model => model.SalesLimit, new { htmlAttributes = new { @class = "form-control", placeholder = "SalesLimit", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.SalesLimit, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="fba-r label-max-width" for="exampleFormControlSelect3">
+                                    Category
+                                </label>
+                                @Html.DropDownList("ItemCategoryID", (IEnumerable<SelectListItem>)ViewBag.ItemCategory, "--Choose Item Category--", new { @class = "col-md-11 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.ItemCategoryId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#additemcategory"></i>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-sm-5">Manufacture</label>
+                                @Html.DropDownList("BrandID", (IEnumerable<SelectListItem>)ViewBag.BrandGet, "--Choose Manufacture--", new { @class = "col-sm-10 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addbrand"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-sm-8">MSAReportAs (00001)</label>
+                                <select class="form-control">
+                                    <option>------Select---------</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Sub Category</label>
+                                @Html.DropDownList("ItemSubCategoryId", (IEnumerable<SelectListItem>)ViewBag.ItemSubCategory, "--Choose Sub Category--", new { @class = "col-md-11 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.ItemSubCategoryId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addsubitemcategory"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-sm-5">Family</label>
+                                @Html.DropDownList("FamilyID", (IEnumerable<SelectListItem>)ViewBag.family, "--Choose Family--", new { @class = "col-sm-10 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.FamilyId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addarticletype"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-sm-5">StateReportAs</label>
+                                <select class="form-control">
+                                    <option>------Select---------</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="">UnitCharge</label>
+                                @Html.EditorFor(model => model.UnitCharge, new { htmlAttributes = new { @class = "form-control", placeholder = "UnitCharge", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.UnitCharge, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="">QtyUnit</label>
+                                @Html.EditorFor(model => model.QtyUnit, new { htmlAttributes = new { @class = "form-control", placeholder = "QtyUnit", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.QtyUnit, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="">UnitRetail</label>
+                                @Html.EditorFor(model => model.UnitRetail, new { htmlAttributes = new { @class = "form-control", placeholder = "UnitRetail", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.UnitRetail, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">BarCode</label>
+                                @Html.EditorFor(model => model.BarCode, new { htmlAttributes = new { @class = "form-control", placeholder = "BarCode", } })
+                                @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">Retail</label>
+                                @Html.EditorFor(model => model.Retail, new { htmlAttributes = new { @class = "form-control", placeholder = "Retail", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.Retail, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">ReportingWeight</label>
+                                @Html.EditorFor(model => model.ReportingWeight, new { htmlAttributes = new { @class = "form-control", placeholder = "ReportingWeight", } })
+                                @Html.ValidationMessageFor(model => model.ReportingWeight, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="col-sm-6">QuantityCase</label>
+                                @Html.EditorFor(model => model.QuantityCase, new { htmlAttributes = new { @class = "form-control", placeholder = "QtyCase", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.QuantityCase, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">QuantityPallet</label>
+                                @Html.EditorFor(model => model.QuantityPallet, new { htmlAttributes = new { @class = "form-control", placeholder = "QuantityPallet", type = "number" } })
+                                @Html.ValidationMessageFor(model => model.QuantityPallet, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">SingleUnitMSA</label>
+                                @Html.EditorFor(model => model.SingleUnitMsa, new { htmlAttributes = new { @class = "form-control", placeholder = "SingleUnitMSA", } })
+                                @Html.ValidationMessageFor(model => model.SingleUnitMsa, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Group</label>
+                                @Html.DropDownList("GroupId", (IEnumerable<SelectListItem>)ViewBag.Group, "--Choose Group--", new { @class = "col-md-11 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addgroup"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Model</label>
+                                @Html.DropDownList("ModelId", (IEnumerable<SelectListItem>)ViewBag.Model, "--Choose Model--", new { @class = "col-sm-11 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.ModelId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addmodel"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Color</label>
+                                @Html.DropDownList("ColorId", (IEnumerable<SelectListItem>)ViewBag.Color, "--Choose Color--", new { @class = "col-sm-11 dropadditemCategory" })
+                                @Html.ValidationMessageFor(model => model.ColorId, "", new { @class = "text-danger db" })
+                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addcolor"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="">Item Image</label>
+                                <input type="file" for="file" name="file" />
+                                @Html.ValidationMessageFor(model => model.ItemImage, "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4"></div>
+                    <div class="col-lg-4 col-sm-4 fr" style="margin-right:-17%">
+                        <button type="button" onclick="MoveNext()" class="btn btn-lg btn-dark me-3 wd-50"><p style="color:white">Next</p></button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Qty In Stock</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.QtyinStock, new { htmlAttributes = new { @class = "form-control", placeholder = "QtyinStock", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.QtyinStock, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Adjustment</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.Adjustment, new { htmlAttributes = new { @class = "form-control", placeholder = "Adjustment", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.Adjustment, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Cost</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.Cost, new { htmlAttributes = new { @class = "form-control", placeholder = "Cost", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.Cost, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Unit Retail</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.UnitRetail, new { htmlAttributes = new { @class = "form-control", placeholder = "Unit Retail", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.UnitRetail, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Profit</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.ProfitPercentage, new { htmlAttributes = new { @class = "form-control", placeholder = "ProfitPercentage", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.ProfitPercentage, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">MfgPromotion</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.MfgPromotion, new { htmlAttributes = new { @class = "form-control", placeholder = "MfgPromotion", } })
+                                    @Html.ValidationMessageFor(model => model.MfgPromotion, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">AddToCost%</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.AddtoCostPercenatge, new { htmlAttributes = new { @class = "form-control", placeholder = "AddtoCost%", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.AddtoCostPercenatge, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Unit Charge</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.UnitCharge, new { htmlAttributes = new { @class = "form-control", placeholder = "Unit Charge", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.UnitCharge, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">UnitCharge</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.UnitCharge, new { htmlAttributes = new { @class = "form-control", placeholder = "UnitPrice", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.UnitCharge, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Quantity Unit</label>
+                                <div class="col-sm-8">
+                                    <select id="select1" class="form-control">
+                                        <option>--------Select-------</option>
+
+                                        <option value="1">Loose</option>
+                                        <option value="2">Pack</option>
+
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-5">Units In Pack</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.UnitsInPack, new { htmlAttributes = new { @class = "form-control", placeholder = "UnitsInPack", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.UnitsInPack, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">OutofstateCost</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.OutofstateCost, new { htmlAttributes = new { @class = "form-control", placeholder = "OutofstateCost", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.OutofstateCost, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">OutOfStateRetail</label>
+                                <div class="col-sm-8">
+                                    @Html.EditorFor(model => model.OutofstateRetail, new { htmlAttributes = new { @class = "form-control", placeholder = "OutofStateRetail", type = "number" } })
+                                    @Html.ValidationMessageFor(model => model.OutofstateRetail, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.TaxOnPurchase.Value, new { @class = "form-check-input",type = "checkbox" })
+                                    @Html.ValidationMessageFor(model => model.TaxOnPurchase, "", new { @class = "text-danger db" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-check-label">
+                                        TaxOnPurchase
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.TaxExempt.Value, new { @class = "form-check-input", type="checkbox"})
+                                    @Html.ValidationMessageFor(model => model.TaxExempt, "", new { @class = "text-danger db" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-check-label">
+                                        TaxExempt
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.ShippingEnable.Value, new { @class = "form-check-input", type = "checkbox" })
+                                    @Html.ValidationMessageFor(model => model.ShippingEnable, "", new { @class = "text-danger db" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-check-label">
+                                        ShippingEnable
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group row">
+                                <div class="col-md-2">
+                                    @Html.EditorFor(model => model.TaxonSale.Value, new { @class = "form-check-input", type = "checkbox" })
+                                    @Html.ValidationMessageFor(model => model.TaxonSale, "", new { @class = "text-danger db" })
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-check-label">
+                                        TaxonSale
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4"></div>
+                    <div class="col-lg-4 col-sm-4 fr" style="margin-right:-17%">
+                        <button type="submit" class="btn btn-lg btn-dark me-3 wd-50"><p style="color:white">Save</p></button>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+}
+
+<div id="additemcategory" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Item Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Item Category</label>
+                        <input class="form-control" type="text" placeholder="Item Category" id="itemcategory" />
+                        <label class="text-danger db" style="display:none" id="msgitemcategory">Enter Item Category</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="itemcategorysubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* SubItemCategory *@
+<div id="addsubitemcategory" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Sub Item Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="subitemcategory">Sub Item Category</label>
+                        <input class="form-control" type="text" placeholder="Sub Item Category" id="subitemcategory" />
+                        <label class="text-danger db" style="display:none" id="msgsubitemcategory">Enter Sub Item Category</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="">
+                            Category
+                        </label>
+                        <select class="form-control" id="itemcategoryid">
+                            <option>--------Select-------</option>
+                        </select>
+                        <input type="hidden" class="form-control" id="itemcategoryname" value="" />
+                        <label class="text-danger db" style="display:none" id="msgitemcategoryname">Select Category Name</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="subitemcategorysubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* Brands *@
+<div id="addbrand" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Brand</label>
+                        <input class="form-control" type="text" placeholder="Brand" id="brand" />
+                        <label class="text-danger db" style="display:none" id="msgbrand">Enter Brand</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="brandsubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* Articletype *@
+<div id="addarticletype" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Article Type</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Brand</label>
+                        <input class="form-control" type="text" placeholder="Article Type" id="articletype" />
+                        <label class="text-danger db" style="display:none" id="msgarticletype">Enter Article Type</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="articletypesubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* Group *@
+<div id="addgroup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Group</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Group</label>
+                        <input class="form-control" type="text" placeholder="Group" id="group" />
+                        <label class="text-danger db" style="display:none" id="msggroup">Enter Group</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="groupsubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* Model *@
+<div id="addmodel" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Model</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Model</label>
+                        <input class="form-control" type="text" placeholder="Model" id="model" />
+                        <label class="text-danger db" style="display:none" id="msgmodel">Enter Model</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="modelsubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@* Color *@
+<div id="addcolor" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add Color</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="itemcategory">Color</label>
+                        <input class="form-control" type="text" placeholder="Color" id="color" />
+                        <label class="text-danger db" style="display:none" id="msgcolor">Enter Color</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="colorsubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+
+</script>
+<script>
+    function closemodal() {
+        $("#additemcategory").modal('hide');
+        @* SubItemCategory *@
+        $("#addsubitemcategory").modal('hide');
+        @* Brands *@
+        $("#addbrand").modal('hide');
+        @* ArticleType *@
+        $("#addarticletype").modal('hide');
+        @* Group *@
+        $("#addgroup").modal('hide');
+        @* Model *@
+        $("#addmodel").modal('hide');
+        @* Color *@
+        $("#addcolor").modal('hide');
+    }
+</script>
+<script>
+    $("#itemcategory").on('focusout', function () {
+        var ItemCategory = $("#itemcategory").val();
+        if (ItemCategory != null && ItemCategory != "" && ItemCategory != "undefined") {
+            $("#msgitemcategory").hide();
+        }
+        else {
+            $("#msgitemcategory").show();
+        }
+    });
+    @* SubItemCategory *@
+    $("#subitemcategory").on('focusout', function () {
+        var SubItemCategory = $("#subitemcategory").val();
+        if (SubItemCategory != null && SubItemCategory != "" && SubItemCategory != "undefined") {
+            $("#msgsubitemcategory").hide();
+        }
+        else {
+            $("#msgsubitemcategory").show();
+        }
+    });
+    $("#itemcategoryid").on('change', function () {
+        var ItemCategoryID = $("#itemcategoryid").val();
+        if (ItemCategoryID != null && ItemCategoryID != "" && ItemCategoryID != "undefined" && ItemCategoryID != "--------Select-------") {
+            $('#msgitemcategoryname').hide();
+        }
+        else {
+                $("#msgitemcategoryname").show();
+        }
+    });
+    @* Brand *@
+    $("#brand").on('focusout', function () {
+        var Brand = $("#brand").val();
+        if (Brand != null && Brand != "" && Brand != "undefined") {
+            $("#msgbrand").hide();
+        }
+        else {
+            $("#msgbrand").show();
+        }
+    });
+    @* ArticleType *@
+    $("#articletype").on('focusout', function () {
+        var ArticleType = $("#articletype").val();
+        if (ArticleType != null && ArticleType != "" && ArticleType != "undefined") {
+            $("#msgarticletype").hide();
+        }
+        else {
+            $("#msgarticletype").show();
+        }
+    });
+    @* Group *@
+    $("#group").on('focusout', function () {
+        var Group = $("#group").val();
+        if (Group != null && Group != "" && Group != "undefined") {
+            $("#msggroup").hide();
+        }
+        else {
+            $("#msggroup").show();
+        }
+    });
+    @* Model *@
+    $("#model").on('focusout', function () {
+        var Model = $("#model").val();
+        if (Model != null && Model != "" && Model != "undefined") {
+            $("#msgmodel").hide();
+        }
+        else {
+            $("#msgmodel").show();
+        }
+    });
+    @* Color *@
+    $("#color").on('focusout', function () {
+        var Color = $("#color").val();
+        if (Color != null && Color != "" && Color != "undefined") {
+            $("#msgcolor").hide();
+        }
+        else {
+            $("#msgcolor").show();
+        }
+    });
+
+</script>
+<script>
+    $("#itemcategorysubmit").on('click', function () {
+        var ItemCategory = $("#itemcategory").val();
+
+        var record = {};
+        record = new FormData();
+        if (ItemCategory != null && ItemCategory != "" && ItemCategory != "undefined") {
+            $("#msgitemcategory").hide();
+            record.append("Name", ItemCategory);
+            $.ajax({
+                url: '@Url.Action("AddItemCategory", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#additemcategory").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgitemcategory").show();
+        }
+    });
+    @*SubItemCategory*@
+    $("#subitemcategorysubmit").on('click', function () {
+        var SubItemCategory = $("#subitemcategory").val();
+        var ItemCategoryId = $("#itemcategoryid").val();
+        var ItemCategoryName = $("#itemcategoryname").val();
+
+        var record = {};
+        record = new FormData();
+        if (SubItemCategory != null && SubItemCategory != "" && SubItemCategory != "undefined" &&
+            ItemCategoryId != null && ItemCategoryId != "" && ItemCategoryId != "undefined" && ItemCategoryId != "--------Select-------") {
+            $("#msgsubitemcategory").hide();
+            record.append("SubCategory", SubItemCategory);
+            record.append("CategoryID", ItemCategoryId);
+            record.append("ParentCategoryName", ItemCategoryName);
+            $.ajax({
+                url: '@Url.Action("AddSubItemCategory", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addsubitemcategory").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            if (SubItemCategory == null || SubItemCategory == "" || SubItemCategory == "undefined") {
+
+                $("#msgsubitemcategory").show();
+            }
+            else {
+
+                $("#msgsubitemcategory").hide();
+            }
+            debugger
+            if (ItemCategoryId == null || ItemCategoryId == "" || ItemCategoryId != "undefined" || ItemCategoryId == "--------Select-------") {
+
+                $("#msgitemcategoryname").show();
+            }
+            else {
+                $('#msgitemcategoryname').hide();
+            }
+
+        }
+    });
+    @* Brand *@
+    $("#brandsubmit").on('click', function () {
+        var Brand = $("#brand").val();
+
+        var record = {};
+        record = new FormData();
+        if (Brand != null && Brand != "" && Brand != "undefined") {
+            $("#msgbrand").hide();
+            record.append("Name", Brand);
+            $.ajax({
+                url: '@Url.Action("AddBrands", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addbrand").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgbrand").show();
+        }
+    });
+    @* ArticleType *@
+    $("#articletypesubmit").on('click', function () {
+        var ArticleType = $("#articletype").val();
+
+        var record = {};
+        record = new FormData();
+        if (ArticleType != null && ArticleType != "" && ArticleType != "undefined") {
+            $("#msgarticletype").hide();
+            record.append("ArticleTypeName", ArticleType);
+            $.ajax({
+                url: '@Url.Action("AddArticle", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addarticletype").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgarticletype").show();
+        }
+    });
+     @* Group *@
+    $("#groupsubmit").on('click', function () {
+        var Group = $("#group").val();
+
+        var record = {};
+        record = new FormData();
+        if (Group != null && Group != "" && Group != "undefined") {
+            $("#msggroup").hide();
+            record.append("Name", Group);
+            $.ajax({
+                url: '@Url.Action("AddGroupJson", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addgroup").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msggroup").show();
+        }
+    });
+    @* Model *@
+    $("#modelsubmit").on('click', function () {
+        var Model = $("#model").val();
+
+        var record = {};
+        record = new FormData();
+        if (Model != null && Model != "" && Model != "undefined") {
+            $("#msgmodel").hide();
+            record.append("Name", Model);
+            $.ajax({
+                url: '@Url.Action("AddModelJson", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addmodel").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgmodel").show();
+        }
+    });
+     @* Color *@
+    $("#colorsubmit").on('click', function () {
+        var Color = $("#color").val();
+
+        var record = {};
+        record = new FormData();
+        if (Color != null && Color != "" && Color != "undefined") {
+            $("#msgcolor").hide();
+            record.append("Name", Color);
+            $.ajax({
+                url: '@Url.Action("AddColorJson", "Items",new{@area= "Inventory" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addcolor").modal('hide');
+                        window.location = '@Url.Action("AddItem", "Items",new{@area= "Inventory" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgcolor").show();
+        }
+    });
+</script>
+<script>
+    /*GetItemList*/
+    $(document).ready( function () {
+            $.ajax({
+                url: '@Url.Action("GetItemList", "Purchase",new{@area= "Inventory" })',
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.length > 0)
+                    {
+                        $('#itemcategoryid').html('');
+                        var options = '';
+                        options += '<option>------Select---------</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                        }
+                        $('#itemcategoryid').append(options);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        });
+
+        /*GetItemname*/
+        $("#itemcategoryid").on('change', function () {
+            var ItemCategoryID = $("#itemcategoryid").val();
+            if (ItemCategoryID != null) {
+                $.ajax({
+                    type: "GET",
+                    url: "/Inventory/Purchase/GetItemNameByID",
+                    data: {
+                        id: ItemCategoryID
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                         $('#itemcategoryname').val(data.name);
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+        });
+
+
+    function MoveNext() {
+        $("#home-1").removeClass("active");
+        $("#profile-1").addClass("active show");
+    }
+</script>
+
+
+
+
+

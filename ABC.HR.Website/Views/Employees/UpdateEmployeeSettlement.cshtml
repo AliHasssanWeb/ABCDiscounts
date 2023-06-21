@@ -1,0 +1,180 @@
+﻿@model ABC.EFCore.Repository.Edmx.EmployeeSettlement
+
+@{
+    ViewData["Title"] = "Update Employee Settlement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+@if (TempData["Msg"] != null)
+{
+    <div class="alert-danger" style="max-width: 46%;" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("CreateEmployeeSettlement", "Employees", new { @area = "HumanResource" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update Employee Settlement</h4>
+
+
+            <div class="row">
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">General Information</div>
+                    <div class="panel-body">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee Name</label>
+                                    @Html.DropDownList("EmployeeID", (IEnumerable<SelectListItem>)ViewData["Employee"], "--Choose Employee Name--", new { @class = "form-control", id = "EmpName" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee Email</label>
+                                    @Html.EditorFor(model => model.EmployeeEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Employee Email", id = "EmpEmail", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeEmail, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee Code</label>
+                                    @Html.EditorFor(model => model.EmployeeCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Employee Code", id = "EmpCode", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Pending Salary</label>
+                                    @Html.EditorFor(model => model.PendingSalary, new { htmlAttributes = new { @class = "form-control", placeholder = "Pending Salary", type = "Number" } })
+                                    @Html.ValidationMessageFor(model => model.PendingSalary, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Pending Leave</label>
+                                    @Html.EditorFor(model => model.PendingLeave, new { htmlAttributes = new { @class = "form-control", placeholder = "Pending Leave", type = "Number" } })
+                                    @Html.ValidationMessageFor(model => model.PendingLeave, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Termination Note</label>
+                                    @Html.EditorFor(model => model.TerminationNode, new { htmlAttributes = new { @class = "form-control", placeholder = "Termination Node" } })
+                                    @Html.ValidationMessageFor(model => model.TerminationNode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Termination Date</label>
+                                    @Html.EditorFor(model => model.TerminationDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Termination Date" } })
+                                    @Html.ValidationMessageFor(model => model.TerminationDate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Clearance</div>
+                    <div class="panel-body">
+
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="AssetsReturn">Assets Return</label>
+                                    @Html.CheckBox("AssetsReturn", false)
+                                    @Html.ValidationMessageFor(model => model.AssetsReturn, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ConfidentialClear">Confidential Clear</label>
+                                    @Html.CheckBox("ConfidentialClear", false)
+                                    @Html.ValidationMessageFor(model => model.ConfidentialClear, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="IsLoan">IsLoan Clear</label>
+                                    @Html.CheckBox("IsLoan", false)
+                                    @Html.ValidationMessageFor(model => model.IsLoan, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-4 col-sm-4 fr">
+
+                <button type="submit" class="btn btn-lg btn-dark me-3 wd-40"><p style="color:white">Submit</p></button>
+                <button type="reset" class="btn btn-lg btn-light me-3 wd-40"><p>Cancel</p></button>
+
+            </div>
+            <div class="col-lg-4 col-sm-4"></div>
+            <div class="col-lg-4 col-sm-4"></div>
+
+        </div>
+
+    </div>
+
+}
+
+<script>
+
+
+    $("#EmpName").on('change', function () {
+        var id = $(this).val();
+        $.ajax({
+            url: '@Url.Action("GetEmpDataByID", "Employees",new{@area="HumanResource"})',
+            data: {
+                id: id
+            },
+            async: false,
+            contentType: "application/json;",
+
+            dataType: "json",
+            success: function (data) {
+
+                $('#EmpEmail').val(data.email);
+                $('#EmpCode').val(data.employeeCode);
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+    $('input.percon').on('change', function () {
+        $('input.percon').not(this).prop('checked', false);
+    });
+
+
+</script>
+

@@ -1,0 +1,644 @@
+﻿@model ABC.EFCore.Repository.Edmx.Employee
+
+@{
+    ViewData["Title"] = "Add Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    function checkYesContractor() {
+        $("#YesContractor").prop("checked", true);
+        $("#NoContractor").prop("checked", false);
+    }
+    function checkNoContractor() {
+        $("#YesContractor").prop("checked", false);
+        $("#NoContractor").prop("checked", true);
+    }
+</script>
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("AddEmployee", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Employee</h4>
+
+            <div class="row">
+                <h3>
+                    Employee Code: @ViewBag.EmployeeCode
+                    @Html.HiddenFor(model => model.EmployeeCode, new { @class = "form-control" })
+
+                </h3>
+                <br />
+                <br />
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">Employer Information</div>
+                    <div class="panel-body">
+
+                        <div class="row ">
+
+                            <div class="col-md-12">
+                                @*<a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" href="@Url.Action("DetailEmployee", "Employees", new { id = item.EmployeeId })" id="btnhrDetails">Detail</a>*@
+                                <button type="button" class="btn btn-outline-success" style="font-size:14px; float:right; height:50%; width:14%;" onclick="GetEmployer()">Get details from system</button>
+                                <div class="form-group">
+                                    <label class="">Federal Employer ID Number (FEIN) <b>(Please enter the same pin used to report the employee's quarterly wages.)</b></label>
+                                    <div class="col-md-6">
+                                        @Html.EditorFor(model => model.FederalEmployeeId, new { htmlAttributes = new { @class = "form-control ", placeholder = "Federal Employer ID", id="FedEmp" } })
+                                        @Html.ValidationMessageFor(model => model.FederalEmployeeId, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="form-group">
+                                    <label class="dim col-sm-6">State ID:</label><br />
+                                    @Html.EditorFor(model => model.EmployerState, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer State", id="State" } })
+                                    @Html.ValidationMessageFor(model => model.EmployerState, "", new { @class = "text-danger db" })
+                                    @*@Html.DropDownList("EmployerState", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control", @Readonly = "readonly" })*@
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="">Employer Name (Include middle initial):</label>
+                                    @Html.EditorFor(model => model.EmployerName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer name", id="EmpName" } })
+                                    @Html.ValidationMessageFor(model => model.EmployerName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">Employer Payroll Address:</label>
+                                    @Html.EditorFor(model => model.PayrolAddress, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Payrol Address", id="PayRollAddress" } })
+                                    @Html.ValidationMessageFor(model => model.PayrolAddress, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employer City:</label>
+                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id="EmpCity" } })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Zip Code (5 digit):</label>
+                                    @Html.EditorFor(model => model.EmployerZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code", id="ZipCode" } })
+                                    @Html.ValidationMessageFor(model => model.EmployerZipCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Phone (optional):</label>
+                                    @Html.EditorFor(model => model.EmployerPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", type = "number", autocomplete = "false", id="EmpPhone" } })
+                                    @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Extension:</label>
+                                    @Html.EditorFor(model => model.Extention, new { htmlAttributes = new { @class = "form-control", placeholder = "Extention", type = "number", autocomplete = "false", id="EmpExt" } })
+                                    @Html.ValidationMessageFor(model => model.Extention, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employer Fax (Optional):</label>
+                                    @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Fax", type = "number", autocomplete = "false", id="Fax" } })
+                                    @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Email:</label>
+                                    @Html.EditorFor(model => model.EmployerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", id="Email" } })
+                                    @Html.ValidationMessageFor(model => model.EmployerEmail, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">Employee Information</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="">Employee Social Secuirty Number (Ssn):</label>
+                                    @Html.EditorFor(model => model.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Social Secuirty Number", } })
+                                    @Html.ValidationMessageFor(model => model.Ssn, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="">Is this employee an Independent Contractor?</label>
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.YesContractor.Value, new { @class = "form-check-input ", id = "YesContractor", onclick= "checkYesContractor()", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.YesContractor, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-2" style="margin-left:-40px">
+                                        <label class="form-check-label">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2" style="margin-left:20px">
+                                        @Html.EditorFor(model => model.NoContractor.Value, new { @class = "form-check-input ", id = "NoContractor", onclick = "checkNoContractor()", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.NoContractor, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-2" style="margin-left:-40px">
+                                        <label class="form-check-label">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="">Employee Name (Include middle initial):</label>
+                                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employee name", } })
+                                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">Address</label>
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee City</label>
+                                    @Html.EditorFor(model => model.EmployeeCity, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployeeCity" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeCity, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-6">Employee State</label>
+                                    @Html.DropDownList("State", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Zip Code (5 digit):</label>
+                                    @Html.EditorFor(model => model.EmployeeZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeZipCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date of Hire </label>
+                                    @Html.EditorFor(model => model.DateofHire, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.DateofHire, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date of Birth </label>
+                                    @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Mobile</label>
+                                    @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile", type = "number", autocomplete = "false" } })
+                                    @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Phone</label>
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone", type = "number", autocomplete = "false" } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Email</label>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Driving License</label>
+                                    @Html.EditorFor(model => model.DrivingLisence, new { htmlAttributes = new { @class = "form-control", placeholder = "Driving Lisence", } })
+                                    @Html.ValidationMessageFor(model => model.DrivingLisence, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group row">
+                                    <label class=""> Employee Image</label>
+                                    <input type="file" name="file" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">Employee’s Withholding Allowance Certificate</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">EAC ID:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Eacid, new { htmlAttributes = new { @class = "form-control", placeholder = "EAC ID" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Eacid, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">First Name:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.FirstName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Middle Name:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Name" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MiddleName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Last Name:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.LastName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Ssn:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Ssn" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Ssn, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">Address:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Address, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Address, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class=""> Marital Status:</label>
+                                    @Html.DropDownList("MartialStatus", new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Text="Single", Value = "Single" },
+                                        new SelectListItem{ Text="Married", Value = "Engaged" },
+                                        new SelectListItem{ Text="Married, but withhold at higher Single rate", Value = "MarriedBut" },
+
+                                        }, "--Choose Marital Status--", new { @class = "form-control", id = "MarriedStatus" }
+                                           )
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MarriedStatus, "", new { @class = "text-danger db" })
+
+                                </div>
+                            </div>       
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">City:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.City, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-4">State:</label><br />
+                                    @Html.DropDownList("EmployeeWithHoldingTax.State", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Zip Code:</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.ZipCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    @*<div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.NameDiffSsn, new { @class = "form-check-input ", id = "NameDiffSsn" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.NameDiffSsn, "", new { @class = "text-danger db" })
+                                    </div>*@
+                                    <div class="col-md-5">
+                                        <label class="form-check-label">
+                                            Name Different Ssn
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date </label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Date, new { htmlAttributes = new { @class = "form-control", Type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Date, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Additional Amount</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.AdditionalAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "Additional Amount" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.AdditionalAmount, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>                           
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Country</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.Country, new { htmlAttributes = new { @class = "form-control", placeholder = "Country" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Country, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">No of Allowances </label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.NoofAllowances, new { htmlAttributes = new { @class = "form-control", Type = "No of Allowances" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.NoofAllowances, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee Signature</label>
+                                    @Html.EditorFor(model => model.EmployeeWithHoldingTax.EmployeeSignature, new { htmlAttributes = new { @class = "form-control longtxt ", placeholder = "Employee Signature" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.EmployeeSignature, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.NoTaxLaibility, new { @class = "form-check-input ", id = "NoTaxLaibility", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.NoTaxLaibility, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-check-label">
+                                            No Tax Laibility
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.MilatrySpouseExempt, new { @class = "form-check-input ", id = "MilatrySpouseExempt" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.MilatrySpouseExempt, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-check-label">
+                                            Milatry Spouse Exempt
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.Domiciled, new { @class = "form-check-input ", id = "Domiciled", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.Domiciled, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-5" >
+                                        <label class="form-check-label">
+                                            Domiciled
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.NoExemptions, new { @class = "form-check-input ", id = "NoExemptions", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.NoExemptions, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-check-label">
+                                            No Exemptions
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.EmployeeWithHoldingTax.EmployerWithHold, new { @class = "form-check-input ", id = "EmployerWithHold", type="checkbox" })
+                                        @Html.ValidationMessageFor(model => model.EmployeeWithHoldingTax.EmployerWithHold, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-check-label">
+                                            Employer With Hold
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-4 fr">
+
+                <button type="submit" class="btn btn-lg btn-dark me-3 wd-40"><p style="color:white">Submit</p></button>
+                <button type="reset" class="btn btn-lg btn-light me-3 wd-40"><p>Cancel</p></button>
+
+            </div>
+            <div class="col-lg-4 col-sm-4"></div>
+            <div class="col-lg-4 col-sm-4"></div>
+
+        </div>
+
+    </div>
+
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#martialstatus").change(function () {
+            debugger
+            if ($("#martialstatus option:selected")[0].value == "Married") {
+
+                $("#SpouseName").attr("disabled", false);
+                $("#NoofChildren").attr("disabled", false);
+
+            } else {
+                $("#SpouseName").attr("disabled", true);
+                $("#NoofChildren").attr("disabled", true);
+            }
+        })
+    })
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+    $('input.percon').on('change', function () {
+        $('input.percon').not(this).prop('checked', false);
+    });
+
+
+    function GetEmployer() {
+        $.ajax({
+            type: "GET",
+            url: "/Administration/AbcDiscounts/GetEmployerForAjax",
+            contentType: "application/json;",
+            async: false,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                if (data != "false.") {
+                    if (data.federalEmployeeId != null) {
+                        $('#FedEmp').val(data.federalEmployeeId);
+                        $('#FedEmp').attr("disabled", true);
+                    }
+                    if (data.employerState != null) {
+                        $('#State').val(data.employerState);
+                        $('#State').attr("disabled", true);
+                    }
+                    if (data.employerName != null) {
+                        $('#EmpName').val(data.employerName);
+                        $('#EmpName').attr("disabled", true);
+                    }
+                    if (data.payrolAddress != null) {
+                        $('#PayRollAddress').val(data.payrolAddress);
+                        $('#PayRollAddress').attr("disabled", true);
+                    }
+                    if (data.city != null) {
+                        $('#EmpCity').val(data.city);
+                        $('#EmpCity').attr("disabled", true);
+                    }
+                    if (data.employerZipCode != null) {
+                        $('#ZipCode').val(data.employerZipCode);
+                        $('#ZipCode').attr("disabled", true);
+                    }
+                    if (data.employerPhone != null) {
+                        $('#EmpPhone').val(data.employerPhone);
+                        $('#EmpPhone').attr("disabled", true);
+                    }
+                    if (data.extention != null) {
+                        $('#EmpExt').val(data.extention);
+                        $('#EmpExt').attr("disabled", true);
+                    }
+                    if (data.fax != null) {
+                        $('#Fax').val(data.fax);
+                        $('#Fax').attr("disabled", true);
+                    }
+                    if (data.employerEmail != null) {
+                        $('#Email').val(data.employerEmail);
+                        $('#Email').attr("disabled", true);
+                    }
+                }
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+
+</script>
+
+
+@*<div class="row ">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class=""> Marital Status</label>
+                @Html.DropDownList("MartialStatus", new List<SelectListItem>
+                    {
+                    new SelectListItem{ Text="Married", Value = "Married" },
+                    new SelectListItem{ Text="Single", Value = "Single" },
+                    new SelectListItem{ Text="Engaged", Value = "Engaged" },
+                    new SelectListItem{ Text="Committed", Value = "Committed" },
+
+                    }, "--Choose Marital Status--", new { @class = "form-control", id = "martialstatus" }
+                       )
+                @Html.ValidationMessageFor(model => model.MartialStatus, "", new { @class = "text-danger db" })
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="">Spouse Name</label>
+                @Html.EditorFor(model => model.SpouseName, new { htmlAttributes = new { @id = "SpouseName", @class = "form-control", placeholder = "Spouse Name", disabled = true } })
+                @Html.ValidationMessageFor(model => model.SpouseName, "", new { @class = "text-danger db" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="">No. of Children</label>
+                @Html.EditorFor(model => model.NoofChildren, new { htmlAttributes = new { @id = "NoofChildren", @class = "form-control", placeholder = "No. of Children", disabled = true, type = "number", autocomplete = "false" } })
+                @Html.ValidationMessageFor(model => model.NoofChildren, "", new { @class = "text-danger db" })
+            </div>
+        </div>
+    </div>*@

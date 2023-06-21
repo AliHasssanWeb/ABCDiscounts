@@ -1,0 +1,57 @@
+﻿@*@model IEnumerable<AbcPos.Models.ReportsModel.EmPayRollViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PayRollPdfView</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Name</th>
+            <th>Name</th>
+            <th>Name</th>
+            <th>Name</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+             
+                <tr>
+
+                    <td>@item.employee.FullName</td>
+
+                    <td>@item.employeeContract.Salary</td>
+                    <td>@item.empTax.Reason</td>
+
+                    <td>
+                        @item.empPayRoll.Allowances
+                </td>
+                <td>@item.employeeContract.DailyWages</td>
+            </tr>
+
+        }
+
+
+
+
+
+    }
+
+    </tbody>
+</table>
+</body>
+</html>*@

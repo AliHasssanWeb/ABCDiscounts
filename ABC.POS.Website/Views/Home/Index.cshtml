@@ -1,0 +1,256 @@
+﻿@{
+    ViewBag.Title = "Dashboard POS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<div class="tab-content tab-content-basic">
+    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+        <div class="row">
+            <div class="col-lg-8 d-flex flex-column">
+                <div class="row flex-grow">
+                    <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
+                        <div class="card card-rounded">
+                            <div class="card-body">
+                                <div class="d-sm-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h4 class="card-title card-title-dash">Sale Summary </h4>
+                                        <h5 class="card-subtitle card-subtitle-dash"></h5>
+                                    </div>
+                                    <div id="performance-line-legend"></div>
+                                </div>
+                                <div class="chartjs-wrapper mt-5">
+                                    <canvas id="performaneLine"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 d-flex flex-column">
+                <div class="row flex-grow">
+                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                        <div class="card bg-primary card-rounded">
+                            <div class="card-body pb-0">
+                                <h4 class="card-title card-title-dash text-white mb-4">Sales Summary</h4>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p class="status-summary-ight-white mb-1">Closed Value</p>
+                                        <h2 class="text-info">357</h2>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="status-summary-chart-wrapper pb-4">
+                                            <canvas id="status-summary"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                        <div class="card card-rounded">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 mb-sm-0">
+                                            <div class="circle-progress-width">
+                                                <div id="totalVisitors" class="progressbar-js-circle pr-2"></div>
+                                            </div>
+                                            <div>
+                                                <p class="text-small mb-2">Total Items</p>
+                                                <h4 class="mb-0 fw-bold">25</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="circle-progress-width">
+                                                <div id="visitperday" class="progressbar-js-circle pr-2"></div>
+                                            </div>
+                                            <div>
+                                                <p class="text-small mb-2">Total Sales</p>
+                                                <h4 class="mb-0 fw-bold">21</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>*@
+<div class="row">
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h4 style="color:blue;" class="card-title">Total Customers</h4>
+            <h2 style="font-weight:bold; font-size:35px;" id="CustomerC"></h2>
+            <p>Customers</p>
+            <div class="">
+                <i class="fa fa-user-circle-o fa-2x" style="margin-top:14px;"></i>
+              </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h4 style="color:blue;" class="card-title">Total Suppliers</h4>
+            <h2 style="font-weight:bold; font-size:35px;" id="VendorC"></h2>
+            <p>Suppliers</p>
+            <div class="">
+                <i class="fa fa-user-circle-o fa-2x text-primary" style="margin-top:14px;"></i>
+              </div>
+          </div>
+        </div>
+    </div><div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h4 style="color:blue;" class="card-title">Total Inventory</h4>
+            <h2 style="font-weight:bold; font-size:35px;" id="ProductC"></h2>
+            <p>Products</p>
+            <div class="">
+               <i class="fa fa-shopping-cart fa-2x" style="margin-top:14px;"></i>
+              </div>
+          </div>
+        </div>
+    </div><div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h4 style="color:blue;" class="card-title">Today Sales</h4>
+            <h2 style="font-weight:bold; font-size:35px;" id="TodayC"></h2>
+            <p>Sales</p>
+            <div class="">
+                <i class="fa fa-money fa-2x" aria-hidden="true" style="margin-top:14px;"></i>
+              </div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:25px; justify-content:space-around;">
+    <div class="col-md-4" style=" width:30%; background:rgb(76, 181, 246)">
+        <div class="col">
+            <h2 style="color: white; font-size: 30px; margin-top: 20px;">Total</h2>
+                <h2 style="color: white; font-size: 30px;"> Payables</h2>
+                <span style="font-weight: bold;font-size: 24px;">$</span><span id="PayableC" style="font-weight: bold;font-size: 24px;"></span>
+                <div class="row" style="border-top: 1px solid gray; margin-top: 20px;">
+                    <div class="col-md-6">
+                        <p style="color:white;"> All Payables</p>
+                    </div>
+                    <div class="col-md-6">
+                        <i class="fa fa-money fa-2x" aria-hidden="true" style="float: right;"></i>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-md-4" style=" width:30%; background:#e58e96">
+        <div class="col">
+            <h2 style="color: white; font-size: 30px; margin-top: 20px;">Total</h2>
+                <h2 style="color: white; font-size: 30px;"> Receiveables</h2>
+                <span style="font-weight: bold;font-size: 24px;">$</span><span id="ReceiveableC" style="font-weight: bold;font-size: 24px;"></span>
+                <div class="row" style="border-top: 1px solid gray; margin-top: 20px;">
+                    <div class="col-md-6">
+                        <p style="color:white;"> All Receivebles</p>
+                    </div>
+                    <div class="col-md-6">
+                        <i class="fa fa-money fa-2x" aria-hidden="true" style="float: right;"></i>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-md-4" style=" width:30%; background:rgb(247, 180, 33);">
+        <div class="col">
+            <h2 style="color: white; font-size: 30px; margin-top: 20px;">Today</h2>
+                <h2 style="color: white; font-size: 30px;"> Online Sales</h2>
+                <span style="font-weight: bold;font-size: 24px;"></span><span id="OnlineC" style="font-weight: bold;font-size: 24px;"></span>
+                <div class="row" style="border-top: 1px solid gray; margin-top: 20px;">
+                    <div class="col-md-6">
+                        <p style="color:white;">Online Sales</p>
+                    </div>
+                    <div class="col-md-6">
+                        <i class="fa fa-shopping-cart fa-2x" style="float: right;"></i>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+$( document ).ready(function() {
+     $.ajax({
+      url: '@Url.Action("GetCustomersCounter", "Customer")',
+      type: "GET",
+         success: function (data) {
+         $("#CustomerC").text(data);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetVendorsCounter", "Customer")',
+      type: "GET",
+         success: function (data) {
+         $("#VendorC").text(data);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetProductsCounter", "Customer")',
+      type: "GET",
+         success: function (data) {
+         $("#ProductC").text(data);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetTodaySalesCounter", "Customer")',
+      type: "GET",
+         success: function (data) {
+         $("#TodayC").text(data);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetPayables", "Customer")',
+      type: "GET",
+         success: function (data) {
+         var a = data.toFixed(2);
+         $("#PayableC").text(a);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetReceiveables", "Customer")',
+      type: "GET",
+         success: function (data) {
+             var b = data.toFixed(2);
+         $("#ReceiveableC").text(b);
+      },
+      error: function () {}
+
+      });
+
+      $.ajax({
+      url: '@Url.Action("GetOnlineOrders", "Customer")',
+      type: "GET",
+         success: function (data) {
+         $("#OnlineC").text(data);
+      },
+      error: function () {}
+
+      });
+      
+});
+</script>

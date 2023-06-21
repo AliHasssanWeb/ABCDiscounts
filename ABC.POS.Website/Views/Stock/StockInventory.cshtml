@@ -1,0 +1,90 @@
+﻿@model ABC.EFCore.Entities.POS.Stock
+
+@{
+    ViewData["Title"] = "StockInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+@if (TempData["Msg"] != null)
+{
+    <div class="alert-danger" style="max-width: 46%;" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("StockInventory", "Stock", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Stock</h4>
+
+            <div class="row">
+                @*<h3>
+            Employee Code: @ViewBag.EmployeeCode
+            @Html.HiddenFor(model => model.EmployeeCode, new { @class = "form-control" })
+
+        </h3>
+        <br />
+        <br />*@
+
+                <div class="row ">
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="form-group">
+
+                            <label class="dim col-sm-4">Item</label>
+                            @Html.DropDownList("ItemId", (IEnumerable<SelectListItem>)ViewBag.Items, "--Choose Item--", new { @class = "form-control", id = "msgselectItem" })
+                            @Html.ValidationMessageFor(model => model.ItemId, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="">Item Code</label>
+                            @Html.EditorFor(model => model.ItemCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", } })
+                            @Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="">Quantity</label>
+                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", placeholder = "Quantity", } })
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="">MSA Report</label>
+                            @Html.EditorFor(model => model.MSAReport, new { htmlAttributes = new { @class = "form-control", placeholder = "MSA Report", } })
+                            @Html.ValidationMessageFor(model => model.MSAReport, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                   
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 col-sm-4 fr" style="float:right">
+
+                <button type="submit" class="btn btn-lg btn-dark me-3 wd-40"><p style="color:white">Submit</p></button>
+                <button type="reset" class="btn btn-lg btn-light me-3 wd-40"><p>Cancel</p></button>
+
+            </div>
+
+        </div>
+           
+
+
+        </div>
+
+
+}

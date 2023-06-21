@@ -1,0 +1,162 @@
+@model IEnumerable<ABC.EFCore.Repository.Edmx.Faq>
+@{
+    ViewData["Title"] = "PendingCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<script>
+    $(document).ready(function() {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+
+@if (TempData["Msg"] != null)
+{
+    <div class="alert-success" style="max-width: 46%;" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Pending Customers</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table dataTable" role="grid" aria-describedby="order-listing_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>Sr#</th>
+                                        <th>
+                                            Title
+                                        </th>
+                                        <th>
+                                            Is Public
+
+                                        </th>
+                                        Description
+                                        <th>
+
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+                                        
+
+                                    </tr>
+                                </thead>
+                                @{
+                                    var i = 0;
+                                }
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            i = i + 1;
+                                            <tr class="odd">
+                                                <td class="sorting_1">@i</td>
+                                                <td>@item.Title</td>
+                                                <td>@if (item.IsPublic == true)
+                                                    {
+                                                        <span>Public</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>private</span>
+                                                    }</td>
+                                                <td>@item.Description</td>
+                                                <td> 
+                                                    <a class="btn btn-success btn-sm pt-2 pb-2 mt-3 mb-4 edit" href='@Url.Action("FaqUpate", "Faqs", new { id = item.Id})' : null">Edit<i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-danger btn-sm mt-3 pt-2 pb-2 mb-4 remove" href='@Url.Action("FaqDelete", "Faqs", new { id = item.Id})' : null">Delete<i class="fa fa-times"></i></a>
+                                                </td>
+                                                
+                                                
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+                                @*<tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.Title</td>
+                                                <td>@item.Description</td>
+                                                <td>
+                                                    @if (item.IsPublic == true)
+                                                    {
+                                                        <span>Public</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>private</span>
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    <a class="btn btn-link btn-warning edit" style="color:red" href='@Url.Action("FaqUpate", "Faqs", new { id = item.Id})' : null"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-link btn-danger remove" style="color:maroon" href='@Url.Action("FaqDelete", "Faqs", new { id = item.Id})' : null"><i class="fa fa-times"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>*@
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+    setTimeout(function() {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#order-listing tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+    function DropdownLink() {
+        $("#DropdownLink").toggleClass("show");
+    }
+</script>

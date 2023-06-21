@@ -1,0 +1,600 @@
+﻿@model ABC.EFCore.Repository.Edmx.Employer
+@{
+    ViewData["Title"] = "CompanySetupUpdate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Profile_page (1).css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<style>
+    /*.mxwidth-50 {
+        max-width: 89%;
+    }*/
+
+    .nav-item-width {
+        min-width: 16%;
+        border: 0.1px solid #00000052 !important;
+    }
+
+    .font-blue {
+        color: #0000ffc2;
+    }
+
+    .input-70 {
+        max-width: 70px;
+    }
+
+    .border-0 {
+        border: 0px;
+    }
+</style>
+
+
+
+
+
+    @Html.AntiForgeryToken()
+
+    @*@Html.HiddenFor(model => model.Id)*@
+
+    <div class="container">
+        <div class="row gutters">
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters">
+                            @*<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">*@
+                            <ul class="nav nav-tabs mxwidth-50" role="tablist">
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link active" id="miantab" data-bs-toggle="tab" href="#maindata" role="tab" aria-controls="maindata" aria-selected="true">Main Enterprise</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="companysetuptab" data-bs-toggle="tab" href="#companysetupdata" role="tab" aria-controls="companysetupdata" aria-selected="false">Companies Setup</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="accounttab" data-bs-toggle="tab" href="#accountdata" role="tab" aria-controls="accountdata" aria-selected="false">Bank Accounts</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="saledatatab" data-bs-toggle="tab" href="#saledata" role="tab" aria-controls="saledata" aria-selected="false">Sales/Invoicing</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link " id="paymentdatatab" data-bs-toggle="tab" href="#paymentdata" role="tab" aria-controls="paymentdata" aria-selected="false">Purchasing/Sales</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link " id="ledgertab" data-bs-toggle="tab" href="#ledgerdata" role="tab" aria-controls="ledgerdata" aria-selected="false">Ledger</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link " id="payrolltab" data-bs-toggle="tab" href="#payrolldata" role="tab" aria-controls="payrolldata" aria-selected="false">Payroll</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="delegatestab" data-bs-toggle="tab" href="#delegatesdata" role="tab" aria-controls="delegatesdata" aria-selected="true">Delegates</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="salesmentab" data-bs-toggle="tab" href="#salesmendata" role="tab" aria-controls="salesmendata" aria-selected="false">Salesmen</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="settingstab" data-bs-toggle="tab" href="#settingsdata" role="tab" aria-controls="settingsdata" aria-selected="false">Settings</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link" id="stationtab" data-bs-toggle="tab" href="#stationdata" role="tab" aria-controls="stationdata" aria-selected="false">Databases/Stations</a>
+                                </li>
+                                <li class="nav-item nav-item-width">
+                                    <a class="nav-link " id="taxestab" data-bs-toggle="tab" href="#taxesdata" role="tab" aria-controls="taxesdata" aria-selected="false">ST Taxes</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="ListappenedTabs">
+
+
+                                <div class="tab-pane fade active show row" id="maindata">
+                                    @using (Html.BeginForm("CompanySetupUpdate", "AbcDiscounts", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-12">
+                                            <div class="row">
+                                                @Html.HiddenFor(model => model.EmployerId, new { htmlAttributes = new {  } })
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Employer Name (Include middle initial):</label>
+                                                        @Html.EditorFor(model => model.EmployerName, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Name", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerName, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Slogan:</label>
+                                                        @Html.EditorFor(model => model.Slogan, new { htmlAttributes = new { @class = "form-control", placeholder = "Slogan", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerName, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <div class="form-group">
+                                                        <label>Contact:</label>
+                                                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", placeholder = "Contact", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6" style="margin-top: 30.4px;">
+                                                    <div class="form-group">
+                                                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control", placeholder = "Contact", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Branding:</label>
+                                                        @Html.EditorFor(model => model.Branding, new { htmlAttributes = new { @class = "form-control", placeholder = "Branding", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Employer Payroll Address:</label>
+                                                        @Html.EditorFor(model => model.PayrolAddress, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Employer Payroll Address" } })
+                                                        @Html.ValidationMessageFor(model => model.PayrolAddress, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Suite:</label>
+                                                        @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control", placeholder = "Suite", } })
+                                                        @Html.ValidationMessageFor(model => model.Suite, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>City:</label>
+                                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", } })
+                                                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                                                    <div class="form-group">
+                                                        <label>State:</label>
+                                                        @Html.DropDownList("EmployerState", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                                                    <div class="form-group">
+                                                        <label>Zip:</label>
+                                                        @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip", } })
+                                                        @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                                                    <div class="form-group">
+                                                        <label>Phone:</label>
+                                                        @Html.EditorFor(model => model.EmployerPhone, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Phone", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7">
+                                                    <div class="form-group">
+                                                        <label>Fax Number:</label>
+                                                        @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "FaxNumber", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerPhone, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Email:</label>
+                                                        @Html.EditorFor(model => model.EmployerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Email", } })
+                                                        @Html.ValidationMessageFor(model => model.EmployerEmail, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>FED Tax ID:</label>
+                                                        @Html.EditorFor(model => model.FedTaxId, new { htmlAttributes = new { @class = "form-control", placeholder = "FedTaxID", } })
+                                                        @Html.ValidationMessageFor(model => model.FedTaxId, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>State Tax ID:</label>
+                                                        @Html.EditorFor(model => model.StateTaxId, new { htmlAttributes = new { @class = "form-control", placeholder = "SaleTaxID", } })
+                                                        @Html.ValidationMessageFor(model => model.StateTaxId, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Default Sales Tax:</label>
+                                                        @Html.EditorFor(model => model.DefaultSalesTax, new { htmlAttributes = new { @class = "form-control", placeholder = "Default Sales Tax", } })
+                                                        @Html.ValidationMessageFor(model => model.DefaultSalesTax, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Default Credit Charge:</label>
+                                                        @Html.EditorFor(model => model.DefaultCreditCharge, new { htmlAttributes = new { @class = "form-control", placeholder = "Default Credit Charge", } })
+                                                        @Html.ValidationMessageFor(model => model.DefaultCreditCharge, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Debit Charge:</label>
+                                                        @Html.EditorFor(model => model.DebitCharge, new { htmlAttributes = new { @class = "form-control", placeholder = "Debit Charge", } })
+                                                        @Html.ValidationMessageFor(model => model.DebitCharge, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Company Header:</label>
+                                                        <input type="file" name="name" value="" />
+                                                        @*@Html.EditorFor(model => model.EmployerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Employer Email", } })
+                                                            @Html.ValidationMessageFor(model => model.EmployerEmail, "", new { @class = "text-danger" })*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-top:10px;">
+                                                    <div class="text-right">
+
+                                                        <button type="submit" value="userprofile" class="btn btn-primary" style="color:white">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-md-1"></div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
+
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label class="dim col-sm-12">Logo</label>
+                                                        <input type="file" name="name" value="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Database Year:</label>
+                                                        @Html.DropDownListFor(model => model.DatabaseYear, new List<SelectListItem>{new SelectListItem{ Text="Select Year", Value="Select Year"},new SelectListItem{ Text="2021", Value="2021"}
+                                                        ,new SelectListItem{ Text="2020", Value="2020"}}, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="form-group">
+                                                        <label>Default Map:</label>
+                                                        @Html.DropDownListFor(model => model.DefaultMap, new List<SelectListItem>{new SelectListItem{ Text="Select Map", Value="Select Map"},new SelectListItem{ Text="Google", Value="Google"}
+                                                        ,new SelectListItem{ Text="Amazon", Value="Amazon"}}, new { @class = "form-control" })
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style=" border: 0.3px solid #00000040;">
+                                                    <div class="form-group">
+                                                        <label>Print Option:</label>
+                                                        <div class="">
+
+                                                            @*@Html.RadioButtonFor(model => model.OptionPrint, "Print")*@
+                                                            @Html.CheckBox("OptionPrint", false, new { @class = "chkBx" })
+                                                            <label>Print</label>
+                                                            @*@Html.RadioButtonFor(model => model.OptionPreview, "Preview")*@
+                                                            @Html.CheckBox("OptionPreview", false, new { @class = "chkBx" })
+                                                            <label>Preview</label>
+                                                            <i class="fas fa-map-marker-alt"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2" style=" border: 0.3px solid #00000040;">
+                                                    <div class="form-group row">
+                                                        <label>Print Stationary:</label>
+                                                        <div class="col-lg-6">
+                                                            <label>Copies:</label>
+                                                            @*<input class="w-50" type="number" name="copies" value="" />*@
+                                                            @Html.EditorFor(model => model.PrintCopies, new { htmlAttributes = new { @class = "form-control w-50 p-1", @type = "number" } })
+
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label>
+                                                                @*<input type="checkbox" name="name" value="" />*@
+                                                                @*@Html.RadioButtonFor(model => model.PrintPreview, "Print Preview")*@
+                                                                @Html.CheckBox("PrintPreview", false)Preview
+                                                            </label>
+
+                                                            <img src="~/images/favicon.png" alt="print-img" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
+                                                    <div class="form-group">
+                                                        @*<input type="checkbox" name="name" value="" />*@
+                                                        @Html.CheckBox("HeaderOnReport", false)
+
+                                                        <label>Use Company Header on Reports</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                                <div class="tab-pane fade row ms-2" id="taxesdata">
+                                    <div class="row">
+                                        <div class="col-lg-7"></div>
+                                        <div class="col-lg-5 " style="float:right">
+                                            <label class="font-blue p-2" style="background-color: #c6c2c2;">State Reporting Tax</label>
+                                            <label>
+                                                @Html.CheckBox("PrintPreview", true)Update Inventory Cost with Taxes
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="row gutters">
+                                        <div class="col-lg-5 col-md-5 col-sm-12 col-sm-12 table-responsive" style="border:0.7px solid black">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Customer State</th>
+                                                        <th>Default Invoice Comment</th>
+                                                        <th>Add</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="height:300px;">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Category</th>
+                                                        <th>Tax%</th>
+                                                        <th>Tax$</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="height:100px;">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                        <div class="col-lg-7 col-md-12 col-sm-12 col-sm-12 ps-0 pe-0 table-responsive" style="border:0.7px solid black">
+                                            <table class="table table-condensed table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tax Description</th>
+                                                        <th>Rate%</th>
+                                                        <th>Per Qty</th>
+                                                        <th>Per UCount</th>
+                                                        <th>Per OZ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="">
+                                                    @{ var i = 0;
+                                                       
+                                                    }
+                                                    
+                                                    @foreach (var item in Model.product)
+                                                    {
+                                                        i = i + 1;
+                                                        <tr>
+                                                            @*<td class="p-0">@i</td>*@
+                                                            <td class="p-0">@Html.EditorFor(model => item.Name, new { htmlAttributes = new { @class = "form-control border-0", @id = "productName" + @i } })</td>
+                                                            <td class="p-0">@Html.EditorFor(model => item.stTax.Tax, new { htmlAttributes = new { @class = "form-control border-0", @id = "productTax" + @i } })</td>
+                                                            <td class="p-0">@Html.EditorFor(model => item.stTax.PerQty, new { htmlAttributes = new { @class = "form-control border-0", @id = "perqty" + @i } })</td>
+                                                            <td class="p-0">@Html.EditorFor(model => item.stTax.PerUcount, new { htmlAttributes = new { @class = "form-control border-0", @id = "peruCount" + @i } })</td>
+                                                            <td class="p-0">@Html.EditorFor(model => item.stTax.PerOz, new { htmlAttributes = new { @class = "form-control border-0", @id = "peroz" + @i } })</td>
+
+                                                            @if (@item.stTax.TaxId > 0)
+                                                            {
+                                                                <td>
+                                                                    <script>
+
+                                                                    </script>
+                                                                    <button onclick="InsertTaxDetails(@i,@item.Id,@item.stTax.CompanyId,@item.stTax.TaxId)">Save</button>
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    <button onclick="InsertTaxDetailFirstTime(@i,@item.Id,@Model.EmployerId)">Save</button>
+                                                                </td>
+                                                            }
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div class="row">
+                                                <div class="col-lg-7"></div>
+                                                <div class="col-lg-4 mt-3" style="display:flex;">
+                                                    <input class="input-70" type="text" name="name" value="" />
+                                                    <label>%</label>
+                                                    <input class="input-70" type="text" name="name" value="" />
+                                                    <input class="input-70" type="text" name="name" value="" />
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3 mb-3 me-3" style="float:right">
+                                                <div>
+                                                    <label>
+                                                        @Html.CheckBox("PrintPreview", false)Add To Cost
+                                                    </label>
+                                                    <label>
+                                                        @Html.CheckBox("PrintPreview", false)Add To Sale
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $('.chkBx').change(function () {
+        $(".chkBx").not(this).prop('checked', false);
+    });
+
+    var TaxDetails = {};
+    function InsertTaxDetails(seq,productID,companyID,taxID) {
+        debugger;
+        var ItemTax = {};
+        var productname = $("#productName"+seq).val();
+        var taxrate = $("#productTax"+seq).val();
+        var perQty = $("#perqty"+seq).val();
+        var perUcount = $("#peruCount"+seq).val();
+        var perOZ = $("#peroz" + seq).val();
+        var itemID = productID;
+        var companyID = companyID;
+        var taxID = taxID;
+
+        TaxDetails.ProductName = productname;
+        TaxDetails.Tax = taxrate;
+        TaxDetails.PerQty = perQty;
+        TaxDetails.PerUcount = perUcount;
+        TaxDetails.PerOz = perOZ;
+        TaxDetails.ProductId = productID.toString();
+        TaxDetails.CompanyId = companyID.toString();
+        TaxDetails.TaxId = taxID.toString();
+
+       //  TaxDetails.push(ItemTax);
+
+        console.log(TaxDetails);
+        var stringObj = JSON.stringify(TaxDetails);
+        debugger;
+        console.log(stringObj);
+        $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("StTaxUpdate", "AbcDiscounts")',
+                //  url: "/Inventory/Purchase/AddPurchaseOrderList",
+                data: stringObj,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+    };
+
+
+     var TaxDetails = {};
+    function InsertTaxDetailFirstTime(seq, productID, companyID) {
+        debugger;
+        var ItemTax = {};
+        var productname = $("#productName"+seq).val();
+        var taxrate = $("#productTax"+seq).val();
+        var perQty = $("#perqty"+seq).val();
+        var perUcount = $("#peruCount"+seq).val();
+        var perOZ = $("#peroz" + seq).val();
+        var itemID = productID;
+        var companyID = companyID;
+        
+
+        TaxDetails.ProductName = productname;
+        TaxDetails.Tax = taxrate;
+        TaxDetails.PerQty = perQty;
+        TaxDetails.PerUcount = perUcount;
+        TaxDetails.PerOz = perOZ;
+        TaxDetails.ProductId = productID.toString();
+        TaxDetails.CompanyId = companyID.toString();
+        
+
+       //  TaxDetails.push(ItemTax);
+
+        console.log(TaxDetails);
+        var stringObj = JSON.stringify(TaxDetails);
+        debugger;
+        console.log(stringObj);
+        $.ajax({
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+                url: '@Url.Action("StTax", "AbcDiscounts")',
+                //  url: "/Inventory/Purchase/AddPurchaseOrderList",
+                data: stringObj,
+                success: function (data) {
+                    console.log(data);
+                }
+            });
+    };
+</script>
+
+@*$(document).ready(function () {
+    $.ajax({
+                url: '@Url.Action("StTaxes", "AbcDiscounts")',
+                async: false,
+                contentType: "application/json;",
+                dataType: "json",
+            success: function (data) {
+                    $.each(data, function (index, item) {
+                        console.log(item);
+                        $("#productName").val(item.productName);
+                        $("#productTax").val(item.tax);
+                        $("#perqty").val(item.perQty);
+                        $("#peruCount").val(item.perUcount);
+                        $("#peroz").val(item.perOz);
+                        //var html = '';
+                        //html += '<tr id="rowlistid-' + index + '"  class="itemnewtr" data-id="' + item.id + '">';
+                        //html += '<td id="itemnameid-' + index + '">' + item.name + '</td>';
+                        //html += '<td id="rateid-' + index + '" contenteditable="true">' + ""+ '</td>';
+                        //html += '<td id="perQtyid-' + index + '" contenteditable="true">' + ""+ '</td>';
+                        //html += '<td id="perUCountid-' + index + '" contenteditable="true">' + ""+ '</td>';
+                        //html += '<td id="perOZid-' + index + '" contenteditable="true">' +""+ '</td>';
+                        //html += '<td id="saveBtnid-' + index + '" ><button  onclick="InsertTaxDetails(' + index + ')">Save</button></td>';
+                        //html += '</tr >';
+
+                        //$("#taxtable").append(html);
+                    });
+                },
+                error: function (error) {
+                    //alert(error);
+                }
+            });
+        });*@

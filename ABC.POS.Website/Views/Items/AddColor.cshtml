@@ -1,0 +1,59 @@
+﻿@model ABC.EFCore.Repository.Edmx.Color
+@{
+    ViewData["Title"] = "AddColor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+ <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/AddItem" aria-controls="overview" aria-selected="true">AddItem</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/Index" aria-controls="overview" aria-selected="true">Existing Items</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/AddGroup" role="tab" aria-selected="false">Group</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Items/AddColor" role="tab" aria-selected="false">Color</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Items/AddModel" role="tab" aria-selected="false">Model</a>
+        </li>
+
+    </ul>
+</div>
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Color</h4>
+
+            @using (Html.BeginForm("AddColor", "Items", FormMethod.Post, new { @class = "forms-sample" }))
+            {
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Name</label>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+                </div>
+                <button type="submit" class="btn btn-lg btn-dark me-3"><p style="color:white">Submit</p></button>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+

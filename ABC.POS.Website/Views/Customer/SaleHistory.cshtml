@@ -1,0 +1,248 @@
+﻿@model List<ABC.EFCore.Repository.Edmx.SaleHistory>
+
+@{
+    ViewData["Title"] = "Ready To Pulled";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<style>
+    label.error{
+        color:red;
+    }
+
+    
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Sale History <small>(For remaining Products)</small> </h4>
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="pending-1" role="tabpanel" aria-labelledby="pending-tab">
+                <table id="order-listing" class="col-12">
+                    <thead>
+                        <tr role="row">
+                            <td>Sr#</td>
+                            <th>
+                                Customer Name
+                            </th>
+                            <th>
+                                Product Name
+                            </th>
+                            <th>
+                                Product Number
+                            </th>
+                            <th>
+                                Ticket Id
+                            </th>
+                            <th>
+                                Shipment Limit
+                            </th>
+                            <th>
+                                Order Quantity
+                            </th>
+                            <th>
+                                Ringer Quantity
+                            </th>
+                            <th>
+                                BackOrder Qty
+                            </th>
+                            <th>
+                                View Datails
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var i = 0; }
+
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+
+                                i = i + 1;
+                                <tr class="odd">
+
+                                    <td class="sorting_1">@i</td>
+
+                                    <td>@item.CustomerName</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.ItemNumber</td>
+                                    <td>@item.TicketId</td>
+                                    <td>@item.ShipmentLimit</td>
+                                    @*<td>@Html.FormatValue("dd/MM/yyyy", item.PulledDate?.ToString("dd/MM/yyyy")) @item.PulledTime</td>*@
+                                    <td>
+                                        @item.OrderQuantity
+                                    </td>
+                                    <td>
+                                        @item.RingerQuantity
+                                    </td>
+                                    <td>
+                                        @item.QuantityDifference
+                                    </td>
+                                <td>
+                                    <a class="btn btn-dark py-2 btnDetails" data-ticketId="@item.TicketId" style="color:white; font-size:15px; height:30px;" @*href="@Url.Action("DetailEmployee", "Users", new { id = item.OrderId })"*@><i class="fa fa-eye"></i></a>
+
+                                </td>
+
+                                </tr>
+
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+         
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="approve-register" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:max-content" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">History Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="mb16 table table-striped table-sm js_cart_lines" id="cart_products">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                SR
+                            </th>
+                            <th class="text-center">
+                                Customer Name
+                            </th>
+                            <th class="text-center">
+                                Product Name
+                            </th>
+                            <th class="text-center">
+                                Product Number
+                            </th>
+                            <th class="text-center">
+                                Ticket Id
+                            </th>
+                            <th class="text-center">
+                                Shipment Limit
+                            </th>
+                            <th class="text-center">
+                                Order Quantity
+                            </th>
+                            <th class="text-center">
+                                Ringer Quantity
+                            </th>
+                            <th class="text-center">
+                                BackOrder Qty
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="cart_body">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-success" id="registeremployee" onclick="approveregister()">Register</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var table = null;
+    $(document).ready(function () {
+        table = $("#order-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+        var approvetable = $("#approve-listing").DataTable({
+            "columnDefs": [{
+                "targets": 8,
+                "orderable": false
+            }]
+        });
+    });
+    $("#approveform").validate({
+        rules: {
+            deliverDate: {
+                "required": true,
+            },
+        },
+        messages: {
+            deliverDate: {
+                required: "Deliver Date is Required",
+            },
+        },
+
+
+    });
+      $(".btnDetails").click(function () {
+
+        var thiss = this;
+        /*var orderId = parseInt($(this).attr("data-orderId"));*/
+        var ticket = $(this).attr("data-ticketId");
+
+        $.ajax({
+            type: "GET",
+           url: '@Url.Action("GetSaleHistorybyID", "Customer")',
+            data: {
+                ticketId : ticket,
+              },
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (result) {
+
+                    $('#cart_body tr').remove();
+                if (result.length > 0 && result != "null" && result != "false" && result != "") {
+                    var i = 1;
+                    $.each(result, function (index, value) {
+                       
+                        $('#cart_body').append("<tr><td>"+ i +"</td><td>"+value.customerName+"</td><td>" +value.productName+"</td><td>" +value.itemNumber+"</td><td>" +value.ticketId+"</td><td>" +value.shipmentLimit+"</td><td>" +value.orderQuantity+"</td><td>" +value.ringerQuantity+"</td><td>"+value.quantityDifference+"</td></tr>");
+                        i++;
+                    });
+                }else{
+                     $('#cart_body').append("<tr><td>No Detail Found</td><td></td><td></td><td></td><td></td></tr>");
+                }
+
+            },
+            error: function () {
+                alert('Failed to receive the Data');
+                console.log('Failed ');
+            }
+        });
+        $("#approve-register").modal('show');
+    });
+
+
+    function closemodal() {
+        $("#approve-register").modal('hide');
+        $("#notDeliver").modal('hide');
+        $("#input-delivery").modal('hide');
+    }
+</script>

@@ -1,0 +1,228 @@
+﻿@model ABC.EFCore.Repository.Edmx.EmployeeContract
+@{
+    ViewData["Title"] = "Employee Contract";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet" />*@
+@*<link href="~/vendors/jquery-bar-rating/fontawesome-stars-o.css" rel="stylesheet" />*@
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+
+    @if (TempData["response"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                var success = '@((TempData["response"] != null).ToString())';
+                if (success == 'false' || success == false) {
+                } else {
+                    toastr.error('@TempData["response"].ToString()')
+                }
+            });
+        </script>
+    }
+
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Employee Contract</h4>
+
+            @Html.HiddenFor(m => m.ContractId)
+            <div class="row">
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">Contract Details</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="">Employees</label>
+                                    @Html.DropDownList("EmployeeId", (IEnumerable<SelectListItem>)ViewData["Employee"], "--Select Employee--", new { @class = "form-control", id = "Employeeid", @readonly = "readonly" })
+                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger db" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Employee Number</label>
+                                    @Html.EditorFor(model => model.EmployeeNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "EmployeeNumber", id = "EmployeeCode", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeNumber, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label class="dim col-sm-4">Contract Type</label>
+                                    @Html.DropDownList("ContractName", new List<SelectListItem>
+                                    {
+                                       new SelectListItem{ Text="Permanent", Value = "Permanent" },
+                                       new SelectListItem{ Text="Contract", Value = "Contract" },
+
+                                    }, "--Choose Contract Type--", new { @class = "form-control", id = "dropdowncontracttype",  @disabled = "disabled" })
+                                    @Html.ValidationMessageFor(model => model.ContractName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @*<div class="col-md-4" id="salary">
+            <div class="form-group">
+                <label class="">Salary</label>
+                @Html.EditorFor(model => model.Salary, new { htmlAttributes = new { @class = "form-control", placeholder = "Salary", } })
+                @Html.ValidationMessageFor(model => model.Salary, "", new { @class = "text-danger db" })
+            </div>
+        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Daily Wages Charges Amount</label>
+                                    @Html.EditorFor(model => model.DailyWagesChargesAmount, new { htmlAttributes = new { @class = "form-control", placeholder = "Daily Wages Charges Amount", type = "number", autocomplete = "false",@readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.DailyWagesChargesAmount, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Joining Date</label>
+                                    @Html.EditorFor(model => model.JoiningDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Salary", @readonly = "readonly"} })
+                                    @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Contract Date</label>
+                                    @Html.EditorFor(model => model.ContractDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Salary", @readonly = "readonly"} })
+                                    @Html.ValidationMessageFor(model => model.ContractDate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-check-label col-md-3" for="IsProbation">
+                                        IsProbation
+                                    </label>
+                                    @Html.CheckBox("Permanent", false, new { @id = "Permanent", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-check-label col-md-3" for="DailyWages">
+                                        DailyWages
+                                    </label>
+                                    @{ var dailyStatus = false;
+                                        if (Model.DailyWages == true)
+                                        {
+                                            dailyStatus = true;
+                                        }
+                                    }
+                                    @Html.CheckBox("DailyWages", true, new { @id = "OnContract", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-check-label col-md-3" for="IsProbation">
+                                        IsProbation
+                                    </label>
+                                    @Html.CheckBox("IsProbation", false, new { @class = "form-check-input", id = "probationid", @disabled = "disabled" })
+                                    @Html.ValidationMessageFor(model => model.IsProbation, "", new { @class = "text-danger db" })
+
+                                </div>
+                            </div>
+                            @*<div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-check-label col-md-3" for="DailyWages">
+                                    DailyWages
+                                </label>
+                                @Html.CheckBox("DailyWages", new { @class = "form-check-input", id = "dailywagesid" })
+                                @Html.ValidationMessageFor(model => model.DailyWages, "", new { @class = "text-danger db" })
+
+                            </div>
+
+                        </div>*@
+                        </div>
+                        <div class="row" id="pdata">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Probation Start Date</label>
+                                    @Html.EditorFor(model => model.ProbationSdate, new { htmlAttributes = new { @class = "form-control", placeholder = "Probation Date Start", id = "psdate",@readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ProbationSdate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Probation End Date</label>
+                                    @Html.EditorFor(model => model.ProbationEdate, new { htmlAttributes = new { @class = "form-control", placeholder = "Probation Date End", id = "pedate",@readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ProbationEdate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Probation Salary</label>
+                                    @Html.EditorFor(model => model.ProbationSalary, new { htmlAttributes = new { @class = "form-control", placeholder = "Probation Salary", type = "number", autocomplete = "false",@readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.ProbationSalary, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="dwdata">
+                           
+                        </div>
+                      
+                    </div>
+                </div>
+              
+                <div class="col-lg-4 col-sm-4"></div>
+                <div class="col-lg-4 col-sm-4"></div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#pdata").hide();
+        //if ($(this).prop('checked') == false) {
+        //    $("#dwdata").hide();
+        //}
+        $("#Employeeid").prop("disabled", true);
+    })
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script>
+   
+
+    //$("#dailywagesid").on('change', function () {
+    //    if ($(this).prop('checked')) {
+    //        $("#dwdata").show();
+    //    }
+    //    else {
+    //        $("#dwdata").hide();
+    //    }
+    //});
+
+ 
+
+   
+
+</script>
+

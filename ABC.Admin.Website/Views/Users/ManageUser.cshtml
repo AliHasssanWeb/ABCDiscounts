@@ -1,0 +1,177 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.AspNetUser>;
+@{
+    ViewBag.Title = "ManageUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+      
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+             toastr.error('@TempData["response"].ToString()')
+        } else {
+            toastr.success('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/AddUser" aria-controls="overview" aria-selected="true">Admin</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Users/ManageUser" aria-controls="overview" aria-selected="true">Existing Admins</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/BlockUser" role="tab" aria-selected="false">BlockUser</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Users/ChangePassword" role="tab" aria-selected="false">ChangePassword</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/AddRole" role="tab" aria-selected="false">Role</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Role/ManageRoles" role="tab" aria-selected="false">Existing Roles</a>
+        </li>
+         <li class="nav-item">
+            <a class="nav-link " href="~/Activities/ActivityLogs" role="tab" aria-selected="false">AdminActivity Logs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Activities/TerminalLogs" role="tab" aria-selected="false">TerminalLogs</a>
+        </li>
+
+    </ul>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Manage Users</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table dataTable" role="grid" aria-describedby="order-listing_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Order #: activate to sort column descending" style="width: 51.8281px;">Sr No.</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Purchased On: activate to sort column ascending" style="width: 97.8438px;">First Name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Customer: activate to sort column ascending" style="width: 67.6875px;">Last Name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Ship to: activate to sort column ascending" style="width: 49.4062px;">Email</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Base Price: activate to sort column ascending" style="width: 74.0625px;">Phone number</th>
+                                        <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Base Price: activate to sort column ascending" style="width: 74.0625px;">Block</th>
+                                        @*<th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Purchased Price: activate to sort column ascending" style="width: 112.953px;">Role</th>
+                            <th class="sorting" tabindex="0" aria-controls="order-listing" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 61.9375px;">Action</th>*@
+
+                                </thead>
+
+                                @{var i = 0;
+                                }
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            i = i + 1;
+                                            <tr class="odd">
+                                                <td class="sorting_1">@i</td>
+                                                <td>@item.Firstname</td>
+                                                <td>@item.Lastname</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.PhoneNumber</td>
+                                                @*<td>
+                                                    @if (item.IsCancelled == true)
+                                                    {
+                                                    <label class="switch">
+                                                        <input type="checkbox" id="BlockUser" value="@item.Id" checked onclick="BlockUser('@item.Id')" aria-pressed="false" autocomplete="off">
+                                                        <span class="slider round"></span>
+                                                    </label> 
+                                                    }
+                                                    else
+                                                    {
+                                                    <label class="switch">
+                                                        <input type="checkbox" id="BlockUser" value="@item.Id"  onclick="BlockUser('@item.Id')" aria-pressed="false" autocomplete="off">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    }
+                                                </td>*@
+                                                <td>
+                                                    @if (item.IsCancelled == true)
+                                                    {
+                                                    <div class="form-check form-switch" style="width:50px">
+                                                      <input class="form-check-input" type="checkbox" role="switch" value="@item.Id"  onclick="BlockUser('@item.Id')" aria-pressed="false" autocomplete="off" checked style="width:3rem; height:22px; float:right" />
+                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                    <div class="form-check form-switch" style="width:50px">
+                                                      <input class="form-check-input" type="checkbox" role="switch" value="@item.Id"  onclick="BlockUser('@item.Id')" aria-pressed="false" autocomplete="off"  style="width:3rem; height:22px; float:right" />
+                                                    </div>
+                                                    }
+                                                </td>
+                                                @*<td>@item.RoleId</td>*@
+                                                @*<td>
+                                        <a><i class="mdi mdi-briefcase-edit-outline"></i></a>&nbsp;&nbsp;&nbsp; <a> <i class="mdi mdi-trash-can"></i></a>
+                                    </td>*@
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                        @*</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#order-listing tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+    function BlockUser(id) {
+        $.ajax({
+            url: '@Url.Action("BlockAndUnblock", "Security")'+ '/'+ id,
+            success: function (data) {
+                console.log(data);
+                if (data == "true") {
+                    setTimeout(function(){ 
+                        toastr.success("Action Perfomed Successfully");
+                        window.location.reload();
+                    }, 3000);
+
+                }
+            }
+        });
+    }
+</script>

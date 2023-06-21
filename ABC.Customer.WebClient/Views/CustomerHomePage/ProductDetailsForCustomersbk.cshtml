@@ -1,0 +1,332 @@
+﻿@model ABC.EFCore.Repository.Edmx.Product
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+
+}
+<script src="~/js/jquery-2.2.3.min.js"></script>
+<style>
+    .qty .count {
+        color: #000;
+        display: inline-block;
+        vertical-align: top;
+        font-size: 25px;
+        font-weight: 700px;
+        line-height: 30px;
+        padding: 0 2px;
+        min-width: 35px;
+        text-align: center;
+    }
+
+    .qty .plus {
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: top;
+        color: white;
+        width: 30px;
+        height: 30px;
+        font: 30px/1 Arial,sans-serif;
+        text-align: center;
+        border-radius: 50%;
+    }
+
+    .qty .minus {
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: top;
+        color: white;
+        width: 30px;
+        height: 30px;
+        font: 30px/1 Arial,sans-serif;
+        text-align: center;
+        border-radius: 50%;
+        background-clip: padding-box;
+    }
+
+    div {
+        text-align: left;
+    }
+
+    .minus:hover {
+        background-color: #717fe0 !important;
+    }
+
+    .plus:hover {
+        background-color: #717fe0 !important;
+    }
+    /*Prevent text selection*/
+    span {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    input {
+        border: 0;
+        width: 2%;
+    }
+
+        nput::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input:disabled {
+            background-color: white;
+        }
+</style>
+<div class="services-breadcrumb">
+    <div class="agile_inner_breadcrumb">
+        <div class="container">
+            <ul class="w3_short">
+                <li>
+                    <a href="@Url.Action("Index","Home",new { @area="Home"})">Home  <i>|</i></a><span> Single Page</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="innerf-pages section py-5">
+    <div class="container">
+        <div class="row my-sm-5">
+            <div class="col-lg-4 single-right-left">
+                <div class="grid images_3_of_2">
+                    <div class="flexslider1">
+                        <ul class="slides">
+                            <li data-thumb="~/images/box-cigarettes-isolated-260nw-552528181.PNG">
+                                <div class="thumb-image">
+                                    <img src="~/images/box-cigarettes-isolated-260nw-552528181.PNG" data-imagezoom="true" alt=" " class="img-fluid">
+                                </div>
+                            </li>
+
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mt-lg-0 mt-5 single-right-left simpleCart_shelfItem">
+                <h3>
+                    <label id="Name">
+                        @Model.Name
+
+                    </label>
+
+                    <label id="ProductCode" hidden="hidden">
+                        @Model.ProductCode
+
+                    </label>
+                </h3>
+                <div class="caption">
+
+                    <ul class="rating-single">
+                        <li>
+                            <a href="#">
+                                <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"> </div>
+                    <div class="d-sm-flex justify-content-between">
+                        <div class="occasional">
+                            <span style="display: inline-block; font-size: 25px">$</span><p class="sp_title mb-3" style="font-size: 28px;display:inline-block" id="Price">@Model.UnitCharge</p>
+
+                        </div>
+                        <div class="color-quality">
+                            <h5 class="sp_title mb-3"></h5>
+                            <ul class="single_specific" style="margin-right:60px;">
+
+                                <li style="margin-top:-50px">
+
+                                    <img src="~/images/download.jpeg" alt=" " class="img-fluid" height="220" width="220">
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <br />
+                    <input type="text" class="form-control" placeholder="Enter Required Quantity" style="width:200px; background:white;" id="Quantity" onchange="multiply()">
+                    <hr />
+
+                    <br />
+                    <p><b>Total:</b></p><label id="result"></label>
+                    <div class="desc_single">
+                        <h5><b>Description</b></h5>
+                        <p>
+                            @Model.Description
+                        </p>
+                    </div>
+                    <div class="d-sm-flex justify-content-between">
+                        <div class="occasional">
+                            <h5 class="sp_title mb-3">Highlights</h5>
+                            <ul class="single_specific">
+                                <li>
+                                    Category:
+                                    <span>@Model.CategoryName - @Model.SubCatName</span>
+                                </li>
+                                <li>
+                                    Manufacturer:
+                                    <span>@Model.BrandName</span>
+                                </li>
+                                <li>
+                                    Group:
+                                    <span>@Model.GroupName</span>
+                                <li>
+                                    Color:
+                                    <span>@Model.ColorName</span>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="color-quality">
+                            <h5 class="sp_title mb-3"></h5>
+                            <ul class="single_specific" style="margin-right:60px;">
+                                <li>
+                                    Model:
+                                    <span>@Model.ModelName </span>
+                                </li>
+                                <li>
+                                    Item Number:
+                                    <span>@Model.ItemNumber </span>
+                                </li>
+                                <li>
+                                    Article Name:
+                                    <span>@Model.Family </span>
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+
+                        <div class="" style="margin-left: 13px;">
+
+                            @*<div class="qty mt-5">
+                                    <span class="minus bg-dark">-</span>
+                                    <input type="number" class="count" name="qty" value="1">
+                                    <span class="plus bg-dark">+</span>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="description">
+
+                        <form action="#" method="post">
+                            @*<a href="@Url.Action("AddtoCart", "Cart", new { @area = "Cart"} )" class="btn btn-success"><i class="fas fa-shopping-cart" id="AddToCart"></i>Add To Cart</a>*@
+                            <a href="#" class="btn btn-success" onclick="SendData()"><i class="fas fa-shopping-cart" id="AddToCart" ></i>Add To Cart</a>
+                            <a href="@Url.Action("Index", "CustomerHomePage")" class="btn btn-primary "><i class="fa fa-eye"></i>Continue Shopping</a>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.count').prop('disabled', true);
+            $(document).on('click', '.plus', function () {
+                $('.count').val(parseInt($('.count').val()) + 1);
+            });
+            $(document).on('click', '.minus', function () {
+                $('.count').val(parseInt($('.count').val()) - 1);
+                if ($('.count').val() == 0) {
+                    $('.count').val(1);
+                }
+            });
+        });
+    </script>
+    <script>
+        function multiply() {
+            var num1 = document.getElementById("Price").innerHTML;
+            var num2 = document.getElementById("Quantity").value;
+            var result = num1 * num2;
+            document.getElementById("result").innerHTML = result;
+
+        }
+    </script>
+
+    <script>
+
+        @*$("#AddToCart").click(function () {
+        $.ajax({
+            url: '@Url.Action("AddtoCart", "Cart", new { @area = "Cart"})',
+            data: {
+                Id: Id
+            },
+            async: false,
+            contentType: "application/json;",
+
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                Name: $("#Name").val();
+                ProductCode: $("#ProductCode").val();
+                UnitCharge: $("#Price").val();
+                Quantity: $("#Quantity").val()
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+            });*@
+
+
+        function SendData() {
+            debugger
+            var formData = {};
+            formData.Id = '@Model.Id';
+            formData.Name = '@Model.Name';
+            formData.ProductCode = '@Model.ProductCode';
+            formData.ImagePath = '@Model.ItemImageByPath';
+            formData.UnitCharge = '@Model.UnitCharge';
+            formData.Quantity = $("#Quantity").val();
+                $.ajax(
+                    {
+                        type: "POST", 
+                        url: '@Url.Action("AddToCart", "Cart", new{@area= "Cart" })',
+                        data: formData,              
+                    });
+
+            };
+            //formData.Name = $("#Name").val();
+            //formData.ProductCode = $("#ProductCode").val();
+            //formData.UnitCharge = $("#UnitCharge").val();
+            //formData.Quantity = $("#Quantity").val();
+
+            //formData.append("id", ID);
+            //formData.append("Name", $("#Name").val());
+            //formData.append("ProductCode", $("#ProductCode").val());
+            //formData.append("UnitCharge", $("#UnitCharge").val());
+            //formData.append("Quantity", $("#Quantity").val());
+
+    </script>
+
+
+
+

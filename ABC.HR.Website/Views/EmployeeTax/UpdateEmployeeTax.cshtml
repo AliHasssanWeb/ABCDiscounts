@@ -1,0 +1,178 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpTax*@
+@model ABC.HR.Domain.Entities.ValidateEmpTax
+
+
+@{
+    ViewData["Title"] = "AddLoan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/chosen_v1.8.7/chosen.css" rel="stylesheet" />
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container .select2-selection--single {
+        height: 32px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 10px;
+    }
+
+    .Serchloan {
+        width: 100% !important;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Update Tax For Employee</h1>
+
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                <form asp-action="UpdateEmployeeTax">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId"
+                                    class="form-control Serchloan"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            @*<input asp-for="EmployeeId" class="form-control" />*@
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="EmpTaxTypeId" class="control-label"></label>
+                            <select asp-for="EmpTaxTypeId" class="form-control Serchloan">
+                                @*asp-items="@(new SelectList(ViewBag.EmpTaxType,"Value", "Text"))">*@
+                                @*<option disabled selected>--- SELECT TAX TYPE---</option>*@
+
+                            </select>
+                            @*<input asp-for="AllowanceTypeId" class="form-control" />*@
+                            <span asp-validation-for="EmpTaxTypeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Date" class="control-label"></label>
+                            <input asp-for="Date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="form-group col-md-8">
+
+                            <label asp-for="Reason" class="control-label"></label>
+                            <textarea asp-for="Reason" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            <input asp-for="IsApprove" type="checkbox" checked />
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Update" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageEmployeeTax">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+
+<script src="~/lib/chosen_v1.8.7/docsupport/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["responseofAddTax"] != null)
+{
+    <script>
+        debugger;
+        toastr.error("@TempData["responseofAddTax"].ToString()");</script>
+
+}
+<script>
+    $(document).ready(function () {
+        relatedDropdown();
+    });
+    var selectedtaxValue = "";
+    $(".Serchloan").select2();
+    $("#EmployeeId").change(function () {
+        relatedDropdown();
+    });
+    function relatedDropdown() {
+         var empidsal = $("#EmployeeId").val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetEmplyeeDetails", "EmployeeTax")",
+            data: { "empid": empidsal },
+            dataType: "json",
+            success: function (data1) {
+                $('#EmpTaxTypeId').empty();
+                if (data1 != null) {
+
+                    selectedtaxValue = $('#EmpTaxTypeId').val();
+                    $('#EmpTaxTypeId').empty();
+                    $('#EmpTaxTypeId').append('<option disabled selected>--- SELECT TAX TYPE---</option>');
+                    $.each(data1, function (index, value) {
+                        $('#EmpTaxTypeId').append($('<option>', {
+                            value: value.empTaxTypeId,
+                            text: value.empTaxTypeName + ' (' + value.salaryRange + ')'
+                        }));
+                    });
+                    $('#EmpTaxTypeId').val('@Model.EmpTaxTypeId');
+                }
+            }, error: function (err) {
+
+            }
+
+        });
+    }
+    $("#EmpTaxTypeId").change(function () {
+
+        var taxidval = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetTaxValue", "EmployeeTax")",
+            data: { "taxidval": taxidval },
+            dataType: "json",
+            success: function (data1) {
+                if (data1 != null) {
+                    $("#Amount").val(data1.amountLimit);
+                }
+            }, error: function (err) {
+
+            }
+
+        });
+    });
+
+</script>

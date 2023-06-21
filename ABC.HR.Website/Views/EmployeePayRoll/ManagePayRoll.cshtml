@@ -1,0 +1,288 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmpPayRoll>
+
+@{
+    ViewData["Title"] = "ManageEmpPayRoll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<div>
+    <a asp-action="AddPayRoll"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Employee PayRoll</i></Span></a>
+    <a asp-action="PaySlipByDate"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-card-text-outline">Generate PDF </i></Span></a>    <a asp-action="PaySlipByDate"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-card-text-outline">Generate PDF </i></Span></a>
+    <a asp-action="GeneratePayRoll"><Span class="btn btn-info btn-icon background bottom15"><i class="mdi mdi-card-text-outline">Generate Auto PayRoll </i></Span></a>
+
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Manage Employee PayRoll</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <div id="order-listing_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="payrolllsss" class="table dataTable no-footer" role="grid" aria-describedby="order-listing_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th>
+                                                Sr.
+                                            </th>
+                                            <th>
+                                                Employee-Detail
+                                            </th>
+                                            <th>
+                                                From Date
+                                            </th>
+                                            <th>
+                                                To Date
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.DisperseDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.BasicSalary)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Allowances)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Deductions)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Loans)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Taxes)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.TotalSalary)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.IsApprove)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{var i = 0;}
+                                        @if (Model != null)
+                                            @foreach (var item in Model)
+                                            {
+                                                i = i + 1;
+                                                <tr>
+                                                    <td>
+                                                        @i
+                                                    </td>
+                                                    @foreach (var item1 in ViewBag.EmployeeName)
+                                                    {
+                                                        if (item1.EmployeeId == item.EmployeeId)
+                                                        {
+                                                            <td>@item1.EmployeeCode - @item1.FullName -@item.EmpContractName </td>
+                                                        }
+                                                    }
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FromDate)
+                                                    </td>
+                                                    @*@{if (item.Month == "1")
+                                                            {
+                                                                <td>January</td>
+                                                            }
+                                                            else if (item.Month == "2")
+                                                            {
+                                                                <td>February</td>
+                                                            }
+                                                            else if (item.Month == "3")
+                                                            {
+                                                                <td>March</td>
+                                                            }
+                                                            else if (item.Month == "4")
+                                                            {
+                                                                <td>April</td>
+                                                            }
+                                                            else if (item.Month == "5")
+                                                            {
+                                                                <td>May</td>
+                                                            }
+                                                            else if (item.Month == "6")
+                                                            {
+                                                                <td>June</td>
+                                                            }
+                                                            else if (item.Month == "7")
+                                                            {
+                                                                <td>July</td>
+                                                            }
+                                                            else if (item.Month == "8")
+                                                            {
+                                                                <td>August</td>
+                                                            }
+                                                            else if (item.Month == "9")
+                                                            {
+                                                                <td>September</td>
+                                                            }
+                                                            else if (item.Month == "10")
+                                                            {
+                                                                <td>October</td>
+                                                            }
+                                                            else if (item.Month == "11")
+                                                            {
+                                                                <td>November</td>
+                                                            }
+                                                            else if (item.Month == "12")
+                                                            {
+                                                                <td>December</td>
+                                                            }
+                                                        }*@
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ToDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.DisperseDate)
+                                                    </td>
+                                                    <td>
+                                                        @{var inputValuesal = Convert.ToDouble(item.BasicSalary);
+                                                            inputValuesal = Math.Round(inputValuesal, 2); }
+
+                                                        @*@Html.DisplayFor(modelItem => item.BasicSalary)*@
+                                                        @inputValuesal
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Allowances)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Deductions)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Loans)
+                                                    </td>
+                                                    <td>
+
+                                                        @{var inputValuetax = Convert.ToDouble(item.Taxes);
+                                                            inputValuetax = Math.Round(inputValuetax, 2); }
+                                                        @inputValuetax
+                                                    </td>
+                                                    <td>
+                                                        @{var inputValuetotalsal = Convert.ToDouble(item.TotalSalary);
+                                                            inputValuetotalsal = Math.Round(inputValuetotalsal, 2); }
+                                                        @inputValuetotalsal
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsApprove == true)
+                                                        {
+
+
+                                                            <span>Approve</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Not Approve</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        <a title="View Details" href="@Url.Action("EmployeePayRollDetail", "EmployeePayRoll", new { id = item.EmpPayRollId, FromDate = item.FromDate, ToDate = item.ToDate })"><i style="cursor:pointer" class="mdi mdi-eye"></i></a>&nbsp;&nbsp;&nbsp;
+
+
+                                                        @*<a title="Edit"><i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdatePayRoll", "EmployeePayRoll", new { id = item.EmpPayRollId })': null"></i></a>&nbsp;&nbsp;&nbsp;*@
+                                                        @*<a title="View Pdf"><i style="cursor:pointer" class="mdi mdi-eye" onclick="ConfirmUpdate()? location.href='@Url.Action("PayRollDetails", "Employees", new { id = item.EmpPayRollId })': null"></i></a>&nbsp;&nbsp;&nbsp;*@
+                                                        <a title="Delete"> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDeletepayRoll(@item.EmpPayRollId)"></i></a>
+
+                                                    </td>
+                                                </tr>
+                                            }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#payrolllsss').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["responseofAddpayroll"] != null)
+{
+    <script>toastr.success("@TempData["responseofAddpayroll"].ToString()");</script>
+
+}
+
+
+@if (TempData["responseUpdatePayRoll"] != null)
+{
+    <script>toastr.success("@TempData["responseUpdatePayRoll"].ToString()");</script>
+
+}
+
+@if (TempData["MsgDeletePayRoll"] != null)
+{
+    <script>toastr.success("@TempData["MsgDeletePayRoll"].ToString()");</script>
+
+}
+
+@if (TempData["RecordGenerate"] != null)
+{
+    <script>toastr.success("@TempData["RecordGenerate"].ToString()");</script>
+
+}
+ 
+
+<script>
+    function ConfirmDeletepayRoll(id) {
+
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "GET",
+                        url: "DeletePayRoll/" + id,
+
+                        success: function () {
+                            toastr.success("Record Deleted");
+                            window.setTimeout(function () {
+                                window.location.href = 'ManagePayRoll';
+                            }, 500);
+                            //window.location.href = "/HumanResource/Employees/ManageTaxType/";
+
+
+
+
+                        }
+                    });
+                } else {
+                    toastr.info("Your file is safe!");
+                }
+            });
+
+
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+
+
+</script>
+

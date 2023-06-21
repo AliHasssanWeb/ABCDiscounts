@@ -1,0 +1,174 @@
+﻿@model ABC.EFCore.Repository.Edmx.EmployeeLeaveEntitle
+@{
+    ViewBag.Title = "EmployeeLeaveEntitle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<style>
+    .dropleavetype {
+        background: #e9ecef;
+        opacity: 1;
+        border: 0;
+        outline: 1px solid #dee2e6;
+        font-weight: 400;
+        font-size: 0.875rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+</style>
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-primary" style="max-width: 46%;" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link " href="~/Employees/RegisterEmployee" aria-controls="overview" aria-selected="true">RegisterEmployee</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Employees/AddEmployeeLeaveEntitle" role="tab" aria-selected="false">AddEmployeeLeaveEntitle</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Employees/AddEmployeeDocuments" role="tab" aria-selected="false">AddEmployeeDocuments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Employees/AddEmployeeContract" role="tab" aria-selected="false">AddEmployeeContract</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Employees/CreateEmployeeSettlement" role="tab" aria-selected="false">CreateEmployeeSettlement</a>
+        </li>
+    </ul>
+</div>
+
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Employee Leave Entitle</h4>
+
+            @using (Html.BeginForm("AddEmployeeLeaveEntitle", "Employees", FormMethod.Post, new { @class = "forms-sample" }))
+            {
+
+
+
+                <div class="form-group">
+                    <label for="EmployeeID">Employee Name</label>
+                    @Html.DropDownList("EmployeeId", (IEnumerable<SelectListItem>)ViewBag.EmployeeNo, "--Choose Employee Name--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger db" })
+
+                </div>
+                <div class="form-group">
+                    <label for="LeaveTypeID">Leave Types</label>
+                    @Html.DropDownList("LeaveTypeId", (IEnumerable<SelectListItem>)ViewBag.LeaveTypes, "--Choose LeaveTypes--", new { @class = "col-md-11 dropleavetype" })
+                    @Html.ValidationMessageFor(model => model.LeaveTypeId, "", new { @class = "text-danger db" })
+                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#addleavetype"></i>
+
+                </div>
+                <div class="form-group">
+                    <label for="NoofLeaves">Number of Leaves</label>
+                    @Html.EditorFor(model => model.NoofLeaves, new { htmlAttributes = new { @class = "form-control", placeholder = "No.of Leaves", type = "number", autocomplete = "false" } })
+                    @Html.ValidationMessageFor(model => model.NoofLeaves, "", new { @class = "text-danger db" })
+
+                </div>
+                <button type="submit" class="btn btn-dark me-2"><p style=color:white>Submit</p></button>
+
+            }
+        </div>
+    </div>
+</div>
+
+<div id="addleavetype" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg-8">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-auto" id="ModalLabel">Add LeaveType</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="LeaveType">Leave Type</label>
+                        <input class="form-control" type="text" placeholder="Leave Type" id="LeaveType" />
+                        <label class="text-danger db" style="display:none" id="msgleavetype">Enter Leave Type</label>
+                    </div>
+                    <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="leavesubmit"><p style="color:white">Submit</p></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+
+
+<script>
+    $("#LeaveType").on('focusout', function () {
+        var TypeName = $("#LeaveType").val();
+        if (TypeName != null && TypeName != "" && TypeName != "undefined") {
+            $("#msgleavetype").hide();
+        }
+        else {
+            $("#msgleavetype").show();
+        }
+    });
+    $("#leavesubmit").on('click', function () {
+        var TypeName = $("#LeaveType").val();
+
+        var record = {};
+        record = new FormData();
+        if (TypeName != null && TypeName != "" && TypeName != "undefined") {
+            $("#msgleavetype").hide();
+            record.append("TypeName", TypeName);
+            $.ajax({
+                url: '@Url.Action("AddLeaveTypes", "Employees",new{@area= "HumanResource" })',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    if (data =="Add Successfully") {
+                        $("#addleavetype").modal('hide');
+                        window.location = '@Url.Action("AddEmployeeLeaveEntitle", "Employees",new{@area= "HumanResource" })';
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        else
+        {
+            $("#msgleavetype").show();
+        }
+    });
+
+
+    function closemodal() {
+        $("#addleavetype").modal('hide');
+    }
+</script>
+
+
+
+

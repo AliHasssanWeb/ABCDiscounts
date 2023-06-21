@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "InventoryProfessional";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@if (TempData["Msg"] != null)
+{
+    <script>toastr.success("@TempData["Msg"].ToString()");</script>
+
+}
+<style>
+
+    label {
+        background-color: indigo;
+        color: white;
+        padding: 0.5rem;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    #file-chosen {
+        margin-left: 0.3rem;
+        font-family: sans-serif;
+    }
+</style>
+<div class="row" style="justify-content:center;">
+    <div class="col-lg-6" style="border:1px solid grey; background:white;">
+        <p style="margin-top: 30px; margin-top:15px;"><i class="fa fa-file-text-o fa-3x" style="color:green;"></i> <span style="margin-left: 15px;font-weight: bold;font-size: 16px;">SQL</span> <span style="font-weight: bold;font-size:22px; margin-left: 15px;">File</span></p>
+        <p style=" margin-left: 100px;font-weight: bolder;margin-top: 30px; font-size: 16px;">to sync data from existing</p>
+        <p style=" margin-left: 100px;font-weight: bolder; font-size: 16px;">system upload <span style="color:grey;">your file here.</span> </p>
+        <!-- actual upload which is hidden -->
+        <input type="file" id="actual-btn" hidden />
+        <!-- our custom upload button -->
+        <label for="actual-btn" style="background: blue; margin-left: 160px;padding: 12px 20px;font-weight: bold;">Browse</label>
+        <!-- name of file chosen -->
+        <span id="file-chosen"></span>
+        <p style=" margin-left: 50px;font-weight: bolder;margin-top: 160px; font-size: 16px;">You can upload SQL.bak files only</p>
+        <p style=" margin-left: 150px;font-weight: bolder; font-size: 16px; margin-bottom:55px;">ABC Discounts</p>
+    </div>
+</div>
+<script>
+    const actualBtn = document.getElementById('actual-btn');
+
+    const fileChosen = document.getElementById('file-chosen');
+
+    actualBtn.addEventListener('change', function() {
+        //fileChosen.textContent = this.files[0].namel;
+
+
+        //var Image = document.getElementById("actual-btn");
+        //var productimage = Image.files;
+
+        //   FormData record = new FormData();
+        //if (productimage.length != 0) {
+        //    record.append("filetosync", productimage[0]);
+        //}
+          var record = {};
+        record = new FormData();
+        var titleimage = null;
+        if (document.getElementById("actual-btn") !== null) {
+            var totalFiles = document.getElementById("actual-btn").files.length;
+            for (var i = 0; i < totalFiles; i++)
+                titleimage = document.getElementById("actual-btn").files[i];
+        }
+        if (titleimage != null) {
+            var imgval = titleimage.name.toLowerCase(),
+                regex = new RegExp("(.*?)\.(bak)$");
+            if ((regex.test(imgval))) {
+
+                 record.append("filetosync", titleimage);
+                $.ajax({
+                    url: '@Url.Action("SyncData", "Items")',
+                    type: "POST",
+                    data: record,
+                    async: false,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        console.log(data);
+                        if (data == true) {
+                            toastr.success("sync data completed!");
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 2500);
+                        }
+                    },
+                    error: function() {
+                        setTimeout(function() {
+                        toastr.error("unable to sync data !");
+                        }, 2500);
+                    }
+                });
+            }
+            else {
+                toastr.error("Only bak files are allowed !");
+            }
+        }
+    });
+
+
+    $(document).ready(function() {
+
+
+    });
+
+</script>

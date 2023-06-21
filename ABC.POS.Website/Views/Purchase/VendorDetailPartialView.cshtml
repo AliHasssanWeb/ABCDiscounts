@@ -1,0 +1,1363 @@
+﻿@model ABC.EFCore.Repository.Edmx.Vendor
+@using ABC.EFCore.Repository.Edmx;
+
+@{
+    ViewData["Title"] = "VendorDetail";
+   
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/js/jquery-confirm.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<style>
+    .textboxcolor {
+        background-color: #e9ecef;
+        opacity: 1;
+    }
+
+    .fontcolor {
+        color: #A63831;
+        opacity: 1;
+    }
+
+    /*-------------------AUTO COMPLETE CSS -----------*/
+
+    /*the container must be positioned relative:*/
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+            /*when hovering an item:*/
+            .autocomplete-items div:hover {
+                background-color: #e9e9e9;
+            }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+
+    .setsearchbox {
+        position: relative;
+        margin-top: 0%;
+        width: auto;
+        background-color: antiquewhite;
+        border-radius: 0px;
+    }
+
+    .searchheader {
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+        display: inline-block;
+        width: 50%;
+        text-align: start;
+        border-bottom: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+    }
+
+    .di {
+        display: inline-block;
+    }
+
+    .itemnumberbox {
+        border: 1px solid #989a9d;
+        background: #80808047;
+    }
+
+    .fr {
+        float: right !important;
+    }
+
+    .mg-t-5 {
+        margin-top: 5%;
+    }
+
+    .ml-2 {
+        margin-left: 2%;
+    }
+
+    .mg-t-2 {
+        margin-top: 2%;
+    }
+
+    .ml-3 {
+        margin-left: 3%;
+    }
+
+    .mg-t-3 {
+        margin-top: 3%;
+    }
+
+    .dn {
+        display: none;
+    }
+
+    .w-50 {
+        width: 50% !important;
+    }
+    /*#SupplierListSearch input{
+        line-height: 160%;
+    }*/
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@if (TempData["Msg"] != null)
+{
+    <script>toastr.success("@TempData["Msg"].ToString()");</script>
+
+}
+<script>
+    $(document).ready(function () {
+
+        //$("#AddnewbtnP").show();
+        //$("#RefreshbtnP").show();
+        $("#Deletebtnn").hide();
+        $("#AddnewUpdatebtn").hide();
+        $("#Printbtnn").hide();
+        //$("#Savebtn").hide()
+        $("#Attachmentbtnn").hide();
+        $("#Listbtn").hide();
+        $("#Refreshbtn").hide();
+        $("#Refreshbtn").show();
+        $("#documentuploadresponse").text("");
+        $("#documentuploadresponse").hide();
+        //$("#SupplierListSearch :input").attr("disabled", false);
+
+    });
+</script>
+
+    
+<div class="col-12 grid-margin">
+
+
+    <div class="card" style="background-color: #EAE8EA">
+        <div class="card-body">
+            <div class="w-100 p-3 h-100 d-inline-block actionbox" id="listbtns">
+                <div id="onlisticon" class="di">
+                    @*<a href="#" id="RefreshbtnP" onclick="onEditTrigger()"> <img class="saveexisting cp" src="../images/edit.png" style="width:50px"  title="Edit" /></a>*@
+                    @*<a href="#" id="RefreshbtnP" onclick="onRefresh()"> <img src="../images/refresh.png" style="width:50px" title="Print" /></a>*@
+                </div>
+                <div id="defaultlisticonss" class="di"></div>
+                <div id="onsaveicon">
+                </div>
+                <div class="row fr" id="existingitemnumber" style="width:25%;margin-bottom: -24px;margin-top: -24px">
+                    @Html.HiddenFor(model => model.VendorCode, new { @class = "form-control" })
+                    @Html.HiddenFor(model => model.VendorId, new { @class = "form-control", id = "id" })
+                </div>
+
+                
+                @*<div class="row mg-t-3">
+                    <div class="col-lg-10 col-sm-8">
+
+                        <div class="form-group">
+                            <div class="autocomplete w-50">
+                                <input class="form-control searchname" list="select" id="myInput" type="text" name="myCountry" placeholder="Enter name to search" onkeyup="GetAllMatchedMissionsTextt(event)" autocomplete="off" />
+                                <div class="input-lg mx-auto dropdown w-100" id="searchdropdown"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+
+                    </div>
+                </div>*@
+            </div>
+            @using (Html.BeginForm("UpdateNewVendorPO", "Vendor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div id="SupplierListSearch">
+                    <div class="panel panel-primary ">
+                        @*<div class="col-md-3 my-2" style="display:inline-block">
+                                <input type="text" name="name" class="form-control" placeholder="Enter Comapny to Search" id="txtSearch" />
+                            </div>*@
+                        <div class="panel-heading">Suppliers</div>
+                        <div class="panel-body">
+                            <h4 class="card-title"></h4>
+                            <br />
+                            @Html.HiddenFor(model => model.VendorId, new { @class = "form-control textboxcolor hidden ", id = "txtVendorId" })
+                            @Html.HiddenFor(model => model.VendorId, new { @class = "form-control" })
+
+                            @Html.HiddenFor(model => model.FullName, new { @class = "form-control textboxcolor hidden ", id = "txtFullname" })
+                            @Html.HiddenFor(model => model.FullName, new { @class = "form-control" })
+                            <div class="row">
+                                <div class="col-lg-7 col-sm-7">
+                                    <div class="form-group">
+                                        <label class="dim" style="position:absolute; font-weight:bold;  width:99px; text-align:right;">Company</label>
+                                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control textboxcolor ", placeholder = "Company", id = "txtCompnay" , style="width:65%; margin-left:105px; border-top:1px solid gray; border-left:1px solid gray; background:white;" } })
+                                        @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger db" })
+                                        @*<i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#companymodal"></i>*@
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-sm-5">
+                                    <div class="">
+
+                                        @*<h3>
+                                            Account Number:<b><label class="" id="AccountNumberList" style="background-color:Blue; color:white"></label></b>
+                                        </h3>*@
+                                        <label class="dim col-sm-4" style="text-align:center; font-weight:bold;">Account Number</label>
+                                        <input id="AccountNumberList" style=" border-top:1px solid gray; border-left:1px solid gray; background:white; height:36px;" readonly>
+                                        @Html.HiddenFor(model => model.AccountByVendor, new { htmlAttributes = new { @class = "form-control textboxcolor ", placeholder = "Account Number", id = "txtAccountnumberbyVendor" } })
+                                        @Html.ValidationMessageFor(model => model.AccountByVendor, "", new { @class = "text-danger db" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-sm-2" style="margin-left:50px">
+                                            <div class="form-group" style="margin-left:60px">
+                                                <label class="dim col-sm-10" style="text-align:center; font-weight:bold;">Mr./Mrs.</label>
+                                                @Html.DropDownListFor(model => model.Title, (IEnumerable<SelectListItem>)ViewData["Gender"], "Mr/Mrs", new { @class = "form-control", id = "txtTitle",style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" })
+                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Enter CustomerType</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-5">
+                                            <div class="form-group" style="text-align:center;">
+                                                <label class="dim col-sm-4" style="text-align:center; font-weight:bold;">First Name</label>
+                                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "First Name", id = "txtFirstName" ,style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" } })
+                                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-sm-5">
+                                            <div class="form-group" style="text-align:center;">
+                                                <label class="dim col-sm-6" style="text-align:center; font-weight:bold;">Last name</label>
+                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Last Name", id = "txtLastName", style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" } })
+                                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="dim " style=" font-weight:bold; position:absolute; width:99px; text-align:right;">Street </label>
+                                                @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Street", id = "txtStreet", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:86%;" } })
+                                                @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                 
+                                        
+                                        <div class="col-lg-4 col-sm-5" style=" ">
+                                            <div class="form-group">
+                                                @*//<label class="dim col-sm-6">City </label>*@
+                                                <label class="dim " style=" font-weight:bold; position:absolute; width:99px; text-align:right;">City,State Zip</label>
+                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "City", id = "txtCity", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; width:114%; margin-left:105px;" } })
+                                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-2" style=" margin-right:initial; margin-left:initial; ">
+                                            <div class="form-group">
+                                                @*<label class="dim col-sm-10">State </label>*@
+                                                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "State", id = "txtState", style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" } })
+                                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-5">
+                                            <div class="form-group" style="margin-left:-40px;">
+                                                @*<label class="dim col-sm-6">Zip Code </label>*@
+                                                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Zip Code", id = "txtZipCode", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; width:100%" } })
+                                                @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute; width:99px; text-align:right;">Suite </label>
+                                                @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Suite", id = "txtSuite", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:69%" } })
+                                                @Html.ValidationMessageFor(model => model.Suite, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6" style="margin-left:-30px">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute">Country </label>
+                                                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Country", id = "txtCountry" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:60px; width:92%" } })
+                                                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute; width:99px; text-align:right;">Phone </label>
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Phone", id = "txtPhone" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:70%" } })
+                                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6" style="margin-left:-27px;">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute; width:55px; height:31px; background:rgb(195 189 198);">Fax </label>
+                                                @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Fax", id = "txtFax" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:55px; width:93%" } })
+                                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute;width:99px; text-align:right;">PayTerms </label>
+                                                @Html.DropDownListFor(model => model.PayTerms, (IEnumerable<SelectListItem>)ViewBag.PaymentTerm, "--Choose Payment Term--", new { @class = "form-control textboxcolor", id = "txtPayTerms" ,style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:69%" })
+                                                @*Html.EditorFor(model => model.PayTerms, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "PayTerms", id = "txtPayTerms" } })*@
+                                                @Html.ValidationMessageFor(model => model.PayTerms, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6" style="margin-left:-30px;">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute; width:67px; height:30px; background:rgb(195 189 198);">Discount </label>
+                                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control textboxcolor discountTxt", placeholder = "Discount", id = "txtDiscount", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:67px; width:92%" } })
+                                                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute;width:99px; text-align:right;">CreditLimit </label>
+                                                @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "CreditLimit", id = "txtCreditLimit" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:64%" } })
+                                                @Html.ValidationMessageFor(model => model.CreditLimit, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute">FedTaxId </label>
+                                                @Html.EditorFor(model => model.FedTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "FedTax", id = "txtFedTax",style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:70px; width:79%" } })
+                                                @Html.ValidationMessageFor(model => model.FedTaxId, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute">StateTaxId </label>
+                                                @Html.EditorFor(model => model.StateTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "StateTax", id = "txtStateTax", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:75px; width:70%" } })
+                                                @Html.ValidationMessageFor(model => model.StateTaxId, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute; width:99px; text-align:right;">Email </label>
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Email", id = "txtEmail", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:87%" } })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-12 col-sm-6" style="margin-left:-22px;">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute; width:118px; text-align:right;">Website </label>
+                                                @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Website", id = "txtWebsite", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:127px; width:87%" } })
+                                                @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-8">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute; width:99px; text-align:right;">Ledger  </label>
+                                                @Html.DropDownListFor(model => model.Ledger, (IEnumerable<SelectListItem>)ViewBag.AccSubGroup, "--Choose Ledger--", new { @class = "form-control ledgercreate textboxcolor", @readonly="readonly", id = "txtLedger", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:64%" })
+                                                @Html.ValidationMessageFor(model => model.Ledger, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4"  style="margin-left:-89px;">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute">Ledger Code </label>
+                                                @Html.EditorFor(model => model.LedgerCode, new { htmlAttributes = new { @class = "form-control textboxcolor ledgercodecreate", placeholder = "LedgerCode", id = "txtLedgerCode" , @readonly="readonly", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:104%" } })
+                                                @Html.ValidationMessageFor(model => model.LedgerCode, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-8 col-sm-8">
+                                            <div class="form-group">
+                                                <label class="dim " style="font-weight:bold; position:absolute; width:99px; text-align:right;">CheckMemo </label>
+                                                @Html.EditorFor(model => model.CheckMemo, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "CheckMemo", id = "txtCheckMemo", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:80%" } })
+                                                @Html.ValidationMessageFor(model => model.CheckMemo, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-sm-4 " style="margin-top:0px;">
+                                            <div class="form-group">
+                                                @Html.CheckBox("PrintYtdonChecks", false, new { @id = "PrintYtdonChecks", })
+                                                <label class="dim col-sm-10 " for="SupplierChecked" style="font-weight:bold;">
+                                                    Print YTD On Checks
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="dim " style="font-weight:bold; position:absolute; width:99px; text-align:right;">Comments </label>
+                                            @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control textboxcolor ", placeholder = "Comments", id = "txtComments", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:88%" } })
+                                            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger db" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-sm-5 mt-4">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-7 fontcolor  fw-bolder" for="SupplierChecked" style="font-size:18px !important;">
+                                                    Supplier
+                                                </label>
+                                                <br>
+                                                @Html.CheckBox("SupplierChecked", true, new { @id = "SupplierChecked", @disabled = "disabled", style="margin-left:25px;" })
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7 col-sm-7">
+                                            <div class="form-group">
+                                                <label class="dim col-sm-8" style="font-weight:bold;">Types of Vendor </label>
+                                                @Html.DropDownListFor(model => model.VenderType, (IEnumerable<SelectListItem>)ViewBag.SupType, "--Choose Title--", new { @class = "form-control textboxcolor", id = "txtVendortype",style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" })
+                                                <label class="text-danger db" style="display:none" id="msgcustomertype">Enter CustomerType</label>
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#VendorTypeModal" style="float:right;"></i>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mx-2">
+                                            <div class="form-group ">
+                                                @Html.CheckBox("OutOfStateSupplier", false, new { @id = "OutOfStateSupplier", @class = "outofstate" })
+                                                <label class="dim col-sm-10  fw-bolder text-primary" for="OutOfStateSupplier" style="font-size: 17px !important;">
+                                                    Out Of State Supplier
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mx-2">
+                                            <div class="form-group">
+                                                @Html.CheckBox("LocalTextPaidBySupplier", false, new { @id = "LocalTextPaidBySupplier", @class = "localtextpaid" })
+                                                <label class="dim col-sm-10 fontcolor  fw-bolder" for="LocalTextPaidBySupplier" style="font-size: 17px !important;">
+                                                    Local Taxes Paid By Supplier
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mx-2">
+                                            <div class="form-group">
+                                                @Html.CheckBox("ReportTaxesToStateNc", false, new { @id = "ReportTaxesToStateNc", })
+                                                <label class="dim col-sm-10 fontcolor  fw-bolder" for="ReportTaxesToStateNc" style="font-size: 17px !important;">
+                                                    Report Taxes To State Of: NC
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-8 mx-2">
+                                            <div class="form-group">
+                                                <label class="dim  fontcolor  fw-bolder" style="font-size: 17px !important; position:absolute">Discount %</label>
+                                                @Html.EditorFor(model => model.StateDiscount, new { htmlAttributes = new { @class = "form-control textboxcolor discountStateTxt", placeholder = "Discount", id = "txtStateDiscount", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:99px; width:auto;" } })
+                                                @Html.ValidationMessageFor(model => model.StateDiscount, "", new { @class = "text-danger db" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-lg-12 col-sm-12 text-primary" style="">
+                                            <ul class="nav nav-tabs" role="tablist" style="width:max-content;">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active text-primary" id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="true" style="font-weight: 900;">View All Invoices</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-primary" id="paid-tab" data-bs-toggle="tab" href="#paid-1" role="tab" aria-controls="paid-1" aria-selected="false" style="font-weight: 900;">Paid</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-primary" id="unpaid-tab" data-bs-toggle="tab" href="#unpaid-1" role="tab" aria-controls="unpaid-1" aria-selected="false" style="font-weight: 900;">Unpaid</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-primary" id="Attachments-tab" data-bs-toggle="tab" href="#Attachments" role="tab" aria-controls="Attachments-1" aria-selected="false" style="font-weight: 900;">Atachments</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" style="margin-top: -2%;background:rgb(192 191 191);padding-top: 2px;padding-left:5px;width:110%">
+                                                <div class="tab-pane fade show active" id="home-1" role="tabpanel" aria-labelledby="home-tab">
+                                                    <div class="table-responsive-lg ">
+                                                        <table id="invoiceTable" class="table text-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="supplierInvoiceTable">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="paid-1" role="tabpanel" aria-labelledby="paid-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table text-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="PaidsupplierInvoiceTable">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="unpaid-1" role="tabpanel" aria-labelledby="unpaid-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table text-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="UnpaidsupplierInvoiceTable">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade overflow-auto " id="Attachments" role="tabpanel" aria-labelledby="Attachments-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table w-100 overflow-auto text-primary">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sr#</th>
+                                                                    <th>Doc Type</th>
+                                                                    <th>Doc Name</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="AttachmentBody">
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    @*<div class="row">
+                                        <div class="col-lg-12 col-sm-12" style="background:rgb(195, 190, 197); padding-left:initial;">
+                                            <ul class="nav nav-tabs" role="tablist" style="width:max-content;">
+                                                <li class="nav-item" style="border:1px solid gray;">
+                                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home-1" role="tab" aria-controls="home-1" aria-selected="true">View All Invoices</a>
+                                                </li>
+                                                <li class="nav-item" style="border:1px solid gray;">
+                                                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile-1" role="tab" aria-controls="profile-1" aria-selected="false">Paid</a>
+                                                </li>
+                                                <li class="nav-item" style="border:1px solid gray;">
+                                                    <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact-1" role="tab" aria-controls="contact-1" aria-selected="false">Unpaid</a>
+                                                </li>
+                                                <li class="nav-item" style="border:1px solid gray; padding-right:12px;">
+                                                    <a class="nav-link" id="Attachments-tab" data-bs-toggle="tab" href="#Attachments-1" role="tab" aria-controls="Attachments-1" aria-selected="false" style="border-right:none">Atachments</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade show active" id="home-1" role="tabpanel" aria-labelledby="home-tab">
+                                                    <div class="table-responsive-lg ">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Balance</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Balance</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="contact-1" role="tabpanel" aria-labelledby="contact-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>InvoiceNo</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Balance</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="Attachments-1" role="tabpanel" aria-labelledby="Attachments-tab">
+                                                    <div class="table-responsive-lg">
+                                                        <table class="table w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sr#</th>
+                                                                    <th>Doc Type</th>
+                                                                    <th>Doc Name</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-dark text-white mx-auto col-md-3 hidden" id="btnUpdateSubmit"><p style="color:white">Update</p></button>
+
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+@*IconsFunctionality*@
+<script>
+    //Account(id);
+
+    $('.ledgercreate').on('change', function() {
+    var led = this.value;
+    $('.ledgercodecreate').val(led);
+    //$('#accountData').val('');
+    $("#newitemnumbervendor").empty();
+
+    $('#checkacc').show();
+     
+    // create Vendor acc
+    
+    debugger;
+     var id = $(".ledgercodecreate").val();
+        function Account(id) {
+         $.ajax({
+            type: "GET",
+            url: '@Url.Action("CreateAcc", "Vendor")',
+            data: {
+                id: id
+            },
+             success: function (data) {
+                 console.log("hiadhsia",data)
+                 var newitemnumberhtml = '';
+        
+        newitemnumberhtml += '<h3>';
+        newitemnumberhtml += '<label id="newitemlabel">Vendor Account :</label>';
+        newitemnumberhtml += '<span id="accountData" class="itemnumberbox di">'+ data.accountNumber +'</span></br >';
+        newitemnumberhtml += '</h3>';
+         
+
+
+        $("#newitemnumbervendor").append(newitemnumberhtml);
+                 
+            },
+            error: function () {
+
+            },
+         });
+    }
+     Account(id);
+
+    });
+
+    $('.ledgerupdate').on('change', function() {
+        var led = this.value;
+    $('.ledgerCodeUpdate').val(led);
+    
+    })
+
+    
+    function onEdit() {
+        $("#SupplierListSearch").show();
+        $("#CreateSupplier").attr("hidden", true);
+        $("#Attachmentbtnn ").hide();
+        $("#Addnewbtn").show();
+        $("#Listbtn").hide();
+        $("#Savebtn").hide();
+        $("#Refreshbtn").show();
+        $("#Attachmentbtnn").show();
+
+
+
+    }
+    function ReloadPage() {
+        $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+        setTimeout(function () {
+            $.unblockUI();
+            location.reload();
+        }, 2500);
+    };
+    function onRefresh() {
+        $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+        setTimeout(function () {
+            $.unblockUI();
+            location.reload();
+        }, 2500);
+    }
+   
+
+    function onEditTrigger() {
+        $.confirm({
+            title: 'Update Supplier!',
+            content: 'Are you sure to update this supplier?',
+            buttons: {
+                confirm: function () {
+                    $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+                    setTimeout(function () {
+                        $.unblockUI();
+                        $("#btnUpdateSubmit").trigger("click");
+
+                    }, 2500);
+                },
+                cancel: function () {
+                },
+            }
+        });
+    }
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+    function closemodal() {
+        $("#attach").modal('hide');
+    }
+    function closemodalcompany() {
+        $("#companymodal").modal('hide');
+    }
+
+    function closemodalvendor() {
+        $("#VendorTypeModal").modal('hide');
+    }
+
+
+    function closemodaldocument() {
+        $("#DocumentTypeModal").modal('hide');
+    }
+
+</script>
+
+
+<script>
+    function DeleteVendor() {
+        var Data = $('#txtVendorId').val();
+        $.confirm({
+            title: 'Delete Supplier!',
+            content: 'Are you sure to delete this supplier?',
+            buttons: {
+                confirm: function () {
+                    $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+                     $.ajax({
+            url: '@Url.Action("DeleteNewVendor", "Vendor")',
+            async: false,
+            Type: 'GET',
+            contentType: "application/json;",
+            data: {id:Data},
+                dataType: "json",
+                         success: function (data) {
+                             if (data == true) {
+
+                                 setTimeout(function () {
+                                     $.unblockUI();
+                                      window.location = '@Url.Action("AddNewVendor", "Vendor")';
+                                 }, 2500);
+                             }
+            },
+            });
+                },
+                cancel: function () {
+                     setTimeout(function () {
+                                     $.unblockUI();
+                                 }, 2500);
+                },
+            }
+        });
+
+        };
+</script>
+
+<script>
+    $("#DocumentTypeSubmit").on('click', function () {
+        var DocumentType = $("#DocumentType").val();
+
+        var record = {};
+        record = new FormData();
+        if (DocumentType != null && DocumentType != "" && DocumentType != "undefined") {
+            $("#msgDocumentType").hide();
+            record.append("DocumentType", DocumentType);
+            $.confirm({
+                title: 'Add New Document Type!',
+                content: 'Are you sure to add new dcoument type?',
+                buttons: {
+                    confirm: function () {
+                        $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+            $.ajax({
+                url: '@Url.Action("AddDocumentType", "Vendor")',
+                type: "POST",
+                data: record,
+                async: false,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data == "Add Successfully") {
+                        $("#DocumentTypeModal").modal('hide');
+                        setTimeout(function () {
+                            $.unblockUI();
+                        window.location = '@Url.Action("AddNewVendor", "Vendor")';
+
+                        }, 2500);
+                    }
+                },
+                error: function () {
+                     setTimeout(function () {
+                            $.unblockUI();
+
+                        }, 2500);
+                }
+            });
+                    },
+                    cancel: function () {
+                    },
+                }
+            });
+
+
+        }
+        else
+        {
+            $("#msgDocumentType").show();
+        }
+    });
+
+</script>
+
+@*submittAttachments*@
+<script>
+
+    $("#submittAttachments").on('click', function () {
+
+
+        var DocumentType = $("#SupDocType").val();
+        var DocumentName = $("#DocumentName").val();
+        var VendorId = $("#txtVendorId").val();
+        var val = $("#Imagefile").val().toLowerCase(),
+            regex = new RegExp("(.*?)\.(pdf|PDF)$");
+        if (val != "") {
+            if (!(regex.test(val))) {
+                $("#documentuploadresponse").text("Only pdf format are allowed !");
+                $("#documentuploadresponse").show();
+                setTimeout(function () {
+                    $("#documentuploadresponse").hide();
+                }, 3000);
+            }
+            else {
+                var record = {};
+                record = new FormData();
+
+                var titleimage = "";
+                if (DocumentType != null && DocumentType != "" && DocumentType != "undefined") {
+                    if (document.getElementById('Imagefile') !== null) {
+                        var totalFiles = document.getElementById('Imagefile').files.length;
+                        for (var i = 0; i < totalFiles; i++)
+                            titleimage = document.getElementById('Imagefile').files[i];
+                    }
+                    $("#msgDocumentType").hide();
+                    record.append("DocumentTypeId", DocumentType);
+                    record.append("DocumentName", DocumentName);
+                    record.append("SupplierID", VendorId);
+                    if (titleimage != "" && titleimage != null) {
+                        record.append("file", titleimage);
+                    }
+                    //console.log(record);
+
+                      $.confirm({
+        title: 'Add Attachment!',
+        content: 'Are you sure to add attachment against this supplier?',
+        buttons: {
+            confirm: function () {
+                $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AddSupplierDocument", "Vendor")',
+                        data: record,
+                        dataType: "json",
+                        processData: false,
+                        contentType:false,
+                        success: function (data) {
+                            console.log(data);
+                            if (data == true) {
+                                $("#documentuploadresponse").text("successfully uploaded");
+                                $("#documentuploadresponse").show();
+                                toastr.success("Document Uploaded Sucessfully");
+                                setTimeout(function () {
+                                    $.unblockUI();
+                                    
+                                    location.reload();
+                                }, 2500);
+                            }
+                        },
+                        error: function () {
+                            setTimeout(function () {
+                                $.unblockUI();
+                                location.reload();
+                            }, 2500);
+                        }
+                    });
+
+            },
+            cancel: function () {
+            },
+            }
+            });
+                }
+                $("#msgDocumentType").show();
+
+            }
+            //else
+            //{
+            //    $("#msgDocumentType").show();
+            //}
+        }
+        });
+
+
+</script>
+
+
+
+@*SEARCH WITH APPENDING*@
+<script>
+
+    $(document).ready(function () {
+        //$(".searchname").attr("disabled", false);
+        //$("#searchdropdown").hide();
+        ////$("#SupplierListSearch :input").attr("disabled", true);
+        //$.ajax({
+        //    url: '@Url.Action("GetSupplierJson", "Vendor")',
+        //    async: false,
+        //    contentType: "application/json;",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        $.each(data, function (index, item) {
+        //            console.log(item);
+        //            var html = '';
+        //            html += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="ItemSelectt(' + item.vendorId + ')"  >';
+        //            html += '<span class="item_name di w-50"  >' + item.company + '</span>';
+        //            html += '</div>';
+        //            $("#searchdropdownn").append(html);
+        //        });
+
+        //    },
+        //    error: function (error) {
+        //        alert(error);
+        //    }
+        //          });
+
+        //});
+
+
+
+        //function GetAllMatchedMissionsTextt(event) {
+        //    var naming = $("#myInput").val();
+        //    if (naming == "") {
+        //        $(".item_name").parent().hide();
+        //        $("#searchdropdown").hide();
+        //    }
+        //    else {
+        //        console.log(naming);
+
+        //        var text = naming;
+        //        var items = $(".item_name");
+        //        //first, hide all:
+        //        items.parent().hide();
+
+        //        //show only those matching user input:
+        //        items.filter(function () {
+        //            return $(this).text().toLowerCase().indexOf(text) == 0;
+        //        }).parent().show();
+        //        //$("#searchdropdown").show();
+        //    }
+      });
+
+    function ItemSelectt(id) {
+        debugger;
+        var Data = id;
+        //alert(id);
+        AppendInvoiceTable(id);
+        $.ajax({
+
+            url: '@Url.Action("GetJsonVendorDetail", "Vendor")',
+            async: false,
+            Type: 'GET',
+            contentType: "application/json;",
+            data: {id:Data},
+                dataType: "json",
+            success: function (data) {
+                $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
+                $("#SupplierListSearch :input").attr("disabled", false);
+
+                var iconhtml = '';
+                iconhtml += ' <a href="#" id="Attachmentbtnn"><i data-bs-toggle="modal" data-bs-target="#attach"><img class="hide-icon" src="../images/attach.png" style="width:50px" title="Attachments" /></i></a>';
+                iconhtml += '<img class="hide-icon cp" src="../images/delete.png" style="width:50px" title="Delete" onclick="DeleteVendor()"/>';
+                iconhtml += '<img class="hide-icon saveexisting cp" src="../images/edit.png" style="width:50px" title="Edit" onclick="onEditTrigger()" />';
+                iconhtml += '<img class="hide-icon cp" src="../images/printer.png" style="width:50px" title="Print" />';
+                $("#defaultlisticonss").append(iconhtml);
+
+
+
+                var itennumberhtml = '';
+                itennumberhtml += '<h3>';
+                itennumberhtml += '<label id="itemlabel">Supplier Number:</label><span id="itemsupplierfound" class="itemnumberbox di"></span></br>';
+                itennumberhtml += ' </h3>';
+                $("#existingitemnumber").append(itennumberhtml);
+
+
+                $('#txtVendorId').val(data.vendorId);
+                $('#txtFullname').val(data.fullName);
+                $('#txtSupplierNumber').text(data.vendorCode);
+                $("#itemsupplierfound").text(data.vendorCode);
+                $('#txtCompnay').val(data.company);
+                $('#myInput').val(data.company);
+                $('#AccountNumberList').val(data.accountNumber);
+                $('#txtTitle').val(data.title);
+                $('#txtFirstName').val(data.firstName);
+                $('#txtLastName').val(data.lastName);
+                $('#txtStreet').val(data.street);
+                $('#txtCity').val(data.city);
+                $('#txtState').val(data.state);
+                $('#txtZipCode').val(data.zipCode);
+                $('#txtSuite').val(data.suite);
+                $('#txtCountry').val(data.country);
+                $('#txtPhone').val(data.phone);
+                $('#txtFax').val(data.fax);
+                $('#txtPayTerms').val(data.payTerms);
+                $('#txtDiscount').val(data.discount);
+                $('#txtCreditLimit').val(data.creditLimit);
+                $('#txtFedTax').val(data.fedTaxId);
+                $('#txtStateTax').val(data.stateTaxId);
+                $('#txtEmail').val(data.email);
+                $('#txtWebsite').val(data.website);
+                $('#txtLedger').val(data.ledger);
+                $('#txtLedgerCode').val(data.ledgerCode);
+                $('#txtCheckMemo').val(data.checkMemo);
+                if (data.printYtdonChecks == true) {
+                    $("#PrintYtdonChecks").prop("checked", true);
+                }
+                else {
+                    $("#PrintYtdonChecks").prop("checked", true);
+                }
+                $('#txtComments').val(data.comments);
+                if (data.SupplierChecked == true) {
+                    $('#SupplierChecked').prop("checked", true);
+                }
+                $('#txtVendortype').val(data.venderType);
+                $('#txtStateDiscount').val(data.stateDiscount);
+                //$('#OutOfStateSupplier').val(data.outOfStateSupplier);
+                if (data.outOfStateSupplier == true) {
+                    $("#OutOfStateSupplier").prop("checked", true);
+                }
+                else {
+                    $("#OutOfStateSupplier").prop("checked", false);
+                }
+                if (data.localTextPaidBySupplier == true) {
+                    $("#LocalTextPaidBySupplier").prop("checked", true);
+                }
+                else {
+                    $("#LocalTextPaidBySupplier").prop("checked", false);
+                }
+                if (data.reportTaxesToStateNc == true) {
+                    $("#ReportTaxesToStateNc").prop("checked", true);
+                }
+                else {
+                    $("#ReportTaxesToStateNc").prop("checked", false);
+                }
+                $("#AddnewUpdatebtn").hide();
+                $("#Addnewbtn").hide();
+                //$("#Deletebtnn").show();
+                //$("#Printbtnn").show();
+                //$("#Attachmentbtnn ").show();
+                $("#searchdropdown").empty();
+                setTimeout(function () {
+                    $.unblockUI();
+                }, 2500);
+            },
+
+        });
+
+        $.ajax({
+            url: '@Url.Action("SupplierDocumentsBySupplierId", "Vendor")',
+            type: 'GET',
+            data: {id:Data},
+            async: false,
+            contentType: "application/json;",
+            dataType: "json",
+            success: function (response) {
+                //console.log("hihiih",response);
+                $.each(response, function (index, item) {
+                    $('#AttachmentBody').append('<tr><td>' + (index + 1) + '</td><td>' + item.documentType + '</td><td>' + item.documentName + '</td><td><a class="btn btn-success" href="' +item.imageByPath + '" target="_blank" download>Download</a><a onclick="DeleteAttachement('+item.documentId+')" class="btn btn-danger">Delete</a></td></tr>');
+
+                });
+            }
+        });
+
+
+
+     };
+
+     function DeleteAttachement(id)
+     {
+          $.ajax({
+            type: "POST",
+            url: '@Url.Action("DeleteAttachement", "Vendor")',
+            data: {
+            id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                toastr.success("Deleted Sucessfully");
+                setTimeout(function () {
+                                    location.reload();
+                                }, 2500);
+            },
+            error: function (xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+
+     }
+
+
+
+    $(".discountTxt").keyup(function () {
+        var data = $(this).val();
+        $(".discountStateTxt").val(data);
+    });
+
+    $('.outofstate').click(function () {
+        $(".localtextpaid").prop("checked", false);
+    });
+
+    $(".localtextpaid").click(function () {
+        $(".outofstate").prop("checked", false);
+    });
+    function AppendInvoiceTable(val) {
+        var Data = val;
+         $.ajax({
+            url: '@Url.Action("GetInvoicesByVendorId", "Purchase")',
+            type: 'GET',
+            data: {id:Data},
+            async: false,
+            contentType: "application/json;",
+            dataType: "json",
+             success: function (response) {
+                console.log(response);
+                $.each(response, function (index, item) {
+                    $('#supplierInvoiceTable').append('<tr><td id="inv-' + item.purchaseorderId + '" onclick="PurchaseOrderPModal(' + item.purchaseorderId+')">' + item.invoiceNumber + '</td><td>' + item.podate + '</td><td>' + item.amount + '</td></tr>');
+
+                });
+                 $('#invoiceTable').DataTable({
+                     "pageLength": 5,
+                 });
+                 $.each(response, function (index, item) {
+                     if (item.isPaid == true) {
+                         $('#PaidsupplierInvoiceTable').append('<tr><td id="inv-' + item.purchaseorderId + '" onclick="PurchaseOrderPModal(' + item.purchaseorderId + ')">' + item.invoiceNumber + '</td><td>' + item.podate + '</td><td>' + item.amount + '</td></tr>');
+                     } else {
+                         $('#PaidsupplierInvoiceTable').append('<tr><td >N/A</td></tr>');
+                     }
+                     if (item.isPaid == false) {
+                         $('#UnpaidsupplierInvoiceTable').append('<tr><td id="inv-' + item.purchaseorderId + '" onclick="PurchaseOrderPModal(' + item.purchaseorderId + ')">' + item.invoiceNumber + '</td><td>' + item.podate + '</td><td>' + item.amount + '</td></tr>');
+                     }
+                     else {
+                         $('#UnpaidsupplierInvoiceTable').append('<tr><td >N/A</td></tr>');
+                     }
+                 });
+            }
+        });
+    }
+    function PurchaseOrderPModal(id) {
+        var myval = $("#inv-" + id).text();
+        var id = myval;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("InventoryGetPurchaseDetail", "Items")',
+            data: {
+            InvoiceNumber: id
+            },
+            dataType: "json",
+            success: function (data) {
+            InvShowProductList(data);
+            },
+            error: function (xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+    }
+    function InvShowProductList(data) {
+        console.log(data);
+        var html = "";
+        $('#appendnewrowforsalePartialdetail').empty();
+
+        $.each(data, function (index, item) {
+
+
+            $("#myInputP").val(item.supplierName);
+            $("#txtSupplierNo").val(item.supplierNumber);
+            $("#SubTotal").val(item.subTotal);
+            $("#Total").val(item.total);
+            $("#Tax").val(item.tax);
+            $("#Freight").val(item.freight);
+            $("#Other").val(item.other);
+            $("#TotalItems").val(item.totalItems);
+            $("#Notes").val(item.notes);
+            $("#PaymentTerms").val(item.paymentTerms);
+            $("#Podate").val(item.pOrderDate);
+            $("#DateReceived").val(item.recievedOrderDate);
+            $("#TotalTobacco").val(item.totalTobacco);
+            $("#TotalCigar").val(item.totalCigar);
+            $("#TotalCigarette").val(item.totalCigarette);
+            $("#CigaretteStock").val(item.cigaretteStick);
+            if (item.isTax == true) {
+                $('#IsTax').prop('checked', true);
+            } else {
+                $('#IsTax').prop('checked', false);
+            }
+            if (item.received == true) {
+                $('#Received').prop('checked', true);
+            } else {
+                $('#Received').prop('checked', false);
+            }
+            if (item.updateCost == true) {
+                $('#UpdateCost').prop('checked', true);
+            } else {
+                $('#UpdateCost').prop('checked', false);
+            }
+            if (item.updateOscost == true) {
+                $('#UpateOscost').prop('checked', true);
+            } else {
+                $('#UpateOscost').prop('checked', false);
+            }
+            if (item.supplieritems == true) {
+                $('#SupplierItemOnly').prop('checked', true);
+            } else {
+                $('#SupplierItemOnly').prop('checked', false);
+            }
+            if (item.showAllItems == true) {
+                $('#ShowAllitem').prop('checked', true);
+            } else {
+                $('#ShowAllitem').prop('checked', false);
+            }
+            if (item.isCaseQty == true) {
+                $('#IsCaseQty').prop('checked', true);
+            } else {
+                $('#IsCaseQty').prop('checked', false);
+            }
+            if (item.isDiscount == true) {
+                $('#IsDiscount').prop('checked', true);
+            } else {
+                $('#IsDiscount').prop('checked', false);
+            }
+            if (item.isPrice == true) {
+                $('#IsPrice').prop('checked', true);
+            } else {
+                $('#IsPrice').prop('checked', false);
+            }
+            if (item.isQty == true) {
+                $('#IsQty').prop('checked', true);
+            } else {
+                $('#IsQty').prop('checked', false);
+            }
+            if (item.isReport == true) {
+                $('#Report').prop('checked', true);
+            } else {
+                $('#Report').prop('checked', false);
+            }
+        });
+
+        $.each(data, function (index, item) {
+
+            html += '<tr class="odd" style="background-color: #f89898 !important;">';
+            html += '<td class="sorting_1 brdr-right" style = "width:10px;">' + (index + 1) + '</td>';
+            html += ' <td class="brdr-right" style = "width:10px;">' + item.supplierItemNumber + '</td>';
+            html += ' <td class="brdr-right" style = "width:10px;">' + item.stockItemNumber + '</td>';
+            html += ' <td class="brdr-right">' + item.description + '</td>';
+            html += ' <td class="brdr-right">' + item.retail + '</td>';
+            html += ' <td class="brdr-right">' + item.price + '</td>';
+            html += ' <td class="brdr-right">' + item.qty + '</td>';
+            html += ' <td class="brdr-right">' + item.caseQty + '</td>';
+            html += ' <td class="brdr-right">' + item.discount + '</td>';
+            html += ' <td>' + item.amount + '</td>';
+            html += '</tr>';
+
+
+        });
+
+        $('#appendnewrowforsalePartialdetail').append(html);
+        $('#PurchaseOrderParModal').modal('show');
+
+    }
+    function ClosePurchaseOrderParModal() {
+        $("#PurchaseOrderParModal").modal('hide');
+    }
+</script>

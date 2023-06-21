@@ -1,0 +1,157 @@
+@model ABC.EFCore.Repository.Edmx.CustomerInformation
+@{
+    ViewData["Title"] = "PreviousOrder";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<title>Profile Screen</title>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+<style>
+    label {
+        margin-top: 10px;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/css/bootstrap.css" type="text/css" rel="stylesheet" media="all">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.error('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+<div class="hello" style="margin-top:20px;  margin-bottom:20px">
+@using (Html.BeginForm("UpdateCustomerinfo" , "CustomerHomePage" , FormMethod.Post))
+{
+    <div class="container">
+        <div class="row gutters" style="justify-content:center;">
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters" >
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h3 class="mb-2 text-primary">Update Profile</h3>
+                            </div>
+                            
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                     
+                                    @*<input type="text" placeholder="@Model.FirstName" class="form-control">*@
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = @Model.FirstName } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    @* <input type="text" placeholder="@Model.LastName" class="form-control">*@
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = @Model.LastName } })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    @*<input type="text" placeholder="@Model.Email" class="form-control" readonly>*@
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.Email , @readonly="readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Mobile No</label>
+                                     @*<input type="text" placeholder="@Model.Cell" class="form-control">*@
+                                     @Html.EditorFor(model => model.Cell, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.Cell } })
+                                    @Html.ValidationMessageFor(model => model.Cell, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Street</label>
+                                     @*<input type="text" placeholder="@Model.City" class="form-control">*@
+                                     @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.DrivingLicenseNumber } })
+                                    @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>City</label>
+                                     @*<input type="text" placeholder="@Model.Street" class="form-control">*@
+                                     @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.Country } })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>State</label>
+                                     @*<input type="text" placeholder="@Model.DrivingLicenseNumber" class="form-control">*@
+                                     @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.State } })
+                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Zip Code</label>
+                                     @*<input type="text" placeholder="@Model.DrivingLicenseNumber" class="form-control">*@
+                                     @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.Zip } })
+                                    @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                     @*<input type="text" placeholder="@Model.Street" class="form-control">*@
+                                     @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.Country } })
+                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                     
+                                </div>
+                            </div>
+                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    <label>Business Address</label>
+                                     @*<input type="text" placeholder="@Model.Street" class="form-control">*@
+                                     @Html.EditorFor(model => model.BusinessAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = @Model.BusinessAddress } })
+                                    @Html.ValidationMessageFor(model => model.BusinessAddress, "", new { @class = "text-danger" })
+                                     
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row gutters">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="margin-top:10px;">
+                                <div class="text-right"> 
+                                    <input  class="btn btn-primary" type="submit" value="Update"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script>
+        setTimeout(function () {
+            $("#msgalert").hide();
+        }, 3500);
+    </script>
+}
+</div>

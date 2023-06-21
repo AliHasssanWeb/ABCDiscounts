@@ -1,0 +1,72 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpAllowanceType*@
+@model ABC.HR.Domain.Entities.ValidateAllowanceType
+
+
+@{
+    ViewData["Title"] = "AllowanceType";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Update AllowanceType</h1>
+
+        @*<h4>EmpAllowanceType</h4>*@
+        <hr />
+        <div class="row container">
+            <div class="col-md-12 ">
+                <form asp-action="UpdateAllowanceType">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="AllowanceTypeName" class="control-label"></label>
+                            <input asp-for="AllowanceTypeName" class="form-control" />
+                            <span asp-validation-for="AllowanceTypeName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="AmountLimit" class="control-label"></label>
+                            <input asp-for="AmountLimit" class="form-control" />
+                            <span asp-validation-for="AmountLimit" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="form-group col-md-8">
+
+                            <label asp-for="Description" class="control-label"></label>
+                            @*<textarea asp-for="Description" class="form-control"></textarea>*@
+                            <textarea asp-for="Description" rows="4" cols="70" style="border: 1px solid #dee2e6; border-radius: 4px; "></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsActive" class="control-label"></label>
+                            <input asp-for="IsActive" type="checkbox" />
+                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageAllowanceType">Back to List</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}

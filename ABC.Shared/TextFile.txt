@@ -1,0 +1,65 @@
+﻿
+Appsetting.js
+ "ConnectionStrings": {
+    "BloggingDatabase": "Server=DESKTOP-602K13J\\SQLEXPRESS;Database=ABCDiscounts;Trusted_Connection=True;"
+  },
+
+  //Context.cs
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+
+                //optionsBuilder.UseSqlServer("Server=DESKTOP-HBNP993\\SQLEXPRESS;Database=ABCDiscounts;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["BloggingDatabase"].ConnectionString);
+            }
+        }
+Scaffold-DbContext "Server=DESKTOP-HBNP993\SQLEXPRESS;Database=ABCDiscounts;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DataLayer/Model
+        Scaffold-DbContext "Server=DESKTOP-602K13J\SQLEXPRESS;Database=ABCDiscounts;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DataLayer/Model -Force
+
+
+         Scaffold-DbContext "Server=LAPTOP-US7ODLBU\SQLEXPRESS;Database=ABCDiscounts;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Repository/Edmx -project ABC.EFCore -Force
+        using ABCServices.DataLayer.Model;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ABCServices.DataLayer.Model
+{
+    public class InnerEmployee
+    {
+        public PersonPin PersonPins { get; set; }
+    }
+    [MetadataType(typeof(InnerEmployee))]
+    public partial class Employee
+    {
+        public PersonPin PersonPins { get; set; } 
+    }
+}
+  "ConnectionStrings": {
+    "BloggingDatabase": "Server=.\\MSSQLSERVER2017;Database=ABCDiscounts;Trusted_Connection=True;"
+
+
+  },
+
+
+  source=.\\MSSQLSERVER2017;initial catalog=ABCDiscounts;user id=abcadmin;password=jq8N_1g5;MultipleActiveResultSets=True;
+  "BloggingDatabase": "Server= .\\MSSQLSERVER2017;initial catalog=ABCDiscounts;user id=abcadmin;password=jq8N_1g5;MultipleActiveResultSets=True;Trusted_Connection=True;Security=false"
+
+            modelBuilder.Ignore<IdentityUserLogin<string>>();
+            modelBuilder.Ignore<IdentityUserToken<string>>();
+            modelBuilder.Ignore<IdentityUserRole<string>>();
+            modelBuilder.Ignore<IdentityUser<string>>();
+
+
+                <div style="width: 30%; height: 100px; border: 1px solid black;">
+                                        <canvas id="signature-pad" width="400" height="100">
+                                        </canvas>
+                                        @*@Html.HiddenFor(model => model.CertificateExemptionInstructions.Signature, new { htmlAttributes = new { @class = "", @id = "SignaturPadHidden", @name = "SignaturPadHidden" } })*@
+
+                                        <div class="text-center">
+                                            <button id="clear" class="button button1" type="button">Clear</button>
+                                        </div>
+                                    </div>

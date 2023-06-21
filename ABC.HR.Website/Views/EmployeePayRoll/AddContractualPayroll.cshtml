@@ -1,0 +1,1309 @@
+﻿@*@model ABC.EFCore.Repository.Edmx.EmpPayRoll*@
+@model ABC.HR.Domain.Entities.ValidateEmpPayRoll
+
+
+@{
+
+    ViewData["Title"] = "AddPayRoll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+@*<link href="~/lib/chosen_v1.8.7/chosen.css" rel="stylesheet" />*@
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container .select2-selection--single {
+        height: 32px;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 10px;
+    }
+</style>
+
+
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Add Contractual Employee PayRoll</h1>
+
+        <hr />
+        <div class="row container">
+            <div class="col-md-12">
+                @*<form asp-action="" method="post">*@
+                <form asp-action="AddPayRoll">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="EmployeeId" class="control-label"></label>
+                            <select asp-for="EmployeeId" id="MyEmployeeId"
+                                    class="form-control Serchempayrol"
+                                    asp-items="@(new SelectList(ViewBag.EmployeeNo,"Value", "Text"))">
+                                <option disabled selected>--- SELECT EMPLOYEE---</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label class="control-label">Rate Per Hour</label>
+                            <input id="empsalary" asp-for="BasicSalary" class="form-control" type="number" readonly />
+                            <span asp-validation-for="BasicSalary" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3 empInfo">
+                            <label class="control-label">Martial Status</label>
+                            <input type="text" readonly class="form-control-plaintext pt-1" id="martialStatus" value="">
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="FromDate" class="control-label"></label>
+                            @*@{
+                                    var startMonth = DateTime.Now.Month;
+
+                                    var monthlist = new List<SelectListItem>();
+
+                                    var items = new List<string> { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+                                    for (int i = 0; i < items.Count(); i++)
+                                    {
+                                        monthlist.Add(new SelectListItem { Value = (i + 1).ToString() , Text = items[i], Selected = (i == startMonth - 1) });
+                                    }
+
+                                }
+
+                                <select asp-for="Month"
+                                        class="form-control"
+                                        asp-items="@(monthlist)" id="selectedmonth">
+                                    <option disabled selected>--- SELECT MONTH---</option>
+
+                                </select>*@
+
+
+
+                            @*<select asp-for="Month" class="form-control">
+                                    <option disabled selected>--- SELECT MONTH---</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+
+                                </select>*@
+
+                            <input asp-for="FromDate" class="form-control date-pick" id="selectedmonth" />
+
+                            <span asp-validation-for="FromDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3" style="display:none">
+                            <input asp-for="ToDate" style="display:none" class="form-control" id="enddate" />
+                        </div>
+                        @*<div class="form-group col-md-3">
+                                <label asp-for="ToDate" class="control-label"></label>
+                                <input asp-for="ToDate" class="form-control date-pick" id="selectedyear" />
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group col-md-3">
+                                <label asp-for="DisperseDate" class="control-label"></label>
+                                <input asp-for="DisperseDate" class="form-control" />
+                                <span asp-validation-for="DisperseDate" class="text-danger"></span>
+                            </div>*@
+                        <div class="form-group col-md-6">
+                        </div>
+                        <div class="form-group col-md-3 empInfo">
+                            <label class="control-label">Contract Type</label>
+                            <input type="text" readonly class="form-control-plaintext pt-1" id="contractType" value="">
+
+                        </div>
+                    </div>
+
+                    <div style="display: none; " id="displayloader">
+                        <img src="~/images/Ajux_loader.gif" style="height: 230px; margin-left:6rem" />
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="form-group col-md-10">
+                                    <label asp-for="Allowances" class="control-label"></label>
+                                    <input asp-for="Allowances" class="form-control" value="0" readonly id="totalAllowancesemp" />
+                                    <span asp-validation-for="Allowances" class="text-danger"></span>
+                                </div>
+                                <!-- Modal -->
+                                <div class="form-group col-md-1 mt-md-4">
+
+                                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleModal" style="color:whitesmoke" title="Add Allowance">
+                                        <i class="mdi mdi-plus"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Allowance</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="partialView">
+
+                                                <partial name="PartialAddEmployeeAllowance">
+                                                    @*@Html.Partial("PartialAddEmployeeAllowance", new AbcPos.Models.EmpAllowance());*@
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* eND mODEL *@
+
+                                @* 2nd model *@
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleListAllownce" style="color:whitesmoke" title="View Allowance">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleListAllownce" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">List Allowance</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="partialView">
+                                                <table class="table cell-border compact stripe" id="AlloenceList">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Amount</th>
+                                                            <th>Reson</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="showallowncedata">
+                                                    </tbody>
+                                                </table>
+                                                @*<partial name="PartialAddEmployeeAllowance">*@
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* End 2nd model *@
+
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-md-10">
+                                    <label asp-for="Deductions" class="control-label"></label>
+                                    <input asp-for="Deductions" class="form-control" value="0" readonly id="totalDeductionemp" />
+                                    <span asp-validation-for="Deductions" class="text-danger"></span>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleAddDeduction" style="color:whitesmoke" title="Add Deduction">
+                                        <i class="mdi mdi-plus"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleAddDeduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Deduction</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="partialView">
+
+                                                <partial name="PartialAddEmployeeDeduction">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* eND mODEL *@
+
+                                @* 2nd model *@
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleListDeduction" style="color:whitesmoke" title="View Deductions">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleListDeduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Tax List</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <table class="table cell-border compact stripe">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Amount</th>
+                                                            <th>Reson</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="showDeductionData">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color:whitesmoke">Close</button>
+                                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* End 2nd model *@
+
+
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-10">
+                                    <label asp-for="Loans" class="control-label"></label>
+                                    <input asp-for="Loans" class="form-control" value="0" readonly id="totalLoanemp" />
+                                    <span asp-validation-for="Loans" class="text-danger"></span>
+                                </div>
+
+
+                                <!-- Modal -->
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleAddLoan" style="color:whitesmoke" title="Add Loan">
+                                        <i class="mdi mdi-plus"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleAddLoan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Loan</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="partialView">
+
+                                                <partial name="PartialAddEmployeeLoan">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* eND mODEL *@
+
+                                @* 2nd model *@
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleListLoan" style="color:whitesmoke" title="View Loans">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleListLoan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Loan List</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <table class="table cell-border compact stripe">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Amount</th>
+                                                            <th>Reson</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="showLoanData">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* End 2nd model *@
+
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-10">
+                                    <label asp-for="Taxes" class="control-label"></label>
+                                    <input asp-for="Taxes" class="form-control" value="0" readonly id="totalTaxemp" />
+                                    <span asp-validation-for="Taxes" class="text-danger"></span>
+                                </div>
+                                <!-- Modal -->
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#exampleAddTax" style="color:whitesmoke" title="Add Tax">
+                                        <i class="mdi mdi-plus"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleAddTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Add Tax</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="partialView">
+
+                                                <partial name="PartialAddEmployeeTax">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* eND mODEL *@
+
+                                @* 2nd model *@
+                                <div class="form-group col-md-1 mt-lg-4">
+
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleListTax" style="color:whitesmoke" title="View Taxes">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleListTax" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Tax List</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <table class="table cell-border compact stripe">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Amount</th>
+                                                            <th>Reson</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="showTaxesData">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @* End 2nd model *@
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label asp-for="TotalSalary" class="control-label"></label>
+                                    <input asp-for="TotalSalary" class="form-control" value="0" readonly id="ToalSumofSallary" />
+                                    <span asp-validation-for="TotalSalary" class="text-danger"></span>
+                                </div>
+                                <div style="display:none">
+                                    <input asp-for="PayWithoutDeduction" class="form-control" readonly id="PayWithoutDeductionget" />
+
+                                </div><div style="display:none">
+                                    <input asp-for="EmpContractName" class="form-control" id="empcontractname" />
+
+                                </div>
+
+                                @* 3rd Model *@
+                                <div class="form-group col-md-3 mt-lg-4">
+
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleListAttendence" style="color:whitesmoke" title="View Deductions">
+                                        <i class="mdi mdi-eye">Attendance Record</i>
+                                    </button>
+                                </div>
+
+                                <div class="modal fade bd-example-modal-lg" id="exampleListAttendence" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Records Total</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <table class="table cell-border compact stripe">
+                                                    <tr>
+                                                        <th>Attendance</th>
+                                                        <td id="dataattend1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Leaves</th>
+                                                        <td id="dataattend2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Late</th>
+                                                        <td id="dataattend3"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>OverTime Hours</th>
+                                                        <td id="dataattend4"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Working Hours</th>
+                                                        <td id="dataattend5"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Attend Hours</th>
+                                                        <td id="dataattend6"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Early Leave</th>
+                                                        <td id="dataattend7"></td>
+                                                    </tr>
+
+                                                </table>
+                                                @*<partial name="PartialAddEmployeeAllowance">*@
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                @* End 3rd Model *@
+
+
+                            </div>
+                        </div>
+                        @*<div class="col-3">
+                                <div class="row">
+                                    <div class="form-group col-md-12 empInfo">
+                                        <label class="control-label">Employee Taxes</label>
+                                        <div id="emptaxtypes">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="IsApprove" class="control-label"></label>
+                            @*<input asp-for="IsApprove" type="checkbox" checked />*@
+                            @Html.CheckBox("IsApprove", true)
+                            <span asp-validation-for="IsApprove" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="submit" value="Create" class="btn btn-lg btn-dark me-3 wd-40" style="color:whitesmoke" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="ManageContractPayRoll">Back to List</a>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+@*<script src="~/lib/chosen_v1.8.7/chosen.jquery.js"></script>*@
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+
+    $(".Serchempayrol").select2();
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".empInfo").hide();
+    });
+
+    //Total Deductions
+    function TotalDeductions() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        $.ajax({
+            type: "GET",
+            url: "EmployeeDeductionTotal",
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            async: false,
+            dataType: "json",
+            success: function (data2) {
+                $("#totalDeductionemp").val("");
+                var obj4 = data2.totalDeductions;
+
+
+                $("#totalDeductionemp").val(obj4);
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+    }
+
+    function TotalTaxes() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        $.ajax({
+            type: "GET",
+            url: "EmployeeTaxTotal",
+            async: false,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            dataType: "json",
+            success: function (data3) {
+                $("#totalTaxemp").val("");
+                var obj5 = data3.totalTaxes;
+
+
+             //   $("#totalTaxemp").val(obj5);
+
+
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+    }
+
+    function TotalLoans() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        $.ajax({
+            type: "GET",
+            url: "EmployeeLoanTotal",
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            async: false,
+            dataType: "json",
+            success: function (data4) {
+                $("#totalLoanemp").val("");
+                var obj6 = data4.totalLoans;
+
+                $("#totalLoanemp").val(obj6);
+
+                /////////////////
+                ListofAttendence();
+                //Total Sallary Calculation
+                window.setTimeout(function () {
+                    //debugger
+                    var byhoursalary = parseInt(dailyWagesChargesAmountperhour) * parseInt(totolattendendedhourssss);
+                    if (checkisvage == true) {
+                        var empbasicsalary = byhoursalary;
+                        $("#PayWithoutDeductionget").val(empbasicsalary);
+                    }
+                    else {
+                        var empbasicsalary = $("#empsalary").val();
+                    }
+
+
+
+
+                    var empfallonce = $("#totalAllowancesemp").val();
+                    var empftax = $("#totalTaxemp").val();
+                    var empfloan = $("#totalLoanemp").val();
+                    var empfdeduction = $("#totalDeductionemp").val();
+
+                    var sumbasic = parseInt(empbasicsalary) + parseInt(empfallonce);
+                    var DeductionBasic = parseInt(empftax) + parseInt(empfloan) + parseInt(empfdeduction);
+                    var FinalSumBasic = parseInt(sumbasic) - parseInt(DeductionBasic);
+                    debugger;
+                    //var sumbasic = parseInt(empbasicsalary) + parseInt(empfallonce);
+                    //var DeductionBasic = parseInt(empfloan) + parseInt(empfdeduction);
+                    //var FinalSumBasic = parseInt(sumbasic) - parseInt(DeductionBasic);
+                    //var taxamount = FinalSumBasic * ([parseInt(empftax) / 100]);
+                    @*var empidsal = parseInt($("#MyEmployeeId").val());
+                    var martialstatus = "";
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("EmployeeById", "Employees")",
+            async: false,
+            data: { "id": empidsal },
+            dataType: "json",
+            success: function (data) {
+                if (data.martialStatus == 'Married') {
+                    martialstatus = "Married";
+                }
+                debugger;
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+                    if (martialstatus == "Married" || martialstatus=="Single") {
+                        debugger;
+                        if (FinalSumBasic <= 9999) {
+                            FinalSumBasic = FinalSumBasic + 0;
+                            $("#totalTaxemp").val(0);
+                        }
+                        else if (FinalSumBasic <= 19999) {
+                            FinalSumBasic = FinalSumBasic + 110;
+                            $("#totalTaxemp").val(110);
+                        }else if (FinalSumBasic <= 29999) {
+                            FinalSumBasic = FinalSumBasic + 850;
+                            $("#totalTaxemp").val(850);
+                        }else if (FinalSumBasic <= 39999) {
+                            FinalSumBasic = FinalSumBasic + 860;
+                            $("#totalTaxemp").val(860);
+                        }else if (FinalSumBasic <= 49999) {
+                            FinalSumBasic = FinalSumBasic + 1020;
+                            $("#totalTaxemp").val(1020);
+                        }else if (FinalSumBasic <= 59999) {
+                            FinalSumBasic = FinalSumBasic + 1020;
+                            $("#totalTaxemp").val(1020);
+                        }else if (FinalSumBasic <= 69999) {
+                            FinalSumBasic = FinalSumBasic + 1020;
+                            $("#totalTaxemp").val(1020);
+                        }
+                    }
+
+                    FinalSumBasic = FinalSumBasic;*@
+                  //  $("#totalTaxemp").val(taxamount.toFixed(2));
+                    $("#ToalSumofSallary").val("");
+                    $("#ToalSumofSallary").val(FinalSumBasic);
+                    //loader
+                    $("#displayloader").css("display", "none");
+                }, 2000);
+
+
+
+            }, error: function (err) {
+
+
+
+            }
+
+        });
+
+    }
+
+    function ListofAlloance() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        //var listcovertype = $("#AlloenceList").DataTable();
+
+        $.ajax({
+            type: "GET",
+            url: "AllowncebyDate",
+            async: false,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            dataType: "json",
+            success: function (data4) {
+
+
+                var UserList = data4.length;
+                if (UserList > 0) {
+                    $("#showallowncedata").empty();
+                    for (var i = 0; i < UserList; i++) {
+                        var tr = ('<tr><td>' + data4[i].amount + '</td><td>' + data4[i].reason + '</td><td>' + data4[i].date + '</td></tr>');
+                        $("#showallowncedata").append(tr);
+                    }
+                }
+                else {
+                    $("#showallowncedata").empty();
+                }
+
+
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    }
+
+    function ListofDeductions() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        //var listcovertype = $("#AlloenceList").DataTable();
+
+        $.ajax({
+            type: "GET",
+            url: "DeductionsbyDate",
+            async: false,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            dataType: "json",
+            success: function (data7) {
+
+
+                var UserList = data7.length;
+                if (UserList > 0) {
+                    $("#showDeductionData").empty();
+                    for (var i = 0; i < UserList; i++) {
+                        var tr = ('<tr><td>' + data7[i].amount + '</td><td>' + data7[i].reason + '</td><td>' + data7[i].date + '</td></tr>');
+                        $("#showDeductionData").append(tr);
+                    }
+                }
+                else {
+                    $("#showDeductionData").empty();
+                }
+
+
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    }
+    //List of Loans
+    function ListofLoans() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        //var listcovertype = $("#AlloenceList").DataTable();
+
+        $.ajax({
+            type: "GET",
+            url: "LoanbyDate",
+            async: false ,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            dataType: "json",
+            success: function (data4) {
+                if (data4 != "") {
+                    var UserList = data4.length;
+                    if (UserList > 0) {
+                        $("#showLoanData").empty();
+                        for (var i = 0; i < UserList; i++) {
+                            var tr = ('<tr><td>' + data4[i].amount + '</td><td>' + data4[i].reason + '</td><td>' + data4[i].date + '</td></tr>');
+                            $("#showLoanData").append(tr);
+                        }
+                    }
+                    else {
+                        $("#showLoanData").empty();
+                    }
+                }
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    }
+    //List of Taxes
+    function ListofTaxes() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+        //var listcovertype = $("#AlloenceList").DataTable();
+
+        $.ajax({
+            type: "GET",
+            url: "TaxesbyDate",
+            async: false ,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea
+            },
+            dataType: "json",
+            success: function (data6) {
+
+
+                var UserList = data6.length;
+                if (UserList > 0) {
+                    $("#showTaxesData").empty();
+                    for (var i = 0; i < UserList; i++) {
+                        var tr = ('<tr><td>' + data6[i].amount + '</td><td>' + data6[i].reason + '</td><td>' + data6[i].date + '</td></tr>');
+                        $("#showTaxesData").append(tr);
+                    }
+                }
+                else {
+                    $("#showTaxesData").empty();
+                }
+
+
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    }
+
+    var totolattendendedhourssss = 0;
+
+    function ListofAttendence() {
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var seleyea = $("#selectedyear").val();
+
+
+
+        $.ajax({
+            type: "GET",
+            url: "AttendencebyDate",
+            async: false,
+            data: {
+                "empidforalonce": empidsal,
+                "month": selemon,
+                "year": seleyea,
+                "IncludeSS": true
+            },
+            dataType: "json",
+            success: function (datarandome) {
+
+                $("#dataattend1").html(datarandome.totalAttendance);
+                $("#dataattend2").html(datarandome.totalLeaves);
+                $("#dataattend3").html(datarandome.totalLate);
+                $("#dataattend4").html(datarandome.totalOverTimeHours);
+                $("#dataattend5").html(datarandome.totalWorkingHours);
+                $("#dataattend6").html(datarandome.totalAttendHours);
+                $("#dataattend7").html(datarandome.totalEarlyLeave);
+
+                totolattendendedhourssss = datarandome.totalAttendHours;
+
+
+
+                //var UserList = datarandome.length;
+                //if (UserList > 0) {
+                //    $("#totalrecordlisr").empty();
+                //    for (var i = 0; i < UserList; i++) {
+
+                //        var tr = ('<tr><td>' + datarandome[i].totalAttendHours + '</td><td>' + datarandome[i].totalAttendance + '</td><td>' + datarandome[i].totalEarlyLeave + '</td><td>' + datarandome[i].totalLate + '</td><td>' + datarandome[i].totalLeaves + '</td><td>' + datarandome[i].totalOverTimeHours + '</td><td>' + datarandome[i].totalWorkingHours + '</td></tr>');
+
+
+                //        $("#totalrecordlisr tbody").append(tr);
+                //        //$(tr).appendTo($("#totalrecordlisr tbody"));
+                //    }
+
+                //}
+                //else {
+                //    $("#totalrecordlisr").empty();
+                //}
+
+
+
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    }
+    function TaxesBasedonEmployee() {
+        var empidsal = parseInt($("#MyEmployeeId").val());
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("EmployeeById", "Employees")",
+            async: false,
+            data: { "id": empidsal },
+            dataType: "json",
+            success: function (data) {
+                if (data.martialStatus == 'Married') {
+
+                }
+                debugger;
+
+
+            }, error: function (err) {
+
+            }
+
+        });
+    }
+      function employeeDetail() {
+          var empidsal = $("#MyEmployeeId").val();
+            $(".empInfo").show();
+               $.ajax({
+                type: "GET",
+                url: "@Url.Action("EmployeeById", "Employees")",
+                async: false,
+                data: { "id": empidsal },
+                dataType: "json",
+                success: function (data) {
+                    if (data.martialStatus == "MarriedBut") {
+                        $("#martialStatus").val("Married But Widow");
+                    }
+                    else {
+                        $("#martialStatus").val(data.martialStatus);
+                    }
+
+
+                }, error: function (err) {
+
+                }
+
+            });
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("EmployeeContractByEmployeeCode", "Employees")",
+                async: false,
+                data: { "id": empidsal },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null) {
+                          if (data.permanent == true) {
+                        $("#contractType").val("Permanent");
+                    }
+                    else if (data.permanent == false) {
+                        $("#contractType").val("Contract");
+                    }
+                    }
+                    else {
+                        $("#contractType").val("No Contract");
+                    }
+
+                }, error: function (err) {
+
+                }
+
+            });
+          $.ajax({
+                type: "GET",
+                url: "@Url.Action("EmployeeTaxbyId", "Employees")",
+                async: false,
+                data: { "id": empidsal },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data != null) {
+                        $.each(data, function (index, value) {
+                            var taxtext = value.empTaxTypeName + '(' + value.salaryRange + ')';
+                            $('#emptaxtypes').append('<input style="font-size: 13px;" type="text" readonly class="form-control-plaintext pt-1" id="" value="' + taxtext + '">');
+                        })
+                    }
+                    else {
+                        $("#emptaxtypes").empty();
+                        $('#emptaxtypes').append('<input type="text" readonly class="form-control-plaintext pt-1" id="" value="No Employee Tax">');
+
+                    }
+
+
+                }, error: function (err) {
+
+                }
+
+            });
+        }
+    var checkisvage = false;
+    var dailyWagesChargesAmountperhour = 0;
+    $(document).on('change', '#MyEmployeeId', function () {
+
+
+        var empidsal = $("#MyEmployeeId").val();
+
+        $.ajax({
+            type: "GET",
+            url: "GetEmplyeeSalary",
+            async: false,
+            data: { "empidforsal": empidsal },
+            dataType: "json",
+            success: function (data) {
+                employeeDetail();
+
+                //var obj = JSON.stringify(data);
+                //var obj2 = jQuery.parseJSON(data[0].salary);
+                if (data != null) {
+
+                checkisvage = data[0].dailyWages;
+                if (checkisvage == true) {
+                    dailyWagesChargesAmountperhour = data[0].dailyWagesChargesAmount;
+                }
+                else {
+                    dailyWagesChargesAmountperhour = data[0].salary;
+                }
+
+                $("#empsalary").val(dailyWagesChargesAmountperhour);
+                $("#empcontractname").val(data[0].contractName);
+
+                }
+
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+    });
+
+
+    //for toatal allowance so on
+    //$(document).on('focusout', '#selectedyear', function () {
+
+    //    $("#displayloader").css("display", "block");
+    //    var empidsal = $("#MyEmployeeId").val();
+    //    var selemon = $("#selectedmonth").val();
+    //    var seleyea = $("#selectedyear").val();
+
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "EmployeeAllownceTotal",
+    //        async: false,
+    //        data: {
+    //            "empidforalonce": empidsal,
+    //            "month": selemon,
+    //            "year": seleyea
+    //        },
+    //        dataType: "json",
+    //        success: function (data1) {
+    //            $("#totalAllowancesemp").val("");
+    //            var obj3 = data1.totalAllowances;
+
+    //            $("#totalAllowancesemp").val(obj3);
+
+    //        }, error: function (err) {
+
+    //        }
+
+    //    });
+
+    //    //Calling Methods
+    //    TotalDeductions();
+    //    TotalTaxes();
+    //    TaxesBasedonEmployee();
+    //    TotalLoans();
+
+    //    ListofAlloance();
+    //    ListofDeductions();
+    //    ListofLoans();
+    //    ListofTaxes();
+    //    /*ListofAttendence();*/
+
+
+
+
+
+
+
+    //});
+    $(document).on('focusout', '#selectedmonth', function () {
+
+        $("#displayloader").css("display", "block");
+        var empidsal = $("#MyEmployeeId").val();
+        var selemon = $("#selectedmonth").val();
+        var checl = $('#selectedmonth').datepicker('getDate');
+        var date = new Date(selemon);
+        var enddate = new Date();
+        enddate.setDate(date.getDate() + 10);
+
+        debugger;
+        $("#enddate").val(enddate);
+        $.ajax({
+            type: "GET",
+            url: "EmployeemManualPayroll",
+            async: false,
+            data: {
+                "empidforalonce": empidsal,
+                "startdate": selemon,
+
+            },
+            dataType: "json",
+            success: function (data1) {
+                $("#displayloader").css("display", "none");
+                debugger;
+                $("#totalAllowancesemp").val(data1.allowance);
+                $("#totalDeductionemp").val(data1.deduction);
+                $("#totalLoanemp").val(data1.loans);
+                $("#totalTaxemp").val(data1.taxes);
+                $("#ToalSumofSallary").val(data1.totalSalary);
+                var LoanList = data1.loansList.length;
+                if (LoanList > 0) {
+                    $("#showLoanData").empty();
+                    for (var i = 0; i < LoanList; i++) {
+                        var tr = ('<tr><td>' + data1.loansList[i].amount + '</td><td>' + data1.loansList[i].reason + '</td><td>' + data1.loansList[i].date + '</td></tr>');
+                        $("#showLoanData").append(tr);
+                    }
+                }
+                else {
+                    $("#showLoanData").empty();
+                }
+                var deductionList = data1.deductions.length;
+                if (deductionList > 0) {
+                    $("#showDeductionData").empty();
+                    for (var i = 0; i < deductionList; i++) {
+                        var tr = ('<tr><td>' + data1.deductions[i].amount + '</td><td>' + data1.deductions[i].reason + '</td><td>' + data1.deductions[i].date + '</td></tr>');
+                        $("#showDeductionData").append(tr);
+                    }
+                }
+                else {
+                    $("#showDeductionData").empty();
+                }
+                var AllowanceList = data1.allowances.length;
+                if (AllowanceList > 0) {
+                    $("#showallowncedata").empty();
+                    for (var i = 0; i < AllowanceList; i++) {
+                        var tr = ('<tr><td>' + data1.allowances[i].amount + '</td><td>' + data1.allowances[i].reason + '</td><td>' + data1.allowances[i].date + '</td></tr>');
+                        $("#showallowncedata").append(tr);
+                    }
+                }
+                else {
+                    $("#showallowncedata").empty();
+                }
+                ListofAttendence();
+                if (parseInt(data1.attendance)<=0) {
+                 toastr.error("Check or Upload Employee Attendance");
+                }
+            }, error: function (err) {
+
+            }
+
+        });
+
+
+        //TotalDeductions();
+        //TotalTaxes();
+        //TaxesBasedonEmployee();
+        //TotalLoans();
+
+        //ListofAlloance();
+        //ListofDeductions();
+        //ListofLoans();
+        //ListofTaxes();
+
+
+
+
+
+
+
+    });
+
+
+
+
+
+</script>
+
+<script>
+    var date = new Date();
+    date.setDate(date.getDate() + 7);
+
+    var finalDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    $("#selectedmonth").val(finalDate);
+
+</script>

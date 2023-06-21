@@ -1,0 +1,1479 @@
+﻿@model ABC.EFCore.Repository.Edmx.CustomerInformation
+@{
+    ViewData["Title"] = "CustomerRegistration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/vendors/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/vendors/datatables.net/jquery.dataTables.js"></script>
+<script src="/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/js/select.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<style>
+    .bottomline {
+        border: none;
+    }
+</style>
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.error('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-tabs" style="border-bottom: 1px solid #ebedf2;" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="Registration-tab" data-bs-toggle="tab" href="#Registration" role="tab" aria-controls="Registration" aria-selected="false">Registration</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="certification-tab" data-bs-toggle="tab" href="#certification" role="tab" aria-controls="certification" aria-selected="false">Certification</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade active show" id="Registration" role="tabpanel" aria-labelledby="Registration-tab">
+
+                <div class="row">
+                    <input value="@Model.Id" class="hidden" id="employeeId" />
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">FullName</label>
+                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "FullName", id = "fullname", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgfullname">Enter Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Name of Business</label>
+                            @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control", placeholder = "Name of Business", id = "businessname", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgbusinessname">Enter Business Name</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Email</label>
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", id = "email", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgemail">Enter Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Phone</label>
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "+1-12323321", id = "phone", type = "number", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgphone">Enter Phone</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Mobile</label>
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Mobile", id = "mobile", type = "number", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgmobile">Enter Mobile Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Customer Type</label>
+                            @Html.EditorFor(model => model.CustomerType, new { htmlAttributes = new { @class = "form-control", placeholder = "CustomerType", id = "customertype", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgcustomertype">Enter CustomerType</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Customer State</label>
+                            @Html.EditorFor(model => model.CustomerState, new { htmlAttributes = new { @class = "form-control", id = "customerstate", Readonly = "Readonly", placeholder = "CustomerState" } })
+                            <label class="text-danger db" style="display:none" id="msgcutomerstate">Enter Customer State</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">State Resale TaxID</label>
+                            @Html.EditorFor(model => model.TaxIdfein, new { htmlAttributes = new { @class = "form-control", placeholder = "State Resale TaxID", id = "stateresaletaxid", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgstateresaletaxid">Enter State Resale TaxID</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Driver's License Number</label>
+                            @Html.EditorFor(model => model.DrivingLicenseNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "License Number", id = "drivinglicense", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgdrivinglicense">Enter License Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">License State</label>
+                            @Html.EditorFor(model => model.DrivingLicenseState, new { htmlAttributes = new { @class = "form-control", id = "drivinglicensestate", Readonly = "Readonly", placeholder = "LicenseState" } })
+                            <label class="text-danger db" style="display:none" id="msgdrivinglicensestate">Enter Driving License State</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Cigratte License No</label>
+                            @Html.EditorFor(model => model.CigaretteLicenseNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Cigratte License No", id = "cigrattelicencenumber", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgcigrattelicencenumber">Enter Cigratte License No</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Tobacco License No</label>
+                            @Html.EditorFor(model => model.TobaccoLicenseNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Tobacco License No", id = "tobaccolicensenumber", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgtobaccolicensenumber">Enter Tobacco License No</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">City</label>
+                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", id = "city", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgcity">Enter City</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">ZipCode</label>
+                            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "ZipCode", id = "zipcode", Readonly = "Readonly" } })
+                            <label class="text-danger db" style="display:none" id="msgzipcode">Enter ZipCode</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="">Registration Type</label>
+                            @Html.EditorFor(model => model.CustomerType, new { htmlAttributes = new { @class = "form-control", id = "registrationtype", Readonly = "Readonly", placeholder = "RegistrationType" } })
+                            <label class="text-danger db" style="display:none" id="msgregistrationtype">Enter Registration Type</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Address">Address:</label>
+                            @Html.EditorFor(model => model.OwnerAddress, new { htmlAttributes = new { @class = "form-control", id = "address", placeholder = "Enter Your Address", Readonly = "Readonly" } })
+                            <label class="text-danger" style="display:none" id="msgaddress">Enter Your Address</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="BusinessAddress">Business Address:</label>
+                            @Html.EditorFor(model => model.BusinessAddress, new { htmlAttributes = new { @class = "form-control", id = "businessaddress", placeholder = "Enter Business Address", Readonly = "Readonly" } })
+                            <label class="text-danger" style="display:none" id="msgbusinessaddress">Enter Your Business Address</label>
+                        </div>
+                    </div>
+
+                </div>
+                <label><u>Uploaded Concerned  Documents:</u></label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="">Faderal Text Form :</label>
+                            @if(Model.paperWork != null){
+                             <a class=" plc training-picker cp" style="font-size: 12px; margin-right: 25px; color: #64B3E1" href="@Model.paperWork.FederalFormPath" target="_blank">Federal Form</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            @if(Model.paperWork != null){
+                            <label class="" for="SalesTaxID">Sale Tax ID:</label>
+                              <a class=" plc training-picker cp" style="font-size: 12px; margin-right: 25px; color: #64B3E1" href="@Model.paperWork.SalesTaxIdpath" target="_blank">Sales Tax</a>
+                            }
+                        </div>
+                    </div>
+
+
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="">ID Copy/Driving License :</label>
+                            @if(Model.paperWork != null){
+                              <a class=" plc training-picker cp" style="font-size: 12px; margin-right: 25px; color: #64B3E1" href="@Model.paperWork.DrivingLicenseIdpath" target="_blank">Driving License</a>
+                            }
+                          </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="" for="ProfileImage">Profile Image:</label>
+                            @if(Model.paperWork != null){
+                                                         <a class=" plc training-picker cp" style="font-size: 12px; margin-right: 25px; color: #64B3E1" href="@Model.paperWork.DrivingLicenseIdpath" target="_blank">Profile Picture</a>
+
+                            }
+                                                     </div>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.CheckBox("TaxExempt",false, new { @id = "taxexampt", disabled = "disabled" })
+                            <label for="TaxExampt">
+                                Tax Exampt
+                            </label><br />
+                            <label class="text-danger" style="display:none" id="msgtaxexampt">Select CheckBox</label>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.Approved == false && Model.Rejected == false && Model.Pending == true)
+                {
+                    <div class="row offset-sm-9">
+                        <button type="button" class="btn btn-lg btn-success me-3 wd-30" id="approvebtn" onclick="showit()"><p style="color:white">Approve</p></button>
+                        <button type="button" class="btn btn-lg btn-danger me-3 wd-30" id="rejectbtn"><p style="color:white" onclick="ConfirmReject()? RejectEmployee() : null">Reject</p></button>
+                    </div>
+                }
+            </div>
+            <div class="tab-pane fade" id="certification" role="tabpanel" aria-labelledby="certification-tab">
+                <div class="container mb-3">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center my-2">
+                                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                                    <h2 class="mt-2"><b>Certificate of Examption</b></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p class="mt-3">
+                            This is a multi-state form. Not all states allow all exemptions listed on this form. Purchasers are responsible for knowing if they qualify to claim exemption from tax in the state that would otherwise be due tax on this sale. The seller may be required to provide this exemption certificate (or data elements required on the form) to a state that would otherwise be due tax on this sale.
+                        </p>
+                        <p class="mt-3">
+                            The purchaser will be held liable for any tax and interest, and possibly civil and criminal penalties imposed by the member state, if the purchaser is not eligible to claim this exemption. A seller may not accept a certificate of exemption for an entity-based exemption on a sale made at a location operated by the seller within the designated state if the state does not allow such an entity-based exemption.
+                        </p>
+                    </div>
+                    <div class="row">
+                        <ol type="1">
+                            <li>
+                                <div class="row">
+                                    <div class="my-3">
+                                        @Html.CheckBox("CertificateExemptionInstructions.MultistateSupplementForm", false, new { disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.MultistateSupplementForm, "", new { @class = "text-danger db" })
+                                        <label for="MultistateSupplementForm">Check if you are attaching the Multistate Supplemental form.</label>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="my-3">
+                                        @Html.EditorFor(model => model.CertificateExemptionInstructions.PostalAbbreviation, new { htmlAttributes = new { @class = "col-md-1", Readonly = "Readonly" } })
+                                        @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PostalAbbreviation, "", new { @class = "text-danger" })
+                                        <label for="PostalAbbreviation">If not, enter the two-letter postal abbreviation for the state under whose laws you are claiming exemption.</label>
+                                    </div>
+                                    <div>
+                                        @Html.CheckBox("CertificateExemptionInstructions.CertificateSinglePurchase", false, new { disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.CertificateSinglePurchase, "", new { @class = "text-danger db" })
+                                        <label for="CertificateSinglePurchase">
+                                            Check if this certificate is for a single purchase and enter the related invoice/purchase order#
+                                        </label>
+                                        @Html.EditorFor(model => model.CertificateExemptionInstructions.InvoicePurchaseOrderNo, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Invoice/Purchase Order Number", Readonly = "Readonly" } })
+                                        @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.InvoicePurchaseOrderNo, "", new { @class = "text-danger" })
+                                        <hr class="mt-0" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="my-3 row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Name of Purchaser
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaserName, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Name of Purchaser", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PurchaserName, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>
+                                                Business Adress
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.BusinessAddress, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Business Address", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.BusinessAddress, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label>
+                                                City
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaserCity, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Purchaser City", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PurchaserCity, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                State
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaserState, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Purchaser State", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PurchaserState, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Zip Code
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaserZipCode, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "ZipCode", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PurchaserZipCode, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label>
+                                                Purchaser's Tax ID Number
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaseTaxId, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Purchaser's Tax ID Number", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.PurchaseTaxId, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                State of Issue
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.StateIssue, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "State of Issue", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.StateIssue, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Country of Issue
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.CountryIssue, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Country of Issue", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.CountryIssue, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+
+                                        </div>
+                                    </div>
+                                    <label>
+                                        If no Tax ID Number, enter one of the following:
+                                    </label>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label>
+                                                FEIN
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.Fein, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "FEIN", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.Fein, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Driving License #/State Issued ID #
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.Fein, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Driving License Number/State Issued ID Number", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.DrivingLicenseNo, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Country of Issue
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.Fein, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "FEIN Country of Issue", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.FeinCountry, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                    </div>
+                                    <div class="my-3 row">
+                                        <div class="col-md-6">
+                                            <label>
+                                                Name of seller from whom you are purchasing, leasing, or renting
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.SellerName, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Name of Seller", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.SellerName, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>
+                                                Seller Adress
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.SellerAdress, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Seller Address", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.SellerAdress, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-4">
+                                            <label>
+                                                City
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.SellerCity, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Seller City", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.SellerCity, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                State
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.SellerState, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Seller State", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.SellerState, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Zip Code
+                                            </label>
+                                            @Html.EditorFor(model => model.CertificateExemptionInstructions.SellerZipCode, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Seller ZipCode", Readonly = "Readonly" } })
+                                            @Html.ValidationMessageFor(model => model.CertificateExemptionInstructions.SellerZipCode, "", new { @class = "text-danger" })
+                                            <hr class="mt-0" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row my-3">
+                                    <label><b>Type of business. </b>Check the number that describes your business.</label><p></p>
+                                    <div class="row">
+                                        @if(Model.CertificateBusinessTypes != null)
+                                        {
+                                             @foreach (var item in Model.CertificateBusinessTypes.ToList().Where(m => m.CustomerId == Model.Id).ToList())
+                                        {
+                                            if (item.Type == "Accommodation And Food Services")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="AccommodationAndFoodServices">Accommodation and food services</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Agricultural Forestry Fishing And Hunting")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="AgriculturalforestryFishingAndHunting">Agricultural Forestry Fishing And Hunting</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Construction")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Construction">Construction</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Finance And Insurance")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FinanceAndInsurance">Finance And Insurance</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Information Publishing And Communications")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="InformationPublishingAndCommunications">Information Publishing And Communications</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Manufacturing")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Manufacturing">Manufacturing</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Mining")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Mining">Mining</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "RealEstate")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Manufacturing">RealEstate</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "RealEstate")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Manufacturing">Manufacturing</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "RentalAndLeasing")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="RentalAndLeasing">Rental And Leasing</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "RetailTrade")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="RetailTrade">Retail Trade</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "TransportationAndWarehousing")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="TransportationAndWarehousing">Transportation And Warehousing</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Utilities")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Utilities">Utilities</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Wholesale Trade")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="WholesaleTrade">WholesaleTrade</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Business Services")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="BusinessServices">BusinessServices</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Professional Services")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="ProfessionalServices">ProfessionalServices</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Education And Health")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="EducationAndHealth">Education And Health</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "NonprofitOrganization")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="NonprofitOrganization">NonprofitOrganization And Health</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "Government")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="Government">Government</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "NotABusiness")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="NotABusiness">NotABusiness</label>
+                                                </div>
+                                            }
+                                            if (item.Type == "others")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="text" readonly="readonly" />
+                                                    <label for="NotABusiness">NotABusiness</label>
+                                                </div>
+                                            }
+
+                                        }
+                                        }
+                                       
+
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="row my-3">
+                                    <label><b>Reason for exemption.</b> Check the letter that identifies the reason for the exemption.</label><p></p>
+                                    <div class="row my-3">
+                                        @if(Model.CertificateReasonExemptions != null)
+                                        {
+                                          @foreach (var item in Model.CertificateReasonExemptions.Where(m => m.CustomerId == Model.Id))
+                                        {
+                                            if (item.Reason == "Federal Government")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "State Or Local Government")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Tribal Government")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Foreign Diplomat")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Agricultural Production")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Production Manufacturing")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Direct Pay Permit")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Direct Mail")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "Resale")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                            if (item.Reason == "others")
+                                            {
+                                                <div class="col-md-6">
+                                                    <input type="checkbox" value="true" checked="checked" disabled="disabled" />
+                                                    <label for="FederalGovernment">FederalGovernment</label>
+                                                </div>
+                                            }
+                                        }  
+                                        }
+                                        
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li>
+                                <label>
+                                    <b>Sign here.</b>
+                                    I declare that the information on this certificate is correct and complete to the best of my knowledge and belief
+                                </label>
+                                <hr />
+                                <div class="row mb-3">
+                                    <label>
+                                        Signature of authorized purchaser
+                                    </label>
+                                    <div style="width: 30%; height: 100px; border: 1px solid black;">
+                                        <canvas id="signature-pad" width="400" height="100"></canvas>
+                                        <div class="text-center">
+                                            <button id="clear" class="button button1">Clear</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                                    <h2 class="mt-3"><b>Certificate of Examption</b></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="form-group">
+                            <label>
+                                Name of Purchaser
+                            </label>
+                            @Html.EditorFor(model => model.CertificateExemptionInstructions.PurchaserName, new { htmlAttributes = new { @class = "form-control bottomline", placeholder = "Name of Purchaser" } })
+                            <hr class="mt-0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-2 text-center">
+                                <label>
+                                    <b> State</b>
+                                </label>
+
+                            </div>
+                            <div class="col-md-5 text-center">
+                                <label>
+                                    <b>Reason For Examption</b>
+                                </label>
+
+                            </div>
+                            <div class="col-md-5 text-center">
+                                <label>
+                                    <b>identification Number</b>
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    AR*
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[0].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[0].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    IA
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[1].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[1].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    IN
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[2].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[2].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    KS
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[3].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[3].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    KY
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[4].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[4].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    MI
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[5].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[5].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    MN
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[6].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[6].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    NC
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[7].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[7].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    NA
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[8].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[8].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    NE
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[9].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[9].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    NJ
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[10].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[10].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    NV
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[11].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[11].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    OH
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[12].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[12].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    RI
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[13].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[13].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    OK
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[14].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[14].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    SD
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[15].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[15].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    TN
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[16].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[16].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    UT
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[17].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[17].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    VT
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[18].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[18].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    WV
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[19].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[19].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 text-center mt-3">
+                                <p>
+                                    WY
+                                </p>
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[20].ReasonExamption, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.CertificateIdentifications[20].IdentificationNumber, new { htmlAttributes = new { @class = "form-control bottomline" } })
+                                <hr class="mt-0" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                                    <h2 class="mt-3"><b>Certificate of Exemption Instructions</b></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+
+                        <p>
+                            Use this form to claim exemption from sales tax on purchases of otherwise taxable items. The purchaser must
+                            complete all fields on the exemption certificate and provide the fully completed certificate to the seller in order to
+                            claim exemption
+                        </p>
+                        <p>
+                        <p>
+                            <b>Warning to purchaser:</b>
+                            You are responsible for ensuring that you are eligible for the exemption you are claiming.
+                            You will be held liable for any tax and interest, and possibly penalties imposed by the member state due the tax
+                            on your purchase, if the purchase is not legally exempt
+                        </p>
+                    </div>
+
+                    <div class="row my-3">
+
+                        <p>
+                            <b>Purchaser instructions for completing the exemption certificate</b>
+                        </p>
+
+                        <p>
+                            <b>1.&emsp;</b>
+                            Some purchasers may wish to complete a single certificate for multiple states where they conduct business
+                            and, regularly, make exempt purchases from the same seller. If you do, check the box on the front of the
+                            SSUTA Certificate of Exemption to indicate that you are attaching the Multistate Supplemental form on page 2.
+                        </p>
+
+                        <p>
+
+                            <b>CAUTION:</b> Certificates completed with a multistate supplement may include non-member states of the SST
+                            Governing Board, provided those states have agreed to accept the SSUTA Certificate of Exemption. Both
+                            sellers and purchasers MUST BE AWARE that these additional non-member states may not have adopted
+                            the SSUTA provisions for Direct Mail. Additionally, completion of this certificate in its entirety may not fully
+                            relieve the seller from liability unless non-member states’ requirements have been met.
+                        </p>
+                        <p>
+                            If you are not attaching the Multistate Supplemental form, enter the two-letter postal abbreviation “NC” in
+                            the boxes provided if you are claiming an exemption from sales and use tax imposed by the State of North
+                            Carolina. If you are claiming an exemption from more than one member state, complete the SSUTA Certificate
+                            of Exemption: Multistate Supplemental form
+                        </p>
+
+                        <p>
+                            <b>2.&emsp;Single purchase exemption certificate: </b>
+                            Check this box if this exemption certificate is being used for a
+                            single purchase. Include the invoice or purchase order number for the transaction.
+                        </p>
+
+                        <p>
+
+                            If this boxed is not checked, this certificate will be treated as a blanket certificate. A blanket certificate
+                            continues in force so long as the purchaser is making recurring purchases (at least one purchase within a
+                            period of twelve consecutive months) or until otherwise cancelled by the purchaser.
+                        </p>
+
+                        <p>
+                            <b>3.&emsp;Purchaser information: </b>
+                            Complete the purchaser and seller information section, as requested. An
+                            identification number for you or your business must be included. Include your North Carolina sales and
+                            use tax account ID number or North Carolina sales and use tax exemption number, as appropriate. If a
+                            transaction does not require the use of a registration or exemption number, enter the Federal Employer
+                            Identification Number (FEIN) issued to your business, or if no FEIN is required, enter your personal driver’s
+                            license number and the state that it is issued by. Foreign diplomats and consular personnel must enter the
+                            individual tax identification number shown on the sales tax exemption card issued to you by the United States
+                            Department of State’s Office of Foreign Missions.
+                        </p>
+
+                        <p>
+                            <b>Multistate Purchasers: </b>
+                            The purchaser should enter its headquarters address as its business address.
+                        </p>
+
+
+                        <p>
+                            <b>4.&emsp; Type of business:  </b>
+                            Circle the number that best describes your business or organization. If none of the
+                            categories apply, circle number 20 and provide a brief description.
+                        </p>
+
+                        <p>
+                            <b>5.&emsp;Reason for exemption:  </b>
+                            Circle the exemption that applies to your business and enter the additional information
+                            requested for that exemption. If the member state that is due tax on your purchase does not require the
+                            additional information requested for the exemption reason code circled, enter “NA” for not applicable on
+                            the appropriate line. If an exemption that is not listed applies, circle “L Other” and enter an explanation.
+                            The explanation for “L Other” must include a clear and concise explanation of the reason for the exemption
+                            claimed.
+                        </p>
+
+
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h3>Streamlined Sales and Use Tax Agreement</h3>
+                                    <h2 class="mt-3"><b>Certificate of Exemption Instructions - Continued</b></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+
+                        <p>
+                            <b>Multistate Purchasers: </b>
+                            Attach the SSUTA Certificate of Exemption: Multistate Supplemental form and
+                            indicate the applicable reason for exemption and identification number (if required) for each of the additional
+                            states in which the purchaser wishes to claim exemption from tax
+                        </p>
+                        <p>
+                            <b>CAUTION: </b>
+                            The exemptions listed are general exemptions most commonly allowed by member states. However,
+                            each state’s laws governing exemptions are different. Not all of the reasons listed may be valid exemptions
+                            in the state in which you are claiming exemption. In addition, each state has other exemptions that are not
+                            listed on this form. To determine what sales and use tax exemptions are allowed in a particular state refer to
+                            the state’s web site or other information available relating to their exemptions.
+                        </p>
+                        <p>
+                            For information on exemption certificate procedures and exemption number requirements in North Carolina,
+                            see Section 52 of the Sales and Use Tax Technical Bulletins which can be found on the Department’s website
+                            at www.dornc.com, or you may contact the Taxpayer Assistance Division at 1-877-252-3052 (toll free).
+                        </p>
+                        <p>
+                            <b> Seller: </b>
+                            You are required to maintain proper records of exempt transactions and provide those records to Member
+                            states of the SST Governing Board, Inc., when requested. These certificates may be provided in paper or electronic
+                            format. If a paper exemption certificate is not forwarded by the purchaser, but instead the data elements required
+                            on the form are otherwise captured by the seller, the seller must maintain such data and make it available to
+                            Member states in the form in which it is maintained by the seller
+                        </p>
+                        <p>
+                            You are relieved of the responsibility for collecting and remitting sales tax on the sale or sales for which the
+                            purchaser provided you with this exemption certificate, even if it is ultimately determined that the purchaser
+                            improperly claimed an exemption, provided all of the following conditions are met:
+                        </p>
+                        <p>
+                            1.&emsp; All fields on the exemption certificate are completed by the purchaser or the required information is captured
+                            and maintained;
+
+                        </p>
+                        <p>
+                            2.&emsp; The fully completed exemption certificate (or the required information) is provided to you at the time of sale
+                            or as otherwise provided by Section 317 of the SSUTA;
+                        </p>
+
+                        <p>
+                            3.&emsp;If the purchaser is claiming an entity-based exemption (i.e., an exemption based on who the purchaser is),
+                            the state that would otherwise be due the tax on the sale allows the specific entity-based exemption claimed
+                            by the purchaser if the purchase was made at a sale location operated by the seller within that state;
+                        </p>
+
+                        <p>
+                            4.&emsp;You do not fraudulently fail to collect the tax due; or
+                        </p>
+
+                        <p>
+                            5.&emsp;You do not solicit customers to unlawfully claim an exemption
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Billing Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title" id="exampleModalLabel">Credit Limit is not defined</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideit();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+            
+			<div class="modal-body">
+				<h5>Enter The credit limit you want to assign</h5>
+                <br />
+				@Html.EditorFor(model => model.CustomerBillingInfo.CreditLimit, new { htmlAttributes = new { @class = "form-control" , id="CustomerBillingInfo_CreditLimit" } })		 			
+            </div>
+			<div class="modal-footer">
+                <button type="submit" class="btn btn-lg btn-success me-3 wd-30" id="approvebtn" onclick="ApproveEmployee()"><p style="color:white">Approve</p></button>	
+            </div>
+            
+		</div>
+	</div>
+</div>
+<script>
+
+    //   function ConfirmApprove() {
+    //    return confirm('Are you sure you want to approve?');
+    //}
+    function ConfirmReject() {
+        return confirm('Are you sure you want to reject?');
+    }
+    function showit() {
+			$("#exampleModal").modal('show');
+
+		};
+
+		function hideit() {
+			$("#exampleModal").modal('hide');
+
+		};
+    function ApproveEmployee(){
+
+        var empid = $("#employeeId").val();
+        var creditlimit = $("#CustomerBillingInfo_CreditLimit").val();
+
+        var isValid = true;
+
+        if(empid == null || empid == "" || empid == "undefined"){
+            toastr.error('Invalid Employee Id');
+            isValid = false;
+        } 
+        if(creditlimit == null || creditlimit == "" || creditlimit == "undefined"){
+            toastr.error('Enter Credit Limit');
+            isValid = false;
+        }
+
+        if(isValid){
+            
+              $.ajax({
+                type: "GET",
+               url: '@Url.Action("ApproveThisCustomer", "Customers")',
+                data: {
+                    id: empid,
+                    CreditLimit: creditlimit
+                  },
+                dataType: "json",
+                 async: false,
+                    cache: false,
+                success: function (result) {
+                     if (result != "false") {
+                            toastr.success('Customer Approved, now user can login to system.');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Customer Approved!',
+                                text: "Email Send To Customer",
+                                confirmButtonText: 'Ok',
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                },
+                error: function () {
+                   toastr.error('Customer Approval failed.')
+                    console.log('Failed ');
+        }
+        });
+        }
+    };
+
+
+     function RejectEmployee(){
+
+        var empid = $("#employeeId").val();
+
+        var isValid = true;
+
+        if(empid == null || empid == "" || empid == "undefined"){
+            toastr.error('Invalid Employee Id');
+            isValid = false;
+        }
+
+        if(isValid){
+              $.ajax({
+                type: "GET",
+               url: '@Url.Action("RejectThisCustomer", "Customers")',
+                data: {
+                    id: empid,
+                  },
+                dataType: "json",
+                 async: false,
+                    cache: false,
+                success: function (result) {
+                    console.log(result);
+                    alert(result);
+                        if (result != "false") {
+                            toastr.success('Customer Rejected, with valid reason.');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Customer Rejected!',
+                                text: "Email Send To Customer",
+                                confirmButtonText: 'Ok',
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                },
+                error: function () {
+                   toastr.error('Customer Rejection failed.')
+                    console.log('Failed ');
+        }
+        });
+        }
+    };
+
+     function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        }
+</script>

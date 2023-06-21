@@ -1,0 +1,255 @@
+﻿@model IEnumerable<ABC.EFCore.Repository.Edmx.EmployeeContract>
+@{
+    ViewData["Title"] = "ManageEmployeeContract";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $('#order-listing').DataTable();
+        $("table").removeClass("no-footer");
+    });
+</script>
+
+@if (TempData["response"] != null)
+{
+    <div class="alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+    @*<script>toastr.success("@TempData["response"].ToString()");</script>*@
+}
+@if (TempData["Msg"] != null)
+{
+    <div class="alert-success" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+    @*<script>toastr.success("@TempData["response"].ToString()");</script>*@
+}
+
+<div>
+    <a href="@Url.Action("AddEmployeeContract","Employees")"><Span class="btn btn-success btn-icon background bottom15"><i class="mdi mdi-plus">Add New Contract</i></Span></a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">All Contracts</h4>
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table dataTable " role="grid" aria-describedby="order-listing_info">
+                                <thead>
+                                    <tr role="row">
+
+
+                                        <th>
+                                            Sr No.
+                                        </th>
+                                        <th>
+                                            ContractName
+                                        </th>
+                                        <th>
+                                            EmployeeCode
+                                        </th>
+
+                                        <th>
+                                            JoiningDate
+                                        </th>
+                                        <th>
+                                            Rate Per Hour
+                                        </th>
+
+                                        <th>
+                                            Payment Method
+                                        </th>
+                                        <th>
+                                            Account No
+                                        </th>
+                                        <th>
+                                            Routing No
+                                        </th>
+                                        <th>
+                                            Probation
+                                        </th>
+                                        <th>
+                                            Probation Start Date
+                                        </th>
+                                        <th>
+                                            Probation End Date
+                                        </th>
+                                        <th>
+                                            Probation Salary
+                                        </th>
+                                        <th>
+                                            Monthly Salary
+                                        </th>
+                                        @*<th>
+                                                Daily Wages
+                                            </th>*@
+
+                                        @*<th>
+                                            Download
+                                        </th>*@
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                @{var i = 0; }
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            i = i + 1;
+                                            <tr class="odd">
+                                                <td class="sorting_1">@i</td>
+                                                <td>@item.ContractName</td>
+                                                <td>@item.EmployeeNumber</td>
+
+                                                <td>@item.JoiningDate</td>
+                                                <td>
+                                                    @if (item.DailyWagesChargesAmount == null)
+                                                    {
+                                                        <span>No Data</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@item.DailyWagesChargesAmount</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.PaymentMethod == null)
+                                                    {
+                                                        <span>No Data</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@item.PaymentMethod</span>
+                                                    }
+                                                </td>
+                                                @{ if (item.AccountNo != null)
+                                                    {
+                                                        <td>
+                                                            @item.AccountNo
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>No Data</td>
+                                                    }
+                                                }
+
+                                                @{ if (item.RoutingNo != null)
+                                                    {
+                                                        <td>
+                                                            @item.RoutingNo
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>No Data</td>
+                                                    }
+                                                }
+                                                <td>
+                                                    @if (item.IsProbation == true)
+                                                    {
+                                                        <i class="mdi mdi-check text-primary"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No Data</span>
+                                                    }
+                                                </td>
+
+                                                @if (item.ProbationSdate != null)
+                                                {
+                                                    <td>item.ProbationSdate</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>No Date</td>
+                                                }
+                                                @if (item.ProbationEdate != null)
+                                                {
+                                                    <td>item.ProbationEdate</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>No Date</td>
+                                                }
+                                                <td>@item.ProbationSalary</td>
+                                                <td>
+                                                    @if (item.Salary == null)
+                                                    {
+                                                        <span>NoData</span>
+                                                    }
+                                                    else
+                                                    {<span>@item.Salary</span>}
+
+
+                                                </td>
+                                                @*<td>
+                                                        @if (item.DailyWages == true)
+                                                        {
+                                                            <i class="mdi mdi-check text-primary"></i>
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class="mdi mdi-check text-primary"></i>
+                                                        }
+                                                    </td>*@
+
+                                                @*<td><a class="btn btn-dark py-2" style="color:white; font-size:15px; height:30px;" onclick="location.href='@Url.Action("DownloadFileContract", "Employees", new { filename = item.ContractDocumentByPath })'">Download</a></td>*@
+
+                                                <td>
+
+                                                    <a> <i style="cursor:pointer" class="mdi mdi-briefcase-edit-outline" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateEmployeeContract", "Employees", new { id = item.ContractId })': null"></i></a>
+                                                    <a> <i style="cursor:pointer" class="mdi mdi-trash-can" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteEmployeeContract", "Employees", new { id = item.ContractId })': null"></i></a>
+                                                </td>
+
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#order-listing tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+

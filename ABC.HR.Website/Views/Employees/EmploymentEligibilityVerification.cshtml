@@ -1,0 +1,505 @@
+﻿@model ABC.EFCore.Repository.Edmx.EmploymentEligibilityVerification
+
+@{
+    ViewData["Title"] = "EmploymentEligibilityVerification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@if (TempData["Msg"] != null)
+{
+    <div class="alert-danger" style="max-width: 46%;" id="msgalert">
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+@using (Html.BeginForm("EmploymentEligibilityVerification", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Employment Eligibility Verification</h4>
+
+            <div class="row">
+                @*<h3>
+                    Employee Code: @ViewBag.EmployeeCode
+                    @Html.HiddenFor(model => model.EmployeeCode, new { @class = "form-control" })
+
+                </h3>*@
+                <br />
+                <br />
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        Section 1. Employee Information and Attestation (Employees must complete and sign Section 1 of Form I-9 no later
+                        than the first day of employment, but not before accepting a job offer.)
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="fba-r label-max-width" for="exampleFormControlSelect3">
+                                        Employee
+                                    </label>
+                                    @*@Html.DropDownList("EmployeeId", (IEnumerable<SelectListItem>)ViewBag.EmployeeGet, "--Choose Employee--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger db" })*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="">Last Name (Family Name)</label>
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="">First Name (Given Name)</label>
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="">Middle Initial</label>
+                                    @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control", placeholder = "Middle Initial", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="">Other Names Used (If any)</label>
+                                    @Html.EditorFor(model => model.OtherNames, new { htmlAttributes = new { @class = "form-control", placeholder = "Other Names", } })
+                                    @Html.ValidationMessageFor(model => model.OtherNames, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">Address</label>
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Apt. Number</label>
+                                    @Html.EditorFor(model => model.AptNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Apt. Number", Type = "Number" } })
+                                    @Html.ValidationMessageFor(model => model.AptNumber, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">City</label>
+                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">State</label>
+                                    @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Zip Code</label>
+                                    @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date</label>
+                                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", placeholder = "Date", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">U.S. Social Secuirty Number</label>
+                                    @Html.EditorFor(model => model.Ssn, new { htmlAttributes = new { @class = "form-control", placeholder = "Social Secuirty Number", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.Ssn, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">E-mail Address</label>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "E-mail Address", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Telephone Number</label>
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Telephone Number", Type = "Number", disabled = true } })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        I am aware that federal law provides for imprisonment and/or fines for false statements or use of false documents in
+                                        connection with the completion of this form.<br />
+                                        I attest, under penalty of perjury, that I am (check one of the following):
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Citizen, new { @class = "form-check-input", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.Citizen, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-4" style="margin-left: -12%">
+                                        <label class="form-check-label">
+                                            A citizen of the United States
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.NoCitizen, new { @class = "form-check-input", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.NoCitizen, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-8" style="margin-left: -12%">
+                                        <label class="form-check-label">
+                                            A noncitizen national of the United States (See instructions)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        @Html.EditorFor(model => model.Lawful, new { @class = "form-check-input", type = "checkbox" })
+                                        @Html.ValidationMessageFor(model => model.Lawful, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-6" style="margin-left: -12%; display: inline-block">
+                                        <label class="form-check-label">
+                                            A lawful permanent resident (Alien Registration Number/USCIS Number):
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3" style="display: inline-block; margin-left: -7% ">
+                                        @Html.EditorFor(model => model.LawfulNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Please enter number", } })
+                                        @Html.ValidationMessageFor(model => model.LawfulNumber, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-1">
+                                        @Html.EditorFor(model => model.AllienAuthorized, new { @class = "form-check-input", type="checkbox" })
+                                        @Html.ValidationMessageFor(model => model.AllienAuthorized, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="col-md-6" style=" display: inline-block; margin-left:-4%">
+                                        <label class="form-check-label">
+                                            An alien authorized to work until (expiration date, if applicable, mm/dd/yyyy)
+
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2" style="display: inline-block; margin-left: -5% ">
+                                        @Html.EditorFor(model => model.AllienAuthorizedNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "mm/dd/yyyy", } })
+                                        @Html.ValidationMessageFor(model => model.AllienAuthorized, "", new { @class = "text-danger db" })
+
+                                    </div>
+                                    <div class="col-md-4" style="display:inline-block">
+                                        <label class="form-check-label">
+                                            Some aliens may write "N/A" in this field
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        (See instructions)
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        For aliens authorized to work, provide your Alien Registration Number/USCIS Number OR Form I-94 Admission Number:
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-4" style=" display: inline-block">
+                                        <label class="form-check-label">
+                                            <b>1.</b>Alien Registration Number/USCIS Number:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4" style="display: inline-block; margin-left: -7% ">
+                                        @Html.EditorFor(model => model.AllienRegNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = " Registration/USCIS Number", } })
+                                        @Html.ValidationMessageFor(model => model.AllienRegNumber, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12" style="text-align:center">
+                                <div class="form-group">
+                                    <label class="">
+                                        <b>OR</b>
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-3" style=" display: inline-block">
+                                        <label class="form-check-label">
+                                            <b>2.</b> Form I-94 Admission Number:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3" style="display: inline-block; margin-left: -6% ">
+                                        @Html.EditorFor(model => model.AdmissionNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Admission Number", } })
+                                        @Html.ValidationMessageFor(model => model.AdmissionNumber, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        If you obtained your admission number from CBP in connection with your arrival in the United
+                                        States, include the following:
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-3" style=" display: inline-block">
+                                        <label class="form-check-label">
+                                            Foreign Passport Number:
+
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4" style="display: inline-block; margin-left: -6% ">
+                                        @Html.EditorFor(model => model.ForeignPassportNumber, new { htmlAttributes = new { @class = "form-control ", placeholder = "Foreign Passport Number", } })
+                                        @Html.ValidationMessageFor(model => model.ForeignPassportNumber, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-md-3" style=" display: inline-block">
+                                        <label class="form-check-label">
+                                            Country of Issuance:
+
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4" style="display: inline-block; margin-left: -6% ">
+                                        @Html.EditorFor(model => model.CountryIssuance, new { htmlAttributes = new { @class = "form-control ", placeholder = " Country of Issuance", } })
+                                        @Html.ValidationMessageFor(model => model.CountryIssuance, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        Some aliens may write "N/A" on the Foreign Passport Number and Country of Issuance fields. (See instructions)
+
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="">Signature of Employee</label>
+                                    @Html.EditorFor(model => model.EmployeeSignature, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Signature of Employee", } })
+                                    @Html.ValidationMessageFor(model => model.EmployeeSignature, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date</label>
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", Type = "Date" } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        Preparer and/or Translator Certification (To be completed and signed if Section 1 is prepared by a person other than the
+                        employee.)
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">
+                                        <b>
+                                            I attest, under penalty of perjury, that I have assisted in the completion of this form and that to the best of my knowledge the
+                                            information is true and correct.
+                                        </b>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="">Signature of Prepare or Transfer</label>
+                                    @Html.EditorFor(model => model.SignatureOfTransferer, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Signature of Prepare or Transfer", } })
+                                    @Html.ValidationMessageFor(model => model.SignatureOfTransferer, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Date</label>
+                                    @Html.EditorFor(model => model.PrepareDate, new { htmlAttributes = new { @class = "form-control",Type = "Date" } })
+                                    @Html.ValidationMessageFor(model => model.PrepareDate, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="">Last Name (Family Name)</label>
+                                    @Html.EditorFor(model => model.PrepareLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name", } })
+                                    @Html.ValidationMessageFor(model => model.PrepareLastName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="">First Name (Given Name)</label>
+                                    @Html.EditorFor(model => model.PrepareFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name", } })
+                                    @Html.ValidationMessageFor(model => model.PrepareFirstName, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="">Address</label>
+                                    @Html.EditorFor(model => model.PrepareAddress, new { htmlAttributes = new { @class = "form-control longtxt", placeholder = "Address", } })
+                                    @Html.ValidationMessageFor(model => model.PrepareAddress, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">City</label>
+                                    @Html.EditorFor(model => model.PrepareCity, new { htmlAttributes = new { @class = "form-control", placeholder = "City", } })
+                                    @Html.ValidationMessageFor(model => model.PrepareCity, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                    <label class="dim col-sm-4">State</label>
+                                    @Html.DropDownList("State", (IEnumerable<SelectListItem>)ViewBag.States, "--Choose State--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="">Zip Code</label>
+                                    @Html.EditorFor(model => model.PrepareZipCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip Code", } })
+                                    @Html.ValidationMessageFor(model => model.PrepareZipCode, "", new { @class = "text-danger db" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+                @*<div class="col-lg-4 col-sm-4 " style="float:right">
+                        <Button type="button" class="btn btn-lg btn-dark me-3 wd-40 " id="next" data-target="#profile-1" data-toggle="tab" onclick="changetab()"><p style="color:white">Next</p></Button>
+
+                    </div>*@
+
+
+            </div>
+            <div class="col-lg-4 col-sm-4 fr">
+
+                <button type="submit" class="btn btn-lg btn-dark me-3 wd-40"><p style="color:white">Submit</p></button>
+                <button type="reset" class="btn btn-lg btn-light me-3 wd-40"><p>Cancel</p></button>
+
+            </div>
+            <div class="col-lg-4 col-sm-4"></div>
+            <div class="col-lg-4 col-sm-4"></div>
+
+        </div>
+
+    </div>
+
+}

@@ -1,0 +1,26 @@
+.z-quantity-field > tbody > tr > td:first-child > .v-button:after {
+    border: none;
+    content: '\f068'; /* minus symbol */
+    font-family: FontAwesome;
+    font-size: 14px;
+    position: inherit;
+
+}
+
+.z-quantity-field > tbody > tr > td:last-child > .v-button:after {
+    border: none;
+    content: '\f067'; /* plus symbol */
+    font-family: FontAwesome;
+    font-size: 14px;
+    position: inherit;
+}
+
+.z-quantity-field .v-button:disabled {
+    color: lightgrey; /* grey out font on disabled button */
+}
+
+/* fill available column space with the text field */
+.z-quantity-field > tbody > tr > td:nth-child(2),
+.z-quantity-field > tbody > tr > td:nth-child(2) > .v-textfield {
+    width: 100%;
+}

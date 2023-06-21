@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewData["Title"] = "Rejected";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Rejected</h1>
+
+<div class="table-responsive m-t-40 m-t-400">
+    <table class="demo-foo-addrow2 table table-bordered table m-b-0 toggle-arrow-tiny example23" cellspacing="0" width="100%">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Driving License</th>
+                <th>Customer Code</th>
+                <th>CustomerType</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>@item.DrivingLicense</td>
+                        <td>@item.CustomerCode</td>
+                        <td>@item.CustomerType</td>
+                        <td style="width:21em;">
+
+
+                            <a class="btn btn-primary btn-rounded btn-fw">   <a style="font-size: 18px; color: mediumaquamarine;" data-toggle="tooltip" data-original-title="Approve" onclick="submitapprove('@item.CustomerId')"> Approve<i class="fa fa-check-square-o"></i> </a></a>
+                            @*<button type="button" class="btn waves-effect waves-light btn-rounded btn-outline-success"><a onclick="submitapproval('@i.Id')">Approve</a></button>*@
+
+
+
+                            <a>@Html.ActionLink(" ", "systemuserinfo", "admin", null, null, "", new { tid = item.AccountId }, new { @class = "fa fa-info-circle fontsizee", title = "info" })</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Driving License</th>
+                <th>Customer Code</th>
+                <th>CustomerType</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    function submitapprove(count) {
+
+        var id = count;
+        alert(id);
+
+        $.ajax
+            (
+                {
+                    type: "GET",
+                    url: "/admin/approve",
+                    contentType: "Application/json;charset=utf-8",
+                    data: { accountid: id },
+                    success: function (response) {
+                        console.log("result", response);
+                        approvedisplaysweet();
+                        setTimeout(function () {
+                            location.reload(true);
+
+                        }, 1000);
+
+                        /*      setTimeout(displaysweet, 1000);*/
+
+
+
+
+
+
+                    },
+
+
+                }
+            );
+        $("#purposalform").addClass("in-down");
+        $('#purposalform').show();
+
+    }
+
+    function submitblacklist(count) {
+
+        var id = count;
+
+
+        $.ajax
+            (
+                {
+                    type: "GET",
+                    url: "/admin/blacklist",
+                    contentType: "Application/json;charset=utf-8",
+                    data: { accountid: id },
+                    success: function (response) {
+                        console.log("result", response);
+                        blackdisplaysweet();
+                        setTimeout(function () {
+                            location.reload(true);
+
+                        }, 1000);
+
+                        /*      setTimeout(displaysweet, 1000);*/
+
+
+
+
+
+
+                    },
+
+
+                }
+            );
+        $("#purposalform").addClass("in-down");
+        $('#purposalform').show();
+
+    }
+    function approvedisplaysweet() {
+        var icon = "success";
+        if (status == "success") {
+            icon = "success";
+        }
+
+        var config = {}
+        config.icon = icon;
+        config.title = "Success";
+        config.text = "User Approved SuccessFully";
+
+        Swal.fire(config);
+
+    }
+
+    function blackdisplaysweet() {
+        var icon = "success";
+        if (status == "success") {
+            icon = "success";
+        }
+
+        var config = {}
+        config.icon = icon;
+        config.title = "Success";
+        config.text = "User BlackListed SuccessFully";
+
+        Swal.fire(config);
+
+    }
+</script>

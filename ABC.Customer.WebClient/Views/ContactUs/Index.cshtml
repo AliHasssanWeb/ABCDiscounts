@@ -1,0 +1,182 @@
+@model ABC.EFCore.Repository.Edmx.Contact
+@{
+    ViewBag.Title = "ContactUs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@*@if (TempData["response"] != null)
+{
+    <div class="alert alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}*@
+
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.error('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+<style>
+    .error {
+        color: red !important;
+    }
+    #Name{
+      
+    }
+</style>
+<div class="container">
+    <!-- //inner banner -->
+    <!-- breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index","Home",new{@area="Home"})">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+        </ol>
+    </nav>
+    <!-- //breadcrumbs -->
+    <!-- contact -->
+    <section class="wthree-row pt-3 pb-sm-5 w3-contact">
+        <div class="container py-sm-5 pb-5">
+            @*<h5 class="head_agileinfo text-center text-capitalize pb-5">
+                <span>C</span>ontact us
+            </h5>*@
+            
+            <div class="" style="background: #eee; font-size: 15px; padding: 6em 2em;">
+                
+                <h5 class="head_agileinfo text-center text-capitalize ">
+                    <span>C</span>ontact Us
+                </h5>
+                <p class="pt-4 pb-2" style="font-size: 15px; color:black ">
+                    Our valuable customers are going to get served with:
+                </p>
+                <ul class="a ">
+                    <li>Thousands of Brands, Millions of Products</li>
+                    <li>Friendly Customer Service</li>
+                    <li>Hassle-free returns</li>
+                    <li>Free shipping</li>
+                </ul>
+                <p class="pt-2" style="font-size: 15px; color:black ">
+                    But still, we would like to hear from you, so if you have any queries or want to share your suggestions or complaints with us!
+                    We are here (email address here); let's talk.
+                </p>
+
+
+
+
+            </div>
+            
+            <div class="row contact-form pt-lg-5">
+               
+                <div class="col-lg-6 wthree-form-left">
+                    <!-- contact form grid -->
+                    <div class="contact-top1">
+                        <h5 class="text-dark mb-4 text-capitalize">send us a note</h5>
+                        @*<form id="contactForm" action="Contactus" method="post" class="f-color">*@
+                             @using (Html.BeginForm("Contactus" , "ContactUs", FormMethod.Post, new { @id ="contactForm" }))
+                            {
+                            <div class="form-group">
+                                <label for="contactusername">Name</label>
+                                @* <input asp-for="UserName"  type="text" class="form-control" id="contactusername" required>*@
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @id="Name" })
+                            </div>
+                            <div class="form-group">
+                                <label for="contactemail">Email</label>
+                                @* <input asp-for="Email" type="email" class="form-control" id="contactemail" required>*@
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type="email"})
+                            </div>
+                            <div class="form-group">
+                                <label for="contactcomment">Your Message</label>
+                                @* <textarea asp-for="Message" class="form-control" rows="5" id="contactcomment" required></textarea>*@
+                                @Html.TextAreaFor(model => model.Message, new { @class = "form-control", })
+                            </div>
+                            <button type="submit" class="btn btn-info btn-block">Submit</button>
+                        @*</form>*@
+                         }
+                    </div>
+                    <!--  //contact form grid ends here -->
+                </div>
+               
+                <!-- contact details -->
+                <div class="col-lg-6 contact-bottom pl-5 mt-lg-0 mt-5">
+                    <!-- contact details grid1-->
+                    <div class="address">
+                        <h5 class="pb-3 text-capitalize">Address</h5>
+                        <address>
+                               <p class="c-txt">1055 Gatewood Avenue, Greensboro, NC 27405.</p>
+                        </address>
+                    </div>
+                    <!-- contact details grid2-->
+                    <div class="address my-5">
+                        <h5 class="pb-3 text-capitalize">Phone &amp; Fax</h5>
+                    <p>
+                       Office: 336-412-2800
+                    </p>
+                    <p>
+                       Fax:    336-412-2801
+                    </p>
+                    </div>
+                    <!-- contact details grid3 -->
+                    <div class="address mt-md-0 mt-3">
+                        <h5 class="pb-3 text-capitalize">Email</h5>
+                        <p>
+                        <a href="mailto:info@example.com">msid@abcdiscountnc.com</a>
+                         </p>
+                    </div>
+                    <!-- //contact details row ends here -->
+                </div>
+            </div>
+            <!-- //contact details container -->
+        </div>
+        <!-- contact map grid -->
+        <div class="map contact-right pb-5">
+            <div class="pt-lg-5 bg-pricemain text-center">
+                <h3 class="stat-title text-capitalize pb-5">get directions</h3>
+                <span class="w3-line"></span>
+            </div>
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3224.2976180806554!2d-79.76346748527551!3d36.08623241526221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88531f4a8dd6361d%3A0xf0d437092030f7c2!2s1055%20Gatewood%20Ave%2C%20Greensboro%2C%20NC%2027405%2C%20USA!5e0!3m2!1sen!2s!4v1657009320950!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <!--//contact map grid ends here-->
+    </section>
+</div>
+<script src="~/Admin/assets/plugins/calendar/dist/lib/jquery.min.js"></script>
+<script src="~/Admin/assets/plugins/wizard/jquery.validate.min.js"></script>
+<script>
+    $("#contactForm").validate({
+        rules: {
+            UserName: {
+                "required": true,
+            }, Email: {
+                "required": true,
+          
+            },
+            Message: {
+                "required": true,
+            },
+        },
+        messages: {
+            UserName: {
+                required: "Full Name Required",
+            },
+            Email: {
+                required: "Email is Required",
+            },
+            Message: {
+                required: "Message is Required",
+            },
+        },
+    });
+</script>

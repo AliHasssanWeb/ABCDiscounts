@@ -1,0 +1,177 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutManagers.cshtml";
+}
+
+
+   <style type="text/css">
+       
+
+        .chartjs-render-monitor {
+            animation: chartjs-render-animation 1ms
+        }
+
+        .chartjs-size-monitor, .chartjs-size-monitor-expand, .chartjs-size-monitor-shrink {
+            position: absolute;
+            direction: ltr;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            visibility: hidden;
+            z-index: -1
+        }
+
+            .chartjs-size-monitor-expand > div {
+                position: absolute;
+                width: 1000000px;
+                height: 1000000px;
+                left: 0;
+                top: 0
+            }
+
+            .chartjs-size-monitor-shrink > div {
+                position: absolute;
+                width: 200%;
+                height: 200%;
+                left: 0;
+                top: 0
+            }
+    </style>
+<div class="tab-content tab-content-basic">
+    <div class="row">
+   <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                        <div class="card card-rounded">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-2 cp" onclick="window.location='@Url.Action("OrdersForApproval","Order")'">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 mb-sm-0">
+                                            <div class="circle-progress-width">
+                                              <!---  <div id="totalVisitors" class="progressbar-js-circle pr-2"></div>-->
+                                              <img src="~/images/orderreceived.png" style="width:110%"/>
+                                            </div>
+                                            <div>
+                                                <p  class="text-small mb-2">New Orders</p>
+                                                <h4 class="mb-0 fw-bold">@ViewBag.NewOrders</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 cp" onclick="window.location='@Url.Action("OrdersForPulled","Order")'">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="circle-progress-width">
+                                               <!-- <div id="visitperday" class="progressbar-js-circle pr-2"></div>-->
+                                                <img src="~/images/orderprocess.png" style="width:110%"/>
+                                            </div>
+                                            <div class="">
+                                                <p class="text-small mb-3">Pending Pulling</p>
+                                                <h4 class="mb-2 fw-bold ml-20">@ViewBag.Approved</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-2 cp" onclick="window.location='@Url.Action("OrdersForDelivered","Order")'">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="circle-progress-width">
+                                                @*<div id="pendingdelivered" class="progressbar-js-circle pr-2"></div>*@
+                                                 <img src="~/images/PendingOrder.png" style="width:110%"/>
+                                            </div>
+                                            <div style="margin-right:-12%">
+                                                <p  class="text-small mb-3">Pending Delivers</p>
+                                                <h4 class="mb-0 fw-bold">@ViewBag.Pulled</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-3 cp" onclick="window.location='@Url.Action("ClosedOrders","Order")'" >
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="circle-progress-width">
+                                            @*    <div id="totaldelivered" class="progressbar-js-circle pr-2"></div>*@
+                                             <img src="~/images/DeliveredOrder.png" style="width:145%"/>
+                                            </div>
+                                            <div>
+                                                <p  class="text-small mb-4">Total Delivered <small>(in last 14 days)</small></p>
+                                                <h4 class="mb-0 fw-bold">@ViewBag.Delivery</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-3 cp" onclick="window.location='@Url.Action("RejectedOrders","Order")'">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="circle-progress-width">
+                                         @*       <div id="rejectedorders" class="progressbar-js-circle pr-2"></div>*@
+                                           <img src="~/images/order-Cancel.png" style="width:145%"/>
+                                            </div>
+                                            <div style="margin-right:32%">
+                                                <p   class="text-small mb-4">Rejected Orders</p>
+                                                <h4 class="mb-0 fw-bold">@ViewBag.Rejected</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+        
+        <div class="row">
+            <div class="col-lg-8 d-flex flex-column">
+                <div class="row flex-grow">
+                    <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
+                        <div class="card card-rounded">
+                            <div class="card-body">
+                                <div class="d-sm-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h4 class="card-title card-title-dash">Orders Summary </h4>
+                                        <h5 class="card-subtitle card-subtitle-dash"></h5>
+                                    </div>
+                                    <div id="performance-line-legend"></div>
+                                </div>
+                                <div class="chartjs-wrapper mt-5">
+                                    <canvas id="performaneLine"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 d-flex flex-column">
+                <div class="row flex-grow">
+                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                        <div class="card bg-primary card-rounded">
+                            <div class="card-body pb-0">
+                                <h4 class="card-title card-title-dash text-white mb-4">Customer Summary</h4>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <p class="status-summary-ight-white mb-1">Pending Approvals</p>
+                                        <h2 class="text-info">7</h2>
+                                    </div> 
+                                    <div class="col-sm-4">
+                                        <p class="status-summary-ight-white mb-1">Approved Customers</p>
+                                        <h2 class="text-info">20</h2>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <p class="status-summary-ight-white mb-1">Rejected Customers</p>
+                                        <h2 class="text-info">2</h2>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="status-summary-chart-wrapper pb-4">
+                                            <canvas id="status-summary"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    function DropdownLink() {
+            $("#DropdownLink").toggleClass("show");
+        }
+</script>
