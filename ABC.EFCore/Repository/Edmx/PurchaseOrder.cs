@@ -61,5 +61,7 @@ namespace ABC.EFCore.Repository.Edmx
         public string Sku { get; set; }
         public string RemaningPayment { get; set; }
         public string SimpleInvoiceNumber { get; set; }
+        public bool? IsPartialPaid { get; set; }
+        public string PaymentComments { get; set; }
     }
 }

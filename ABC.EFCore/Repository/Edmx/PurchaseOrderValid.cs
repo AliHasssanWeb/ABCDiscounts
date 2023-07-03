@@ -25,6 +25,9 @@ namespace ABC.EFCore.Repository.Edmx
 
         [NotMapped]
         public string CheckTitle { get; set; }
+
+        [NotMapped]
+        public Paying InvoicePayments { get; set; }
     }
     [MetadataType(typeof(CustomerValid))]
     public partial class PurchaseOrder
@@ -48,6 +51,9 @@ namespace ABC.EFCore.Repository.Edmx
         
         [NotMapped]
         public string ItemPrice { get; set; }
+
+        [NotMapped]
+        public Paying InvoicePayments { get; set; }
 
     }
 }

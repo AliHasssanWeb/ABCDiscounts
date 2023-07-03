@@ -347,7 +347,7 @@ namespace ABC.POS.API.Controllers
                             //}
                             var GetCustomer = db.CustomerInformations.ToList().Where(x => x.Id == customerId).FirstOrDefault();
                             DateTime dt = DateTime.Now.Date.AddDays(-13);
-                            var creditAmount = db.SupervisorCredits.Where(x => x.SupervisorId == record.SupervisorId && x.CustomerId == GetCustomer.Id && x.SaleId== possaleinvoive).ToList();
+                            var creditAmount = db.SupervisorCredits.Where(x => x.SupervisorId == record.SupervisorId && x.CustomerId == GetCustomer.Id && x.SaleId == possaleinvoive).ToList();
                             double totalCreditAmount = 0;
                             if (creditAmount != null)
                             {
@@ -679,7 +679,7 @@ namespace ABC.POS.API.Controllers
             {
                 var response = ResponseBuilder.BuildWSResponse<List<PosSale>>();
                 var record = db.PosSales.Where(x => x.InvoiceNumber == invoicenumber).ToList();
-                foreach(var sales in record)
+                foreach (var sales in record)
                 {
                     var itemdata = db.Products.Where(x => x.Id == sales.ItemId).FirstOrDefault();
                     sales.product = itemdata;
@@ -716,7 +716,7 @@ namespace ABC.POS.API.Controllers
             try
             {
                 var Response = ResponseBuilder.BuildWSResponse<CashierCounters>();
-                var OnlineOrdersCount = db.CustomerOrders.ToList().Where(x => x.InvoiceEmployeeId == id && x.IsInvoiced == false).GroupBy(x=>x.TicketId).Count();
+                var OnlineOrdersCount = db.CustomerOrders.ToList().Where(x => x.InvoiceEmployeeId == id && x.IsInvoiced == false).GroupBy(x => x.TicketId).Count();
                 CashierCounters objectResponse = new CashierCounters();
                 objectResponse.OnlineOrders = OnlineOrdersCount;
                 var SalesInvoices = db.PosSales.ToList().Where(x => x.SalesmanId == id && x.InvoiceDate.Value == DateTime.Now.Date).GroupBy(x => x.InvoiceNumber).Count();

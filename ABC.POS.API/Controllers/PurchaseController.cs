@@ -500,7 +500,7 @@ namespace ABC.POS.API.Controllers
                         obj[i].IsPostStatus = "false";
                         obj[i].Received = obj[0].Received;
                     }
-                    if(obj[0].IsPaid == true)
+                    if (obj[0].IsPaid == true)
                     {
                         obj[i].PaidDate = DateTime.Now;
                         obj[i].IsPaid = obj[0].IsPaid;
@@ -602,7 +602,7 @@ namespace ABC.POS.API.Controllers
                     }
 
                 }
-                if(obj[0].PaymentTerms == "Cheque")
+                if (obj[0].PaymentTerms == "Cheque")
                 {
                     obj[0].IsPaid = true;
                 }
@@ -610,8 +610,8 @@ namespace ABC.POS.API.Controllers
                 if (getvendor != null)
                 {
                     var getaccount = db.Accounts.ToList().Where(a => a.Title == getvendor.AccountTitle && a.AccountId == getvendor.AccountId).FirstOrDefault();
-                   
-                    if(getaccount != null)
+
+                    if (getaccount != null)
                     {
                         if (obj[0].IsPaid == false || obj[0].IsPaid == null)
                         {
@@ -761,7 +761,7 @@ namespace ABC.POS.API.Controllers
                                 paying.AccountName = getaccount.Title;
                                 paying.AccountNumber = getaccount.AccountId;
                                 paying.AccountId = getaccount.AccountId;
-                                
+
                                 if (obj[0].PaymentTerms == "Cheque")
                                 {
                                     paying.CheckDate = obj[0].CheckDate;
@@ -781,8 +781,8 @@ namespace ABC.POS.API.Controllers
                                 paying.Date = DateTime.Now;
                                 db.Payings.Add(paying);
                                 await db.SaveChangesAsync();
-                                
-                                
+
+
                                 for (int i = 0; i < 2; i++)
                                 {
                                     Transaction transaction = null;
@@ -1436,7 +1436,7 @@ namespace ABC.POS.API.Controllers
                 {
 
                     var GetPayments = db.Payings.Where(x => x.InvoiceNumber == invoicenumber).FirstOrDefault();
-                    if(GetPayments != null)
+                    if (GetPayments != null)
                     {
                         record[0].InvoicePayments = GetPayments;
                     }
@@ -1510,7 +1510,7 @@ namespace ABC.POS.API.Controllers
                     var purchaseOrder = db.PurchaseOrders.Where(x => x.PurchaseorderId == obj[i].PurchaseorderId).SingleOrDefault();
                     if (purchaseOrder != null)
                     {
-                        
+
                         purchaseOrder.SupplierId = obj[i].SupplierId;
                         purchaseOrder.SupplierName = obj[i].SupplierName;
                         purchaseOrder.SupplierNumber = obj[i].SupplierNumber;
@@ -1520,7 +1520,7 @@ namespace ABC.POS.API.Controllers
                         purchaseOrder.UpdateCost = obj[i].UpdateCost;
                         purchaseOrder.UpdateOscost = obj[i].UpdateOscost;
                         purchaseOrder.Received = obj[i].Received;
-                       
+
 
                         if (obj[0].Received == true)
                         {
@@ -1668,7 +1668,7 @@ namespace ABC.POS.API.Controllers
                     else
                     {
                         var purchaseOrderNew = new PurchaseOrder();
-                        
+
                         purchaseOrderNew.SupplierId = obj[i].SupplierId;
                         purchaseOrderNew.SupplierName = obj[i].SupplierName;
                         purchaseOrderNew.SupplierNumber = obj[i].SupplierNumber;
@@ -1749,7 +1749,7 @@ namespace ABC.POS.API.Controllers
                             stock.Quantity = obj[i].Qty;
                         }
                         // Purchase Update
-                      var neworder =  db.PurchaseOrders.Add(purchaseOrderNew);
+                        var neworder = db.PurchaseOrders.Add(purchaseOrderNew);
                         //db.Entry(purchaseOrderNew).State = EntityState.Modified;
                         var productdetail = db.Products.Where(x => x.Id == obj[i].ItemId).FirstOrDefault();
                         if (productdetail.Cost != obj[i].Price)
@@ -1899,7 +1899,7 @@ namespace ABC.POS.API.Controllers
                                         }
                                     }
 
-                                    if(obj[0].GrossAmount != null)
+                                    if (obj[0].GrossAmount != null)
                                     {
                                         transaction.Credit = obj[0].GrossAmount.ToString();
                                     }
@@ -1917,7 +1917,7 @@ namespace ABC.POS.API.Controllers
                                     transaction.AccountNumber = getFGaccount.AccountId;
                                     transaction.DetailAccountId = getFGaccount.AccountId;
                                     transaction.Credit = "0.00";
-                                    if(obj[0].GrossAmount != null)
+                                    if (obj[0].GrossAmount != null)
                                     {
                                         transaction.Debit = obj[0].GrossAmount.ToString();
                                     }
@@ -2278,7 +2278,7 @@ namespace ABC.POS.API.Controllers
                     obj.NetAmount = trimmed;
                 }
                 var Response = ResponseBuilder.BuildWSResponse<Paying>();
-                var PurchaseOrder = db.PurchaseOrders.ToList().Where(x=>x.InvoiceNumber == obj.InvoiceNumber).GroupBy(x => x.InvoiceNumber).Select(x => x.FirstOrDefault()).FirstOrDefault();
+                var PurchaseOrder = db.PurchaseOrders.ToList().Where(x => x.InvoiceNumber == obj.InvoiceNumber).GroupBy(x => x.InvoiceNumber).Select(x => x.FirstOrDefault()).FirstOrDefault();
                 //if (PurchaseOrder != null)
                 //{
                 //    if(PurchaseOrder.Received == null || PurchaseOrder.Received == false && PurchaseOrder.IsPaid == null || PurchaseOrder.IsPaid == false)
@@ -2299,7 +2299,7 @@ namespace ABC.POS.API.Controllers
                 }
                 if (PurchaseOrder != null)
                 {
-                    
+
                     if (Convert.ToDouble(PurchaseOrder.Total) <= Convert.ToDouble(obj.Debit))
                     {
                         PurchaseOrder.IsPaid = true;
@@ -2312,13 +2312,13 @@ namespace ABC.POS.API.Controllers
                         PurchaseOrder.IsPaid = false;
                         PurchaseOrder.IsPartialPaid = true;
 
-                        if(payingfound != null)
+                        if (payingfound != null)
                         {
                             var TodayWePay = Convert.ToDouble(obj.Debit) - Convert.ToDouble(payingfound.Debit);
                             payingfound.Debit = (Convert.ToDouble(TodayWePay) + Convert.ToDouble(payingfound.Debit)).ToString();
                             payingfound.Comments = obj.Comments;
                             payingfound.Comments = obj.Note;
-                            if(Convert.ToDouble(payingfound.Debit) >= Convert.ToDouble(obj.NetAmount))
+                            if (Convert.ToDouble(payingfound.Debit) >= Convert.ToDouble(obj.NetAmount))
                             {
                                 payingfound.TotalPaid = true;
                             }
@@ -2347,7 +2347,7 @@ namespace ABC.POS.API.Controllers
                     db.Payings.Add(obj);
                     await db.SaveChangesAsync();
                 }
-              
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -2359,19 +2359,20 @@ namespace ABC.POS.API.Controllers
                 //    ResponseBuilder.SetWSResponse(Response, StatusCodes.Already_Exists, null, null);
                 //}
 
-              
+
 
                 var payable = db.Payables.Where(x => x.AccountNumber == obj.AccountNumber).FirstOrDefault();
                 if (payable != null)
                 {
                     double num1 = Convert.ToDouble(payable.Amount);
                     double num2 = 0;
-                    if (payingfound != null){
+                    if (payingfound != null)
+                    {
                         num2 = Convert.ToDouble(payingfound.Debit);
                         double TodayWePay = 0;
                         if (payingfound.TotalPaid != true)
                         {
-                            TodayWePay =  Convert.ToDouble(num1) - Convert.ToDouble(obj.CashBalance);
+                            TodayWePay = Convert.ToDouble(num1) - Convert.ToDouble(obj.CashBalance);
                             //payingfound.Debit = (Convert.ToDouble(payingfound.Debit) + TodayWePay).ToString();
                         }
                         else
@@ -2478,11 +2479,11 @@ namespace ABC.POS.API.Controllers
                     for (int i = 0; i < Getorders.Count(); i++)
                     {
                         var getdate = Getorders[i].InvoiceDate.Value.ToShortDateString();
-                        if(getdate == shortDateValue)
+                        if (getdate == shortDateValue)
                         {
                             counter++;
                         }
-                        
+
                     }
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, counter);
 
@@ -2586,10 +2587,10 @@ namespace ABC.POS.API.Controllers
             try
             {
                 var Response = ResponseBuilder.BuildWSResponse<double>();
-                double counter = db.CartDetails.ToList().Where(x=>x.PendingForApproval == false).GroupBy(x=>x.TicketId).Select(x=>x.First()).Count();
+                double counter = db.CartDetails.ToList().Where(x => x.PendingForApproval == false).GroupBy(x => x.TicketId).Select(x => x.First()).Count();
                 if (counter != null)
                 {
-                    
+
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, counter);
 
                 }

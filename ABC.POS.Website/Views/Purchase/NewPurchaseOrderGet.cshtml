@@ -7753,7 +7753,6 @@
 
 
     var nextinvoice = function(method, selectedinvoicenumber) {
-
         var data = $("#txtInvoiceNumber").text();
 
         if (method == 'null') {
@@ -7807,7 +7806,15 @@
                         $('#UpateOscost').prop('checked', data[0].updateOscost);
                         $('#Received').prop('checked', data[0].received);
                         $(".tableRow").remove();
-                        $("#TotalItems").val(0);
+                        
+                        // count total items Qty
+                        let totalQty = 0;
+                        data.forEach((item) => {
+                            if(item.qty != 0 && item.qty != null)
+                            totalQty = totalQty + parseInt(item.qty);
+                        });
+
+                        $("#TotalItems").val(totalQty);
                         $("#Savebtn").hide();
                         $("#Printbtn").hide();
                         if (data[0].isPaid == true) {
@@ -8993,6 +9000,7 @@
 
 
     function VendorDetailModal(id) {
+        debugger;
         var VendorId = parseInt($("#searchdropdown").attr("data-vendorID"));
         //$('#VendorParModal').modal('show');
         //var myval = $("#inv-" + id).text();

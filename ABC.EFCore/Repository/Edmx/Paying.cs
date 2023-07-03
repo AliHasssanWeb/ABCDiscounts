@@ -33,5 +33,7 @@ namespace ABC.EFCore.Repository.Edmx
         public string Debit { get; set; }
         public string Credit { get; set; }
         public DateTime? DueDate { get; set; }
+        public bool? TotalPaid { get; set; }
+        public string Comments { get; set; }
     }
 }

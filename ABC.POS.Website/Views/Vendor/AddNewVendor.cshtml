@@ -2291,13 +2291,12 @@
             },
         });
     }
-    function InvShowProductList(data) {
+    function InvShowProductList(data) {      
         var html = "";
         $('#appendnewrowforsalePartialdetail').empty();
 
+        let totalQty = 0;
         $.each(data, function(index, item) {
-
-
             $("#myInputP").val(item.supplierName);
             $("#txtSupplierNo").val(item.supplierNumber);
             $("#SubTotal").val(item.subTotal);
@@ -2306,7 +2305,12 @@
             $("#Freight").val(item.freight);
             $("#ManualInvoiceNo").val(item.manualInvoiceNumber);
             $("#Other").val(item.other);
-            $("#TotalItems").val(data.length);
+
+            if(item.qty != 0 && item.qty != null)
+            {
+                totalQty = totalQty + parseInt(item.qty);
+            }
+            $("#TotalItems").val(totalQty);
             $("#Notes").val(item.notes);
             $("#PaymentTerms").val(item.paymentTerms);
             $("#Podate").val(item.pOrderDate);
