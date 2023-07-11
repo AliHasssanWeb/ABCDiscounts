@@ -5219,7 +5219,6 @@
             //$("#TotalItems").val(bb);
             //}
 
-           // debugger;
            //------------- ali comment start line
             //var a = $("rowid-" + sernum)
             //if ("rowid-" + sernum == "rowid-1") {   
@@ -5945,7 +5944,7 @@
 
     }
     function RemoveRow(val) {
-       // debugger;
+    
         var ac = $("#rowid-" + val).find("td:eq(4)").text();
         if (ac != null && ac != "") {
             var xx = $("#rowid-" + val).find("td:eq(7)").text();
@@ -6522,7 +6521,7 @@
         //});
     };
     function GetItemByID(val, indexex,addItem) {
-       // debugger;
+       
         //alert(33);
         //if (window.sequence != "" && window.sequence != "undefined" ) {
         //    var seqnum = window.sequence;
@@ -6657,7 +6656,7 @@
                             }
                             jj++
                         });
-                        debugger;
+                       
                         
                         if(addItem){
                             var currentItems = $("#TotalItems").val();
@@ -6708,7 +6707,7 @@
         $("#Amount-" + val).text("$" + ceilingvalue.toFixed(2));
         CountTotalOfAllTD();
 
-       // debugger;
+      
         //hereis
         var allitem = 0;
         $("#mytable tr").each(function() {
@@ -7444,7 +7443,7 @@
     var data_array = [];
 
     function GetItemList(val) {
-      //  debugger;
+    
         var vendorid = $("#setvendorid").text();
         var supplierItemCheck = $("#SupplierItemOnly").is(':checked');
         if (supplierItemCheck == true && vendorid != "") {
@@ -8388,6 +8387,7 @@
         //checkPaid = parseFloat($("#checkPaid").val());
         //currentPaid = currentCashPaid + checkPaid;
         //}
+      
         var currentPaid = parseFloat($("#poAmountt").val());
         var POPrice = $("#PoAmount").val();
         var ActualBill = $("#PoAmount").val();
@@ -8432,8 +8432,11 @@
                     //}else{
                     //    $("#checkPaid").val(Gross);
                     //}
-                     $("#otherPaid").val(parseFloat(Gross).toFixed(2));
-                    $("#totalPaid").val(parseFloat(Gross).toFixed(2));
+
+                    if(type != undefined){
+                         $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                         $("#totalPaid").val(parseFloat(Gross).toFixed(2));
+                    }
                 }
             } else {
                 var Gross = (currentPaid).toFixed(2);
@@ -8448,8 +8451,11 @@
                     //}else{
                     //    $("#checkPaid").val(Gross);
                     //}
-                    $("#otherPaid").val(parseFloat(Gross).toFixed(2));
-                    $("#totalPaid").val(parseFloat(Gross).toFixed(2));
+
+                    if(type != undefined){
+                         $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                         $("#totalPaid").val(parseFloat(Gross).toFixed(2));
+                    }
                 }
             }
 
@@ -8460,8 +8466,12 @@
             //    PoBalance =   parseFloat(PoBalance) - parseFloat(AlPaidByNow);
 
             //var RemainingBalance = parseFloat(poAmount) - parseFloat(totalPaid);
-            $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
-            $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
+
+            if(type != undefined){
+                 $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
+                 $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
+            }
+
             //    console.log(PoBalance);
         }
         else {
@@ -8479,12 +8489,15 @@
 
         // }
         // $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
-        var RececheckotherPaid = parseFloat($("#otherPaid").val());
-        if (RececheckotherPaid != "0" && RececheckotherPaid != "" && RececheckotherPaid != '' && RececheckotherPaid != NaN && RececheckotherPaid > 0) {
-        $("#payment").prop("disabled", false);
-        }else{
-        $("#payment").prop("disabled", true);
+        if(type != undefined){
+             var RececheckotherPaid = parseFloat($("#otherPaid").val());
+             if (RececheckotherPaid != "0" && RececheckotherPaid != "" && RececheckotherPaid != '' && RececheckotherPaid != NaN && RececheckotherPaid > 0) {
+                 $("#payment").prop("disabled", false);
+             }else{
+                 $("#payment").prop("disabled", true);
+             }
         }
+       
     }
     $("#payment").click(function() {
 
