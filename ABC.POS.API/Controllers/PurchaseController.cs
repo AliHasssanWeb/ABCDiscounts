@@ -445,7 +445,7 @@ namespace ABC.POS.API.Controllers
             }
         }
         [HttpPost("PurchaseOrderCreate")]
-        public async Task<IActionResult> PurchaseOrderCreate(List<PurchaseOrder> obj)
+        public async Task<IActionResult> PurchaseOrderCreate(List<PurchaseOrder> obj)        
         {
             try
             {
@@ -1530,10 +1530,13 @@ namespace ABC.POS.API.Controllers
                         else
                         {
                             obj[i].IsPostStatus = "false";
+                            purchaseOrder.PaidDate = DateTime.Now;
                         }
                         if (obj[0].IsPaid == true)
                         {
                             obj[i].PaidDate = DateTime.Now;
+                            purchaseOrder.IsPaid = obj[i].IsPaid;
+                            purchaseOrder.PaidDate = DateTime.Now;
                         }
                         purchaseOrder.Currrentuser = obj[i].Currrentuser;
                         purchaseOrder.PaymentTerms = obj[i].PaymentTerms;
@@ -1543,7 +1546,7 @@ namespace ABC.POS.API.Controllers
                         purchaseOrder.CigaretteStick = obj[i].CigaretteStick;
                         purchaseOrder.Notes = obj[i].Notes;
                         purchaseOrder.IsReport = obj[i].IsReport;
-                        purchaseOrder.IsPaid = obj[i].IsPaid;
+                        //purchaseOrder.IsPaid = obj[i].IsPaid;
                         purchaseOrder.IsPostStatus = obj[i].IsPostStatus;
                         purchaseOrder.PaidAmount = obj[i].PaidAmount;
                         purchaseOrder.SubTotal = obj[i].SubTotal;
@@ -1572,7 +1575,7 @@ namespace ABC.POS.API.Controllers
                         purchaseOrder.Podate = DateTime.Now;
                         purchaseOrder.InvoiceDate = DateTime.Now;
                         purchaseOrder.DateReceived = DateTime.Now;
-                        purchaseOrder.PaidDate = DateTime.Now;
+                        //purchaseOrder.PaidDate = DateTime.Now;
                         bool firstTime = false;
                         stock = new InventoryStock();
 
@@ -1690,6 +1693,8 @@ namespace ABC.POS.API.Controllers
                         if (obj[0].IsPaid == true)
                         {
                             obj[i].PaidDate = DateTime.Now;
+                            purchaseOrderNew.IsPaid = obj[i].IsPaid;
+                            purchaseOrderNew.PaidDate = DateTime.Now;
                         }
                         purchaseOrderNew.Currrentuser = obj[i].Currrentuser;
                         purchaseOrderNew.PaymentTerms = obj[i].PaymentTerms;
@@ -1699,7 +1704,7 @@ namespace ABC.POS.API.Controllers
                         purchaseOrderNew.CigaretteStick = obj[i].CigaretteStick;
                         purchaseOrderNew.Notes = obj[i].Notes;
                         purchaseOrderNew.IsReport = obj[i].IsReport;
-                        purchaseOrderNew.IsPaid = obj[i].IsPaid;
+                       // purchaseOrderNew.IsPaid = obj[i].IsPaid;
                         purchaseOrderNew.IsPostStatus = obj[i].IsPostStatus;
                         purchaseOrderNew.PaidAmount = obj[i].PaidAmount;
                         purchaseOrderNew.SubTotal = obj[i].SubTotal;
@@ -1728,7 +1733,7 @@ namespace ABC.POS.API.Controllers
                         purchaseOrderNew.Podate = DateTime.Now;
                         purchaseOrderNew.InvoiceDate = DateTime.Now;
                         purchaseOrderNew.DateReceived = DateTime.Now;
-                        purchaseOrderNew.PaidDate = DateTime.Now;
+                      //  purchaseOrderNew.PaidDate = DateTime.Now;
                         purchaseOrderNew.InvoiceNumber = obj[i].InvoiceNumber;
                         var SimpleInvoiceNumber = obj[i].InvoiceNumber.Replace("-", "");
                         purchaseOrderNew.SimpleInvoiceNumber = SimpleInvoiceNumber;
@@ -2155,7 +2160,7 @@ namespace ABC.POS.API.Controllers
                 {
                     for (int i = 0; i < purchaseOrder.Count; i++)
                     {
-                        purchaseOrder[i].IsPaid = true;
+                      //  purchaseOrder[i].IsPaid = true;
                         purchaseOrder[i].PaidAmount = obj.TotalPaid;
                         purchaseOrder[i].RemaningPayment = obj.RemaningPayment;
                         db.Entry(purchaseOrder[i]).State = EntityState.Modified;
