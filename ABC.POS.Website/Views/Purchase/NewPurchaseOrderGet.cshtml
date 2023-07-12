@@ -582,13 +582,13 @@
             AllitemsModelList = ABCPOSWebsite.AllItem4Model();
         }
 
-       // if (AllopenPurchaseOrdersList.length < 1) {
+        if (AllopenPurchaseOrdersList.length < 1) {
             AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
-       // }
+        }
 
-       // if (AllpostPurchaseOrdersList.length < 1) {
+        if (AllpostPurchaseOrdersList.length < 1) {
             AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
-       // }
+        }
         AppendAllMissions();
     });
 </script>
@@ -6419,8 +6419,12 @@
                                         }
                                         $("#Savebtn").hide();
                                         $("#Printbtn").hide();
+
+                                        AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
                                         getopeninvoicelist();
+                                        AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
                                         getpostinvoicelist();
+
                                         setTimeout(function() {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
                                             swal("Success!", "Purchsase Order Update Successfully.", "success");

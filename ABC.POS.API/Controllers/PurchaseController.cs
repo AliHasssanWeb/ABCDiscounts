@@ -2024,7 +2024,10 @@ namespace ABC.POS.API.Controllers
                                 paying.Note = "";
                                 // paying.NetAmount = grossamount.ToString();
                                 paying.InvoiceNumber = fullcode;
-                                paying.Debit = obj[0].GrossAmount.ToString();
+                                if (obj[0].GrossAmount != null)
+                                {
+                                    paying.Debit = obj[0].GrossAmount.ToString();
+                                }    
                                 paying.Credit = "0.00";
                                 paying.Date = DateTime.Now;
                                 db.Payings.Add(paying);
