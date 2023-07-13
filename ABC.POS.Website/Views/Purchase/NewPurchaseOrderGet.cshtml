@@ -6020,6 +6020,25 @@
 
 
     }
+    function updatePurchaseWithRecived(SaleDetails)
+    {
+         $.ajax({
+             type: "POST",
+             url: '@Url.Action("UpdatePurchaseOrder", "Purchase")',
+             data: JSON.stringify(SaleDetails),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function(data) {
+             var model = data.responseData;
+             }
+         });
+    }
+    function loadInvoicePendingRecived(){
+        AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
+        getopeninvoicelist();
+        AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
+        getpostinvoicelist();
+    }
     function SaveItemSupplierNumber(printorNot, updateorNot, Ispaid) {
         //
 
@@ -6253,6 +6272,9 @@
                         success: function(data) {
                             if (data.success == "Justpay") {
                                 SavePaymentWhileInvoice(true);
+                                if(SaleDetails[0].Received == true || SaleDetails[0].Received == "true"){
+                                    updatePurchaseWithRecived(SaleDetails);
+                                }
 
                             } else {
                                 var model = data.responseData;
@@ -6288,7 +6310,7 @@
                                 }
 
                                 //}
-
+                                loadInvoicePendingRecived();
                                 location.reload();
                             }
                         }
@@ -6359,7 +6381,7 @@
                                         if (data.success == "print") {
                                             window.open('@Url.Action("PurchaseInvoice", "Purchase")', '_blank');
                                         }
-
+                                        loadInvoicePendingRecived();
                                         //}
 
                                         location.reload();
@@ -6420,10 +6442,11 @@
                                         $("#Savebtn").hide();
                                         $("#Printbtn").hide();
 
-                                        AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
-                                        getopeninvoicelist();
-                                        AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
-                                        getpostinvoicelist();
+                                        loadInvoicePendingRecived();
+                                        //AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
+                                        //getopeninvoicelist();
+                                        //AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
+                                        //getpostinvoicelist();
 
                                         setTimeout(function() {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
