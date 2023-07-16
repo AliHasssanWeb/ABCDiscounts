@@ -2372,48 +2372,59 @@ namespace ABC.POS.API.Controllers
                 var payable = db.Payables.Where(x => x.AccountNumber == obj.AccountNumber).FirstOrDefault();
                 if (payable != null)
                 {
-                    double num1 = Convert.ToDouble(payable.Amount);
-                    double num2 = 0;
-                    if (payingfound != null)
+                    double payableAmount = 0.00;
+                    var payingCashBalances = db.Payings.Where(x => x.AccountId == obj.AccountId).ToList();
+                    if(payingCashBalances != null)
                     {
-                        num2 = Convert.ToDouble(payingfound.Debit);
-                        double TodayWePay = 0;
-                        if (payingfound.TotalPaid != true)
+                        foreach(var payingCashBalance in payingCashBalances)
                         {
-                            TodayWePay = Convert.ToDouble(num1) - Convert.ToDouble(obj.CashBalance);
-                            //payingfound.Debit = (Convert.ToDouble(payingfound.Debit) + TodayWePay).ToString();
-                        }
-                        else
-                        {
-                            TodayWePay = num2;
-                        }
-                        if (Convert.ToDouble(PurchaseOrder.Total) <= Convert.ToDouble(payingfound.Debit))
-                        {
-                            //var PayableAMount = Convert.ToDouble(payingfound.Debit) - Convert.ToDouble(PurchaseOrder.Total);
-                            //payable.Amount = Convert.ToString(PayableAMount);
-
-                        }
-                        else
-                        {
-                            var num3 = num1 - TodayWePay;
-                            payable.Amount = Convert.ToString(num3);
+                            payableAmount += Convert.ToDouble(payingCashBalance.CashBalance);
                         }
                     }
-                    else
-                    {
-                        num2 = Convert.ToDouble(obj.Debit);
-                        var num3 = num1 - num2;
-                        if (Convert.ToDouble(PurchaseOrder.Total) <= Convert.ToDouble(obj.Debit))
-                        {
-                            //var PayableAMount = Convert.ToDouble(PurchaseOrder.Total) - Convert.ToDouble(obj.Debit);
-                            //payable.Amount = Convert.ToString(PayableAMount);
+                    //double num1 = Convert.ToDouble(payable.Amount);
+                    //double num2 = 0;
+                    //if (payingfound != null)
+                    //{
+                    //    num2 = Convert.ToDouble(payingfound.Debit);
+                    //    double TodayWePay = 0;
+                    //    if (payingfound.TotalPaid != true)
+                    //    {
+                    //        //TodayWePay = Convert.ToDouble(num1) - Convert.ToDouble(obj.CashBalance);
+                    //        //payingfound.Debit = (Convert.ToDouble(payingfound.Debit) + TodayWePay).ToString();
+                    //        TodayWePay = num2;
+                    //    }
+                    //    else
+                    //    {
+                    //        TodayWePay = num2;
+                    //    }
+                    //    if (Convert.ToDouble(PurchaseOrder.Total) <= Convert.ToDouble(payingfound.Debit))
+                    //    {
+                    //        //var PayableAMount = Convert.ToDouble(payingfound.Debit) - Convert.ToDouble(PurchaseOrder.Total);
+                    //        //payable.Amount = Convert.ToString(PayableAMount);
 
-                        }
-                        else
-                        {
-                            payable.Amount = Convert.ToString(num3);
-                        }
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        var num3 = num1 - TodayWePay;
+                    //        payable.Amount = Convert.ToString(num3);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    num2 = Convert.ToDouble(obj.Debit);
+                    //    var num3 = num1 - num2;
+                    //    if (Convert.ToDouble(PurchaseOrder.Total) <= Convert.ToDouble(obj.Debit))
+                    //    {
+                    //        //var PayableAMount = Convert.ToDouble(PurchaseOrder.Total) - Convert.ToDouble(obj.Debit);
+                    //        //payable.Amount = Convert.ToString(PayableAMount);
+
+                    //    }
+                    //    else
+                    //    {
+                    //        payable.Amount = Convert.ToString(num3);
+                    //    }
+                    //}
+                    payable.Amount = Convert.ToString(payableAmount);
                     db.Entry(payable).State = EntityState.Modified;
                     db.SaveChanges();
 

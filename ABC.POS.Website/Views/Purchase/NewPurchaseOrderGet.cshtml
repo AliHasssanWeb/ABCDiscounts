@@ -4337,7 +4337,6 @@
                         dataType: "json",
                         success: function(data) {
                             if (data != null) {
-
                                 var resultsAmount = parseFloat(data.amount).toFixed(2);
                                 $("#previousBalance").val(resultsAmount);
                                 // $("#creditvendor").val(data.amount);
@@ -4679,7 +4678,7 @@
 
         if (window.newseq != "" && window.newseq != "undefined") {
             var mynewseqnum = window.newseq;
-            /alert(mynewseqnum);/
+          //  /alert(mynewseqnum);/
         }
         $.ajax({
             type: "GET",
@@ -4705,7 +4704,6 @@
                         /*$("#StockItemNumber-" + mynewseqnum).text(data.stock.stockItemNumber);*/
                     }
                     CountTotalOfAllTD();
-                    /* alert("item selected");*/
                     $("#listallmissions").empty();
 
                 }
@@ -4992,7 +4990,6 @@
                     success: function(data) {
                         console.log(data);
                         if (data != null) {
-
                             var resultsAmount = parseFloat(data.amount).toFixed(2);
                             $("#previousBalance").val(resultsAmount);
                             $("#creditvendor").val(resultsAmount);
