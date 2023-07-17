@@ -2044,7 +2044,10 @@ namespace ABC.POS.API.Controllers
                                             transaction.AccountNumber = getaccount.AccountId;
                                             transaction.DetailAccountId = getaccount.AccountId;
                                             transaction.Credit = "0.00";
-                                            transaction.Debit = obj[0].GrossAmount.ToString();
+                                            if (obj[0].GrossAmount != null)
+                                            {
+                                                transaction.Debit = obj[0].GrossAmount.ToString();
+                                            }
                                             transaction.InvoiceNumber = fullcode;
                                             transaction.Date = DateTime.Now;
                                             transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
@@ -2057,7 +2060,10 @@ namespace ABC.POS.API.Controllers
                                         transaction.AccountName = getCHaccount.Title;
                                         transaction.AccountNumber = getCHaccount.AccountId;
                                         transaction.DetailAccountId = getCHaccount.AccountId;
-                                        transaction.Credit = obj[0].GrossAmount.ToString();
+                                        if (obj[0].GrossAmount != null)
+                                        {
+                                            transaction.Credit = obj[0].GrossAmount.ToString();
+                                        }
                                         transaction.Debit = "0.00";
                                         transaction.InvoiceNumber = fullcode;
                                         transaction.Date = DateTime.Now;
@@ -2312,39 +2318,40 @@ namespace ABC.POS.API.Controllers
                     {
                         PurchaseOrder.IsPaid = true;
                         PurchaseOrder.IsPartialPaid = false;
-                        db.Payings.Add(obj);
-                        await db.SaveChangesAsync();
+                        //db.Payings.Add(obj);
+                        //await db.SaveChangesAsync();
                     }
                     else
                     {
                         PurchaseOrder.IsPaid = false;
                         PurchaseOrder.IsPartialPaid = true;
+                    }
 
-                        if (payingfound != null)
+                    if (payingfound != null)
+                    {
+                        var TodayWePay = Convert.ToDouble(obj.Debit) - Convert.ToDouble(payingfound.Debit);
+                        payingfound.Debit = (Convert.ToDouble(TodayWePay) + Convert.ToDouble(payingfound.Debit)).ToString();
+                        payingfound.Comments = obj.Comments;
+                        payingfound.Comments = obj.Note;
+                        if (Convert.ToDouble(payingfound.Debit) >= Convert.ToDouble(obj.NetAmount))
                         {
-                            var TodayWePay = Convert.ToDouble(obj.Debit) - Convert.ToDouble(payingfound.Debit);
-                            payingfound.Debit = (Convert.ToDouble(TodayWePay) + Convert.ToDouble(payingfound.Debit)).ToString();
-                            payingfound.Comments = obj.Comments;
-                            payingfound.Comments = obj.Note;
-                            if (Convert.ToDouble(payingfound.Debit) >= Convert.ToDouble(obj.NetAmount))
-                            {
-                                payingfound.TotalPaid = true;
-                            }
-                            else
-                            {
-                                payingfound.TotalPaid = false;
-                            }
-                            payingfound.NetAmount = obj.NetAmount;
-                            payingfound.CashBalance = (Convert.ToDouble(obj.NetAmount) - Convert.ToDouble(payingfound.Debit)).ToString();
-                            db.Entry(payingfound).State = EntityState.Modified;
-                            db.SaveChanges();
+                            payingfound.TotalPaid = true;
                         }
                         else
                         {
-                            db.Payings.Add(obj);
-                            await db.SaveChangesAsync();
+                            payingfound.TotalPaid = false;
                         }
+                        payingfound.NetAmount = obj.NetAmount;
+                        payingfound.CashBalance = (Convert.ToDouble(obj.NetAmount) - Convert.ToDouble(payingfound.Debit)).ToString();
+                        db.Entry(payingfound).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
+                    else
+                    {
+                        db.Payings.Add(obj);
+                        await db.SaveChangesAsync();
+                    }
+
                     PurchaseOrder.PaymentComments = obj.Comments;
                     db.Entry(PurchaseOrder).State = EntityState.Modified;
                     db.SaveChanges();
