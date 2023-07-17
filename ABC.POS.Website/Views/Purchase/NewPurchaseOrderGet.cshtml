@@ -3675,12 +3675,11 @@
         }
     });
     function GetItemDataAppend() {
-
         var number = 0;
         var tablecount = $("#mytable TBODY TR").length;
-        if (parseInt(tablecount) == 0) {
-            $(".add-row").trigger("click");
-        }
+        //if (parseInt(tablecount) == 0) {
+        //    $(".add-row").trigger("click");
+        //}
 
         //$('#mytable tbody tr').each(function(index, tr) {
 
@@ -3701,17 +3700,31 @@
                 success: function(data) {
                     // $(".add-row").trigger("click");
                     //var number = 0;
+                    var rowCount = 1;
+                     $('#mytable tr').each(function(index, tr) {
+                         var descriptionIndex = $('#Description-' + rowCount).text();
+                       if(descriptionIndex == ''){
+                           RemoveRow(rowCount);
+                       }else{
+                           rowCount++;
+                       }
+                    });
+
                     $('#mytable tr').each(function(index, tr) {
                         number++;
                     });
-                    var index = number - 1;
+
+                    var index = number ;//- 1;
+                   
                     var qustmQty = $('#customQuantity').val();
                     if (data.id != null) {
+                        $(".add-row").trigger("click");
                         GetItemByIDa(data.id, index, qustmQty);
                         $("#writecheque").prop('disabled', false);
                     }
                     else {
                         var iddata = itemId;
+                        $(".add-row").trigger("click");
                         GetItemByIDa(iddata, index, qustmQty);
                     }
                     $('#InventoryLookupModal').modal('hide');
@@ -3741,7 +3754,6 @@
     }
 
     function GetItemDataAppendForDesModal() {
-
         var itemDataid = $('#itemNumM').html();
         if (itemDataid != null && itemDataid != '') {
             var itemstockNo = $('#ucpnitem').val();
@@ -5256,7 +5268,6 @@
     });
 
     function openinventory(idu) {
-
         //var cd = $("#Description-" + idu ).text();
         //var min = idu - 1;
         //var cd = $("#Description-" + min ).text();
@@ -5810,6 +5821,7 @@
 
 
     function closemodalDesc() {
+
         $("#VendorDesModal").modal('hide');
         $('#ucpnitem').val("");
         $("#itemDescriptionM").val("");
