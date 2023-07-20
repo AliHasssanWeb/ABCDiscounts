@@ -4476,7 +4476,7 @@
         });
 
         function checkExists(inputValue) {
-
+           // alert("checkExists");
             var x = document.getElementById("supplierName");
             var i;
             var flag;
@@ -4611,16 +4611,19 @@
 
 
     function Changerow(val, val2) {
-
+       // alert("Changerow");
+      // debugger;
         var allrows = $(".itemnewtr").find('tr');
+        $(allrows.prevObject).removeClass("selectedrow");
         $.each(allrows.prevObject, function(ind, it) {
             if ($(it).find('id').prevObject[0].id == ("rowlistid-" + val)) {
                 $('#itemquantitylabel').trigger('focus');
                 $($(it).find('id').prevObject[0]).addClass("selectedrow");
-
-            } else {
-                $($(it).find('id').prevObject[0]).removeClass("selectedrow");
-            }
+                return false;
+            } 
+            //else {
+            //    $($(it).find('id').prevObject[0]).removeClass("selectedrow");
+            //}
         });
 
 
@@ -4633,30 +4636,53 @@
     function keycodeget() {
 
         //$(".add-row").trigger("click");
+        debugger;
+       // $(".add-row").trigger("click");
+       var rowCount = 1;
+        $('#mytable tr').each(function(index, tr) {
+            var descriptionIndex = $('#Description-' + rowCount).text();
+            if(descriptionIndex == ''){
+                RemoveRow(rowCount);
+            }else{
+                rowCount++;
+            }
+        });
 
-        $(".add-row").trigger("click");
         var number = 0;
         $('#mytable tr').each(function(index, tr) {
             number++;
 
         });
-        var index = number - 1;
+        var index = number; // - 1;
         $('.modalTable tr').removeClass("selectedrow");
         var qustmQty = $('#itemquantitylabel').val();
         if (qustmQty == '') {
             qustmQty = 1;
         }
+        $(".add-row").trigger("click");
         if (shortaddvalue == 0) {
             swal("Error!", "Please Select Item!", "error");
             RemoveRow(index);
         }
         GetItemByIDaForShortModal(shortaddvalue, index, qustmQty);
+        
+        //rowCount = 1;
+        //$('#mytable tr').each(function(index, tr) {
+        //    var descriptionIndex = $('#Description-' + rowCount).text();
+        //    if(descriptionIndex == ''){
+        //        RemoveRow(rowCount);
+        //    }else{
+        //        rowCount++;
+        //    }
+        //});
+
         $("#writecheque").prop('disabled', false);
         $(".add-row").trigger("click");
         $('#itemquantitylabel').val('');
 
         $("#additemshort").modal('hide');
         $('#searchPro').val('');
+        shortaddvalue = 0;
     }
 
 
@@ -4821,11 +4847,11 @@
                             var check = $("#rowid-" + jj).find("#StockItemNumber-" + jj).text();
                             // alert(check);
                             if (check[jj] == null || check[jj] == "") {
-                                RemoveRow(jj);
+                               // RemoveRow(jj);
                             }
                             jj++
                         });
-                        $(".add-row").trigger("click");
+                      //  $(".add-row").trigger("click");
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
@@ -5973,7 +5999,7 @@
                 var TRid = $(t)[0].id.split('-');
                 $(t).attr('id', TRid[0] + "-" + i);
 
-                var alltd = $(t).find('td');
+                var alltd = $(t).find('td');    
                 $.each(alltd, function(f, it) {
                     var id = $(it)[0].id.split('-');
                     if (id[0] == "countser") {
@@ -5982,6 +6008,7 @@
                     }
                     if (id[0] == "Description") {
                         $(it).attr('onkeyup', 'GetItemByName(' + i + ')');
+                        $(it).attr('ondblclick', 'openinventory(' + i + ')');
                     }
                     if (id[0] == "Qty") {
                         $(it).attr('onkeyup', 'QuantityMultipyPrice(' + i + ')');
@@ -6490,7 +6517,7 @@
     };
     function AppendAllMissions(event) {
 
-
+       // alert("AppendAllMissions");
         $("#listallmissions").empty();
         $("#listallmissionss").empty();
         $("#listallmissionsss").empty();
@@ -7386,6 +7413,7 @@
     }).keydown(function(e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 114 && isCtrl == true) {
+          //  alert("e.which == 114 && isCtrl == true  keydown");
             if ($("#setvendorid").text() == 0) {
                 swal("Error!", "Kindly Select Vendor!", "error");
                 valid = false;
@@ -7439,6 +7467,7 @@
 
     });
     function closeitemmodal() {
+      //  alert("closeitemmodal");
         $("#additemshort").modal('hide');
         $("#searchPro").val('');
         $('.modalTable tr').removeClass("selectedrow");
