@@ -3742,6 +3742,15 @@
                     $("#customerCode").val('');
                     $("#qtyOnHand").val('');
 
+                    //rowCount = 1;
+                    //$('#mytable tr').each(function(index, tr) {
+                    //     var descriptionIndex = $('#Description-' + rowCount).text();
+                    //   if(descriptionIndex == ''){
+                    //       RemoveRow(rowCount);
+                    //   }else{
+                    //       rowCount++;
+                    //   }
+                    //});
                     //$(".add-row").trigger("click");
                 },
 
@@ -4025,7 +4034,17 @@
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
-                        RemoveRow(index);
+                        //RemoveRow(index);
+                        var rowCount = 1;
+                        $('#mytable tr').each(function(index, tr) {
+                         var descriptionIndex = $('#Description-' + rowCount).text();
+                         if(descriptionIndex == ''){
+                            RemoveRow(rowCount);
+                         }else{
+                           rowCount++;
+                         }
+                       });
+                       $(".add-row").trigger("click");
                     }
                 }
 
@@ -4611,8 +4630,6 @@
 
 
     function Changerow(val, val2) {
-       // alert("Changerow");
-      // debugger;
         var allrows = $(".itemnewtr").find('tr');
         $(allrows.prevObject).removeClass("selectedrow");
         $.each(allrows.prevObject, function(ind, it) {
@@ -4636,7 +4653,7 @@
     function keycodeget() {
 
         //$(".add-row").trigger("click");
-        debugger;
+       // debugger;
        // $(".add-row").trigger("click");
        var rowCount = 1;
         $('#mytable tr').each(function(index, tr) {
@@ -4665,19 +4682,9 @@
             RemoveRow(index);
         }
         GetItemByIDaForShortModal(shortaddvalue, index, qustmQty);
-        
-        //rowCount = 1;
-        //$('#mytable tr').each(function(index, tr) {
-        //    var descriptionIndex = $('#Description-' + rowCount).text();
-        //    if(descriptionIndex == ''){
-        //        RemoveRow(rowCount);
-        //    }else{
-        //        rowCount++;
-        //    }
-        //});
 
         $("#writecheque").prop('disabled', false);
-        $(".add-row").trigger("click");
+       // $(".add-row").trigger("click");
         $('#itemquantitylabel').val('');
 
         $("#additemshort").modal('hide');
@@ -4851,14 +4858,23 @@
                             }
                             jj++
                         });
-                      //  $(".add-row").trigger("click");
+                        $(".add-row").trigger("click");
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
-                        RemoveRow(index);
+                       // RemoveRow(index);
+
+                        var rowCount = 1;
+                        $('#mytable tr').each(function(index, tr) {
+                         var descriptionIndex = $('#Description-' + rowCount).text();
+                         if(descriptionIndex == ''){
+                            RemoveRow(rowCount);
+                         }else{
+                            rowCount++;
+                         }
+                       });
+                       $(".add-row").trigger("click");
                     }
-
-
                 }
 
 
