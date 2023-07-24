@@ -436,7 +436,6 @@ namespace ABC.POS.Website.Controllers
         //new merge on sunday 21nov 
         public IActionResult SalesInvoice()
         {
-
             try
             {
                 PosSale model = new PosSale();

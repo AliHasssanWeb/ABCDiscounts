@@ -1,0 +1,705 @@
+﻿@model ABC.EFCore.Repository.Edmx.Sale
+
+@{
+    ViewData["Title"] = "PurchesGrid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    function myFunc() {
+
+        $("#selectItem").val('');
+        $("#txtProductName").val('');
+        $("#txtProductCode").val('');
+        $("#txtProductBarCode").val('');
+        $("#txtSku").val('');
+        $("#selectQuntityUnit").val('');
+        $("#txtPurchaseDate").val('');
+        $("#txtQuntityPack").val('');
+        $("#txtUnitPrice").val('');
+        $("#txtQuntity").val('');
+        $("#txtTotalAmount").val('');
+        $("#txtGrossAmount").val('');
+        $("#txtVatTax").val('');
+        $("#txtQuantity").val('');
+        $("#txtUnitprice").val('');
+        $("#txtTotalAmount").val('');
+
+    }
+    function AddPurchaseOrder() {
+
+        var PurchaseOrder = {};
+        var isValid = false;
+        var VendorId = $("#VendorId").val();
+        var txtProductName = $("#txtProductName").val();
+        var txtProductCode = $("#txtProductCode").val();
+        var txtProductBarCode = $("#txtProductBarCode").val();
+        var txtSku = $("#txtSku").val();
+        var selectQuntityUnit = $("#selectQuntityUnit").val();
+        var txtPurchaseDate = $("#txtPurchaseDate").val();
+        var txtQuntityPack = $("#txtQuntityPack").val();
+        var txtUnitPrice = $("#txtUnitPrice").val();
+        var txtQuntity = $("#txtQuntity").val();
+        var txtTotalAmount = $("#txtTotalAmount").val();
+        var txtGrossAmount = $("#txtGrossAmount").val();
+        var txtVatTax = $("#txtVatTax").val();
+    }
+
+    function SaleOnCredit() {
+
+    }
+</script>
+@if (TempData["response"] != null)
+{
+    <div class="alert alert-success" id="msgalert">
+        @TempData["response"].ToString()
+    </div>
+}
+
+<div class="d-sm-flex align-items-center justify-content-between border-bottom">
+    <ul class="nav nav-tabs" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active ps-0" href="~/Sale/SaleOrder" aria-controls="overview" aria-selected="true">Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Sale/AllSaleInvoices" aria-controls="overview" aria-selected="true">Sales Invoices</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="~/Account/Receivables" role="tab" aria-selected="false">Receiables</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="~/Account/Receiving" role="tab" aria-selected="false">Receipt</a>
+        </li>
+       
+    </ul>
+</div>
+
+<style>
+    .mdi-window-close {
+        color: red;
+    }
+
+    .btn-primary {
+        color: white !important;
+    }
+</style>
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Sales Order</h4>
+            <div class="row">
+
+                <h5>
+                    Invoice Number: @ViewBag.InvoiceNumber
+                    <input value="@ViewBag.InvoiceNumber" type="hidden" id="invoicenumber" />
+                    @*@Html.HiddenFor(model => model.InvoiceNumber, new { @class = "form-control" })*@
+                </h5>
+
+                <h5 style="float: right; margin-right:; margin-left: 69%; margin-top: -36px;">
+                    Terminal Name: @ViewBag.TerminalName
+                    <input value="@ViewBag.TerminalName" type="hidden" id="terminalnumber" />
+                </h5>
+                <br />
+                <h5 style="margin-bottom: 10px;margin-top:5px">
+                    Cashier Name: @ViewBag.CashierName
+                    <input value="@ViewBag.CashierName" type="hidden" id="CashierName" />
+                </h5>
+
+                <h5 style="float: right; margin-right:; margin-left: 69%; margin-top: -36px;">
+                    Remaining Quantity:
+                    <input style="border: none; width: 15%;" value="" type="text" id="remainingqty" />
+                </h5>
+
+                <br />
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Items</label>
+                        @Html.DropDownList("ItemId", (IEnumerable<SelectListItem>)ViewBag.Items, "--Choose Item--", new { @class = "form-control", id = "selectItem" })
+                        @Html.ValidationMessageFor(model => model.ItemId, "", new { @class = "text-danger db", id = "ValMsgselectItem" })
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Item Name</label>
+                        @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Item Name", id = "txtProductName" } })
+                        @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger db", id = "ValMsgProductName" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductName" style="font-size:12px;"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+
+                        <label class="dim col-sm-4">Customer</label>
+                        @Html.DropDownList("CustomerId", (IEnumerable<SelectListItem>)ViewBag.Customer, "--Choose Customer--", new { @class = "form-control", id = "selectsupplier" })
+                        @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger db", id = "ValMsgVendorId" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">ItemCode</label>
+                        @Html.EditorFor(model => model.ItemCode, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Product Code", id = "txtProductCode" } })
+                        @Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger db" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductCode" style="font-size:12px;"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-5">Item BarCode</label>
+                        @Html.EditorFor(model => model.BarCode, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Product BarCode", id = "txtProductBarCode" } })
+                        @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger db" })
+                        <label class="text-danger field-validation-error db" id="ValMsgProductBarCode" style="font-size:12px;"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">SKU</label>
+                        @Html.EditorFor(model => model.Sku, new { htmlAttributes = new { @class = "form-control", placeholder = "SKU", id = "txtSku" } })
+                        @Html.ValidationMessageFor(model => model.Sku, "", new { @class = "text-danger db" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity Unit</label>
+                        @Html.DropDownList("QuantityUnit", new SelectList(ViewBag.QuantityUnit, "QuantityId", "QuantityUnit"), "--- Select Quantity Unit ---", new { @class = "form-control", id = "selectQunatityUnit" })
+                        @Html.ValidationMessageFor(model => model.QuantityUnit, "", new { @class = "text-danger db", id = "valselectQunatityUnit" })
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity Pack</label>
+                        @Html.EditorFor(model => model.QuantityPack, new { htmlAttributes = new { @class = "form-control", placeholder = "Quantity Pack", id = "txtQuntityPack" } })
+                        @Html.ValidationMessageFor(model => model.QuantityPack, "", new { @class = "text-danger db" })
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Quantity</label>
+                        <input type="number" oninput="calculate()" class="form-control txtinput col-sm-10" id="txtQuantity" placeholder="Quantity" />
+                        @*//  @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Quantity", id = "txtQuntity" } })*@
+
+                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger db", id = "ValMsgQuantity" })
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Unit Charge</label>
+                        <input type="Text" id="txtUnitprice" oninput="calculate()" class="form-control txtinput col-sm-10" placeholder="Unit Charge" />
+                        @*@Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", placeholder = "Unit Charge", id = "txtUnitPrice" } })*@
+                        @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger db", id = "valmsgunitprice" })
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="form-group">
+                        <label class="dim col-sm-4">Total Amount</label>
+                        @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control txtinput", placeholder = "Total Amount", id = "txtTotalAmount" } })
+                        <label class="text-danger field-validation-error db" id="ValMsgTotalAmount" style="font-size:12px;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            @Html.CheckBox("OnCash",false, new {id="idcash"})
+                            @Html.ValidationMessageFor(model => model.OnCash, "", new { @class = "text-danger db" })
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-check-label">
+                                Cash
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            @Html.CheckBox("OnCredit",false, new {id="idcredit"})
+                            @Html.ValidationMessageFor(model => model.OnCredit, "", new { @class = "text-danger db" })
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-check-label">
+                                Credit
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class=" col-sm-10">
+
+                        <a></a><input type='button' onclick="myFunc();" value='Refresh' class="btn btn-primary send-btn pull-right btn-wd" />
+                    </div>
+                    <div class=" col-sm-2">
+                        <a class="btn btn-primary send-btn btn-wd pull-right btn-wd" data-added="0" onclick="inertRowsTogrid()" style="color: white"> Add</a>
+                        <div class="text-danger" id="errorPacket"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Sales Cart</h5>
+        </div>
+        <div class="card-block">
+            <div class="table-responsive">
+                <table id="zero-configuration1" class="display table nowrap table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ItemName</th>
+                            <th>ItemCode</th>
+                            <th>BarCode</th>
+                            <th>Quantity</th>
+                            <th>UnitPrice</th>
+                            <th>TotalAmount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="ml-auto col-md-6">
+
+                </div>
+                <div class="ml-auto col-md-4">
+
+                </div>
+                <div class="ml-auto col-md-2" style="margin-top: 10px;">
+                    <span class="btn btn-primary btn-wd send-btn" id="cmdContinue" onclick="InsertPurchaseDetails()">Save<i class="las la-arrow-right pl-3"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* checkbox modal *@
+    <div id="abcd" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">Supervisor Access Required</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="itemcategory">Supervisor Security Pin</label>
+                            <input class="form-control" type="number" placeholder="******" id="" />
+                            <label class="text-danger db" style="display:none" id=""></label>
+
+                            <label for="itemcategory">Credit Amount</label>
+                            <input class="form-control" type="number" placeholder="0.00" id="" />
+                            <label class="text-danger db" style="display:none" id=""></label>
+                        </div>
+                        <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="itemcategorysubmit"><p style="color:white">Submit</p></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @* checkbox modal *@
+    <div id="salesman" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="ModalLabel">SalesManager Access Required</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="itemcategory">Sales Security Pin</label>
+                            <input class="form-control" type="number" placeholder="******" id="" />
+                            <label class="text-danger db" style="display:none" id=""></label>
+                            <label for="itemcategory">Credit Amount</label>
+                            <input class="form-control" type="number" placeholder="0.00" id="" />
+                            <label class="text-danger db" style="display:none" id=""></label>
+                        </div>
+                        <button type="button" class="btn btn-dark text-white mx-auto col-md-3" id="itemcategorysubmit"><p style="color:white">Submit</p></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script>
+            var sernum = 1;
+            var SaleDetails = [];
+            function inertRowsTogrid() {
+
+                var isValid = false;
+                var prQuantity = $("#txtQuantity").val();
+                var prtUnitprice = $("#txtUnitprice").val();
+
+                if (prQuantity != "" && prQuantity != "undefined") {
+                    $("#ValMsgQuantity").hide();
+                    isValid = true;
+
+                } else {
+                    $("#ValMsgQuantity").first().focus();
+                    $("#ValMsgQuantity").text("Quantity Is Required.");
+                    $("#ValMsgQuantity").show();
+                    isValid = false;
+                }
+                if (prtUnitprice != "" && prtUnitprice != "undefined") {
+
+                    $("#valmsgunitprice").hide();
+                    isValid = true;
+
+                } else {
+                    $("#valmsgunitprice").first().focus();
+                    $("#valmsgunitprice").text("Unitprice Is Required.");
+                    $("#valmsgunitprice").show();
+                    isValid = false;
+                }
+
+                if ($('#selectItem option:selected').val() != "--Choose Item--" && $('#selectItem option:selected').val() != "") {
+                    $("#ValMsgselectItem").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#ValMsgselectItem").first().focus();
+                    $("#ValMsgselectItem").text("Please Select Item.");
+                    $("#ValMsgselectItem").show();
+                    isValid = false;
+                }
+                if ($('#selectsupplier option:selected').val() != "--Choose Customer--" && $('#selectsupplier option:selected').val() != '') {
+                    $("#ValMsgVendorId").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#ValMsgVendorId").first().focus();
+                    $("#ValMsgVendorId").text("Please Select Customer.");
+                    $("#ValMsgVendorId").show();
+                    isValid = false;
+                }
+
+                if ($('#selectQunatityUnit option:selected').val() != "--- Select Quantity Unit ---" && $('#selectQunatityUnit option:selected').val() != "") {
+                    $("#valselectQunatityUnit").hide();
+                    isValid = true;
+                }
+                else {
+                    $("#valselectQunatityUnit").first().focus();
+                    $("#valselectQunatityUnit").text("Please Select QunatityUnit.");
+                    $("#valselectQunatityUnit").show();
+                    isValid = false;
+                }
+                if (prQuantity != "" == "" || prtUnitprice == "" || $('#selectsupplier option:selected').val() == "" || $('#selectQunatityUnit option:selected').val() == "" || $('#selectItem option:selected').val() == "") {
+                    isValid = false;
+                }
+
+                if (isValid == true) {
+
+                    var item = $("#selectItem").val();
+                    var supplier = $("#selectsupplier").val();
+                    var itemname = $("#txtProductName").val();
+                    var itemcode = $("#txtProductCode").val();
+                    var itembarcode = $("#txtProductBarCode").val();
+                    var sku = $("#txtSku").val();
+                    var Quantityunit = $("#selectQunatityUnit").val();
+                    var quantitypack = $("#txtQuantityPack").val();
+                    var quantity = $("#txtQuantity").val();
+                    var unitprice = $("#txtUnitprice").val();
+                    var totalamount = $("#txtTotalAmount").val();
+                    var invoicenumber = $("#invoicenumber").val();
+                    var iscredit = $("#idcredit").is(':checked');
+                    var iscash = $("#idcash").is(':checked');
+                    var storeid = $("#selectstore").val();
+                    var warehouseid = $("#selectwarehouse").val();
+                    var cashierName = $("#CashierName").val();
+                    var terminalname = $("#terminalnumber").val();
+
+                    var Sale = {};
+                    if (SaleDetails.length > 0) {
+                        $.each(SaleDetails, function (index, value) {
+
+                            if (value.ItemId == item) {
+
+                                $("#ValMsgselectItem").first().focus();
+                                $("#ValMsgselectItem").text("Item already Selected.");
+                                $("#ValMsgselectItem").show();
+                                isValid = false;
+                                return false;
+                            }
+                        });
+                    }
+
+                    if (isValid) {
+                        $('#zero-configuration1').append('<tr>' +
+                            '<td>' + sernum + '</td>' +
+                            '<td  style="display:none;">' + item + '</td>' +
+                            '<td  style="display:none;">' + supplier + '</td>' +
+                            '<td>' + itemname + '</td>' +
+                            '<td>' + itemcode + '</td>' +
+                            '<td>' + itembarcode + '</td>' +
+                            '<td style="display:none;">' + sku + '</td>' +
+                            '<td style="display:none;">' + Quantityunit + '</td>' +
+                            '<td style="display:none;">' + quantitypack + '</td>' +
+                            '<td>' + quantity + '</td>' +
+                            '<td>' + unitprice + '</td>' +
+                            '<td>' + totalamount + '</td>' +
+                            '<td style="display:none;">' + invoicenumber + '</td>' +
+                            '<td style="display:none;">' + iscredit + '</td>' +
+                            '<td style="display:none;">' + cashierName + '</td>' +
+                            '<td style="display:none;">' + terminalname + '</td>' +
+                            '<td style="display:none;">' + iscash + '</td>' +
+                            '<td> <a style="cursor:pointer" onclick="DeleteItem(this)"><span><i class="mdi mdi-trash-can"></i></span></a></td></tr>');
+                        Sale.ItemId = item;
+                        Sale.CustomerId = supplier;
+                        Sale.ItemName = itemname;
+                        Sale.ItemCode = itemcode;
+                        Sale.BarCode = itembarcode;
+                        Sale.Sku = sku;
+                        Sale.QuantityUnit = Quantityunit;
+                        Sale.QuantityPack = quantitypack;
+                        Sale.Quantity = quantity;
+                        Sale.UnitPrice = unitprice;
+                        Sale.TotalAmount = totalamount;
+                        Sale.InvoiceNumber = invoicenumber;
+                        Sale.OnCredit = iscredit;
+                        Sale.CashierName = cashierName;
+                        Sale.Terminal = terminalname;
+                        Sale.OnCash = iscash;
+                        SaleDetails.push(Sale);
+                        myFunc();
+                    }
+
+                }
+            }
+            sernum++;
+
+        </script>
+        <script>
+            function DeleteItem(ctl) {
+                $(ctl).parents("tr").remove();
+            }
+            $('input.percon').on('change', function () {
+                $('input.percon').not(this).prop('checked', false);
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#selectItem").change(function () {
+                    var val = $(this).val();
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ItemGetByIDWithStock", "Sale")',
+                      //  url: "abc.pos/Inventory/Sale/ItemGetByIDWithStock",
+                        data: {
+                            id: val
+                        },
+                        //async: false,
+                        dataType: 'json',
+                        //cache: true,
+                        success: function (data) {
+                            console.log(data);
+                            $('#txtProductName').val(data.name);
+                            $('#txtProductCode').val(data.productCode);
+                            $('#txtProductBarCode').val(data.barCode);
+                            $('#txtSku').val(data.sku);
+                            $('#txtUnitprice').val(data.unitCharge);
+                            $('#remainingqty').val(data.stock.quantity);
+                            $("#txtProductName").attr("disabled", "true");
+                            $("#txtProductCode").attr("disabled", "true");
+                            $("#txtProductBarCode").attr("disabled", "true");
+                            $("#txtSku").attr("disabled", "true");
+                            $("#txtUnitPrice").attr("disabled", "true");
+                            console.log(data.stock.quantity);
+                        },
+                        error: function (xhr, status, error) {
+                            var errorMessage = xhr.status + ': ' + xhr.statusText
+                        },
+                    });
+                });
+            });
+
+            $(function () {
+                $("#selectsupplier").change(function () {
+                    var val = $(this).val();
+                    if (val!="" && val!=null) {
+                         $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("CheckCreditSalesAvailableForCustomerID", "Sale")',
+
+                            data: {
+                                id: val
+                            },
+
+                            dataType: 'json',
+
+                            success: function (data) {
+                          
+                                window.permission = data;
+                                if(window.permission == "CreditNotAllow")
+                                {
+                                   
+                                    $("#idcredit").prop("checked", false);
+                                    document.getElementById("idcredit").disabled = true;
+
+
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                var errorMessage = xhr.status + ': ' + xhr.statusText
+                            },
+                          });
+                    }
+                });
+            });
+
+            $("#idcredit").change(function () {
+                if (this.checked) {
+                    alert(window.permission);
+                    if (window.permission =="AskSalesManager") {
+                        $('#salesman').modal('show');
+                        $('#abcd').modal('hide');
+                    }
+                    else if (window.permission == "AskSupervisor")
+                    {
+                        $('#abcd').modal('show');
+                        $('#salesman').modal('hide');
+                    } else if (window.permission == "CreditNotAllow")
+                    {
+                        $('#abcd').modal('hide');
+                        $('#salesman').modal('hide');
+                        $("#idcredit").prop("checked", false);
+                        document.getElementById("idcredit").disabled = true;
+
+                      
+                    }
+
+
+
+                } else {
+
+                    $('#abcd').modal('hide');
+                    $('#salesman').modal('hide');
+                }
+            });
+
+            $(function () {
+                $("#selectQunatityUnit").change(function () {
+                    var selectuantity = $('#selectQunatityUnit option:selected').text();
+                    if (selectuantity == "Loose") {
+                        $("#txtQuntityPack").attr("disabled", "true");
+                    } else {
+                        $("#txtQuntityPack").removeAttr("disabled");
+                    }
+
+                });
+            });
+
+        </script>
+        <script>
+
+            function calculate() {
+                var myBox1 = $('#txtUnitprice').val();
+                var myBox2 = $('#txtQuantity').val();
+                $('#txtTotalAmount').val();
+                var myResult = myBox1 * myBox2;
+                $('#txtTotalAmount').val(myResult);
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+
+                $("#txtQuntityPack").attr("disabled", "true");
+                $("#txtTotalAmount").attr("disabled", "true");
+            });
+        </script>
+        <script>
+            function InsertPurchaseDetails() {
+              
+                var SaleDetails = new Array();
+                $("#zero-configuration1 TBODY TR").each(function () {
+                    var row = $(this);
+                    var Sale = {};
+                    Sale.ItemId = row.find("TD").eq(1).html();
+                    Sale.CustomerId = row.find("TD").eq(2).html();
+                    Sale.ItemName = row.find("TD").eq(3).html();
+                    Sale.ItemCode = row.find("TD").eq(4).html();
+                    Sale.BarCode = row.find("TD").eq(5).html();
+                    Sale.Sku = row.find("TD").eq(6).html();
+                    Sale.QuantityUnit = row.find("TD").eq(7).html();
+                    Sale.QuantityPack = row.find("TD").eq(8).html();
+                    Sale.Quantity = row.find("TD").eq(9).html();
+                    Sale.UnitPrice = row.find("TD").eq(10).html();
+                    Sale.TotalAmount = row.find("TD").eq(11).html();
+                    Sale.InvoiceNumber = row.find("TD").eq(12).html();
+                    Sale.OnCredit = row.find("TD").eq(13).html();
+                    Sale.CashierName = row.find("TD").eq(14).html();
+                    Sale.Terminal = row.find("TD").eq(15).html();
+                    Sale.OnCash = row.find("TD").eq(16).html();
+                    SaleDetails.push(Sale);
+                });
+                console.log(SaleDetails);
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AddSaleOrderList", "Sale")',
+                   // url: "/Inventory/Sale/AddSaleOrderList",
+                    data: JSON.stringify(SaleDetails),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        myFunctionyesno();
+
+                       // location.reload(true);
+                    }
+                });
+            }
+            function reload() {
+                location.reload();
+            }
+            function myFunctionyesno() {
+                var invoicenumber = $("#invoicenumber").val();
+
+                var txt;
+                var r = confirm("Sales Items Successfully! Do You Want To Take a Print");
+                if (r == true) {
+                    /* $.post("/Inventory/Purchase/GeneratePdfpurchase", { invoicenumber: invoicenumber });*/
+                    location.reload();
+
+                } else {
+                    location.reload();
+
+                }
+
+            }
+        </script>
+        <script>
+
+
+            function closemodal() {
+                $('#abcd').modal('hide');
+            }function closemodalsaleman() {
+                $('#salesman').modal('hide');
+            }
+        </script>
+    }
