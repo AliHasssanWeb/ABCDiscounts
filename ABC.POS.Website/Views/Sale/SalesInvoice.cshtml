@@ -5935,6 +5935,7 @@
         $('#itemStockID').val('');
         $('#itemRetail').val('');
         $('#itemPrice1').val('');
+        $('#qtyOnHand').val('');
         $('#caseQTY').val('');
         $('#customQuantity').val('');
         $('#unitRetail1').val('');
@@ -6503,6 +6504,17 @@
 
     }
 
+    function RemoveEmptyRows(Description){
+         var rowCount = 1;
+         $('#saletable tbody tr').each(function(index, tr) {
+            var descriptionIndex = $('#' + Description + '-' + rowCount).text();
+         if(descriptionIndex == ''){
+            RemoveRow(rowCount);
+         }else{
+            rowCount++;
+         }
+         });
+    }
 
 
 
@@ -6547,19 +6559,20 @@
             var check = $("#rowid-" + jj).find("#itemnumber-" + jj).text();
             // alert(check);
             if (check[jj] == null || check[jj] == "") {
-                RemoveRow(jj);
+               // RemoveRow(jj);
             }
             jj++
         });
+        RemoveEmptyRows('description');
 
         var count = 0;
-        $(".add-row").trigger("click");
 
-        $('#saletable tbody tr').each(function(index, tr) {
+        $('#saletable tr').each(function(index, tr) {
 
             count++;
         });
 
+        $(".add-row").trigger("click");
         // $("#itemnumber-" + count).text(itemnumnber);
         var string = $("#itemnumberModal1").val();
         string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -6578,7 +6591,9 @@
                 if (exist > 1) {
                     swal("Error!", "Item Already Added!", "error");
                     notexist = false;
-                    RemoveRow(Id);
+                    //RemoveRow(Id);
+                    RemoveEmptyRows('description');
+                    $(".add-row").trigger("click");
                     return false;
                 }
 
