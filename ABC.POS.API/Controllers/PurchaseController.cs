@@ -840,14 +840,14 @@ namespace ABC.POS.API.Controllers
 
                                     getcode = Convert.ToInt32(code) + 1;
                                 }
-                                if (getcode > 9)
-                                {
-                                    objacount.AccountId = subaccrecord.AccountSubGroupId + "-00" + Convert.ToString(getcode);
-
-                                }
-                                else if (getcode > 99)
+                                if (getcode > 99)
                                 {
                                     objacount.AccountId = subaccrecord.AccountSubGroupId + "-0" + Convert.ToString(getcode);
+
+                                }
+                                else if (getcode > 9)
+                                {
+                                    objacount.AccountId = subaccrecord.AccountSubGroupId + "-00" + Convert.ToString(getcode);
                                 }
                                 else
                                 {

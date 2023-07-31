@@ -6341,24 +6341,24 @@ namespace ABC.POS.API.Controllers
                                     code = Convert.ToInt32(VcodeSplit[1]) + 1;
 
                                     long checknumber = Convert.ToInt64(VcodeSplit[1]);
-                                    if (checknumber > 9)
-                                    {
-                                        fullcode = "0000000-00" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 99)
-                                    {
-                                        fullcode = "0000000-0" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 999)
-                                    {
-                                        fullcode = "0000000-" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 9999)
+                                    if (checknumber > 9999)
                                     {
                                         //10000
                                         long ndcode = Convert.ToInt64(VcodeSplit[0]) + 1;
 
                                         fullcode = "000000" + Convert.ToString(ndcode) + "-" + "9999";
+                                    }
+                                    else if (checknumber > 999)
+                                    {
+                                        fullcode = "0000000-" + Convert.ToString(code);
+                                    }
+                                    else if (checknumber > 99)
+                                    {
+                                        fullcode = "0000000-0" + Convert.ToString(code);
+                                    }
+                                    else if (checknumber > 9)
+                                    {
+                                        fullcode = "0000000-00" + Convert.ToString(code);
                                     }
                                     else
                                     {
@@ -6479,15 +6479,15 @@ namespace ABC.POS.API.Controllers
                     db.PosSales.Add(obj[i]);
                     db.SaveChanges();
                     var getstock = db.InventoryStocks.ToList().Where(x => x.ProductId == obj[i].ItemId).FirstOrDefault();
-                    if (obj[0].IsClose == true)
-                    {
+                    //if (obj[0].IsClose == true)
+                    //{
                         if (getstock != null)
                         {
                             getstock.Quantity = (Convert.ToDouble(getstock.Quantity) - Convert.ToDouble(obj[i].RingerQuantity)).ToString();
                             db.Entry(getstock).State = EntityState.Modified;
                             db.SaveChanges();
                         }
-                    }
+                   // }
                 }
 
 
@@ -6496,10 +6496,11 @@ namespace ABC.POS.API.Controllers
                 {
                     var getaccount = db.Accounts.ToList().Where(a => a.Title == getvendor.AccountTitle && a.AccountId == getvendor.AccountId).FirstOrDefault();
                     var getCHaccount = db.Accounts.ToList().Where(a => a.Title == "Net Sales").FirstOrDefault();
-                    var getCInHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
+                    //var getCInHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
                     if (getaccount != null)
                     {
-                        if (obj[0].OnCredit == true)
+                        //if (obj[0].OnCredit == true)
+                        if (obj[0].IsPaid == false || obj[0].IsPaid == null)
                         {
                             Receivable objRec = new Receivable();
                             var checcck = db.Receivables.ToList();
@@ -6523,9 +6524,7 @@ namespace ABC.POS.API.Controllers
                                 db.Receivables.Add(receive);
                                 db.SaveChanges();
                             }
-                        }
-                        if (obj[0].IsClose == true)
-                        {
+
                             for (int i = 0; i < 2; i++)
                             {
                                 Transaction transaction = null;
@@ -6559,10 +6558,182 @@ namespace ABC.POS.API.Controllers
                                 }
                             }
                         }
+                        else
+                        {
+                            var getCInHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
+                            if (getCInHaccount != null)
+                            {
+                                var fullcode = "";
+                                Receiving newitems = new Receiving();
+                                var recordemp = db.Receivings.ToList();
+                                if (recordemp.Count() > 0)
+                                {
+                                    if (recordemp[0].InvoiceNumber != null && recordemp[0].InvoiceNumber != "string" && recordemp[0].InvoiceNumber != "")
+                                    {
+                                        int large, small;
+                                        int salesID = 0;
+                                        large = Convert.ToInt32(recordemp[0].InvoiceNumber.Split('-')[1]);
+                                        small = Convert.ToInt32(recordemp[0].InvoiceNumber.Split('-')[1]);
+                                        for (int i = 0; i < recordemp.Count; i++)
+                                        {
+                                            if (recordemp[i].InvoiceNumber != null)
+                                            {
+                                                var t = Convert.ToInt32(recordemp[i].InvoiceNumber.Split('-')[1]);
+                                                if (Convert.ToInt32(recordemp[i].InvoiceNumber.Split('-')[1]) > large)
+                                                {
+                                                    salesID = Convert.ToInt32(recordemp[i].ReceivingId);
+                                                    large = Convert.ToInt32(recordemp[i].InvoiceNumber.Split('-')[1]);
+
+                                                }
+                                                else if (Convert.ToInt32(recordemp[i].InvoiceNumber.Split('-')[1]) < small)
+                                                {
+                                                    small = Convert.ToInt32(recordemp[i].InvoiceNumber.Split('-')[1]);
+                                                }
+                                                else
+                                                {
+                                                    if (large < 2)
+                                                    {
+                                                        salesID = Convert.ToInt32(recordemp[i].ReceivingId);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        newitems = recordemp.ToList().Where(x => x.ReceivingId == salesID).FirstOrDefault();
+                                        if (newitems != null)
+                                        {
+                                            if (newitems.InvoiceNumber != null)
+                                            {
+                                                var VcodeSplit = newitems.InvoiceNumber.Split('-');
+                                                int code = Convert.ToInt32(VcodeSplit[1]) + 1;
+                                                fullcode = "CP00" + "-" + Convert.ToString(code);
+                                            }
+                                            else
+                                            {
+                                                fullcode = "CP00" + "-" + "1";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            fullcode = "CP00" + "-" + "1";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        fullcode = "CP00" + "-" + "1";
+                                    }
+                                }
+                                else
+                                {
+                                    fullcode = "CP00" + "-" + "1";
+                                }
+
+                                Receiving receiving = null;
+                                receiving = new Receiving();
+                                receiving.AccountName = getaccount.Title;
+                                receiving.AccountNumber = getaccount.AccountId;
+                                receiving.AccountId = getaccount.AccountId;
+
+                                //if (obj[0].PaymentTerms == "Cheque")
+                                //{
+                                //    receiving.CheckDate = obj[0].CheckDate;
+                                //    receiving.CheckNumber = obj[0].CheckNumber;
+                                //    receiving.CheckTitle = obj[0].CheckTitle;
+                                //    receiving.PaymentType = "Wire";
+
+                                //}
+                                //else
+                                //{
+                                    receiving.PaymentType = "Cash";
+                                //}
+                                receiving.Note = "";
+                                receiving.InvoiceNumber = fullcode;
+                                receiving.Debit = grossamount.ToString();
+                                receiving.Credit = "0.00";
+                                receiving.Date = DateTime.Now;
+                                db.Receivings.Add(receiving);
+                                await db.SaveChangesAsync();
+
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    Transaction transaction = null;
+                                    transaction = new Transaction();
+                                    if (i == 0)
+                                    {
+                                        if (getaccount != null)
+                                        {
+                                            transaction.AccountName = getaccount.Title;
+                                            transaction.AccountNumber = getaccount.AccountId;
+                                            transaction.DetailAccountId = getaccount.AccountId;
+                                            transaction.Credit = "0.00";
+                                            transaction.Debit = grossamount.ToString();
+                                            transaction.InvoiceNumber = fullcode;
+                                            transaction.Date = DateTime.Now;
+                                            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                                            db.Transactions.Add(transaction);
+                                            db.SaveChanges();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        transaction.AccountName = getCHaccount.Title;
+                                        transaction.AccountNumber = getCHaccount.AccountId;
+                                        transaction.DetailAccountId = getCHaccount.AccountId;
+                                        transaction.Credit = grossamount.ToString();
+                                        transaction.Debit = "0.00";
+                                        transaction.InvoiceNumber = fullcode;
+                                        transaction.Date = DateTime.Now;
+                                        transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                                        db.Transactions.Add(transaction);
+                                        db.SaveChanges();
+                                    }
+                                }
+                            }
+                        }
+                        //if (obj[0].IsClose == true)
+                        //{
+                        //    for (int i = 0; i < 2; i++)
+                        //    {
+                        //        Transaction transaction = null;
+                        //        transaction = new Transaction();
+                        //        if (i == 0)
+                        //        {
+                        //            transaction.AccountName = getaccount.Title;
+                        //            transaction.AccountNumber = getaccount.AccountId;
+                        //            transaction.DetailAccountId = getaccount.AccountId;
+                        //            transaction.Credit = "0.00";
+                        //            transaction.Debit = grossamount.ToString();
+                        //            transaction.InvoiceNumber = obj[0].InvoiceNumber;
+                        //            transaction.Date = DateTime.Now;
+                        //            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                        //            db.Transactions.Add(transaction);
+                        //            db.SaveChanges();
+
+                        //        }
+                        //        else
+                        //        {
+                        //            transaction.AccountName = getCHaccount.Title;
+                        //            transaction.AccountNumber = getCHaccount.AccountId;
+                        //            transaction.DetailAccountId = getCHaccount.AccountId;
+                        //            transaction.Credit = grossamount.ToString();
+                        //            transaction.Debit = "0.00";
+                        //            transaction.InvoiceNumber = obj[0].InvoiceNumber;
+                        //            transaction.Date = DateTime.Now;
+                        //            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                        //            db.Transactions.Add(transaction);
+                        //            db.SaveChanges();
+                        //        }
+                        //    }
+                        //}
                     }
                     else
                     {
-                        Account objAcc = new Account();
+                       // Account objAcc = new Account();
+                        Account objAcc = null;
+                        objAcc = new Account();
+
+                        Account customeracc = null;
+                        customeracc = new Account();
+
                         var subaccrecord = db.AccountSubGroups.ToList().Where(x => x.Title == "Suppliers").FirstOrDefault();
                         if (subaccrecord != null)
                         {
@@ -6576,14 +6747,14 @@ namespace ABC.POS.API.Controllers
 
                                     getcode = Convert.ToInt32(code) + 1;
                                 }
-                                if (getcode > 9)
-                                {
-                                    objAcc.AccountId = subaccrecord.AccountSubGroupId + "-00" + Convert.ToString(getcode);
-
-                                }
-                                else if (getcode > 99)
+                                if (getcode > 99)
                                 {
                                     objAcc.AccountId = subaccrecord.AccountSubGroupId + "-0" + Convert.ToString(getcode);
+
+                                }
+                                else if (getcode > 9)
+                                {
+                                    objAcc.AccountId = subaccrecord.AccountSubGroupId + "-00" + Convert.ToString(getcode);
                                 }
                                 else
                                 {
@@ -6592,14 +6763,60 @@ namespace ABC.POS.API.Controllers
                                 objAcc.Title = getvendor.Company;
                                 objAcc.Status = 1;
                                 objAcc.AccountSubGroupId = subaccrecord.AccountSubGroupId;
-                                var customeracc = db.Accounts.Add(objAcc);
+                                customeracc = db.Accounts.Add(objAcc).Entity;
                                 db.SaveChanges();
 
 
+                                //if (obj[0].OnCredit == true)
+                                //{
+                                //    Receivable objRec = new Receivable();
+                                //    var GetRec = db.Receivables.ToList().Where(x => x.AccountId == customeracc.Entity.AccountId).FirstOrDefault();
+                                //    if (GetRec != null)
+                                //    {
+                                //        double last = Convert.ToDouble(GetRec.Amount);
+                                //        GetRec.Amount = (last + grossamount).ToString();
+                                //        db.Entry(GetRec).State = EntityState.Modified;
+                                //        db.SaveChanges();
+                                //    }
+                                //    else
+                                //    {
+                                //        Receivable receive = null;
+                                //        receive = new Receivable();
+                                //        receive.AccountId = obj[0].CustomerAccountNumber;
+                                //        receive.AccountNumber = obj[0].CustomerAccountNumber;
+                                //        receive.AccountName = obj[0].CustomerName;
+                                //        receive.Amount = obj[0].InvoiceTotal;
+
+                                //        db.Receivables.Add(receive);
+                                //        db.SaveChanges();
+                                //    }
+                                //}
+                            }
+                            else
+                            {
+                                objAcc.AccountId = subaccrecord.AccountSubGroupId + "-0001";
+                                objAcc.Title = obj[0].CustomerName;
+                                objAcc.Status = 1;
+                                objAcc.AccountSubGroupId = subaccrecord.AccountSubGroupId;
+                                customeracc = db.Accounts.Add(objAcc).Entity;
+                                db.SaveChanges();
+                            }
+                            if (customeracc != null)
+                            {
+                                var foundSOrder = db.CustomerInformations.Find(obj[0].CustomerId);
+                                if (foundSOrder != null)
+                                {
+                                    // foundSOrder.StockItemNumber = fullcode;
+                                    foundSOrder.AccountId = customeracc.AccountId;
+                                    foundSOrder.AccountNumber = customeracc.AccountId;
+                                    foundSOrder.AccountTitle = customeracc.Title;
+                                    db.Entry(foundSOrder).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
                                 if (obj[0].OnCredit == true)
                                 {
                                     Receivable objRec = new Receivable();
-                                    var GetRec = db.Receivables.ToList().Where(x => x.AccountId == customeracc.Entity.AccountId).FirstOrDefault();
+                                    var GetRec = db.Receivables.ToList().Where(x => x.AccountId == customeracc.AccountId).FirstOrDefault();
                                     if (GetRec != null)
                                     {
                                         double last = Convert.ToDouble(GetRec.Amount);
