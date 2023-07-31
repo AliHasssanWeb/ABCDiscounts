@@ -67,6 +67,7 @@ namespace ABC.POS.Domain.DataConfig
                 //http://204.2.194.223/testposapi/
                 //http://45.35.97.246:5595/abcdposapi/
                 //http://10.10.10.98:5595/abcdposapi/
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/" + otype + "/" + action);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://10.10.10.98:5595/abcdposapi/" + otype + "/" + action);
                 request.Headers.Add("Authorization", "Bearer " + AccessToken);
                 request.Credentials = CredentialCache.DefaultCredentials;

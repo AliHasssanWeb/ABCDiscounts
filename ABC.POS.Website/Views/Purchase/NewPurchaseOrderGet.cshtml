@@ -565,6 +565,7 @@
         }
 
         if (AllSuppliersList.length < 1) {
+            debugger;
             AllSuppliersList = ABCPOSWebsite.AllSuppliers();
         }
 
@@ -4346,8 +4347,6 @@
 
         function ItemSelectt(id) {
             //var id=$('#txtSupplierNo').val();
-
-
             var id = id;
             $.ajax({
                 url: '@Url.Action("GetJsonVendorDetailByCode", "Purchase")',
@@ -4482,7 +4481,7 @@
         $(function() {
             $('#p').click(function() {
                 var data = $('#myInput').val();
-                var getcustomerData = ($("#supplierName option[value='" + data + "']").attr('data-id'));
+                var getcustomerData = ($('#supplierName option[value="' + data + '"]').attr('data-id'));
 
                 ItemSelect(getcustomerData);
             });
@@ -5022,7 +5021,6 @@
     });
 
     function ItemSelect(id) {
-
         var Data = id;
 
         $.ajax({
@@ -5055,7 +5053,8 @@
                 $('#HiddenDiscount').val(data.stateDiscount);
                 $('#txtSupplierNoo').val(data.vendorCode);
                 $('#PaymentTerms').val(data.payTerms);
-                $("#myInput").val(data.fullName);
+               // $("#myInput").val(data.fullName);
+                $("#myInput").val(data.company);
                 $("#creditInput").val(data.fullName);
                 $('#txtSupplierName').text(data.fullName);
                 $('#setvendorid').text(data.vendorId);

@@ -4394,7 +4394,7 @@
 
         }
 
-        var newsubtotal = subtotal[1];
+        var newsubtotal = subtotal; //subtotal[1];
         //   alert(newsubtotal);
         // var newdiscount = discount[1];
         //debugger;
@@ -5970,7 +5970,7 @@
                     console.log("USMAN" + data);
 
                     var sernum = 1;
-
+                    debugger;
                     $("#salesmanid").text(data[0].saleManName);
                     $("#invoicetotal").val(data[0].invoiceTotal);
                     $("#discountidadd").val(data[0].charges);
