@@ -611,8 +611,8 @@
 
 
             <div id="LoadPage " class="alertstyle">
-                <a href="#" id="Savebtn" onclick="SaveItemSupplierNumber(false,false,false)"><img src="../images/save.png" style="width:50px" title="Save" /></a>
-                <a href="#" id="Editbtn" onclick="SaveItemSupplierNumber(false,true,false)" style="display: none"><img src="../images/edit.png" style="width:50px;" title="Edit" /></a>
+                <a href="#" id="Savebtn" onclick="SaveItemSupplierNumber(true,false,false)"><img src="../images/save.png" style="width:50px" title="Save" /></a>
+                <a href="#" id="Editbtn" onclick="SaveItemSupplierNumber(true,true,false)" style="display: none"><img src="../images/edit.png" style="width:50px;" title="Edit" /></a>
                 <a href="#" id="Refreshbtn" onclick="onRefresh()"> <img src="../images/refresh.png" style="width:50px" title="Refresh " /></a>
                 <img class="hide-icon" src="../images/delete.png" style="width:50px" title="Delete" onclick="" />
                 <img class="hide-icon" src="../images/Inventory.png" style="width:50px" title="Inventory" onclick="OpenInventorySecondModal()" />
@@ -5940,59 +5940,83 @@
         }
         CalculatetaxPlusDiscount();
     }
-    function CalculatetaxPlusDiscount() {
+    //function CalculatetaxPlusDiscount() {
+        
+    //    var totalitems = $("#TotalItems").val();
+    //    var subtotal = $("#SubTotal").val().split('$');
+    //    var freight = $("#Freight").val();
+    //    var taxidval = $("#Tax").val();
+    //    var otheridval = $("#Other").val();
+    //    var total = $("#Total").val();
 
-        var totalitems = $("#TotalItems").val();
-        var subtotal = $("#SubTotal").val().split('$');
-        var freight = $("#Freight").val();
-        var taxidval = $("#Tax").val();
-        var otheridval = $("#Other").val();
-        var total = $("#Total").val();
+    //    if (otheridval == "") {
+    //        otheridval = 0;
 
-        if (otheridval == "") {
-            otheridval = 0;
+    //    }
+    //    if (taxidval == "") {
+    //        taxidval = 0;
 
-        }
-        if (taxidval == "") {
-            taxidval = 0;
+    //    } if (freight == "") {
+    //        freight = 0;
 
-        } if (freight == "") {
-            freight = 0;
+    //    }
+    //    if (total == "") {
+    //        total = 0;
 
-        }
-        if (total == "") {
-            total = 0;
+    //    }
 
-        }
+    //    var newsubtotal = subtotal[1];
 
-        var newsubtotal = subtotal[1];
+    //    var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
 
-        var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
-
-        var invoicetotal = parseFloat(sumofallexpences);
-
-
-        if (isNaN(invoicetotal)) {
-            $("#Total").val("$" + 0);
-
-        } else {
-            var ceilingvalue;
-            ceilingvalue = invoicetotal.toFixed(2);
-            console.log("3333" + ceilingvalue);
-           // $("#Total").val("$" + ceilingvalue);
-           // $("#PoAmount").val(ceilingvalue);
-           //// $("#poBalancee").val("$" + ceilingvalue);
-           // $("#ToTalInDollar").val(ceilingvalue);
-           // $("#chequeBalance").html("$(" + ceilingvalue + ")");
-            // var kk = $("#chequeBalance").text();
-            // console.log(kk);
-            //var btw = toWords(ceilingvalue);
-            //console.log(btw);
-        }
+    //    var invoicetotal = parseFloat(sumofallexpences);
 
 
+    //    if (isNaN(invoicetotal)) {
+    //        $("#Total").val("$" + 0);
 
+    //    } else {
+    //        var ceilingvalue;
+    //        ceilingvalue = invoicetotal.toFixed(2);
+    //        console.log("3333" + ceilingvalue);
+    //       // $("#Total").val("$" + ceilingvalue);
+    //       // $("#PoAmount").val(ceilingvalue);
+    //       //// $("#poBalancee").val("$" + ceilingvalue);
+    //       // $("#ToTalInDollar").val(ceilingvalue);
+    //       // $("#chequeBalance").html("$(" + ceilingvalue + ")");
+    //        // var kk = $("#chequeBalance").text();
+    //        // console.log(kk);
+    //        //var btw = toWords(ceilingvalue);
+    //        //console.log(btw);
+    //    }
+
+
+
+    //}
+
+    function CalculatetaxPlusDiscount()
+    {
+    var totalitems = $("#TotalItems").val();
+    var subtotal = parseFloat($("#SubTotal").val().split('$')[1]) || 0;
+    var freight = parseFloat($("#Freight").val()) || 0;
+    var taxidval = parseFloat($("#Tax").val()) || 0;
+    var otheridval = parseFloat($("#Other").val()) || 0;
+    var total = $("#Total").val();
+
+    // Calculate the sum of all expenses
+    var sumofallexpences = subtotal + otheridval + taxidval + freight;
+
+    // Round the total to two decimal places and display as a string
+    var invoicetotal = sumofallexpences.toFixed(2);
+
+    if (isNaN(invoicetotal)) {
+        $("#Total").val("$" + 0);
+    } else {
+        // Set the calculated total back to the "Total" input field
+            $("#Total").val("$" + invoicetotal);
     }
+    }
+
     function RemoveRow(val) {
     
         var ac = $("#rowid-" + val).find("td:eq(4)").text();
