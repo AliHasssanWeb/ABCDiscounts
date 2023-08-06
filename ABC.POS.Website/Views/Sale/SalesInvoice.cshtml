@@ -826,7 +826,7 @@
                                 @*<div class="col-lg-12 col-md-12 col-sm-12 col-12 col margin-botm">*@
                                 <div class="row marginbtm">
                                     <div class=" col col-lg-3 col-md-3 col-sm-12 col-12 editor-label">
-                                        <label class="saletexttotal marginlft">Other/Charges</label>
+                                        <label class="saletexttotal marginlft">Other/Discount</label>
                                     </div>
                                     <div class=" col col-lg-4 col-md-4 col-sm-12 col-12 editor-field me-lg-0 me-md-0 pe-lg-0 pe-md-0">
                                         <input class="form-control border-style brz p-0 " autocomplete="off" type="text" id="otherid" name="subtotal" onkeyup="CalculatetaxPlusDiscount()">
@@ -1214,7 +1214,7 @@
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="form-group bordercolormodal">
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        Total Paid
+                                        Total Alloc
                                     </label>
                                     <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">
                                         $0.00
@@ -1228,7 +1228,7 @@
                                         Change
                                     </label>
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:60%; text-align:center;" />
+                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:60%; text-align:center;" readonly />
                                     </label>
 
                                 </div>
@@ -3366,7 +3366,7 @@
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
         html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="PaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
-        html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" contenteditable="true" class="table-warning" readonly></td>';
+        html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" class="table-warning" readonly ></td>';
         html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash PaymentMethodP txtCalCredit" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
         html += '<option value="Cash">Cash</option>';
         html += '<option value="MoneyOrder">MoneyOrder</option>';
@@ -3631,8 +3631,13 @@
         $("#payment").modal('hide');
     }
     function openmodal() {
-        var amount = $("#invoicetotal").val();
-        $("#InvoiceTotalP").text(amount);
+        var invoicetotal = $("#invoicetotal").val();
+        var amountdue = $("#amountdue").val();
+
+        $("#InvoiceTotalP").text(invoicetotal);
+        $("#BalanceDueP").text(amountdue);
+        $("#BalanceP").text(amountdue);
+
         $("#customerpayment").modal('show');
     }
     function openmodalabcde() {
@@ -4371,14 +4376,17 @@
         var previousbalance = $("#previousbalance").val();
         $("#amountdue").text("$" + foundtotal.toFixed(2));
     }
-    function CalculatetaxPlusDiscount() {
-
+     function CalculatetaxPlusDiscount() {
         var subtotal = $("#subtotalauto").val().split('$');
-
+        var prevBalance = $("#previousbalance").val();
         var discount = $("#discountidadd").val();
         var otheridval = $("#otherid").val();
         var taxidval = $("#taxid").val();
         var freight = $("#freightid").val();
+        var dueAmount = $("#amountdue").val();
+
+        var discountAmount = 0;
+
         if (discount == "") {
             discount = 0;
 
@@ -4392,6 +4400,8 @@
         } if (freight == "") {
             freight = 0;
 
+        } if(prevBalance == ""){
+            prevBalance = 0;
         }
 
         var newsubtotal = subtotal; //subtotal[1];
@@ -4399,17 +4409,27 @@
         // var newdiscount = discount[1];
         //debugger;
         var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
-        var minusdiscount = parseFloat(sumofallexpences) + parseFloat(discount);
+        if(parseFloat(discount) > 0)
+        {
+            discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
+        }
+        var minusdiscount = parseFloat(sumofallexpences) - discountAmount;  //+ parseFloat(discount);
         var invoicetotal = parseFloat(minusdiscount);
 
 
         if (isNaN(invoicetotal)) {
             $("#invoicetotal").val("$" + 0);
-            $("#amountdue").val("$" + 0);
+            if(parseFloat(prevBalance) > 0 )
+            {
+                $("#amountdue").val("$" + parseFloat(prevBalance).toFixed(2));
+            }else {
+                $("#amountdue").val("$" + 0);
+            }  
         } else {
             $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
 
-            $("#amountdue").val("$" + invoicetotal.toFixed(2));
+            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
+            $("#amountdue").val("$" + amountDue.toFixed(2));
         }
 
         //if (invoicetotal == "NaN") {
@@ -4935,9 +4955,18 @@
     function CloseCustomerModal() {
         $("#CustomerShortModal").modal('hide');
     }
+     function ReloadRefresh(){
+         $("#searchname").val('');
+         $("#customercodeinfo").val('');
+         $("#previousbalance").val('');
+         $("#subtotalauto").val('');
+         $("#invoicetotal").val('');
+         $("#amountdue").val('');
+     }
     function ReloadPage() {
+        ReloadRefresh();
         location.reload();
-    };
+    }
     var isCtrl = false;
     $(document).keyup(function(e) {
         if (e.which == 17)
@@ -5970,7 +5999,7 @@
                     console.log("USMAN" + data);
 
                     var sernum = 1;
-                    debugger;
+                   // debugger;
                     $("#salesmanid").text(data[0].saleManName);
                     $("#invoicetotal").val(data[0].invoiceTotal);
                     $("#discountidadd").val(data[0].charges);
@@ -6553,7 +6582,7 @@
 
         var jj = 1;
         $('#saletable tr').each(function() {
-            debugger;
+           // debugger;
             var currentRow = $(this).closest("tr");
             //var check=currentRow.find("td:eq(2)").val();
             var check = $("#rowid-" + jj).find("#itemnumber-" + jj).text();
@@ -6613,6 +6642,7 @@
     };
 
     function CustomerPMOdalhide() {
+
         $("#customerpayment").modal('hide');
     }
 
@@ -7439,9 +7469,41 @@ $("#PrintInvoicef10").click(function() {
 
 
     function PaymentAdd(val) {
-        var getamc = $("#amountpayed-" + val).text();
-        $("#amountallocate-" + val).text(getamc);
-        PaymentAdd2(val);
+        debugger;
+        var amountpayed = $("#amountpayed-" + val).text().split('$');
+        var Balanceduep = $("#BalanceDueP").text().split('$');
+        var BalanceDueP = Balanceduep[1];
+        //$("#amountallocate-" + val).text(getamc);
+        if(amountpayed != "" && isNaN(amountpayed) == false ){
+            $("#TotalPaidP").text("$" + amountpayed);
+
+            if (parseFloat(amountpayed) > parseFloat(BalanceDueP)) {
+               $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
+               $("#totalpaidd").text("$" + parseFloat(BalanceDueP).toFixed(2));
+
+               var change = parseFloat(amountpayed) - parseFloat(BalanceDueP);
+             //  $("#ChangeP").val("$" + change.toFixed(2));
+             $("#ChangeP").val("$" + 0.00);
+               $("#BalanceP").text("$(" + change.toFixed(2) + ")");
+            } else {
+                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
+                $("#totalpaidd").text("$" + parseFloat(amountpayed).toFixed(2));
+
+                var balance =  parseFloat(BalanceDueP) - parseFloat(amountpayed);
+                $("#ChangeP").val("$" + 0.00);
+                $("#BalanceP").text("$" + balance.toFixed(2));
+            }
+        }else if(amountpayed == "" || isNaN(amountpayed) == true) {
+
+            $("#TotalPaidP").text('');
+            $("#totalpaidd").text('');
+            $("#ChangeP").val('');
+            $("#amountallocate-" + val).text('');
+            $("#BalanceP").text("$" + Balanceduep[1]);
+            Swal.fire('please enter Numeric value');
+        }
+        
+       // PaymentAdd2(val);
     }
     function PaymentAdd2(val) {
 
@@ -7464,14 +7526,14 @@ $("#PrintInvoicef10").click(function() {
         });
         console.log("SAMERR" + calculated_total_sum);
 
-        var getamcValue = $("#TotalPaidP").text();
-        getamcValue = getamcValue.replace("$", "");
-        getamcValue = parseFloat(getamcValue);
-        var TotalAmountIs = getamcValue + calculated_total_sum;
-        console.log("hi" + calculated_total_sum);
-        console.log(getamcValue);
-        $("#TotalPaidP").text(TotalAmountIs.toFixed(2));
-        $("#totalpaidd").text(TotalAmountIs.toFixed(2));
+        //var getamcValue = $("#TotalPaidP").text();
+        //getamcValue = getamcValue.replace("$", "");
+        //getamcValue = parseFloat(getamcValue);
+        //var TotalAmountIs = getamcValue + calculated_total_sum;
+        //console.log("hi" + calculated_total_sum);
+        //console.log(getamcValue);
+        //$("#TotalPaidP").text(TotalAmountIs.toFixed(2));
+        //$("#totalpaidd").text(TotalAmountIs.toFixed(2));
     }
 
 
