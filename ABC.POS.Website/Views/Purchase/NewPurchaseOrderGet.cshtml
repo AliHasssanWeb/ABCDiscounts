@@ -565,7 +565,6 @@
         }
 
         if (AllSuppliersList.length < 1) {
-            debugger;
             AllSuppliersList = ABCPOSWebsite.AllSuppliers();
         }
 
@@ -1004,7 +1003,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input type="text" id="checkPaid" readonly name="checkPaid" value="0.00" onkeyup="totalPoBalance()" class="form-control validate" style="padding-left: 0px !important; padding-right: 0px !important; max-width: 100%; height: 30px !important;">
+                            <input type="text" id="checkPaid" name="checkPaid" placeholder="0.00" onkeyup="totalPoBalance('checkpaid')" class="form-control" autocomplete="off" style="padding-left: 0px !important; padding-right: 0px !important; max-width: 100%; height: 30px !important;">
                         </div>
                     </div>
                     <div class="col-2">
@@ -1020,7 +1019,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">$</span>
                             </div>
-                            <input type="text" id="otherPaid" name="otherPaid" value="0.00" onkeyup="totalPoBalance()" readonly class="form-control validate" style="padding-left: 0px !important; padding-right: 0px !important; max-width: 100%; height: 30px !important;">
+                            <input type="text" id="otherPaid" name="otherPaid" value="0.00" readonly class="form-control validate" style="padding-left: 0px !important; padding-right: 0px !important; max-width: 100%; height: 30px !important;">
                         </div>
                     </div>
                     <div class="col-2">
@@ -8371,6 +8370,28 @@
         }
 
     });
+     $("#checkPaid").click(function() {
+         if($("#checkPaid").val() != undefined && $("#checkPaid").val() != "" && $("#ispartialPaid").val() == "not")
+            {
+                var pobalance = $("#poBalance").val();
+                var currentPaid = parseFloat($("#checkPaid").val());
+                var lastpaid = $("#preorderPaid").val();
+                var creditbalance = parseFloat($("#creditvendor").val());
+                var ActualBill = $("#PoAmount").val();
+
+                if (parseFloat(pobalance) < parseFloat(currentPaid) && parseFloat(pobalance) > 0) {
+                    console.log("1st POB " + pobalance + " " + "Current " + currentPaid + " " + " POB " + pobalance);
+
+                    $("#checkPaid").val('');
+                    swal("Error!", "Cannot pay more then remaining balance", "error");
+                }else{
+                    var totalPaid = (parseFloat(checkPaid) + parseFloat(lastpaid) + creditbalance).toFixed(2);
+                    PoBalance = parseFloat(ActualBill) - parseFloat(Gross);
+                    $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
+                    $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
+                }
+            }
+     });
     $("#cashout").click(function() {
 
         var checkdate = $("#datepickerPO").val();
@@ -8408,7 +8429,7 @@
         if (checkdate == "" || checkdate == null || checkdate == '' || checkdate == undefined || checkdate == NaN) {
             $('#datepickerPO').datepicker('setDate', 'today');
         }
-
+        $("#poAmountt").val('');
     });
 
 
@@ -8467,8 +8488,19 @@
         //checkPaid = parseFloat($("#checkPaid").val());
         //currentPaid = currentCashPaid + checkPaid;
         //}
-      
-        var currentPaid = parseFloat($("#poAmountt").val());
+        debugger;
+        var currentPaid = 0.00;
+        var checkPaid = 0.00;
+        if($("#poAmountt").val() != undefined && $("#poAmountt").val() != "") 
+        {
+            currentPaid = parseFloat($("#poAmountt").val());
+        }
+        else if($("#checkPaid").val() != undefined && $("#checkPaid").val() != "")
+        {
+            currentPaid = parseFloat($("#checkPaid").val());
+            checkPaid = parseFloat($("#checkPaid").val());
+        }
+
         var POPrice = $("#PoAmount").val();
         var ActualBill = $("#PoAmount").val();
         var lastpaid = $("#preorderPaid").val();
@@ -8482,27 +8514,34 @@
         var prevBalance = parseFloat($("#previousBalance").val());
         var creditbalance = parseFloat($("#creditvendor").val());
         var AlPaidByNow = parseFloat($("#totalPaid").val());
-        var checkPaid = parseFloat($("#checkPaid").val());
-        var totalPaid = (parseFloat(checkPaid) + parseFloat(lastpaid) + creditbalance).toFixed(2);
-        console.log("check " + checkPaid + " " + "other paid " + otherPaid + " " + " credit " + creditbalance);
+
+        var totalPaid = (parseFloat(checkPaid) + parseFloat(otherPaid) + creditbalance).toFixed(2);
+        //console.log("check " + checkPaid + " " + "other paid " + otherPaid + " " + " credit " + creditbalance);
 
         //$("#totalPaid").val("$" + totalPaid);
         var PoBalance = (poAmount);
 
-        if (currentPaid != NaN && totalPaid != NaN && $("#ispartialPaid").val() == "paid") {
+        if (totalPaid != NaN && $("#ispartialPaid").val() == "paid") {
             PoBalance = parseFloat(PoBalance) - parseFloat(totalPaid);
             $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
             $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
         }
-        else if (currentPaid != NaN && totalPaid != NaN && $("#ispartialPaid").val() == "not") {
-            console.log("current " + currentPaid + " " + "last paid " + lastpaid + " " + "totalpaid" + totalPaid + " ActualBill " + ActualBill);
-            if (otherPaid != "0" && otherPaid != "" && otherPaid != '' & otherPaid != NaN || lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
+        else if (currentPaid != NaN && $("#ispartialPaid").val() == "not") {
+           // console.log("current " + currentPaid + " " + "last paid " + lastpaid + " " + "totalpaid" + totalPaid + " ActualBill " + ActualBill);
+            if (otherPaid != "0" && otherPaid != "" && otherPaid != '' && otherPaid != NaN && lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
                 var Gross = "0";
-                if (lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
-                    Gross = (parseFloat(lastpaid) + currentPaid).toFixed(2);
-                } else {
+                if(type == "checkpaid")
+                {
                     Gross = (parseFloat(otherPaid) + currentPaid).toFixed(2);
+                } else{
+                    Gross = (parseFloat(otherPaid) + checkPaid + currentPaid).toFixed(2);
                 }
+
+                //if (lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
+                //    Gross = (parseFloat(lastpaid) + currentPaid).toFixed(2);
+                //} else {
+                   // Gross = (parseFloat(otherPaid) + currentPaid).toFixed(2);
+               // }
                   if (parseFloat(ActualBill) < parseFloat(Gross)) {
                     swal("Error!", "Cannot pay more then remaining balance", "error");
                 } else {
@@ -8514,7 +8553,9 @@
                     //}
 
                     if(type != undefined){
-                         $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                        if(type != "checkpaid"){
+                            $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                        }
                          $("#totalPaid").val(parseFloat(Gross).toFixed(2));
                     }
                 }
@@ -8533,7 +8574,9 @@
                     //}
 
                     if(type != undefined){
-                         $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                        if(type != "checkpaid"){
+                            $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                        }
                          $("#totalPaid").val(parseFloat(Gross).toFixed(2));
                     }
                 }
