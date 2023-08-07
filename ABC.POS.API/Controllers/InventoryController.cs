@@ -6503,7 +6503,7 @@ namespace ABC.POS.API.Controllers
                         if (obj[0].IsPaid == false || obj[0].IsPaid == null)
                         {
                             Receivable objRec = new Receivable();
-                            var checcck = db.Receivables.ToList();
+                          //  var checcck = db.Receivables.ToList();
                             var GetRec = db.Receivables.ToList().Where(x => x.AccountNumber == getvendor.AccountId).ToList().FirstOrDefault();
                             if (GetRec != null)
                             {
@@ -6529,33 +6529,26 @@ namespace ABC.POS.API.Controllers
                             {
                                 Transaction transaction = null;
                                 transaction = new Transaction();
+                                transaction.AccountName = getaccount.Title;
+                                transaction.AccountNumber = getaccount.AccountId;
+                                transaction.DetailAccountId = getaccount.AccountId;
+                                transaction.InvoiceNumber = obj[0].InvoiceNumber;
+                                transaction.Date = DateTime.Now;
+
                                 if (i == 0)
                                 {
-                                    transaction.AccountName = getaccount.Title;
-                                    transaction.AccountNumber = getaccount.AccountId;
-                                    transaction.DetailAccountId = getaccount.AccountId;
                                     transaction.Credit = "0.00";
                                     transaction.Debit = grossamount.ToString();
-                                    transaction.InvoiceNumber = obj[0].InvoiceNumber;
-                                    transaction.Date = DateTime.Now;
-                                    transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                                    db.Transactions.Add(transaction);
-                                    db.SaveChanges();
-
                                 }
                                 else
                                 {
-                                    transaction.AccountName = getCHaccount.Title;
-                                    transaction.AccountNumber = getCHaccount.AccountId;
-                                    transaction.DetailAccountId = getCHaccount.AccountId;
                                     transaction.Credit = grossamount.ToString();
                                     transaction.Debit = "0.00";
-                                    transaction.InvoiceNumber = obj[0].InvoiceNumber;
-                                    transaction.Date = DateTime.Now;
-                                    transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                                    db.Transactions.Add(transaction);
-                                    db.SaveChanges();
                                 }
+
+                                transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                                db.Transactions.Add(transaction);
+                                db.SaveChanges();
                             }
                         }
                         else
@@ -6633,18 +6626,18 @@ namespace ABC.POS.API.Controllers
                                 receiving.AccountNumber = getaccount.AccountId;
                                 receiving.AccountId = getaccount.AccountId;
 
-                                //if (obj[0].PaymentTerms == "Cheque")
-                                //{
-                                //    receiving.CheckDate = obj[0].CheckDate;
-                                //    receiving.CheckNumber = obj[0].CheckNumber;
-                                //    receiving.CheckTitle = obj[0].CheckTitle;
-                                //    receiving.PaymentType = "Wire";
+                                if (obj[0].PaymentTerms == "Cheque")
+                                {
+                                    //receiving.CheckDate = obj[0].CheckDate;
+                                    //receiving.CheckNumber = obj[0].CheckNumber;
+                                    //receiving.CheckTitle = obj[0].CheckTitle;
+                                    //receiving.PaymentType = "Wire";
 
-                                //}
-                                //else
-                                //{
+                                }
+                                else if(obj[0].PaymentTerms == "Cash")
+                                {
                                     receiving.PaymentType = "Cash";
-                                //}
+                                }
                                 receiving.Note = "";
                                 receiving.InvoiceNumber = fullcode;
                                 receiving.Debit = grossamount.ToString();
@@ -6653,77 +6646,33 @@ namespace ABC.POS.API.Controllers
                                 db.Receivings.Add(receiving);
                                 await db.SaveChangesAsync();
 
-                                for (int i = 0; i < 2; i++)
+                                for (int i = 0; i < 1; i++)
                                 {
                                     Transaction transaction = null;
                                     transaction = new Transaction();
+                                    transaction.AccountName = getaccount.Title;
+                                    transaction.AccountNumber = getaccount.AccountId;
+                                    transaction.DetailAccountId = getaccount.AccountId;
+                                    transaction.InvoiceNumber = fullcode;
+                                    transaction.Date = DateTime.Now;
+
                                     if (i == 0)
                                     {
-                                        if (getaccount != null)
-                                        {
-                                            transaction.AccountName = getaccount.Title;
-                                            transaction.AccountNumber = getaccount.AccountId;
-                                            transaction.DetailAccountId = getaccount.AccountId;
-                                            transaction.Credit = "0.00";
-                                            transaction.Debit = grossamount.ToString();
-                                            transaction.InvoiceNumber = fullcode;
-                                            transaction.Date = DateTime.Now;
-                                            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                                            db.Transactions.Add(transaction);
-                                            db.SaveChanges();
-                                        }
+                                        transaction.Credit = "0.00";
+                                        transaction.Debit = grossamount.ToString();
                                     }
                                     else
                                     {
-                                        transaction.AccountName = getCHaccount.Title;
-                                        transaction.AccountNumber = getCHaccount.AccountId;
-                                        transaction.DetailAccountId = getCHaccount.AccountId;
                                         transaction.Credit = grossamount.ToString();
                                         transaction.Debit = "0.00";
-                                        transaction.InvoiceNumber = fullcode;
-                                        transaction.Date = DateTime.Now;
-                                        transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                                        db.Transactions.Add(transaction);
-                                        db.SaveChanges();
                                     }
+
+                                    transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
+                                    db.Transactions.Add(transaction);
+                                    db.SaveChanges();
                                 }
                             }
                         }
-                        //if (obj[0].IsClose == true)
-                        //{
-                        //    for (int i = 0; i < 2; i++)
-                        //    {
-                        //        Transaction transaction = null;
-                        //        transaction = new Transaction();
-                        //        if (i == 0)
-                        //        {
-                        //            transaction.AccountName = getaccount.Title;
-                        //            transaction.AccountNumber = getaccount.AccountId;
-                        //            transaction.DetailAccountId = getaccount.AccountId;
-                        //            transaction.Credit = "0.00";
-                        //            transaction.Debit = grossamount.ToString();
-                        //            transaction.InvoiceNumber = obj[0].InvoiceNumber;
-                        //            transaction.Date = DateTime.Now;
-                        //            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                        //            db.Transactions.Add(transaction);
-                        //            db.SaveChanges();
-
-                        //        }
-                        //        else
-                        //        {
-                        //            transaction.AccountName = getCHaccount.Title;
-                        //            transaction.AccountNumber = getCHaccount.AccountId;
-                        //            transaction.DetailAccountId = getCHaccount.AccountId;
-                        //            transaction.Credit = grossamount.ToString();
-                        //            transaction.Debit = "0.00";
-                        //            transaction.InvoiceNumber = obj[0].InvoiceNumber;
-                        //            transaction.Date = DateTime.Now;
-                        //            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                        //            db.Transactions.Add(transaction);
-                        //            db.SaveChanges();
-                        //        }
-                        //    }
-                        //}
                     }
                     else
                     {
@@ -6765,32 +6714,6 @@ namespace ABC.POS.API.Controllers
                                 objAcc.AccountSubGroupId = subaccrecord.AccountSubGroupId;
                                 customeracc = db.Accounts.Add(objAcc).Entity;
                                 db.SaveChanges();
-
-
-                                //if (obj[0].OnCredit == true)
-                                //{
-                                //    Receivable objRec = new Receivable();
-                                //    var GetRec = db.Receivables.ToList().Where(x => x.AccountId == customeracc.Entity.AccountId).FirstOrDefault();
-                                //    if (GetRec != null)
-                                //    {
-                                //        double last = Convert.ToDouble(GetRec.Amount);
-                                //        GetRec.Amount = (last + grossamount).ToString();
-                                //        db.Entry(GetRec).State = EntityState.Modified;
-                                //        db.SaveChanges();
-                                //    }
-                                //    else
-                                //    {
-                                //        Receivable receive = null;
-                                //        receive = new Receivable();
-                                //        receive.AccountId = obj[0].CustomerAccountNumber;
-                                //        receive.AccountNumber = obj[0].CustomerAccountNumber;
-                                //        receive.AccountName = obj[0].CustomerName;
-                                //        receive.Amount = obj[0].InvoiceTotal;
-
-                                //        db.Receivables.Add(receive);
-                                //        db.SaveChanges();
-                                //    }
-                                //}
                             }
                             else
                             {
@@ -10055,47 +9978,32 @@ namespace ABC.POS.API.Controllers
                 db.SalesInvoices.Add(obj);
                 db.SaveChanges();
                 var getacc = db.CustomerInformations.Where(x => x.CustomerCode == obj.CustomerCode).FirstOrDefault();
-                if (getacc != null)
-                {
+                //if (getacc != null)
+                //{
                    
-                }
+                //}
                 var getaccount = db.Accounts.ToList().Where(a => a.AccountId == getacc.AccountNumber).FirstOrDefault();
                 if(getaccount != null)
                 {
-                    var getCHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
+                   // var getCHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
                     for (int i = 0; i < 2; i++)
                     {
                         Receiving transaction = null;
                         transaction = new Receiving();
-                        if (i == 0)
-                        {
-                            transaction.AccountName = getaccount.Title;
-                            transaction.AccountNumber = getaccount.AccountId;
-                            transaction.NetAmount = obj.TotalAmount;
-                            transaction.CashBalance = obj.TotalPaid;
-                            transaction.Credit = obj.Balance;
-                            transaction.Change = obj.Change;
-                            transaction.Debit = "0.00";
-                            transaction.InvoiceNumber = obj.InvoiceNumber;
-                            transaction.Date = DateTime.Now;
-                            db.Receivings.Add(transaction);
-                            db.SaveChanges();
 
-                        }
-                        else
-                        {
-                            transaction.AccountName = getaccount.Title;
-                            transaction.AccountNumber = getaccount.AccountId;
-                            transaction.NetAmount = obj.TotalAmount;
-                            transaction.CashBalance = obj.TotalPaid;
-                            transaction.Credit = "0.00";
-                            transaction.Change = obj.Change;
-                            transaction.Debit = obj.Balance;
-                            transaction.InvoiceNumber = obj.InvoiceNumber;
-                            transaction.Date = DateTime.Now;
-                            db.Receivings.Add(transaction);
-                            db.SaveChanges();
-                        }
+                        transaction.AccountName = getaccount.Title;
+                        transaction.AccountNumber = getaccount.AccountId;
+                        transaction.NetAmount = obj.TotalPaid;
+                        transaction.CashBalance = obj.TotalAmount;
+                        transaction.InvoiceNumber = obj.InvoiceNumber;
+                        transaction.Change = obj.Change;
+                        transaction.Date = DateTime.Now;
+
+                        if (i == 0) { transaction.Credit = obj.Balance; transaction.Debit = "0.00"; }
+                        else { transaction.Credit = "0.00"; transaction.Debit = obj.Balance; }
+
+                        db.Receivings.Add(transaction);
+                        db.SaveChanges();
                     }
 
 
@@ -10123,7 +10031,6 @@ namespace ABC.POS.API.Controllers
                             int getcode = 0;
                             if (code != null)
                             {
-
                                 getcode = Convert.ToInt32(code) + 1;
                             }
                             if (getcode > 9)
@@ -10160,35 +10067,20 @@ namespace ABC.POS.API.Controllers
                         {
                             Receiving transaction = null;
                             transaction = new Receiving();
-                            if (i == 0)
-                            {
-                                transaction.AccountName = getAccount.Title;
-                                transaction.AccountNumber = getAccount.AccountId;
-                                transaction.NetAmount = obj.TotalPaid;
-                                transaction.CashBalance = obj.TotalAmount;
-                                transaction.Credit = obj.Balance;
-                                transaction.Change = obj.Change;
-                                transaction.Debit = "0.00";
-                                transaction.InvoiceNumber = obj.InvoiceNumber;
-                                transaction.Date = DateTime.Now;
-                                db.Receivings.Add(transaction);
-                                db.SaveChanges();
 
-                            }
-                            else
-                            {
-                                transaction.AccountName = getAccount.Title;
-                                transaction.AccountNumber = getAccount.AccountId;
-                                transaction.NetAmount = obj.TotalPaid;
-                                transaction.CashBalance = obj.TotalAmount;
-                                transaction.Credit = "0.00";
-                                transaction.Change = obj.Change;
-                                transaction.Debit = obj.Balance;
-                                transaction.InvoiceNumber = obj.InvoiceNumber;
-                                transaction.Date = DateTime.Now;
-                                db.Receivings.Add(transaction);
-                                db.SaveChanges();
-                            }
+                            transaction.AccountName = getAccount.Title;
+                            transaction.AccountNumber = getAccount.AccountId;
+                            transaction.NetAmount = obj.TotalPaid;
+                            transaction.CashBalance = obj.TotalAmount;
+                            transaction.InvoiceNumber = obj.InvoiceNumber;
+                            transaction.Change = obj.Change;
+                            transaction.Date = DateTime.Now;
+                            
+                            if (i == 0){ transaction.Credit = obj.Balance; transaction.Debit = "0.00"; }
+                            else{ transaction.Credit = "0.00"; transaction.Debit = obj.Balance; }
+
+                            db.Receivings.Add(transaction);
+                            db.SaveChanges();
                         }
                     }
 
