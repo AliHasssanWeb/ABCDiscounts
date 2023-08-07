@@ -174,8 +174,8 @@
         width: 2rem;
         margin-left: 7rem;
         /*position: relative;
-                                        left: 15%;
-                                        border:0px solid;*/
+                                                left: 15%;
+                                                border:0px solid;*/
     }
 
     .wd-10 {
@@ -226,8 +226,8 @@
     }
 
     /*.tablesize {
-                                            width: 1180px;
-                                        }*/
+                                                    width: 1180px;
+                                                }*/
 
 
     .ti-close {
@@ -288,8 +288,8 @@
             width: 70px;
         }
         /*.tablesize1 {
-                                            width: 970px;
-                                        }*/
+                                                    width: 970px;
+                                                }*/
         .spname {
             margin-left: -11px;
             margin-top: -9px;
@@ -538,7 +538,7 @@
     var AllitemsModelList = [];
     var AllopenPurchaseOrdersList = [];
     var AllpostPurchaseOrdersList = [];
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#Deletebtn").hide();
         $("#AddnewUpdatebtn ").hide();
         $("#Savebtn").show();
@@ -610,8 +610,8 @@
 
 
             <div id="LoadPage " class="alertstyle">
-                <a href="#" id="Savebtn" onclick="SaveItemSupplierNumber(false,false,false)"><img src="../images/save.png" style="width:50px" title="Save" /></a>
-                <a href="#" id="Editbtn" onclick="SaveItemSupplierNumber(false,true,false)" style="display: none"><img src="../images/edit.png" style="width:50px;" title="Edit" /></a>
+                <a href="#" id="Savebtn" onclick="SaveItemSupplierNumber(true,false,false)"><img src="../images/save.png" style="width:50px" title="Save" /></a>
+                <a href="#" id="Editbtn" onclick="SaveItemSupplierNumber(true,true,false)" style="display: none"><img src="../images/edit.png" style="width:50px;" title="Edit" /></a>
                 <a href="#" id="Refreshbtn" onclick="onRefresh()"> <img src="../images/refresh.png" style="width:50px" title="Refresh " /></a>
                 <img class="hide-icon" src="../images/delete.png" style="width:50px" title="Delete" onclick="" />
                 <img class="hide-icon" src="../images/Inventory.png" style="width:50px" title="Inventory" onclick="OpenInventorySecondModal()" />
@@ -1954,10 +1954,10 @@
                                                                         <input autocomplete="off" class="imginput" id="productImage1s" type="file" accept="image/*" onchange="loadFile1(event)" name="ProfileImage">
 
                                                                         <script>
-                                                                            var loadFile1 = function(event) {
+                                                                            var loadFile1 = function (event) {
                                                                                 var output = document.getElementById('output1');
                                                                                 output.src = URL.createObjectURL(event.target.files[0]);
-                                                                                output.onload = function() {
+                                                                                output.onload = function () {
                                                                                     URL.revokeObjectURL(output.src) // free memory
                                                                                 }
                                                                                 output.style.display = "block";
@@ -3302,14 +3302,14 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function(result) {
+            success: function (result) {
                 $('#creditBodytble').empty();
                 $('#creditAmountmodal').val("");
                 $('#commentsmodal').val("");
 
                 getCreditSupplier();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -3331,9 +3331,9 @@
                 invNo: invoiceNo
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 var total = 0;
-                $.each(data, function(index, item) {
+                $.each(data, function (index, item) {
                     html += '<tr class="odd" style="background-color: #f89898 !important;">';
                     html += ' <td class="brdr-right" style = "width:10px;">' + item.userName + '</td>';
                     html += ' <td class="brdr-right" style = "width:10px;">' + item.companyName + '</td>';
@@ -3398,7 +3398,7 @@
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
                 var inner = '';
                 //  sessionStorage.setItem("customerspur", JSON.stringify(data));
                 var opts = jQuery.parseJSON(JSON.stringify(data));
@@ -3406,7 +3406,7 @@
                     //$("#matchedCharityTemplate").show();
                 }
                 $("#listallcust").empty();
-                $.each(opts, function(i, d) {
+                $.each(opts, function (i, d) {
                     inner = '';
                     inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetItemByNameForModel(' + d.id + ')";>';
                     if (i == 0) {
@@ -3425,7 +3425,7 @@
 
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -3449,7 +3449,7 @@
             items.parent().hide();
 
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
         }
@@ -3467,7 +3467,7 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 $('#customerCode').val(data.customerCode);
                 // $(".searchnameee").val(data.company);
                 $("#listallcust").empty();
@@ -3485,7 +3485,7 @@
         $("#listallmissions").empty();
         $("#listallmissionss").empty();
         $("#listallmissionsss").empty();
-        $.each(AllAutoItemsList, function(i, d) {
+        $.each(AllAutoItemsList, function (i, d) {
             firstinner = '';
             inner = '';
             innouterinnerer = '';
@@ -3599,7 +3599,7 @@
             items.parent().hide();
 
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
         }
@@ -3617,7 +3617,7 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 $('#itemDescription').val(data.name);
                 $('#itemNumber').val(data.itemNumber);
                 $('#itemRetail').val('$' + data.retail);
@@ -3639,14 +3639,14 @@
 
 
 
-    $('#itemStockID').keydown(function(e) {
+    $('#itemStockID').keydown(function (e) {
 
         if (e.which == 13) {
             GetItemData();
             return false;
         }
     });
-    $('#customerCode').keydown(function(e) {
+    $('#customerCode').keydown(function (e) {
 
         if (e.which == 13) {
             GetCustomerData();
@@ -3654,7 +3654,7 @@
         }
     });
 
-    $('#customQuantity').keydown(function(e) {
+    $('#customQuantity').keydown(function (e) {
 
         if (e.which == 13) {
             var customQty = $('#customQuantity').val();
@@ -3697,25 +3697,25 @@
                     id: itemstockNo
                 },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     // $(".add-row").trigger("click");
                     //var number = 0;
                     var rowCount = 1;
-                     $('#mytable tr').each(function(index, tr) {
-                         var descriptionIndex = $('#Description-' + rowCount).text();
-                       if(descriptionIndex == ''){
-                           RemoveRow(rowCount);
-                       }else{
-                           rowCount++;
-                       }
+                    $('#mytable tr').each(function (index, tr) {
+                        var descriptionIndex = $('#Description-' + rowCount).text();
+                        if (descriptionIndex == '') {
+                            RemoveRow(rowCount);
+                        } else {
+                            rowCount++;
+                        }
                     });
 
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         number++;
                     });
 
-                    var index = number ;//- 1;
-                   
+                    var index = number;//- 1;
+
                     var qustmQty = $('#customQuantity').val();
                     if (data.id != null) {
                         $(".add-row").trigger("click");
@@ -3779,11 +3779,11 @@
                     id: itemstockNo
                 },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     //$(".add-row").trigger("click");
 
                     var number = 0;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         number++;
 
                     });
@@ -3831,13 +3831,13 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data != "") {
                     $("#itemid-" + indexex).text(data.id);
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -3907,7 +3907,7 @@
 
 
                         var jj = 1;
-                        $('#mytable tr').each(function() {
+                        $('#mytable tr').each(function () {
 
                             var currentRow = $(this).closest("tr");
                             var check = $("#rowid-" + jj).find("#StockItemNumber-" + jj).text();
@@ -3928,7 +3928,7 @@
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -3948,7 +3948,7 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 //$("#rowid-" + index).find("#productId").val(data.id);
                 if (data != null && data != "") {
 
@@ -3956,7 +3956,7 @@
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -4020,7 +4020,7 @@
 
 
                         var jj = 1;
-                        $('#mytable tr').each(function() {
+                        $('#mytable tr').each(function () {
 
                             var currentRow = $(this).closest("tr");
                             var check = $("#rowid-" + jj).find("#StockItemNumber-" + jj).text();
@@ -4036,21 +4036,21 @@
                         swal("Error!", "Item Already Added!", "error");
                         //RemoveRow(index);
                         var rowCount = 1;
-                        $('#mytable tr').each(function(index, tr) {
-                         var descriptionIndex = $('#Description-' + rowCount).text();
-                         if(descriptionIndex == ''){
-                            RemoveRow(rowCount);
-                         }else{
-                           rowCount++;
-                         }
-                       });
-                       $(".add-row").trigger("click");
+                        $('#mytable tr').each(function (index, tr) {
+                            var descriptionIndex = $('#Description-' + rowCount).text();
+                            if (descriptionIndex == '') {
+                                RemoveRow(rowCount);
+                            } else {
+                                rowCount++;
+                            }
+                        });
+                        $(".add-row").trigger("click");
                     }
                 }
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4072,7 +4072,7 @@
                 id: id
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 $('#customerCode').val(data.customerCode);
                 // $(".searchnameee").val(data.company);
             },
@@ -4091,7 +4091,7 @@
                 id: itemstockNo
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
 
                 $('#itemDescription').val(data.name);
@@ -4121,7 +4121,7 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 $('#itemDescription').val(data.name);
                 $('#itemNumber').val(data.itemNumber);
                 $('#qtyOnHand').val(data.itemQuantity);
@@ -4135,7 +4135,7 @@
                 $('#unitRetail').val('$' + data.unitRetail);
                 $("#listallmissionss").hide();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4154,7 +4154,7 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 $("#itemDescriptionM").val(data.name);
                 $("#itemNumM").html(data.itemNumber);
                 $("#itemRetailM").val(data.unitRetail);
@@ -4167,7 +4167,7 @@
                 $("#qtyOnHandM").val(data.itemQuantity);
                 $("#listallmissionsss").hide();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4180,16 +4180,16 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         // function to add row
-        $('.add-row').click(function() {
+        $('.add-row').click(function () {
 
             var $row = $('#mytable').find('tr.hidden').clone(true).removeClass('hidden');
             $('#mytable').find('table').append($row);
         });
 
         // function to remove row
-        $('.delete-row').click(function() {
+        $('.delete-row').click(function () {
 
             $(this).parents('tr').detach();
 
@@ -4217,7 +4217,7 @@
 
 @*SEARCH WITH APPENDING*@
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $("#txtInvoiceNumber").text('@ViewBag.Invoicenumber');
         $("#Podate").datepicker({
@@ -4250,7 +4250,7 @@
         $(".searchdropdownn").hide();
 
 
-        $.each(AllSuppliersList, function(index, item) {
+        $.each(AllSuppliersList, function (index, item) {
             var html = '';
             html += '<option class="setsearchbox anitem dropdown-menu searchitems cp" data-code=' + item.vendorId + ' onclick="ItemSelect(' + item.vendorId + ')" value="' + item.vendorCode + '" >';
             html += '</option>';
@@ -4278,7 +4278,7 @@
         //    }
         //});
 
-        $("#txtSupplierNo").bind('input', function() {
+        $("#txtSupplierNo").bind('input', function () {
 
             if (checkExistss($('#txtSupplierNo').val()) === true) {
                 $("#pp").trigger("click");
@@ -4299,8 +4299,8 @@
         }
 
 
-        $(function() {
-            $('#pp').click(function() {
+        $(function () {
+            $('#pp').click(function () {
 
                 var data = $('#txtSupplierNo').val();
                 var getcustomerDataByCode = ($("#supplierNo option[value='" + data + "']").attr('data-code'));
@@ -4311,7 +4311,7 @@
 
 
         //for payment modal
-        $("#txtSupplierNoo").bind('input', function() {
+        $("#txtSupplierNoo").bind('input', function () {
 
             if (checkExistsss($('#txtSupplierNoo').val()) === true) {
                 $("#ppp").trigger("click");
@@ -4332,8 +4332,8 @@
         }
 
 
-        $(function() {
-            $('#ppp').click(function() {
+        $(function () {
+            $('#ppp').click(function () {
 
                 var data = $('#txtSupplierNoo').val();
                 var getcustomerDataByCode = ($("#supplierNoo option[value='" + data + "']").attr('data-code'));
@@ -4354,7 +4354,7 @@
                 data: { id: id },
                 dataType: "json",
                 async: false,
-                success: function(data) {
+                success: function (data) {
 
 
                     $.ajax({
@@ -4364,7 +4364,7 @@
                         contentType: "application/json;",
                         data: { id: data.accountNumber },
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             if (data != null) {
                                 var resultsAmount = parseFloat(data.amount).toFixed(2);
                                 $("#previousBalance").val(resultsAmount);
@@ -4398,7 +4398,7 @@
                 contentType: "application/json;",
                 data: { vendorId: id },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     window.outStateTax = parseFloat(data);
                 },
 
@@ -4410,7 +4410,7 @@
                 //Change Price Based on Tax
                 var Tax = window.outStateTax;
                 var count = 0
-                $("#mytable tr").each(function(index, tr) {
+                $("#mytable tr").each(function (index, tr) {
                     if (count > 0) {
                         var rowId = (tr.attributes.id.value).split("rowid-")[1];
                         var taxPrice = [parseFloat((($("#Price-" + rowId).text()).split("$")[1]))] * [(parseFloat(Tax) / 100)];
@@ -4457,10 +4457,10 @@
             async: false,
             contentType: "application/json;",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
                 //sessionStorage.setItem("supplierspur",JSON.stringify(data));
-                $.each(data, function(index, item) {
+                $.each(data, function (index, item) {
                     var html = '';
                     html += '<option class="setsearchbox anitem dropdown-menu searchitems cp" data-id=' + item.vendorId + ' onclick="ItemSelect(' + item.vendorId + ')" value="' + item.company + '" >';
                     html += '</option>';
@@ -4470,15 +4470,15 @@
                 });
 
             },
-            error: function(error) {
+            error: function (error) {
                 //alert(error);
             }
         });
         //   }
 
 
-        $(function() {
-            $('#p').click(function() {
+        $(function () {
+            $('#p').click(function () {
                 var data = $('#myInput').val();
                 var getcustomerData = ($('#supplierName option[value="' + data + '"]').attr('data-id'));
 
@@ -4486,14 +4486,14 @@
             });
         });
 
-        $("#myInput").bind('input', function() {
+        $("#myInput").bind('input', function () {
             if (checkExists($('#myInput').val()) === true) {
                 $("#p").trigger("click");
             }
         });
 
         function checkExists(inputValue) {
-           // alert("checkExists");
+            // alert("checkExists");
             var x = document.getElementById("supplierName");
             var i;
             var flag;
@@ -4508,7 +4508,7 @@
         AppendAllMissions(event);
 
 
-        $.each(AllitemsModelList, function(index, item) {
+        $.each(AllitemsModelList, function (index, item) {
 
             console.log(item);
             var html = '';
@@ -4564,7 +4564,7 @@
             $('<option></option>').val("value").html("Pending")
         );
 
-        $.each(AllopenPurchaseOrdersList, function(val, text) {
+        $.each(AllopenPurchaseOrdersList, function (val, text) {
             openinvoices.append(
                 $('<option></option>').val(text).html(text /* + "-" + text.customerNumber + "-" + text.customerName*/)
             );
@@ -4599,7 +4599,7 @@
         );
 
 
-        $.each(AllpostPurchaseOrdersList, function(val, text) {
+        $.each(AllpostPurchaseOrdersList, function (val, text) {
             postedinvoices.append(
                 $('<option></option>').val(text).html(text/* + "-" + text.customerNumber + "-" + text.customerName*/)
 
@@ -4630,12 +4630,12 @@
     function Changerow(val, val2) {
         var allrows = $(".itemnewtr").find('tr');
         $(allrows.prevObject).removeClass("selectedrow");
-        $.each(allrows.prevObject, function(ind, it) {
+        $.each(allrows.prevObject, function (ind, it) {
             if ($(it).find('id').prevObject[0].id == ("rowlistid-" + val)) {
                 $('#itemquantitylabel').trigger('focus');
                 $($(it).find('id').prevObject[0]).addClass("selectedrow");
                 return false;
-            } 
+            }
             //else {
             //    $($(it).find('id').prevObject[0]).removeClass("selectedrow");
             //}
@@ -4651,20 +4651,20 @@
     function keycodeget() {
 
         //$(".add-row").trigger("click");
-       // debugger;
-       // $(".add-row").trigger("click");
-       var rowCount = 1;
-        $('#mytable tr').each(function(index, tr) {
+        // debugger;
+        // $(".add-row").trigger("click");
+        var rowCount = 1;
+        $('#mytable tr').each(function (index, tr) {
             var descriptionIndex = $('#Description-' + rowCount).text();
-            if(descriptionIndex == ''){
+            if (descriptionIndex == '') {
                 RemoveRow(rowCount);
-            }else{
+            } else {
                 rowCount++;
             }
         });
 
         var number = 0;
-        $('#mytable tr').each(function(index, tr) {
+        $('#mytable tr').each(function (index, tr) {
             number++;
 
         });
@@ -4682,7 +4682,7 @@
         GetItemByIDaForShortModal(shortaddvalue, index, qustmQty);
 
         $("#writecheque").prop('disabled', false);
-       // $(".add-row").trigger("click");
+        // $(".add-row").trigger("click");
         $('#itemquantitylabel').val('');
 
         $("#additemshort").modal('hide');
@@ -4691,7 +4691,7 @@
     }
 
 
-    $('#itemquantitylabel').on('keypress', function(event) {
+    $('#itemquantitylabel').on('keypress', function (event) {
 
 
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -4710,9 +4710,9 @@
             $('#itemquantitylabel').trigger('focus');
         }
     });
-    $("#searchPro").on("keyup", function() {
+    $("#searchPro").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#proTable tr").filter(function() {
+        $("#proTable tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
@@ -4721,7 +4721,7 @@
 
         if (window.newseq != "" && window.newseq != "undefined") {
             var mynewseqnum = window.newseq;
-          //  /alert(mynewseqnum);/
+            //  /alert(mynewseqnum);/
         }
         $.ajax({
             type: "GET",
@@ -4729,7 +4729,7 @@
 
             data: { val2: val2 },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
                 if (data != null && data != "") {
                     $("#Description-" + mynewseqnum).text(data.name);
@@ -4754,7 +4754,7 @@
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4774,14 +4774,14 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 //console.log("Hemlooooooooo",data);
                 if (data != null && data != "") {
                     $("#itemid-" + indexex).text(data.id);
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -4845,14 +4845,14 @@
 
 
                         var jj = 1;
-                        $('#mytable tr').each(function() {
+                        $('#mytable tr').each(function () {
 
                             var currentRow = $(this).closest("tr");
                             //var check=currentRow.find("td:eq(2)").val();
                             var check = $("#rowid-" + jj).find("#StockItemNumber-" + jj).text();
                             // alert(check);
                             if (check[jj] == null || check[jj] == "") {
-                               // RemoveRow(jj);
+                                // RemoveRow(jj);
                             }
                             jj++
                         });
@@ -4860,24 +4860,24 @@
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
-                       // RemoveRow(index);
+                        // RemoveRow(index);
 
                         var rowCount = 1;
-                        $('#mytable tr').each(function(index, tr) {
-                         var descriptionIndex = $('#Description-' + rowCount).text();
-                         if(descriptionIndex == ''){
-                            RemoveRow(rowCount);
-                         }else{
-                            rowCount++;
-                         }
-                       });
-                       $(".add-row").trigger("click");
+                        $('#mytable tr').each(function (index, tr) {
+                            var descriptionIndex = $('#Description-' + rowCount).text();
+                            if (descriptionIndex == '') {
+                                RemoveRow(rowCount);
+                            } else {
+                                rowCount++;
+                            }
+                        });
+                        $(".add-row").trigger("click");
                     }
                 }
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4902,7 +4902,7 @@
             items.parent().hide();
 
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
             $("#searchdropdown").show();
@@ -4914,7 +4914,7 @@
 
 
     // Check Function
-    $('#ucpnitem').keypress(function(event) {
+    $('#ucpnitem').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             var itemno = $('#ucpnitem').val();
@@ -4924,7 +4924,7 @@
 
                 data: { itemno: itemno },
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
 
                     if (data != null && data != "" && data != "false") {
                         $("#itemDescriptionM").val(data.name);
@@ -4945,7 +4945,7 @@
                         $('#ucpnitem').val("");
                     }
                 },
-                error: function() {
+                error: function () {
 
                 },
             });
@@ -4956,7 +4956,7 @@
 
 
     // Check Function Second
-    $('#descM').keypress(function(event) {
+    $('#descM').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
 
@@ -4967,7 +4967,7 @@
 
                 data: { Name: Name },
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
 
                     if (data != null && data != "" && data != "false") {
                         $("#itemDescriptionM").val(data.name);
@@ -4989,7 +4989,7 @@
                         $('#descM').val("");
                     }
                 },
-                error: function() {
+                error: function () {
 
                 },
             });
@@ -4998,7 +4998,7 @@
     });
 
 
-    $('#customQuantityM').keydown(function(e) {
+    $('#customQuantityM').keydown(function (e) {
 
         if (e.which == 13) {
             var customQty = $('#customQuantityM').val();
@@ -5029,7 +5029,7 @@
             contentType: "application/json;",
             data: { id: Data },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
                 $.ajax({
                     url: '@Url.Action("GetpayablesByAccountId", "Purchase")',
@@ -5038,7 +5038,7 @@
                     contentType: "application/json;",
                     data: { id: data.accountNumber },
                     dataType: "json",
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data);
                         if (data != null) {
                             var resultsAmount = parseFloat(data.amount).toFixed(2);
@@ -5052,7 +5052,7 @@
                 $('#HiddenDiscount').val(data.stateDiscount);
                 $('#txtSupplierNoo').val(data.vendorCode);
                 $('#PaymentTerms').val(data.payTerms);
-               // $("#myInput").val(data.fullName);
+                // $("#myInput").val(data.fullName);
                 $("#myInput").val(data.company);
                 $("#creditInput").val(data.fullName);
                 $('#txtSupplierName').text(data.fullName);
@@ -5096,7 +5096,7 @@
             contentType: "application/json;",
             data: { vendorId: Data },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 window.outStateTax = parseFloat(data);
             },
         });
@@ -5107,7 +5107,7 @@
             //Change Price Based on Tax
             var Tax = window.outStateTax;
             var count = 0
-            $("#mytable tr").each(function(index, tr) {
+            $("#mytable tr").each(function (index, tr) {
                 if (count > 0) {
                     var rowId = (tr.attributes.id.value).split("rowid-")[1];
                     var taxPrice = [parseFloat((($("#Price-" + rowId).text()).split("$")[1]))] * [(parseFloat(Tax) / 100)];
@@ -5134,7 +5134,7 @@
 
 @*TABLE APPENDING*@
 <script>
-    $("#BanksDropdown").change(function() {
+    $("#BanksDropdown").change(function () {
         var DropDownValue = $("#BanksDropdown").val();
         $("#achNum").val(DropDownValue);
 
@@ -5144,11 +5144,11 @@
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
                 var code = data;
                 $("#AutoCode").text(code + "||'");
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -5157,10 +5157,10 @@
 
 
 
-    $("#UpdateCost").click(function() {
+    $("#UpdateCost").click(function () {
         var number = 0;
 
-        $('#mytable tr').each(function(index, tr) {
+        $('#mytable tr').each(function (index, tr) {
             number++;
             if ($("#UpdateCost").is(':checked')) {
                 $("#Price-" + number).attr('contenteditable', 'true');
@@ -5174,7 +5174,7 @@
 
     var str = 1;
     var sernum = 0;
-    $('.add-row').click(function() {
+    $('.add-row').click(function () {
 
         //var aa = $("#TotalItems").val();
         //if(aa == "" || aa == NaN){
@@ -5187,7 +5187,7 @@
         //$("#TotalItems").val(bb);
 
         var number = 0;
-        $('#mytable tr').each(function(index, tr) {
+        $('#mytable tr').each(function (index, tr) {
             console.log(number);
             number++;
 
@@ -5268,13 +5268,13 @@
             //$("#TotalItems").val(bb);
             //}
 
-           //------------- ali comment start line
+            //------------- ali comment start line
             //var a = $("rowid-" + sernum)
-            //if ("rowid-" + sernum == "rowid-1") {   
+            //if ("rowid-" + sernum == "rowid-1") {
             //    $("#TotalItems").val(1);
             //}
             //----------- ali comment end line
-            
+
             //else{
             //    var aa = $("#TotalItems").val();
             //    console.log("///" + aa);
@@ -5338,7 +5338,7 @@
             dataType: 'json',
             // Success start
 
-            success: function(data) {
+            success: function (data) {
                 console.log("Here i Data" + +data);
                 $("#existingitemnumbers").empty();
                 //$("#defaultlisticonss").empty();
@@ -5618,7 +5618,7 @@
 
                     if (data.vendors != null && data.vendors.length > 0) {
                         $("#appendsuppliersmains").empty();
-                        $.each(data.vendors, function(index, item) {
+                        $.each(data.vendors, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -5673,7 +5673,7 @@
 
                     if (data.vendors != null && data.vendors.length > 0) {
                         $("#appendsuppliersmains").empty();
-                        $.each(data.vendors, function(index, item) {
+                        $.each(data.vendors, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -5727,7 +5727,7 @@
                     }
                     if (data.purchaseOrders != null && data.purchaseOrders.length > 0) {
                         $("#appendpurchaseordersmains").empty();
-                        $.each(data.purchaseOrders, function(index, item) {
+                        $.each(data.purchaseOrders, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -5758,7 +5758,7 @@
                     if (data.saleOrders != null && data.saleOrders.length > 0) {
 
                         $('#appendsaleorders').empty();
-                        $.each(data.saleOrders, function(index, item) {
+                        $.each(data.saleOrders, function (index, item) {
                             var html = '';
                             html += '<tr>';
                             html += '<td style="width: 10px" id="" class="grids-td">' + (index + 1) + '</td>';
@@ -5792,12 +5792,12 @@
                 $("#listallmissions").empty();
 
                 GetCheapestValue(id);
-                setTimeout(function() {
+                setTimeout(function () {
                     $.unblockUI();
                 }, 2500);
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
 
@@ -5821,10 +5821,10 @@
             },
             dataType: "json",
 
-            success: function(data) {
+            success: function (data) {
 
                 if (data != null && data != "undefined") {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
 
                         $('#progressbarheights').css("height", val.quantity + '%');
                         $('#progressbarheights').text(val.quantity + "%");
@@ -5848,7 +5848,7 @@
                     })
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
 
                 var errorMessage = xhr.status + ': ' + xhr.statusText
 
@@ -5885,7 +5885,7 @@
 
         var total = 0
         var count = 0;
-        $("#mytable tr").each(function() {
+        $("#mytable tr").each(function () {
             var self = $(this);
             var col_9_value = self.find("td:eq(10)").text().trim();
             var result = col_9_value.replace(/\$/g, '');
@@ -5893,6 +5893,7 @@
             if (!isNaN(afterparsing)) {
                 total += afterparsing;
             }
+
             var ceilingvalue;
             ceilingvalue = total.toFixed(2);
 
@@ -5913,23 +5914,44 @@
                 $("#SubTotal").val("$" + ceilingvalue);
             }
 
-            $("#Total").val("$" + ceilingvalue);
-            $("#PoAmount").val(ceilingvalue);
+            var freight = parseFloat($("#Freight").val()) || 0;
+            var taxidval = parseFloat($("#Tax").val()) || 0;
+            var otheridval = parseFloat($("#Other").val()) || 0;
 
-            
-            if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
-               var balance = ceilingvalue - $("#totalPaid").val();
-                $("#poBalance").val(balance.toFixed(2));
-                $("#poBalancee").val(balance.toFixed(2));
+            // Calculate the sum of all expenses
+            var sumofallexpences = total + otheridval + taxidval + freight;
+
+            // Round the total to two decimal places and display as a string
+            let invoiceTotal = sumofallexpences.toFixed(2);
+            console.log('Invoice total ' + invoiceTotal)
+            if (invoiceTotal > ceilingvalue) {
+                $("#Total").val("$" + invoiceTotal);
+                $("#PoAmount").val(invoiceTotal);
+
+                if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
+                    var balance = invoiceTotal - $("#totalPaid").val();
+                    $("#poBalance").val(balance.toFixed(2));
+                    $("#poBalancee").val(balance.toFixed(2));
+                }
+            }
+            else {
+                $("#Total").val("$" + ceilingvalue);
+                $("#PoAmount").val(ceilingvalue);
+
+                if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
+                    var balance = ceilingvalue - $("#totalPaid").val();
+                    $("#poBalance").val(balance.toFixed(2));
+                    $("#poBalancee").val(balance.toFixed(2));
+                }
             }
 
-            if(ceilingvalue != "0" && ceilingvalue != "" && ceilingvalue != '' && ceilingvalue != NaN && ceilingvalue > 0){
+            if (ceilingvalue != "0" && ceilingvalue != "" && ceilingvalue != '' && ceilingvalue != NaN && ceilingvalue > 0) {
                 $("#payment").prop("disabled", false);
             }
-            else{
+            else {
                 $("#payment").prop("disabled", true);
             }
-             
+
             count++;
         });
         //Click-able Recevied CheckBox
@@ -5937,84 +5959,56 @@
             $("#Received").prop('disabled', false);
             //    $("#otherpayment").prop('disabled', false);
         }
-        CalculatetaxPlusDiscount();
+        //CalculatetaxPlusDiscount();
     }
-    function CalculatetaxPlusDiscount() {
-
-        var totalitems = $("#TotalItems").val();
-        var subtotal = $("#SubTotal").val().split('$');
-        var freight = $("#Freight").val();
-        var taxidval = $("#Tax").val();
-        var otheridval = $("#Other").val();
-        var total = $("#Total").val();
-
-        if (otheridval == "") {
-            otheridval = 0;
-
-        }
-        if (taxidval == "") {
-            taxidval = 0;
-
-        } if (freight == "") {
-            freight = 0;
-
-        }
-        if (total == "") {
-            total = 0;
-
-        }
-
-        var newsubtotal = subtotal[1];
-
-        var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
-
-        var invoicetotal = parseFloat(sumofallexpences);
-
-
-        if (isNaN(invoicetotal)) {
-            $("#Total").val("$" + 0);
-
-        } else {
-            var ceilingvalue;
-            ceilingvalue = invoicetotal.toFixed(2);
-            console.log("3333" + ceilingvalue);
-           // $("#Total").val("$" + ceilingvalue);
-           // $("#PoAmount").val(ceilingvalue);
-           //// $("#poBalancee").val("$" + ceilingvalue);
-           // $("#ToTalInDollar").val(ceilingvalue);
-           // $("#chequeBalance").html("$(" + ceilingvalue + ")");
-            // var kk = $("#chequeBalance").text();
-            // console.log(kk);
-            //var btw = toWords(ceilingvalue);
-            //console.log(btw);
-        }
-
-
-
-    }
-    function RemoveRow(val) {
     
+
+    function CalculatetaxPlusDiscount() {
+        //var totalitems = $("#TotalItems").val();
+        //var subtotal = parseFloat($("#SubTotal").val().split('$')[1]) || 0;
+        //var freight = parseFloat($("#Freight").val()) || 0;
+        //var taxidval = parseFloat($("#Tax").val()) || 0;
+        //var otheridval = parseFloat($("#Other").val()) || 0;
+        //var total = $("#Total").val();
+
+        //// Calculate the sum of all expenses
+        //var sumofallexpences = subtotal + otheridval + taxidval + freight;
+
+        //// Round the total to two decimal places and display as a string
+        //var invoicetotal = sumofallexpences.toFixed(2);
+
+        //if (isNaN(invoicetotal)) {
+        //    $("#Total").val("$" + 0);
+        //} else {
+        //    // Set the calculated total back to the "Total" input field
+        //    //$("#Total").val("$" + invoicetotal);
+        //}
+        CountTotalOfAllTD();
+    }
+
+    function RemoveRow(val) {
+
         var ac = $("#rowid-" + val).find("td:eq(4)").text();
         if (ac != null && ac != "") {
             var xx = $("#rowid-" + val).find("td:eq(7)").text();
             var allitem = $("#TotalItems").val();
-           // if(allitem > 0){
-                 var zz = allitem - parseFloat(xx);
-                 $("#TotalItems").val(zz);
-           // }else{
+            // if(allitem > 0){
+            var zz = allitem - parseFloat(xx);
+            $("#TotalItems").val(zz);
+            // }else{
             //    $("#TotalItems").val(0);
-           // }    
+            // }
         }
 
         $("#rowid-" + val).remove();
         var alltr = $("#mytable").find('tr');
-        $.each(alltr, function(i, t) {
+        $.each(alltr, function (i, t) {
             if (i > 0) {
                 var TRid = $(t)[0].id.split('-');
                 $(t).attr('id', TRid[0] + "-" + i);
 
-                var alltd = $(t).find('td');    
-                $.each(alltd, function(f, it) {
+                var alltd = $(t).find('td');
+                $.each(alltd, function (f, it) {
                     var id = $(it)[0].id.split('-');
                     if (id[0] == "countser") {
                         $(it).attr('id', id[0] + "-" + i);
@@ -6047,7 +6041,7 @@
         });
         var count = 0;
         var allitem = $("#TotalItems").val();
-        $("#mytable tr").each(function() {
+        $("#mytable tr").each(function () {
             //var currentRow=$(this);
             //var col_value = currentRow.find("td:eq(7)").text();
             //alert(col_value);
@@ -6070,20 +6064,19 @@
 
 
     }
-    function updatePurchaseWithRecived(SaleDetails)
-    {
-         $.ajax({
-             type: "POST",
-             url: '@Url.Action("UpdatePurchaseOrder", "Purchase")',
-             data: JSON.stringify(SaleDetails),
-             contentType: "application/json; charset=utf-8",
-             dataType: "json",
-             success: function(data) {
-             var model = data.responseData;
-             }
-         });
+    function updatePurchaseWithRecived(SaleDetails) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdatePurchaseOrder", "Purchase")',
+            data: JSON.stringify(SaleDetails),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                var model = data.responseData;
+            }
+        });
     }
-    function loadInvoicePendingRecived(){
+    function loadInvoicePendingRecived() {
         AllopenPurchaseOrdersList = ABCPOSWebsite.AllOpenPurchaseOrders();
         getopeninvoicelist();
         AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
@@ -6129,8 +6122,8 @@
         }
         var SaleDetails = new Array();
         var count1 = 1;
-        $("#mytable TBODY TR").each(function() {
-          
+        $("#mytable TBODY TR").each(function () {
+
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(24).html() == '') {
@@ -6138,12 +6131,11 @@
                 //count1--;
                 return;
             }
-          
-            if(poBalance != null && poBalance == 0.00)
-            {
+
+            if (poBalance != null && poBalance == 0.00) {
                 Sale.IsPaid = "true";
             }
-            else{
+            else {
                 Sale.IsPaid = "false";
             }
             Sale.SupplierItemNumber = row.find("TD").eq(2).text();
@@ -6319,10 +6311,10 @@
                         dataType: "json",
                         async: false,
                         cache: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data.success == "Justpay") {
                                 SavePaymentWhileInvoice(true);
-                                if(SaleDetails[0].Received == true || SaleDetails[0].Received == "true"){
+                                if (SaleDetails[0].Received == true || SaleDetails[0].Received == "true") {
                                     updatePurchaseWithRecived(SaleDetails);
                                 }
 
@@ -6334,7 +6326,7 @@
 
                                 var count = 0;
 
-                                $("#mytable TBODY TR").each(function(index, tr) {
+                                $("#mytable TBODY TR").each(function (index, tr) {
                                     var count2 = count + 1;
                                     var row = $(this);
                                     for (var i = 0; i < data.data.length; i++) {
@@ -6371,14 +6363,14 @@
                         title: 'Save New Purchase Invoice!',
                         content: 'Are you sure to save new Purchase Invoice?',
                         buttons: {
-                            confirm: function() {
+                            confirm: function () {
                                 $.ajax({
                                     type: "POST",
                                     url: '@Url.Action("CreatePurchaseOrder", "Purchase")',
                                     data: JSON.stringify(SaleDetails),
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
-                                    success: function(data) {
+                                    success: function (data) {
                                         //if (data.success=="print") {
                                         var model = data.responseData;
 
@@ -6387,7 +6379,7 @@
 
                                         var count = 0;
 
-                                        $("#mytable TBODY TR").each(function(index, tr) {
+                                        $("#mytable TBODY TR").each(function (index, tr) {
                                             var count2 = count + 1;
                                             var row = $(this);
                                             for (var i = 0; i < data.data.length; i++) {
@@ -6417,7 +6409,7 @@
                                             }
                                             $("#Savebtn").hide();
                                             $("#Printbtn").hide();
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 /*   alert("Supplier Item Number Save Successfully.");*/
                                                 swal("Success!", "Purchsase Order Create Successfully.", "success");
                                             }, 2000);
@@ -6438,7 +6430,7 @@
                                     }
                                 });
                             },
-                            cancel: function() {
+                            cancel: function () {
                             },
                         }
                     });
@@ -6450,19 +6442,19 @@
                     title: 'Edit Purchase Invoice!',
                     content: 'Are you sure to edit Purchase Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             $.ajax({
                                 type: "POST",
                                 url: '@Url.Action("UpdatePurchaseOrder", "Purchase")',
                                 data: JSON.stringify(SaleDetails),
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
-                                success: function(data) {
+                                success: function (data) {
                                     // if (data.success=="print") {
                                     var model = data.responseData;
                                     var count = 0;
 
-                                    $("#mytable TBODY TR").each(function(index, tr) {
+                                    $("#mytable TBODY TR").each(function (index, tr) {
                                         var count2 = count + 1;
                                         var row = $(this);
                                         for (var i = 0; i < data.data.length; i++) {
@@ -6476,7 +6468,7 @@
 
                                         count++;
                                     });
-                                  
+
                                     if (window.paymentInProcess == false) {
                                         if ($("#Received").is(':checked')) {
                                             $("#Editbtn").hide();
@@ -6498,7 +6490,7 @@
                                         //AllpostPurchaseOrdersList = ABCPOSWebsite.AllClosePurchaseOrders();
                                         //getpostinvoicelist();
 
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
                                             swal("Success!", "Purchsase Order Update Successfully.", "success");
                                         }, 2000);
@@ -6519,7 +6511,7 @@
                                 }
                             });
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -6531,11 +6523,11 @@
     };
     function AppendAllMissions(event) {
 
-       // alert("AppendAllMissions");
+        // alert("AppendAllMissions");
         $("#listallmissions").empty();
         $("#listallmissionss").empty();
         $("#listallmissionsss").empty();
-        $.each(AllAutoItemsList, function(i, d) {
+        $.each(AllAutoItemsList, function (i, d) {
             firstinner = '';
             inner = '';
             outerinner = '';
@@ -6597,8 +6589,8 @@
         //    },
         //});
     };
-    function GetItemByID(val, indexex,addItem) {
-       
+    function GetItemByID(val, indexex, addItem) {
+
         //alert(33);
         //if (window.sequence != "" && window.sequence != "undefined" ) {
         //    var seqnum = window.sequence;
@@ -6640,13 +6632,13 @@
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 $("#rowid-" + indexex).find("#productId").val(data.id);
                 if (data != null && data != "") {
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -6722,7 +6714,7 @@
                         $("#listallmissions").empty();
 
                         var jj = 1;
-                        $('#mytable tr').each(function() {
+                        $('#mytable tr').each(function () {
 
                             var currentRow = $(this).closest("tr");
                             //var check=currentRow.find("td:eq(2)").val();
@@ -6733,14 +6725,14 @@
                             }
                             jj++
                         });
-                       
-                        
-                        if(addItem){
+
+
+                        if (addItem) {
                             var currentItems = $("#TotalItems").val();
                             var rowQty = $("#Qty-" + indexex).text();
-                            if(rowQty != "" && $.isNumeric(rowQty)){
-                               var  itemcount = parseInt(currentItems) + parseInt(rowQty);
-                               $("#TotalItems").val(itemcount);
+                            if (rowQty != "" && $.isNumeric(rowQty)) {
+                                var itemcount = parseInt(currentItems) + parseInt(rowQty);
+                                $("#TotalItems").val(itemcount);
                             }
                         }
 
@@ -6754,19 +6746,19 @@
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
 
 
-}
+    }
     function QuantityMultipyPrice(val) {
 
 
 
 
-       
+
         $("#Amount-" + val).empty();
         var quantity = $("#Qty-" + val).text();
         var discount = parseFloat(($("#Discount-" + val).text()).split("%")[0]);
@@ -6784,10 +6776,10 @@
         $("#Amount-" + val).text("$" + ceilingvalue.toFixed(2));
         CountTotalOfAllTD();
 
-      
+
         //hereis
         var allitem = 0;
-        $("#mytable tr").each(function() {
+        $("#mytable tr").each(function () {
             var currentRow = $(this);
             var check = currentRow.find("td:eq(3)").text();
             if (check != null && check != "") {
@@ -6802,7 +6794,7 @@
         $("#TotalItems").val(allitem);
 
 
-}
+    }
     function DiscuntChangePrice(val) {
         //
 
@@ -6872,7 +6864,7 @@
 
             items.parent().hide();
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
         }
@@ -6888,7 +6880,7 @@
                 itemnumber: itemnumber
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data != "") {
                     $("#Description-" + val).text(data.itemName);
 
@@ -6906,7 +6898,7 @@
                 CountTotalOfAllTD();
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -6943,13 +6935,13 @@
                 itemnumber: itemnumber
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data != "") {
                     $("#itemid-" + val).text(data.id);
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -6995,7 +6987,7 @@
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -7044,13 +7036,13 @@
                 dataType: "json",
                 processData: false,
                 contentType: false,
-                success: function(data) {
+                success: function (data) {
                     if (data != null && data != "") {
                         $("#itemid-" + val).text(data.id);
                         var count = 0;
                         var exist = 0;
                         var notexist = true;
-                        $('#mytable tr').each(function(index, tr) {
+                        $('#mytable tr').each(function (index, tr) {
                             if (count > 0) {
                                 var Id = tr.attributes["id"].value.split("rowid-")[1];
                                 /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -7100,7 +7092,7 @@
 
 
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     var errorMessage = xhr.status + ': ' + xhr.statusText
                 },
             });
@@ -7187,7 +7179,7 @@
                     title: 'Save New SupplierItemNumber!',
                     content: 'Are you sure to save new SupplierItemNumber?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             $.ajax({
                                 type: "POST",
                                 url: '@Url.Action("SaveSupplier", "Purchase")',
@@ -7198,11 +7190,11 @@
                                 processData: false,
                                 contentType: false,
 
-                                success: function(data) {
+                                success: function (data) {
 
 
                                     if (data == "Already Exists.") {
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*alert("Supplier Item Number Already Exists.");*/
                                             swal("Error!", "Supplier Item Number Already Exists.", "error");
                                         }, 2000);
@@ -7211,20 +7203,20 @@
                                         //$("#ValVendorName").show();
                                     } else if (data == "true") {
 
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
                                             swal("Success!", "Supplier Item Number Save Successfully.", "success");
                                         }, 2000);
                                     }
                                 },
-                                error: function(xhr, status, error) {
+                                error: function (xhr, status, error) {
 
                                     var errorMessage = xhr.status + ': ' + xhr.statusText
                                 },
 
                             });
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -7259,7 +7251,7 @@
             processData: false,
             contentType: false,
 
-            success: function(data) {
+            success: function (data) {
                 var cheapestvalecount = parseInt(data);
                 if (cheapestvalecount > 0) {
                     $("#gifalert").show();
@@ -7269,7 +7261,7 @@
                 }
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
 
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
@@ -7296,7 +7288,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function (data) {
                 //ShowProductList(data);
                 var html = "";
                 html += '<div class="modal-content modalstyling">';
@@ -7323,7 +7315,7 @@
                 html += '</tr>';
                 html += '</thead>';
                 html += '<tbody>';
-                $.each(data, function(index, item) {
+                $.each(data, function (index, item) {
                     //var mydate = moment(item.podate, 'DD/MM/YYYY HH:mm').format("DD/MM/YYYY HH:mm");
                     html += '<tr class="odd">';
                     html += '<td class="sorting_1" style="width:10px;">' + (index + 1) + '</td>';
@@ -7343,7 +7335,7 @@
                 $('#addstore').append(html);
                 $('#addstore').modal('show');
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -7381,11 +7373,11 @@
         });
         }*@
 
-                                    var isCtrl = false;
-    $(document).keyup(function(e) {
+                                            var isCtrl = false;
+    $(document).keyup(function (e) {
         if (e.which == 17)
             isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 83 && isCtrl == true) {
             SaveItemSupplierNumber(false, false, false);
@@ -7393,10 +7385,10 @@
             return false;
         }
     });
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
 
         if (e.which == 17) isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 73 && isCtrl == true) {
             $(".add-row").trigger("click");
@@ -7406,10 +7398,10 @@
         }
     });
 
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
 
         if (e.which == 17) isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 65 && isCtrl == true) {
             if ($("#received-invoice").val() == "true") {
@@ -7421,13 +7413,13 @@
     });
 
 
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.which == 17)
             isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 114 && isCtrl == true) {
-          //  alert("e.which == 114 && isCtrl == true  keydown");
+            //  alert("e.which == 114 && isCtrl == true  keydown");
             if ($("#setvendorid").text() == 0) {
                 swal("Error!", "Kindly Select Vendor!", "error");
                 valid = false;
@@ -7439,10 +7431,10 @@
             return false;
         }
     });
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.which == 17)
             isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 117 && isCtrl == true) {
             var data = $('#txtSupplierNo').val();
@@ -7461,14 +7453,14 @@
     });
 
 
-    $('body').keydown(function(event) {
+    $('body').keydown(function (event) {
         var letter = String.fromCharCode(event.which);
         var count = 0;
-        $("#mytable tr").each(function() {
+        $("#mytable tr").each(function () {
             count++;
         });
         var sernum = count;
-       // dubugger;
+        // dubugger;
         if (event.keyCode == 46) {
             var id = $("#TotalItems").val();
             if (id > 0) {
@@ -7481,7 +7473,7 @@
 
     });
     function closeitemmodal() {
-      //  alert("closeitemmodal");
+        //  alert("closeitemmodal");
         $("#additemshort").modal('hide');
         $("#searchPro").val('');
         $('.modalTable tr').removeClass("selectedrow");
@@ -7503,16 +7495,16 @@
         $("#customerCode").val('');
     }
     //Uncheck checkbox based on condition
-    $("#ShowAllitem").click(function() {
+    $("#ShowAllitem").click(function () {
         $("#SupplierItemOnly").prop("checked", false);
         if ($(this).find("datalist").length > 0) {
             $(this).find("datalist").empty();
         }
 
     });
-    $("#SupplierItemOnly").click(function() {
+    $("#SupplierItemOnly").click(function () {
         $("#ShowAllitem").prop("checked", false);
-        $("#mytable tr").each(function(index, tr) {
+        $("#mytable tr").each(function (index, tr) {
             if ($(this).find("datalist").length > 0) {
                 $(this).find("datalist").empty();
             }
@@ -7522,7 +7514,7 @@
     var data_array = [];
 
     function GetItemList(val) {
-    
+
         var vendorid = $("#setvendorid").text();
         var supplierItemCheck = $("#SupplierItemOnly").is(':checked');
         if (supplierItemCheck == true && vendorid != "") {
@@ -7532,7 +7524,7 @@
 
             alert(1);
 
-            $.each(AllSupplieritemsList, function(index, value) {
+            $.each(AllSupplieritemsList, function (index, value) {
                 if (search != "") {
                     if (value.text.toLowerCase().indexOf(search) >= 0) {
                         dropdown += '<option data-value="' + value.value + '">' + value.text + '</option>';
@@ -7571,9 +7563,9 @@
             //    },
             //});
             $("#productList-" + val).append(dropdown);
-            $.each(data_array, function(index, value) {
+            $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
-                    GetItemByID(data_array[index].value, val,false);
+                    GetItemByID(data_array[index].value, val, false);
                 }
             });
 
@@ -7583,7 +7575,7 @@
             $("#productList-" + val).empty();
             var dropdown = '';
 
-            $.each(AllReturnitemsList, function(index, value) {
+            $.each(AllReturnitemsList, function (index, value) {
                 if (search != "") {
                     if (value.text.toLowerCase().indexOf(search) >= 0) {
                         dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -7624,20 +7616,20 @@
             //});
             var additem = true;
             $("#productList-" + val).append(dropdown);
-            $.each(data_array, function(index, value) {
+            $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
-                    if(additem){
-                        GetItemByID(data_array[index].value, val,additem);
+                    if (additem) {
+                        GetItemByID(data_array[index].value, val, additem);
                         additem = false;
-                    }else{
-                        GetItemByID(data_array[index].value, val,additem);
-                    }   
+                    } else {
+                        GetItemByID(data_array[index].value, val, additem);
+                    }
                 }
             });
         }
     }
 
-    $("#ManualInvoiceNoo").keyup(function() {
+    $("#ManualInvoiceNoo").keyup(function () {
 
         var data = $(this).val();
         //data = "INV-" + data;
@@ -7651,9 +7643,9 @@
                 contentType: "application/json;",
                 data: { InvoiceNumber: data },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     var number = 0;
-                    $('#mytable tr').each(function(index, tr) {
+                    $('#mytable tr').each(function (index, tr) {
                         number++;
                     });
                     var sernum = number;
@@ -7680,7 +7672,7 @@
                         $("#TotalItems").val(0);
                         $("#Savebtn").hide();
                         $("#Printbtn").hide();
-                      
+
                         if (data[0].isPaid == true) {
                             $("#otherpayment").prop("disabled", true);
                             $("#imgPaid").show();
@@ -7720,7 +7712,7 @@
                             $(".tableRow").remove();
                             $("#TotalItems").prop("disabled", true);
                             $("#Savebtn").hide();
-                            
+
                             if (data[0].isPaid == true) {
                                 $("#otherpayment").prop("disabled", true);
                                 $("#imgPaid").show();
@@ -7773,7 +7765,7 @@
                     var IsDiscount = $("#IsDiscount").is(':checked');
                     if (data.length > 0) {
                         if (data[0].received != true) {
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
                                 var html = '';
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="">';
                                 html += '<td id="countser-' + sernum + '" style="width: 10px;display:none" class="counter brd" contenteditable="true">' + sernum + '</td>';
@@ -7818,7 +7810,7 @@
                             });
                         }
                         else {
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
                                 var html = '';
 
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="">';
@@ -7877,7 +7869,7 @@
                     }
 
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     var errorMessage = xhr.status + ': ' + xhr.statusText
                 },
             });
@@ -7886,7 +7878,7 @@
     });
 
 
-    var nextinvoice = function(method, selectedinvoicenumber) {
+    var nextinvoice = function (method, selectedinvoicenumber) {
         var data = $("#txtInvoiceNumber").text();
 
         if (method == 'null') {
@@ -7907,7 +7899,7 @@
                 contentType: "application/json;",
                 data: { InvoiceNumber: data, Method: method },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
 
                     //var data = jQuery.parseJSON(JSON.stringify(response));
                     //   console.log("*******" + data);
@@ -7940,18 +7932,18 @@
                         $('#UpateOscost').prop('checked', data[0].updateOscost);
                         $('#Received').prop('checked', data[0].received);
                         $(".tableRow").remove();
-                        
+
                         // count total items Qty
                         let totalQty = 0;
                         data.forEach((item) => {
-                            if(item.qty != 0 && item.qty != null)
-                            totalQty = totalQty + parseInt(item.qty);
+                            if (item.qty != 0 && item.qty != null)
+                                totalQty = totalQty + parseInt(item.qty);
                         });
-                       
+
                         $("#TotalItems").val(totalQty);
                         $("#Savebtn").hide();
                         $("#Printbtn").hide();
-                      
+
                         if (data[0].isPaid == true) {
                             $("#otherpayment").prop("disabled", true);
                             $("#imgPaid").show();
@@ -7960,7 +7952,7 @@
                             $("#otherpayment").prop("disabled", false);
                             $("#imgPaid").hide();
                         }
-                        
+
                         if (data[0].received != true) {
                             $("#imgPaid").removeClass("show");
                             $("#imgPaid").addClass("hide");
@@ -7977,7 +7969,7 @@
                         }
 
                         var number = 0;
-                        $('#mytable tr').each(function(index, tr) {
+                        $('#mytable tr').each(function (index, tr) {
                             number++;
                         });
                         var sernum = number;
@@ -8011,7 +8003,7 @@
                             $(".tableRow").remove();
                             $("#TotalItems").prop("disabled", true);
                             $("#Savebtn").hide();
-                         
+
                             if (data[0].isPaid == true) {
                                 $("#otherpayment").prop("disabled", true);
                                 $("#imgPaid").show();
@@ -8045,7 +8037,7 @@
                         }
                     }
                     else {
-                   
+
                         $("#imgPaid").removeClass("show");
                         $("#imgPaid").addClass("hide");
                         $("#imgRecieved").addClass("hide");
@@ -8057,7 +8049,7 @@
                         $("#Editbtn").hide();
 
                     }
-                   
+
                     if (data[0].invoicePayments != null) {
 
                         if (data[0].invoicePayments.totalPaid == true) {
@@ -8074,7 +8066,7 @@
                             $("#payment").attr('disabled', false);
                             //$("#poAmountt").val(data[0].invoicePayments.cashBalance);
                         }
-                     
+
                         console.log("/////////" + data[0].invoicePayments);
                         $('#datepickerPO').datepicker('setDate', '');
                         $("#poAmountt").val('');
@@ -8112,7 +8104,7 @@
                     var IsDiscount = $("#IsDiscount").is(':checked');
                     if (data.length > 0) {
                         if (data[0].received != true) {
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
                                 var string = value.stockItemNumber;
                                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
                                 var html = '';
@@ -8179,7 +8171,7 @@
 
                         }
                         else {
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
                                 var string = value.stockItemNumber;
                                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
 
@@ -8261,7 +8253,7 @@
                     }
 
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     var errorMessage = xhr.status + ': ' + xhr.statusText
                 },
             });
@@ -8272,13 +8264,13 @@
 
 
 
-    $("#otherpayment").click(function() {
-     
+    $("#otherpayment").click(function () {
+
         var getsupplier = $("#myInput").val();
         if (getsupplier != '' && getsupplier != null) {
             //yahannnnnnnn
             getCreditSupplier();
-            
+
             if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0.00" || $("#preorderPaid").val() != "0")) {
             } else {
                 var poTotal = $("#PoAmount").val();
@@ -8298,14 +8290,14 @@
 
         //End
     });
-    $("#close2").click(function() {
+    $("#close2").click(function () {
         $("#modalPayment").modal('toggle');
     });
 
 
 
-    $("#paymentmodaloneOpen").click(function() {
-        $("#poAmountt").val("");
+    $("#paymentmodaloneOpen").click(function () {
+        //$("#poAmountt").val("");
         $("#datepickerPO").datepicker();
         //$('#datepickerPO').datepicker('setDate', 'today');
         $("#modalPaymentone").modal('toggle');
@@ -8313,20 +8305,20 @@
         $("#poNumberone").text(invoiceNumber);
         var companyName = $("#myInput").val();
         $("#companyNameone").text(companyName);
-     
+
         if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0.00" || $("#preorderPaid").val() != "0")) {
         } else {
-            
-                var poTotal = $("#PoAmount").val();
-                $("#poBalancee").val("$" + poTotal);
-                $("#poBalance").val("$" + poTotal);
+
+            var poTotal = $("#PoAmount").val();
+            $("#poBalancee").val("$" + poTotal);
+            $("#poBalance").val("$" + poTotal);
         }
     });
-    $("#paymentonemodalclose").click(function() {
+    $("#paymentonemodalclose").click(function () {
         $("#modalPaymentone").modal('toggle');
     });
 
-    $("#modalPaymentone").keyup(function(e) {
+    $("#modalPaymentone").keyup(function (e) {
         if (e.keyCode == 187) {
             var poTotal = $("#PoAmount").val();
             $("#poAmountt").val(poTotal);
@@ -8334,7 +8326,7 @@
         }
     });
 
-    $("#wire").click(function() {
+    $("#wire").click(function () {
         var checkdate = $("#datepickerPO").val();
         $("#modalPaymentone").modal('toggle');
         if ($("#ispartialPaid").val() == "not") {
@@ -8356,7 +8348,7 @@
             //$("#checkPaid").val(poAmount);
             totalPoBalance("wire");
         }
-         var cmt = $("#commentsPO").val();
+        var cmt = $("#commentsPO").val();
         var cmtt = $("#descriptionPo").val();
         if (cmtt == "") {
             $("#descriptionPo").val(cmt);
@@ -8403,7 +8395,7 @@
             var lastpaid = $("#preorderPaid").val();
             var pobalance = $("#poBalance").val();
             if (parseFloat(pobalance) < parseFloat(currentPaid) && parseFloat(pobalance) > 0) {
-            console.log("1st POB " + pobalance + " " + "Current " + currentPaid + " " + " POB " + pobalance);
+                console.log("1st POB " + pobalance + " " + "Current " + currentPaid + " " + " POB " + pobalance);
 
                 $("#poAmountt").val('');
                 swal("Error!", "Cannot pay more then remaining balance", "error");
@@ -8433,7 +8425,7 @@
     });
 
 
-    $("#paymentmodalonecredit").click(function() {
+    $("#paymentmodalonecredit").click(function () {
         $("#poAmountt").val("");
 
         $("#modalPaymentcreditone").modal('toggle');
@@ -8445,7 +8437,7 @@
         $("#poBalanceecredit").val("$" + poTotal);
 
     });
-    $("#paymentonecreditmodalclose").click(function() {
+    $("#paymentonecreditmodalclose").click(function () {
         $("#modalPaymentcreditone").modal('toggle');
     });
 
@@ -8453,7 +8445,7 @@
 
 
 
-    $("#addnewitem").click(function() {
+    $("#addnewitem").click(function () {
         var isvalid = false;
         if ($("#setvendorid").text() == 0) {
             swal("Error!", "Kindly Select Vendor!", "error");
@@ -8473,7 +8465,7 @@
         //var invoiceNumber = $("#txtInvoiceNumber").text();
         //$("#poNumber").text(invoiceNumber);
     });
-    $(".close1").click(function() {
+    $(".close1").click(function () {
         $("#modalNewItem").modal('toggle');
     });
     function totalPoBalance(type) {
@@ -8501,6 +8493,8 @@
             checkPaid = parseFloat($("#checkPaid").val());
         }
 
+
+        var currentPaid = parseFloat($("#poAmountt").val());
         var POPrice = $("#PoAmount").val();
         var ActualBill = $("#PoAmount").val();
         var lastpaid = $("#preorderPaid").val();
@@ -8562,7 +8556,7 @@
             } else {
                 var Gross = (currentPaid).toFixed(2);
                 if (parseFloat(ActualBill) < parseFloat(Gross)) {
-                console.log("2nd POB " + ActualBill + " " + "Current " + currentPaid + " " + " POB " + Gross);
+                    console.log("2nd POB " + ActualBill + " " + "Current " + currentPaid + " " + " POB " + Gross);
 
                     swal("Error!", "Cannot pay more then remaining balance", "error");
                 } else {
@@ -8590,9 +8584,9 @@
 
             //var RemainingBalance = parseFloat(poAmount) - parseFloat(totalPaid);
 
-            if(type != undefined){
-                 $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
-                 $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
+            if (type != undefined) {
+                $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
+                $("#poBalancee").val(parseFloat(PoBalance).toFixed(2));
             }
 
             //    console.log(PoBalance);
@@ -8612,20 +8606,20 @@
 
         // }
         // $("#poBalance").val(parseFloat(PoBalance).toFixed(2));
-        if(type != undefined){
-             var RececheckotherPaid = parseFloat($("#otherPaid").val());
-             if (RececheckotherPaid != "0" && RececheckotherPaid != "" && RececheckotherPaid != '' && RececheckotherPaid != NaN && RececheckotherPaid > 0) {
-                 $("#payment").prop("disabled", false);
-             }else{
-                 $("#payment").prop("disabled", true);
-             }
+        if (type != undefined) {
+            var RececheckotherPaid = parseFloat($("#otherPaid").val());
+            if (RececheckotherPaid != "0" && RececheckotherPaid != "" && RececheckotherPaid != '' && RececheckotherPaid != NaN && RececheckotherPaid > 0) {
+                $("#payment").prop("disabled", false);
+            } else {
+                $("#payment").prop("disabled", true);
+            }
         }
-       
+
     }
-    $("#payment").click(function() {
+    $("#payment").click(function () {
 
 
-    
+
         var tablecount = $("#mytable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
             swal("Error!", "Please Complete Current Invoice", "error");
@@ -8719,21 +8713,21 @@
             dataType: "json",
             async: false,
             cache: false,
-            success: function(data) {
+            success: function (data) {
 
                 if (data == true) {
 
                     if (justpay) {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             swal("Success!", "Paid Successfully.", "success");
-                    location.reload();
+                            location.reload();
 
                         }, 2000);
 
                     } else {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             swal("Success!", "Purchsase Order Create & Paid Successfully.", "success");
-                    location.reload();
+                            location.reload();
 
                         }, 2000);
 
@@ -8831,14 +8825,14 @@
             title: 'Save Payment for Invoice No: ' + invoiceNumber + '',
             content: 'Are you sure to save Payment?',
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("SaveInvoicePayment", "Purchase")',
                         data: JSON.stringify(supplierPayments),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             if (data == true) {
                                 if ($("#Received").is(':checked')) {
                                     $("#Editbtn").hide();
@@ -8848,7 +8842,7 @@
                                 }
                                 $("#Savebtn").hide();
                                 $("#Printbtn").hide();
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     /*   alert("Supplier Item Number Save Successfully.");*/
                                     if (isupdated == false) {
                                         swal("Success!", "Purchsase Order Create Successfully.", "success");
@@ -8862,7 +8856,7 @@
                         }
                     });
                 },
-                cancel: function() {
+                cancel: function () {
                 },
             }
         });
@@ -9090,7 +9084,7 @@
                 title: 'Save New Item!',
                 content: 'Are you sure to save new item?',
                 buttons: {
-                    confirm: function() {
+                    confirm: function () {
                         $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
                         $.ajax({
                             url: '@Url.Action("AddItemfromPO", "Purchase")',
@@ -9100,7 +9094,7 @@
                             dataType: "json",
                             processData: false,
                             contentType: false,
-                            success: function(data) {
+                            success: function (data) {
     @*if (data != null) {
 
 
@@ -9110,10 +9104,10 @@
                                     }, 2500);
                                     }*@
 
-                                                    if (data != null) {
+                                                            if (data != null) {
                                     $("#modalNewItem").modal('toggle');
                                     if (data == "Already Exists.") {
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*alert("Supplier Item Number Already Exists.");*/
                                             swal("Error!", "Supplier Item Number Already Exists.", "error");
                                         }, 2000);
@@ -9123,7 +9117,7 @@
                                     }
                                     else {
                                         var sr = 0;
-                                        $("#mytable tr").each(function(index, tr) {
+                                        $("#mytable tr").each(function (index, tr) {
                                             sr++;
                                         });
                                         //sr++;
@@ -9154,20 +9148,20 @@
 
                                     }
                                     CountTotalOfAllTD();
-                                    setTimeout(function() {
+                                    setTimeout(function () {
                                         $.unblockUI();
                                     }, 2500);
                                 }
 
                             },
-                            error: function() {
-                                setTimeout(function() {
+                            error: function () {
+                                setTimeout(function () {
                                     $.unblockUI();
                                 }, 2500);
                             }
                         });
                     },
-                    cancel: function() {
+                    cancel: function () {
                     },
                 }
             });
@@ -9185,10 +9179,10 @@
             async: false,
             dataType: 'json',
             //contentType: false,
-            success: function(data) {
+            success: function (data) {
                 $('#cart_body tr').remove();
                 if (data.length > 0 && data != "null" && data != "false" && data != "") {
-                    $.each(data, function(index, value) {
+                    $.each(data, function (index, value) {
                         $('#cart_body').append("<tr><td>" + value.itemName + "</td><td>" + value.oldPrice + "</td><td>" + value.newPrice + "</td><td>" + value.priceDiff + "</td><td>" + parseFloat(value.pricePercentage).toFixed(2) + "%" + "</td><td>" + value.createdDate + "</td><td>" + value.createdBy + "</td></tr>");
                     });
                 } else {
@@ -9196,7 +9190,7 @@
                 }
 
             },
-            error: function() {
+            error: function () {
                 alert('Failed to receive the Data');
             }
         });
@@ -9212,7 +9206,7 @@
 
 
     function VendorDetailModal(id) {
-   
+
         var VendorId = parseInt($("#searchdropdown").attr("data-vendorID"));
         //$('#VendorParModal').modal('show');
         //var myval = $("#inv-" + id).text();
@@ -9225,7 +9219,7 @@
             contentType: "application/json;",
             data: { id: id },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
                 if (data == "false.") {
                     toastr.error("Please Select Supplier First");
@@ -9318,7 +9312,7 @@
                     //$("#Attachmentbtn ").show();
                     $("#searchdropdown").empty();
                     $('#VendorParModal').modal('show');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $.unblockUI();
                     }, 2500);
                 }
@@ -9330,7 +9324,7 @@
         var html = "";
         $('#appendnewrowforsalePartialdetail').empty();
 
-        $.each(data, function(index, item) {
+        $.each(data, function (index, item) {
 
 
             $("#myInputP").val(item.supplierName);
@@ -9406,7 +9400,7 @@
             }
         });
 
-        $.each(data, function(index, item) {
+        $.each(data, function (index, item) {
 
             html += '<tr class="odd" style="background-color: #f89898 !important;">';
             html += '<td class="sorting_1 brdr-right" style = "width:10px;">' + (index + 1) + '</td>';
@@ -9442,11 +9436,11 @@
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
                 var code = data;
                 $("#AutoCode").text(code + "||:");
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -9597,7 +9591,7 @@
         }
         var SaleDetails = new Array();
         var count1 = 1;
-        $("#mytable TBODY TR").each(function() {
+        $("#mytable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(24).html() == '') {
@@ -9774,14 +9768,14 @@
                     title: 'Save New Purchase Invoice!',
                     content: 'Are you sure to save new Purchase Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             $.ajax({
                                 type: "POST",
                                 url: '@Url.Action("CreatePurchaseOrder", "Purchase")',
                                 data: JSON.stringify(SaleDetails),
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
-                                success: function(data) {
+                                success: function (data) {
                                     //if (data.success=="print") {
                                     console.log(data);
                                     var model = data.responseData;
@@ -9791,7 +9785,7 @@
 
                                     var count = 0;
 
-                                    $("#mytable TBODY TR").each(function(index, tr) {
+                                    $("#mytable TBODY TR").each(function (index, tr) {
                                         var count2 = count + 1;
                                         var row = $(this);
                                         for (var i = 0; i < data.data.length; i++) {
@@ -9805,7 +9799,7 @@
 
                                         count++;
                                     });
-                                   
+
                                     if (window.paymentInProcess == false) {
                                         if ($("#Received").is(':checked')) {
                                             //$( "p" ).addClass( "myClass yourClass" );
@@ -9821,7 +9815,7 @@
                                         }
                                         $("#Savebtn").hide();
                                         $("#Printbtn").hide();
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
                                             swal("Success!", "Purchsase Order Create Successfully.", "success");
                                         }, 2000);
@@ -9841,7 +9835,7 @@
                                 }
                             });
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -9851,19 +9845,19 @@
                     title: 'Edit Purchase Invoice!',
                     content: 'Are you sure to edit Purchase Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             $.ajax({
                                 type: "POST",
                                 url: '@Url.Action("UpdatePurchaseOrder", "Purchase")',
                                 data: JSON.stringify(SaleDetails),
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
-                                success: function(data) {
+                                success: function (data) {
                                     // if (data.success=="print") {
                                     var model = data.responseData;
                                     var count = 0;
 
-                                    $("#mytable TBODY TR").each(function(index, tr) {
+                                    $("#mytable TBODY TR").each(function (index, tr) {
                                         var count2 = count + 1;
                                         var row = $(this);
                                         for (var i = 0; i < data.data.length; i++) {
@@ -9877,7 +9871,7 @@
 
                                         count++;
                                     });
-                                  
+
                                     if (window.paymentInProcess == false) {
                                         if ($("#Received").is(':checked')) {
                                             $("#Editbtn").hide();
@@ -9894,7 +9888,7 @@
                                         $("#Printbtn").hide();
                                         getopeninvoicelist();
                                         getpostinvoicelist();
-                                        setTimeout(function() {
+                                        setTimeout(function () {
                                             /*   alert("Supplier Item Number Save Successfully.");*/
                                             swal("Success!", "Purchsase Order Update Successfully.", "success");
                                         }, 2000);
@@ -9915,7 +9909,7 @@
                                 }
                             });
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -9937,7 +9931,7 @@
         $("#productList").empty();
         var dropdown = '';
 
-        $.each(AllItemsList, function(index, value) {
+        $.each(AllItemsList, function (index, value) {
             if (search != "") {
                 if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                     dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -9977,7 +9971,7 @@
         //});
 
         $("#productList").append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -9999,7 +9993,7 @@
 
             data: { itemno: itemno },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
                 if (data != null && data != "" && data != "false") {
                     $("#itemDescriptionM").val(data.name);
@@ -10020,7 +10014,7 @@
                     $('#ucpnitem').val("");
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -10036,7 +10030,7 @@
         var dropdown = '';
 
 
-        $.each(AllItemsList, function(index, value) {
+        $.each(AllItemsList, function (index, value) {
             if (search != "") {
                 if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                     console.log(value.text);
@@ -10077,7 +10071,7 @@
         //});
 
         $("#productList1").append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
