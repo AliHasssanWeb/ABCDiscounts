@@ -2036,35 +2036,22 @@ namespace ABC.POS.API.Controllers
                                 {
                                     Transaction transaction = null;
                                     transaction = new Transaction();
-                                    if (i == 0)
+                                    if (getaccount != null)
                                     {
-                                        if (getaccount != null)
+                                        transaction.AccountName = getaccount.Title;
+                                        transaction.AccountNumber = getaccount.AccountId;
+                                        transaction.DetailAccountId = getaccount.AccountId;
+
+                                        if (i == 0 && obj[0].GrossAmount != null)
                                         {
-                                            transaction.AccountName = getaccount.Title;
-                                            transaction.AccountNumber = getaccount.AccountId;
-                                            transaction.DetailAccountId = getaccount.AccountId;
                                             transaction.Credit = "0.00";
-                                            if (obj[0].GrossAmount != null)
-                                            {
-                                                transaction.Debit = obj[0].GrossAmount.ToString();
-                                            }
-                                            transaction.InvoiceNumber = fullcode;
-                                            transaction.Date = DateTime.Now;
-                                            transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
-                                            db.Transactions.Add(transaction);
-                                            db.SaveChanges();
+                                            transaction.Debit = obj[0].GrossAmount.ToString();
                                         }
-                                    }
-                                    else
-                                    {
-                                        transaction.AccountName = getCHaccount.Title;
-                                        transaction.AccountNumber = getCHaccount.AccountId;
-                                        transaction.DetailAccountId = getCHaccount.AccountId;
-                                        if (obj[0].GrossAmount != null)
+                                        else if(obj[0].GrossAmount != null)
                                         {
                                             transaction.Credit = obj[0].GrossAmount.ToString();
+                                            transaction.Debit = "0.00";
                                         }
-                                        transaction.Debit = "0.00";
                                         transaction.InvoiceNumber = fullcode;
                                         transaction.Date = DateTime.Now;
                                         transaction.ClosingBalance = (Convert.ToDouble(transaction.Debit) - Convert.ToDouble(transaction.Credit)).ToString();
