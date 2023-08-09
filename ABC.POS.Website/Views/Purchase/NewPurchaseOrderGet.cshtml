@@ -8022,6 +8022,7 @@
                             }
                             if (data[0].received != true) {
                                 $("#Editbtn").show();
+                                $("#Received").prop("disabled", false);
                                 $("#imgRecieved").hide();
 
                             }
@@ -8039,6 +8040,7 @@
 
                             $('#UpdateCost').prop("disabled", false);
                             $('#UpateOscost').prop("disabled", false);
+                             $("#Received").prop("disabled", false);
                             $("#Savebtn").hide();
                             $("#Editbtn").show();
                             $("#Printbtn").hide();
