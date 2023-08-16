@@ -6740,7 +6740,17 @@
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
-                        RemoveRow(indexex);
+                        alert("else");
+                       // RemoveRow(indexex);
+                       var rowCount = 1;
+                        $('#mytable tr').each(function(index, tr) {
+                         var descriptionIndex = $('#Description-' + rowCount).text();
+                         if(descriptionIndex == ''){
+                            RemoveRow(rowCount);
+                         }else{
+                            rowCount++;
+                         }
+                       });
                     }
                 }
 
@@ -8014,6 +8024,7 @@
                             }
                             if (data[0].received != true) {
                                 $("#Editbtn").show();
+                                $("#Received").prop("disabled", false);
                                 $("#imgRecieved").hide();
 
                             }
@@ -8031,6 +8042,7 @@
 
                             $('#UpdateCost').prop("disabled", false);
                             $('#UpateOscost').prop("disabled", false);
+                             $("#Received").prop("disabled", false);
                             $("#Savebtn").hide();
                             $("#Editbtn").show();
                             $("#Printbtn").hide();
