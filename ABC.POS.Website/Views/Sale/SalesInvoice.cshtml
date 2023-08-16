@@ -1200,7 +1200,7 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
                                 <div class="form-group bordercolormodal">
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Paid
@@ -1211,7 +1211,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
                                 <div class="form-group bordercolormodal">
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Alloc
@@ -1233,6 +1233,15 @@
 
                                 </div>
                             </div>
+                               <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                              @*  <div class="form-group bordercolormodal">
+                                   
+                                    
+                                </div>*@
+                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
+                                 @* <button style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-left"></i></button>*@
+                            </div>
+
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="form-group bordercolormodal">
                                     <label class="dim col-sm-12 label-style" style="color:blue">
@@ -3636,7 +3645,21 @@
 
         $("#InvoiceTotalP").text(invoicetotal);
         $("#BalanceDueP").text(amountdue);
-        $("#BalanceP").text(amountdue);
+       $("#BalanceP").text(amountdue);
+var balanceText = $("#BalanceP").text().trim();
+var numericValue = parseFloat(balanceText.replace(/[^\d.-]/g, ""));
+var isNegative = balanceText.includes("(") && balanceText.includes(")");
+
+if (isNegative) {
+    numericValue = -numericValue;
+}
+
+if (isNegative && numericValue > 0) {
+    $("#myButton").prop("disabled", false);
+} else {
+    $("#myButton").prop("disabled", true);
+}
+
 
         $("#customerpayment").modal('show');
     }
