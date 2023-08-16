@@ -1239,7 +1239,8 @@
                                     
                                 </div>*@
                                 <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
-                                 @* <button style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-left"></i></button>*@
+                                <button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>
+                                  
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
@@ -7491,6 +7492,14 @@ $("#PrintInvoicef10").click(function() {
     }
 
 
+    $(document).ready(function () {
+        $('#myButton').click(function () {
+            var balanceValue = $('#BalanceP').text();
+            $('#ChangeP').val(balanceValue);
+        });
+    });
+
+
     function PaymentAdd(val) {
         debugger;
         var amountpayed = $("#amountpayed-" + val).text().split('$');
@@ -7503,12 +7512,14 @@ $("#PrintInvoicef10").click(function() {
             if (parseFloat(amountpayed) > parseFloat(BalanceDueP)) {
                $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
                $("#totalpaidd").text("$" + parseFloat(BalanceDueP).toFixed(2));
-
+                 $("#myButton").prop("disabled", false);
+               
                var change = parseFloat(amountpayed) - parseFloat(BalanceDueP);
              //  $("#ChangeP").val("$" + change.toFixed(2));
              $("#ChangeP").val("$" + 0.00);
                $("#BalanceP").text("$(" + change.toFixed(2) + ")");
             } else {
+                $("#myButton").prop("disabled", true);
                 $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
                 $("#totalpaidd").text("$" + parseFloat(amountpayed).toFixed(2));
 
