@@ -7496,6 +7496,8 @@ $("#PrintInvoicef10").click(function() {
            $('#rightButton').show();
             $('#myButton').hide();
             $('#BalanceP').text('0');
+
+
         });
         $('#rightButton').click(function () {
             var changeValue = $('#ChangeP').val();
@@ -7515,6 +7517,8 @@ $("#PrintInvoicef10").click(function() {
         //$("#amountallocate-" + val).text(getamc);
         if(amountpayed != "" && isNaN(amountpayed) == false ){
             $("#TotalPaidP").text("$" + amountpayed);
+            $('#rightButton').hide();
+            $('#myButton').show();
 
             if (parseFloat(amountpayed) > parseFloat(BalanceDueP)) {
                $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
