@@ -280,7 +280,7 @@
                                             @*@Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control searchname", placeholder = " Name", id = "companyname", onkeydown = "GetAllMatchedItems(event)", autocomplete = "off", style="width:84%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                         <div style="cursor:pointer" id="listallmissions"></div>*@
 
-                                        <input type="text" class="form-control searchnamee" placeholder="Enter Company Name" onclick="triggerkeup()" onkeyup="GetCompaniesList()" id="CompanyInput" list="companylist" autocomplete="off" style="width:84%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;">
+                                        <input type="text" class="form-control searchnamee" placeholder="Enter Company Name" onclick="triggerkeup()" onkeyup="GetCompaniesList()" id="CompanyInput" list="companylist" autocomplete="off" style="width:80%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;">
 
                                         <datalist class="dropt input-lg mx-auto dropdown w-100" id="companylist" style="background-color: blue !important;cursor:pointer;position:absolute;"></datalist>
 
@@ -3433,14 +3433,14 @@
                                 <span id="CustomerCodeNa" style="font-weight:bold;"></span>
                             </div>
                             <div class="col-lg-8 " style="margin-left: 10px;">
-                                <input type="text" autocomplete="off" style="min-width:100%" id="CustomerNameNote" disabled>
+                                <input type="text" class="form-control" autocomplete="off" style="min-width:100%" id="CustomerNameNote" disabled>
                             </div>
-                            <div class="col-lg-1">
-                                <i class="mdi mdi-plus" style="padding:5px; background:rgb(239, 240, 241); margin-left:-13px; color:yellow;" id="PlusN"></i>
+                            <div class="col-lg-2" style="padding-top:3px ">
+                                <i class="mdi mdi-plus" style="padding:5px; background:rgb(239, 240, 241) ;margin-left:-13px; color:blue;" id="PlusN"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4" style="margin-left:-57px; margin-top:-21px;">
+                    <div class="col-lg-3" >
                         <label style="width: 62px;color: blue;">Note'sDate</label>
                         <input class="form-control" id="NoteAddDate" disabled />
                     </div>
