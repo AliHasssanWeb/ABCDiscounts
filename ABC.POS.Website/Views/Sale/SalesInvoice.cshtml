@@ -1228,7 +1228,7 @@
                                         Change
                                     </label>
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:60%; text-align:center;" readonly />
+                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:100%; text-align:center;" readonly />
                                     </label>
 
                                 </div>
@@ -1238,8 +1238,10 @@
                                    
                                     
                                 </div>*@
-                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
-                                <button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>
+                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-left"></i></button>
+                                       <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>
+                                   
+                                @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
                                   
                             </div>
 
@@ -3651,15 +3653,7 @@ var balanceText = $("#BalanceP").text().trim();
 var numericValue = parseFloat(balanceText.replace(/[^\d.-]/g, ""));
 var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
-if (isNegative) {
-    numericValue = -numericValue;
-}
 
-if (isNegative && numericValue > 0) {
-    $("#myButton").prop("disabled", false);
-} else {
-    $("#myButton").prop("disabled", true);
-}
 
 
         $("#customerpayment").modal('show');
@@ -7493,9 +7487,22 @@ $("#PrintInvoicef10").click(function() {
 
 
     $(document).ready(function () {
+        $('#rightButton').hide();
         $('#myButton').click(function () {
             var balanceValue = $('#BalanceP').text();
-            $('#ChangeP').val(balanceValue);
+            var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
+           
+            $('#ChangeP').val(cleanBalanceValue);
+           $('#rightButton').show();
+            $('#myButton').hide();
+            $('#BalanceP').text('0');
+        });
+        $('#rightButton').click(function () {
+            var changeValue = $('#ChangeP').val();
+            $('#BalanceP').text('(' + changeValue + ')');
+            $('#ChangeP').val('0');
+            $('#rightButton').hide();
+            $('#myButton').show();
         });
     });
 
