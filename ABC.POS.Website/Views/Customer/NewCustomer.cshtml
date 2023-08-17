@@ -196,11 +196,11 @@
     .setIcon {
         font-size: 34px;
         padding: 5px;
-        border: 1px solid gray;
+        border: none;
         color: red;
         position: absolute;
-        left: 64%;
-        top: 30%;
+        left: 60%;
+        top: 29%
         
     }
 </style>
@@ -280,7 +280,7 @@
                                             @*@Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control searchname", placeholder = " Name", id = "companyname", onkeydown = "GetAllMatchedItems(event)", autocomplete = "off", style="width:84%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                         <div style="cursor:pointer" id="listallmissions"></div>*@
 
-                                        <input type="text" class="form-control searchnamee" placeholder="Enter Company Name" onclick="triggerkeup()" onkeyup="GetCompaniesList()" id="CompanyInput" list="companylist" autocomplete="off" style="width:84%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;">
+                                        <input type="text" class="form-control searchnamee" placeholder="Enter Company Name" onclick="triggerkeup()" onkeyup="GetCompaniesList()" id="CompanyInput" list="companylist" autocomplete="off" style="width:80%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;">
 
                                         <datalist class="dropt input-lg mx-auto dropdown w-100" id="companylist" style="background-color: blue !important;cursor:pointer;position:absolute;"></datalist>
 
@@ -296,13 +296,13 @@
                                 <div class="col-lg-12 col-sm-8">
                                     <div class="row">
                                         <label class="dim col-sm-12" style="position:absolute; width:146px;  font-size:13px; text-align:right; font-weight:bold;"> Name </label>
-                                        <div class="col-lg-3 col-sm-2" style="padding-left:85px;">
+                                        <div class="col-lg-4 col-sm-2" style="padding-left:85px;">
                                             <div class="form-group">
                                                     @* <label class="dim col-sm-8" style="font-weight:bold;margin-left: 92px;">Mr./Mrs.</label>*@
                                                     @Html.DropDownListFor(model => model.Gender, (IEnumerable<SelectListItem>)ViewData["Gender"], "--Choose Title--", new { @class = "form-control dropdowncursor", id = "txtgender", style="border-top:1px solid gray; border-left:1px solid gray; width:130px; margin-left:56px;" })
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-5" style="width:22%">
+                                        <div class="col-lg-4 col-sm-5" style="width:20%">
                                             <div class="form-group" style="text-align:end">
                                                     @*<label class="dim col-sm-6" style="font-weight:bold;">First Name</label>*@
                                                     @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstName" , style="border-top:1px solid gray; border-left:1px solid gray;" } })
@@ -310,7 +310,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-sm-5" style="width:22%">
+                                        <div class="col-lg-4 col-sm-5" style="width:18%">
                                             <div class="form-group">
                                                     @*<label class="dim col-sm-6" style="font-weight:bold;">Last name</label>*@
                                                     @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control ", placeholder = "Last Name", id = "txtLastName", style="border-top:1px solid gray; border-left:1px solid gray;  margin-left:-20px;" } })
@@ -332,7 +332,7 @@
                                         </div>
                                         <div class="col-lg-5 col-sm-6">
                                             <div class="form-group">
-                                                    @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control ", placeholder = "Suite", id = "suite", style="width:86%; margin-left:38px; border-top:1px solid gray; border-left:1px solid gray;" } })
+                                                    @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control ", placeholder = "Suite", id = "suite", style="width:82%; margin-left:15px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                                     @Html.ValidationMessageFor(model => model.Suite, "", new { @class = "text-danger db" })
                                                <i class="fa fa-map-marker setIcon" aria-hidden="true"></i>
                                             </div>
@@ -3433,14 +3433,14 @@
                                 <span id="CustomerCodeNa" style="font-weight:bold;"></span>
                             </div>
                             <div class="col-lg-8 " style="margin-left: 10px;">
-                                <input type="text" autocomplete="off" style="min-width:100%" id="CustomerNameNote" disabled>
+                                <input type="text" class="form-control" autocomplete="off" style="min-width:100%" id="CustomerNameNote" disabled>
                             </div>
-                            <div class="col-lg-1">
-                                <i class="mdi mdi-plus" style="padding:5px; background:rgb(239, 240, 241); margin-left:-13px; color:yellow;" id="PlusN"></i>
+                            <div class="col-lg-2" style="padding-top:3px ">
+                                <i class="mdi mdi-plus" style="padding:5px; background:rgb(239, 240, 241) ;margin-left:-13px; color:blue;" id="PlusN"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4" style="margin-left:-57px; margin-top:-21px;">
+                    <div class="col-lg-3" >
                         <label style="width: 62px;color: blue;">Note'sDate</label>
                         <input class="form-control" id="NoteAddDate" disabled />
                     </div>
