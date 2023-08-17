@@ -1332,48 +1332,35 @@ namespace ABC.POS.Website.Controllers
                                     }
                                     else
                                     {
-                                        if (code > 9)
+                                        if (code > 9999999)
                                         {
-                                            fullcode = "000000" + Convert.ToString(code).Insert(1, "-");
+                                            fullcode = Convert.ToString(code).Insert(7, "-");
                                         }
-                                        if (code > 99)
+                                        else if (code > 999999)
                                         {
-                                            fullcode = "00000" + Convert.ToString(code).Insert(2, "-");
+                                            fullcode = "0" + Convert.ToString(code).Insert(6, "-");
                                         }
-                                        if (code > 999)
+                                        else if (code > 99999)
+                                        {
+                                            fullcode = "00" + Convert.ToString(code).Insert(5, "-");
+                                        }
+                                        else if (code > 9999)
+                                        {
+                                            fullcode = "000" + Convert.ToString(code).Insert(4, "-");
+                                        }
+                                        else if (code > 999)
                                         {
                                             fullcode = "0000" + Convert.ToString(code).Insert(3, "-");
                                         }
-                                        if (code > 9999)
+                                        else if (code > 99)
                                         {
-                                            //10000
-                                            long ndcode = Convert.ToInt64(VcodeSplit) + 1;
-                                            // fullcode = Convert.ToString(ndcode)  + "9999";
-                                            fullcode = "000" + Convert.ToString(ndcode).Insert(4, "-");
+                                            fullcode = "00000" + Convert.ToString(code).Insert(2, "-");
                                         }
-                                        if (code > 99999)
+                                        else if (code > 9)
                                         {
-                                            //10000
-                                            long ndcode = Convert.ToInt64(VcodeSplit) + 1;
-                                            // fullcode = Convert.ToString(ndcode)  + "9999";
-                                            fullcode = "00" + Convert.ToString(ndcode).Insert(5, "-");
-                                        }
-                                        if (code > 999999)
-                                        {
-                                            //10000
-                                            long ndcode = Convert.ToInt64(VcodeSplit) + 1;
-                                            // fullcode = Convert.ToString(ndcode)  + "9999";
-                                            fullcode = "0" + Convert.ToString(ndcode).Insert(6, "-");
-                                        }
-                                        if (code > 9999999)
-                                        {
-                                            //10000
-                                            long ndcode = Convert.ToInt64(VcodeSplit) + 1;
-                                            // fullcode = Convert.ToString(ndcode)  + "9999";
-                                            fullcode = Convert.ToString(ndcode).Insert(7, "-");
+                                            fullcode = "000000" + Convert.ToString(code).Insert(1, "-");
                                         }
                                     }
-                                    //fullcode = "0000000" + "-" + Convert.ToString(code);
                                 }
                                 else
                                 {

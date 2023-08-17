@@ -470,10 +470,10 @@ namespace ABC.POS.Website.Controllers
                                     }
                                     else
                                     {
-                                        //if (large < 2)
-                                        //{
+                                        if (large < 2)
+                                        {
                                         POSSALEID = Convert.ToInt32(record.Data[i].PossaleId);
-                                        //}
+                                        }
                                     }
                                 }
                             }
@@ -489,30 +489,27 @@ namespace ABC.POS.Website.Controllers
                                     code = Convert.ToInt32(VcodeSplit[1]) + 1;
 
                                     long checknumber = Convert.ToInt64(VcodeSplit[1]);
-                                    if (checknumber > 9)
+                                    if (checknumber > 9999)
                                     {
-                                        fullcode = "0000000-00" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 99)
-                                    {
-                                        fullcode = "0000000-0" + Convert.ToString(code);
+                                        long ndcode = Convert.ToInt64(VcodeSplit[0]) + 1;
+                                        fullcode = "000000" + Convert.ToString(ndcode) + "-" + "9999";
                                     }
                                     else if (checknumber > 999)
                                     {
                                         fullcode = "0000000-" + Convert.ToString(code);
                                     }
-                                    else if (checknumber > 9999)
+                                    else if (checknumber > 99)
                                     {
-                                        //10000
-                                        long ndcode = Convert.ToInt64(VcodeSplit[0]) + 1;
-
-                                        fullcode = "000000" + Convert.ToString(ndcode) + "-" + "9999";
+                                        fullcode = "0000000-0" + Convert.ToString(code);
+                                    }
+                                    else if (checknumber > 9)
+                                    {
+                                        fullcode = "0000000-00" + Convert.ToString(code);
                                     }
                                     else
                                     {
                                         fullcode = "0000000-000" + Convert.ToString(code);
                                     }
-                                    //fullcode = "0000000" + "-" + Convert.ToString(code);
                                 }
                                 else
                                 {
