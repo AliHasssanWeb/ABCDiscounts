@@ -1152,7 +1152,7 @@
                     </div>
                     <div class="col-5">
                         <div class="input-group">
-                            <input type="text" id="poAmountt" name="creditVendor" class="form-control validate" style="color:blue;min-width: 14rem;max-width: 100%; text-align:right; max-width: 100%; height: 30px !important;">
+                            <input type="text" id="poAmountt" name="creditVendor" value="0.00" class="form-control validate" style="color:blue;min-width: 14rem;max-width: 100%; text-align:right; max-width: 100%; height: 30px !important;">
                         </div>
                     </div>
                 </div>
@@ -8089,7 +8089,7 @@
                             dateFormat: "dd/MM/yy"
                         }).datepicker('setDate', new Date(data[0].invoicePayments.date.toString()));
                         if (data[0].invoicePayments.paymentType == "Cash") {
-                            $("#otherPaid").val(parseFloat(data[0].invoicePayments.debit).toFixed(2));
+                          //  $("#otherPaid").val(parseFloat(data[0].invoicePayments.debit).toFixed(2));
                             $("#totalPaid").val(parseFloat(data[0].invoicePayments.debit).toFixed(2));
 
                         } else {
@@ -8394,7 +8394,7 @@
             }
      });
     $("#cashout").click(function() {
-
+        debugger;
         var checkdate = $("#datepickerPO").val();
         $("#modalPaymentone").modal('toggle');
         if ($("#ispartialPaid").val() == "not") {
@@ -8430,7 +8430,7 @@
         if (checkdate == "" || checkdate == null || checkdate == '' || checkdate == undefined || checkdate == NaN) {
             $('#datepickerPO').datepicker('setDate', 'today');
         }
-        $("#poAmountt").val('');
+        $("#poAmountt").val(currentPaid);
     });
 
 
@@ -8489,7 +8489,7 @@
         //checkPaid = parseFloat($("#checkPaid").val());
         //currentPaid = currentCashPaid + checkPaid;
         //}
-
+        debugger;
         var currentPaid = 0.00;
         var checkPaid = 0.00;
         if($("#poAmountt").val() != undefined && $("#poAmountt").val() != "") 
@@ -8518,7 +8518,7 @@
         var creditbalance = parseFloat($("#creditvendor").val());
         var AlPaidByNow = parseFloat($("#totalPaid").val());
 
-        var totalPaid = (parseFloat(checkPaid) + parseFloat(otherPaid) + creditbalance).toFixed(2);
+        var totalPaid = (parseFloat(checkPaid) + parseFloat(AlPaidByNow) + creditbalance).toFixed(2);
         //console.log("check " + checkPaid + " " + "other paid " + otherPaid + " " + " credit " + creditbalance);
 
         //$("#totalPaid").val("$" + totalPaid);
@@ -8531,13 +8531,13 @@
         }
         else if (currentPaid != NaN && $("#ispartialPaid").val() == "not") {
            // console.log("current " + currentPaid + " " + "last paid " + lastpaid + " " + "totalpaid" + totalPaid + " ActualBill " + ActualBill);
-            if (otherPaid != "0" && otherPaid != "" && otherPaid != '' && otherPaid != NaN && lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
+            if (AlPaidByNow != "0" && AlPaidByNow != "" && AlPaidByNow != '' && AlPaidByNow != NaN && lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
                 var Gross = "0";
                 if(type == "checkpaid")
                 {
-                    Gross = (parseFloat(otherPaid) + currentPaid).toFixed(2);
+                    Gross = (parseFloat(AlPaidByNow) + currentPaid).toFixed(2);
                 } else{
-                    Gross = (parseFloat(otherPaid) + checkPaid + currentPaid).toFixed(2);
+                    Gross = (parseFloat(AlPaidByNow) + checkPaid + currentPaid).toFixed(2);
                 }
 
                 //if (lastpaid != '' && lastpaid != "" && lastpaid != undefined && lastpaid != null && lastpaid != "0") {
@@ -8557,7 +8557,7 @@
 
                     if(type != undefined){
                         if(type != "checkpaid"){
-                            $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                            $("#otherPaid").val(parseFloat(currentPaid).toFixed(2));
                         }
                          $("#totalPaid").val(parseFloat(Gross).toFixed(2));
                     }
@@ -8687,6 +8687,7 @@
     });
 
     function SavePaymentWhileInvoice(justpay) {
+        debugger;
         var invoiceNumber = $("#txtInvoiceNumber").text();
         console.log(invoiceNumber);
         var poAmount = $("#PoAmount").val();
