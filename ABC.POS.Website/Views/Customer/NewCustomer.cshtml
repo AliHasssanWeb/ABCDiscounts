@@ -198,9 +198,9 @@
         padding: 5px;
         border: none;
         color: red;
-        position: absolute;
+      /*  position: absolute;
         left: 60%;
-        top: 29%
+        top: 29%*/
         
     }
 </style>
@@ -323,20 +323,25 @@
                             <div class="row">
                                 <div class="col-lg-8 col-sm-8">
                                     <div class="row">
-                                        <div class="col-lg-7 col-sm-6">
+                                        <div class="col-lg-6 col-sm-6">
                                             <div class="form-group">
                                                 <label class="dim " style="position:absolute; width:115px; text-align:right; font-weight:bold;"> Street </label>
                                                     @Html.EditorFor(model => model.Street, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Street ", id = "StretNumber", style="width:70%; margin-left:122px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                                     @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
-                                        <div class="col-lg-5 col-sm-6">
+                                        <div class="col-lg-5 col-sm-6" >
                                             <div class="form-group">
                                                     @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control ", placeholder = "Suite", id = "suite", style="width:82%; margin-left:15px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                                     @Html.ValidationMessageFor(model => model.Suite, "", new { @class = "text-danger db" })
-                                               <i class="fa fa-map-marker setIcon" aria-hidden="true"></i>
+                                               
                                             </div>
                                                 @*<div id="output" style="width:500px; height:500px; border:1px solid red;"></div>*@
+                                        </div>
+                                        <div class="col-lg-1 col-sm-6">
+                                          
+                                                <i class="fa fa-map-marker " style="font-size: 28px; color:red" aria-hidden="true"></i>
+                                          
                                         </div>
 
                                     </div>
