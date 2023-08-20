@@ -199,7 +199,7 @@
     }
 
     .table td, .table th {
-        padding: 6px !important;
+        padding: 5px !important;
         width: 100%;
     }
 
@@ -629,11 +629,11 @@
             </div>
 
             <div id="LoadPage " class="alertstyle" style=" margin: 3px;">
-                <select onchange="nextinvoice('null',this.value)" id="posted-invoice" style="border:none; background-color:#dbd6d2">
+                <select onchange="nextinvoice('null',this.value,'received')" id="posted-invoice" style="border:none; background-color:#dbd6d2">
                     <option value="value">Received</option>
                 </select>
 
-                <select onchange="nextinvoice('null',this.value)" id="open-invoice" style="border:none; background-color:#dbd6d2">
+                <select onchange="nextinvoice('null',this.value, 'pending')" id="open-invoice" style="border:none; background-color:#dbd6d2">
                     <option value="value">Pending</option>
                 </select>
             </div>
@@ -678,13 +678,13 @@
                                             </div>
                                             @Html.ValidationMessageFor(model => model.SupplierNumber, "", new { @class = "text-danger db" })
                                         </div>
-                                        <div class="col-4 col-lg-4 col-sm-4" style="margin-top: 5%;margin-left: -5rem;margin-right:5rem">
+                                        <div class="col-4 col-lg-4 col-sm-4" style="margin-top: 4%;margin-left: -7rem;margin-right:5rem;">
                                             <div class="form-group">
 
                                                 <div class="datalist-wrap autocomplete">
                                                     <div class="input-wrap">
                                                         @*<input id="myInput" type="text" name="movies" list="movies"/>*@
-                                                        <input class="form-control searchname spname" style="width:17rem; border:2px solid black; border-radius:none; font-weight:bold;" name="supplierName" list="supplierName" id="myInput" type="text" ondblclick="VendorDetailModal(1)" placeholder="Enter supplier name to search" />
+                                                        <input class="form-control searchname spname" style="width:20rem;margin-left:-3rem; border:2px solid black; border-radius:none; font-weight:bold;" name="supplierName" list="supplierName" id="myInput" type="text" ondblclick="VendorDetailModal(1)" placeholder="Enter supplier name to search" />
                                                         @*<button id="caret"> &#9660;</button>*@
                                                     </div>
                                                     <div class="input-lg mx-auto dropdown w-100" id="searchdropdown" data-vendorID=""></div>
@@ -765,7 +765,7 @@
 
                                         </div>
                                         <div class="col-lg-2 col-sm-2 p-0 cutomdownBorder " style="width:12%;margin-right:0.4rem">
-                                            @Html.EditorFor(model => model.TotalItems, new { htmlAttributes = new { @class = "form-control textboxcolor txtboxwidth totalitemtextbox txtBold textBlue", id = "TotalItems", style="width:75px;", @readonly=true } })
+                                            @Html.EditorFor(model => model.TotalItems, new { htmlAttributes = new { @class = "form-control textboxcolor txtboxwidth totalitemtextbox txtBold textBlue", id = "TotalItems", style="width:89px;", @readonly=true } })
                                             @Html.ValidationMessageFor(model => model.TotalItems, "", new { @class = "text-danger db" })
                                         </div>
                                         <div class="col-lg-3 col-sm-3 me-2 p-0 cutomdownBorder" style="width: 19.9%;margin-left:2px;">
@@ -2988,7 +2988,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body m-0 pt-0" style="padding-left:4%;padding-right:4%">
+            <div class="modal-body m-0 pt-0" style="padding-left:1%;padding-right:1%">
                 <div class="row" style="padding:0px 5px 0px 5px">
                     <div class="col-lg-3">
                         <label class="dim" style=" font-weight:600; ">Item No/Description</label>
@@ -3066,7 +3066,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body m-0 pt-0" style="padding-left:4%;padding-right:4%">
+            <div class="modal-body m-0 pt-0" style="padding-left:1%;padding-right:1%">
                 <div class="row" style="padding:0px 5px 0px 5px">
                     <div class="col-lg-6">
                         <div class="row" style="padding-top:8px;">
@@ -3858,7 +3858,6 @@
 
                         count++;
                     });
-
 
 
                     if (notexist === true) {
@@ -4840,7 +4839,7 @@
                             $("#StockItemNumber-" + seqnum).text(string);
                         }
                         QuantityMultipyPrice(indexex);
-                        //CountTotalOfAllTD();
+                        CountTotalOfAllTD();
                         $("#listallmissions").empty();
 
 
@@ -6039,7 +6038,7 @@
 
 
         });
-        var count = 1;
+        var count = 0;
         var allitem = $("#TotalItems").val();
         $("#mytable tr").each(function () {
             //var currentRow=$(this);
@@ -6083,7 +6082,6 @@
         getpostinvoicelist();
     }
     function SaveItemSupplierNumber(printorNot, updateorNot, Ispaid) {
-        //
 
         var isValid = false;
         var vendorid = $("#setvendorid").text();
@@ -6740,17 +6738,7 @@
                     }
                     else {
                         swal("Error!", "Item Already Added!", "error");
-                        alert("else");
-                       // RemoveRow(indexex);
-                       var rowCount = 1;
-                        $('#mytable tr').each(function(index, tr) {
-                         var descriptionIndex = $('#Description-' + rowCount).text();
-                         if(descriptionIndex == ''){
-                            RemoveRow(rowCount);
-                         }else{
-                            rowCount++;
-                         }
-                       });
+                        RemoveRow(indexex);
                     }
                 }
 
@@ -7888,7 +7876,16 @@
     });
 
 
-    var nextinvoice = function (method, selectedinvoicenumber) {
+    function switchPendingReceiveDD(ddtype){
+         if(ddtype == 'received'){
+            $("#open-invoice").val('value');
+        }
+        else if(ddtype == 'pending'){
+             $("#posted-invoice").val('value');
+        }
+    }
+
+    var nextinvoice = function (method, selectedinvoicenumber, ddtype) {
         var data = $("#txtInvoiceNumber").text();
 
         if (method == 'null') {
@@ -7897,6 +7894,8 @@
             if (data == 'value') { return false; }
 
         }
+        switchPendingReceiveDD(ddtype);
+       
         //data = "INV-" + data;
         //
         if (data != '') {
@@ -7915,7 +7914,7 @@
                     //   console.log("*******" + data);
 
                     //var sernum = 1;
-
+          
                     if (data.length > 0) {
                         $("#setvendorid").text(data[0].supplierId);
                         $("#myInput").val(data[0].supplierName);
@@ -8024,7 +8023,6 @@
                             }
                             if (data[0].received != true) {
                                 $("#Editbtn").show();
-                                $("#Received").prop("disabled", false);
                                 $("#imgRecieved").hide();
 
                             }
@@ -8042,7 +8040,6 @@
 
                             $('#UpdateCost').prop("disabled", false);
                             $('#UpateOscost').prop("disabled", false);
-                             $("#Received").prop("disabled", false);
                             $("#Savebtn").hide();
                             $("#Editbtn").show();
                             $("#Printbtn").hide();
@@ -8492,7 +8489,7 @@
         //checkPaid = parseFloat($("#checkPaid").val());
         //currentPaid = currentCashPaid + checkPaid;
         //}
-        debugger;
+
         var currentPaid = 0.00;
         var checkPaid = 0.00;
         if($("#poAmountt").val() != undefined && $("#poAmountt").val() != "") 
@@ -8630,8 +8627,6 @@
     }
     $("#payment").click(function () {
 
-
-
         var tablecount = $("#mytable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
             swal("Error!", "Please Complete Current Invoice", "error");
@@ -8704,14 +8699,22 @@
         var supplierCode = $("#txtSupplierNo").val();
         var remainingBalance = $("#poBalance").val();
         var supplierId = $('#setvendorid').text();
+        var date = $("#datepickerPO").val();
+          var dateNow = new Date(date);
+          dateNow.setHours(23);
+          dateNow.setMinutes(59);
+          dateNow.setSeconds(59);
+          dateNow.setMilliseconds(999);
         var supplierPayments = {
             InvoiceNumber: invoiceNumber,
+            Date: dateNow,
             NetAmount: poAmount,
             Debit: totalPaid,
             Comments: comment,
             Note: comment,
             CashBalance: remainingBalance,
             AccountId: supplierId,
+            
         };
         //var PoBalance = (parseFloat(poAmount) + parseFloat(prevBalance));
         // var PoBalance = (parseFloat(poAmount));

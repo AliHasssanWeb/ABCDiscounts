@@ -2287,7 +2287,7 @@ namespace ABC.POS.API.Controllers
                 //        ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
                 //    }
                 //}
-                obj.Date = DateTime.Now;
+                //obj.Date = DateTime.Now;
                 obj.PaymentType = "Cash";
                 var id = Convert.ToInt32(obj.AccountId);
                 var payingfound = db.Payings.ToList().Where(x => x.InvoiceNumber == obj.InvoiceNumber).FirstOrDefault();
@@ -2320,6 +2320,7 @@ namespace ABC.POS.API.Controllers
                         payingfound.Debit = (Convert.ToDouble(TodayWePay) + Convert.ToDouble(payingfound.Debit)).ToString();
                         payingfound.Comments = obj.Comments;
                         payingfound.Comments = obj.Note;
+                        payingfound.Date = obj.Date;
                         if (Convert.ToDouble(payingfound.Debit) >= Convert.ToDouble(obj.NetAmount))
                         {
                             payingfound.TotalPaid = true;
