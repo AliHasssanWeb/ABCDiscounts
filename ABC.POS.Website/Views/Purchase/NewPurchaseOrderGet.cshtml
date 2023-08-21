@@ -8024,6 +8024,7 @@
                             if (data[0].received != true) {
                                 $("#Editbtn").show();
                                 $("#imgRecieved").hide();
+                                $("#Received").prop("disabled", false);
 
                             }
                             else {
@@ -8035,11 +8036,11 @@
                             $("#txtInvoiceNumber").text(data[0].invoiceNumber);
                             //
                         }
-
                         else {
 
                             $('#UpdateCost').prop("disabled", false);
                             $('#UpateOscost').prop("disabled", false);
+                            $("#Received").prop("disabled", false);
                             $("#Savebtn").hide();
                             $("#Editbtn").show();
                             $("#Printbtn").hide();
@@ -8050,7 +8051,8 @@
                         $("#imgPaid").removeClass("show");
                         $("#imgPaid").addClass("hide");
                         $("#imgRecieved").addClass("hide");
-                        $("#imgRecieved").removeClass("show");
+                        $("#imgRecieved").removeClass("show"); 
+                        $("#Received").prop("disabled", false);
                         $("#txtInvoiceNumber").text('@ViewBag.Invoicenumber');
                         $('#appendnewrowforsale').html('');
                         $("#Savebtn").show();
