@@ -8395,12 +8395,18 @@
                 }
             }
      });
-    $("#cashout").click(function() {
-        debugger;
+    $("#cashout").click(function () {
         var checkdate = $("#datepickerPO").val();
-        $("#modalPaymentone").modal('toggle');
         if ($("#ispartialPaid").val() == "not") {
             var currentPaid = parseFloat($("#poAmountt").val());
+            var checkcurrentPaidisNaN = isNaN(currentPaid);
+            if (checkcurrentPaidisNaN == true) {
+                $("#poAmountt").val('');
+                swal("Error!", currentPaid + " Is Not A Number", "error");
+                return;
+            }
+
+            $("#modalPaymentone").modal('toggle');
             var ActualBill = parseFloat($("#PoAmount").val());
             var prevBalance = parseFloat($("#previousBalance").val());
             var lastpaid = $("#preorderPaid").val();
