@@ -1152,7 +1152,7 @@
                     </div>
                     <div class="col-5">
                         <div class="input-group">
-                            <input type="text" id="poAmountt" name="creditVendor" value="0.00" class="form-control validate" style="color:blue;min-width: 14rem;max-width: 100%; text-align:right; max-width: 100%; height: 30px !important;">
+                            <input type="text" id="poAmountt" name="creditVendor" class="form-control validate" style="color:blue;min-width: 14rem;max-width: 100%; text-align:right; max-width: 100%; height: 30px !important;">
                         </div>
                     </div>
                 </div>
@@ -8438,7 +8438,7 @@
         if (checkdate == "" || checkdate == null || checkdate == '' || checkdate == undefined || checkdate == NaN) {
             $('#datepickerPO').datepicker('setDate', 'today');
         }
-        $("#poAmountt").val(currentPaid);
+        $("#poAmountt").val('');
     });
 
 
@@ -8497,7 +8497,6 @@
         //checkPaid = parseFloat($("#checkPaid").val());
         //currentPaid = currentCashPaid + checkPaid;
         //}
-        debugger;
         var currentPaid = 0.00;
         var checkPaid = 0.00;
         if($("#poAmountt").val() != undefined && $("#poAmountt").val() != "") 
@@ -8511,7 +8510,7 @@
         }
 
 
-        var currentPaid = parseFloat($("#poAmountt").val());
+        var sumPoPayAmount = parseFloat($("#poAmountt").val());
         var POPrice = $("#PoAmount").val();
         var ActualBill = $("#PoAmount").val();
         var lastpaid = $("#preorderPaid").val();
@@ -8522,6 +8521,7 @@
         var poAmount = POPrice;
         //lastpaid
         var otherPaid = parseFloat($("#otherPaid").val());
+        sumPoPayAmount = sumPoPayAmount + otherPaid;
         var prevBalance = parseFloat($("#previousBalance").val());
         var creditbalance = parseFloat($("#creditvendor").val());
         var AlPaidByNow = parseFloat($("#totalPaid").val());
@@ -8565,19 +8565,20 @@
 
                     if(type != undefined){
                         if(type != "checkpaid"){
-                            $("#otherPaid").val(parseFloat(currentPaid).toFixed(2));
+                            $("#otherPaid").val(parseFloat(sumPoPayAmount).toFixed(2));
                         }
                          $("#totalPaid").val(parseFloat(Gross).toFixed(2));
                     }
                 }
             } else {
-                var Gross = (currentPaid).toFixed(2);
-                if (parseFloat(ActualBill) < parseFloat(Gross)) {
+              //  var Gross = (currentPaid).toFixed(2);
+                var sumtotalPaid = currentPaid + parseFloat(AlPaidByNow);
+                if (parseFloat(ActualBill) < parseFloat(sumtotalPaid)) {
                     console.log("2nd POB " + ActualBill + " " + "Current " + currentPaid + " " + " POB " + Gross);
 
                     swal("Error!", "Cannot pay more then remaining balance", "error");
                 } else {
-                    PoBalance = parseFloat(ActualBill) - parseFloat(currentPaid);
+                    PoBalance = parseFloat(ActualBill) - parseFloat(sumtotalPaid);
                     // if(type == "cashout" || type == "other"){
                     //    $("#otherPaid").val(Gross);
                     //}else{
@@ -8586,9 +8587,9 @@
 
                     if(type != undefined){
                         if(type != "checkpaid"){
-                            $("#otherPaid").val(parseFloat(Gross).toFixed(2));
+                            $("#otherPaid").val(parseFloat(sumtotalPaid).toFixed(2));
                         }
-                         $("#totalPaid").val(parseFloat(Gross).toFixed(2));
+                        $("#totalPaid").val(parseFloat(sumtotalPaid).toFixed(2));
                     }
                 }
             }
@@ -8695,7 +8696,6 @@
     });
 
     function SavePaymentWhileInvoice(justpay) {
-        debugger;
         var invoiceNumber = $("#txtInvoiceNumber").text();
         console.log(invoiceNumber);
         var poAmount = $("#PoAmount").val();
