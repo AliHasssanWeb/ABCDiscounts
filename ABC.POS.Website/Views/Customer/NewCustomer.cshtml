@@ -386,7 +386,7 @@
                                                 <div class="col-lg-5 col-sm-5">
                                                     <div class="form-group">
                                                             @*<label class="dim col-sm-12">State</label>*@
-                                                            @Html.DropDownListFor(model => model.State, (IEnumerable<SelectListItem>)ViewBag.CustomerState, "--Choose State--", new { @class = "form-control dropdowncursor", id = "state", style="margin-left:40px; border-top:1px solid gray; border-left:1px solid gray;" })
+                                                            @Html.DropDownListFor(model => model.State, (IEnumerable<SelectListItem>)ViewBag.CustomerState, "--Choose State--", new { @class = "form-control dropdowncursor", id = "state", style="margin-left:56px; border-top:1px solid gray; border-left:1px solid gray;" })
 
                                                     </div>
 
@@ -428,7 +428,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-4 " style="text-align:right;">
-                                            <div class="form-group " style="padding-left:79px;">
+                                            <div class="form-group " style="padding-left:20px;">
                                                     @Html.CheckBox("CheckAdress", false, new { @id = "CheckAdress" })
                                                 <label class="dim col-sm-8" for="CheckAdress" style="  font-weight:bold; margin-left:10px">
                                                     CheckAddress

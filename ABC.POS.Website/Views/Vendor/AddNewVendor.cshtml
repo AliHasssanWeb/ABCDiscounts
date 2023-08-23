@@ -292,7 +292,7 @@
                                     <div class="row" >
 
 
-                                        <div class="col-lg-6 col-sm-5" >
+                                        <div class="col-lg-5 col-sm-5" >
                                             <div class="form-group">
                                                 @*//<label class="dim col-sm-6">City </label>*@
                                                 <label class="dim " style=" font-weight:bold; position:absolute; width:99px; text-align:right;">City,State Zip</label>
@@ -303,17 +303,28 @@
                                         <div class="col-lg-3 col-sm-2" >
                                             <div class="form-group">
                                                 @*<label class="dim col-sm-10">State </label>*@
-                                                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "State", id = "txtState", style=" border-top:1px solid gray; border-left:1px solid gray; background:white;" } })
+                                                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "State", id = "txtState", style=" border-top:1px solid gray; border-left:1px solid gray; background:white;margin-left:15px; width:100% " } })
                                                 @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-sm-5">
                                             <div class="form-group" >
                                                 @*<label class="dim col-sm-6">Zip Code </label>*@
-                                                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Zip Code", id = "txtZipCode", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; width:100%" } })
+                                                @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "Zip Code", id = "txtZipCode", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; width:100%;margin-left:10px;" } })
                                                 @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
+
+                                       
+
+                                        <div class="col-lg-1 col-sm-5">
+                                            <i class="mdi mdi-pencil"></i>
+
+                                        </div>
+
+                                      
+
+
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6 col-sm-6">
@@ -364,28 +375,51 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-4">
+                                    <div class="row" >
+                                        <div class="col-lg-5 col-sm-4">
                                             <div class="form-group">
                                                 <label class="dim" style="font-weight:bold; position:absolute;width:99px; text-align:right;">CreditLimit </label>
-                                                @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "CreditLimit", id = "txtCreditLimit" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:64%" } })
+                                                @Html.EditorFor(model => model.CreditLimit, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "CreditLimit", id = "txtCreditLimit" , style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:100%" } })
                                                 @Html.ValidationMessageFor(model => model.CreditLimit, "", new { @class = "text-danger db" })
+
                                             </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-4">
                                             <div class="form-group">
-                                                <label class="dim" style="font-weight:bold; position:absolute">FedTaxId </label>
-                                                @Html.EditorFor(model => model.FedTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "FedTax", id = "txtFedTax",style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:70px; width:79%" } })
+                                                <label class="dim" style="font-weight:bold; position:absolute;margin-left:39px">FedTaxId </label>
+                                                @Html.EditorFor(model => model.FedTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "FedTax", id = "txtFedTax",style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:100%" } })
                                                 @Html.ValidationMessageFor(model => model.FedTaxId, "", new { @class = "text-danger db" })
                                             </div>
-                                        </div>
-                                        <div class="col-lg-4 col-sm-4">
-                                            <div class="form-group">
-                                                <label class="dim" style="font-weight:bold; position:absolute">StateTaxId </label>
-                                                @Html.EditorFor(model => model.StateTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "StateTax", id = "txtStateTax", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:75px; width:70%" } })
-                                                @Html.ValidationMessageFor(model => model.StateTaxId, "", new { @class = "text-danger db" })
+                                          
+                                                <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute;margin-left:28px">StateTaxId </label>
+                                                    @Html.EditorFor(model => model.StateTaxId, new { htmlAttributes = new { @class = "form-control textboxcolor", placeholder = "StateTax", id = "txtStateTax", style=" border-top:1px solid gray; border-left:1px solid gray; background:white;margin-left:105px; width:100%" } })
+                                                    @Html.ValidationMessageFor(model => model.StateTaxId, "", new { @class = "text-danger db" })
+                                               
                                             </div>
                                         </div>
+                                        <div class="col-lg-5 col-sm-4" style="margin-left:105px; height:145px;padding:15px;border-style:inset ">
+                                            <div class="col-lg-12 col-sm-4" style="display:inline;">
+                                            <p style="font-size:20px; font-weight:700">Product Line</p>
+                                            <input type="checkbox" id="" name="" value="">
+                                            <label for="value"> Preview</label><br>
+                                      
+                                            </div>
+                                                       <div class="row" style="background-color:yellow; display:inline">
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+                                        
+                                            </div>
+                                         
+                                          
+                                        </div>
+                                       
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-6">
@@ -407,20 +441,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" style="">
-                                        <div class="col-lg-8 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-8" >
                                             <div class="form-group">
                                                 <label class="dim " style="font-weight:bold; position:absolute; width:99px; text-align:right;">Ledger  </label>
-                                                @Html.DropDownListFor(model => model.Ledger, (IEnumerable<SelectListItem>)ViewBag.AccSubGroup, "--Choose Ledger--", new { @class = "form-control ledgercreate textboxcolor", @readonly="readonly", id = "txtLedger", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:64%" })
+                                                @Html.DropDownListFor(model => model.Ledger, (IEnumerable<SelectListItem>)ViewBag.AccSubGroup, "--Choose Ledger--", new { @class = "form-control ledgercreate textboxcolor", @readonly="readonly", id = "txtLedger", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:105px; width:60%" })
                                                 @Html.ValidationMessageFor(model => model.Ledger, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-4" >
+                                        <div class="col-lg-4 col-sm-4"  >
                                             <div class="form-group">
                                                 <label class="dim " style="font-weight:bold; position:absolute">Ledger Code </label>
-                                                @Html.EditorFor(model => model.LedgerCode, new { htmlAttributes = new { @class = "form-control textboxcolor ledgercodecreate", placeholder = "LedgerCode", id = "txtLedgerCode" , @readonly="readonly", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:104%" } })
+                                                @Html.EditorFor(model => model.LedgerCode, new { htmlAttributes = new { @class = "form-control textboxcolor ledgercodecreate", placeholder = "LedgerCode", id = "txtLedgerCode" , @readonly="readonly", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:80%" } })
                                                 @Html.ValidationMessageFor(model => model.LedgerCode, "", new { @class = "text-danger db" })
                                             </div>
+                                        </div>
+                                        <div class="col-lg-1 col-sm-4" style="margin-left:40px">
+                                            <i class="mdi mdi-pencil"></i>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -454,7 +491,7 @@
                                     <div class="row">
                                         <div class="col-lg-5 col-sm-5 mt-4">
                                             <div class="form-group">
-                                                <label class="dim col-sm-7 fontcolor  fw-bolder" for="SupplierChecked" style="font-size:18px !important;">
+                                                <label class="dim col-sm-10 fontcolor  fw-bolder" for="SupplierChecked" style="font-size:18px !important;">
                                                     Supplier
                                                 </label>
                                                 <br>
