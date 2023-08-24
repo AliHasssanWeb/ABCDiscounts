@@ -7,6 +7,11 @@ namespace ABC.EFCore.Repository.Edmx
 {
     public partial class CustomerInformation
     {
+        public CustomerInformation()
+        {
+            PointOfSales = new HashSet<PointOfSale>();
+        }
+
         public int Id { get; set; }
         public string Company { get; set; }
         public string FirstName { get; set; }
@@ -69,5 +74,8 @@ namespace ABC.EFCore.Repository.Edmx
         public bool? Rejected { get; set; }
         public bool? Pending { get; set; }
         public string Suite { get; set; }
+
+        public virtual Account Account { get; set; }
+        public virtual ICollection<PointOfSale> PointOfSales { get; set; }
     }
 }

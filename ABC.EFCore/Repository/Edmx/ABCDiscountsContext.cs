@@ -99,6 +99,8 @@ namespace ABC.EFCore.Repository.Edmx
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<PaymentTerm> PaymentTerms { get; set; }
         public virtual DbSet<PersonPin> PersonPins { get; set; }
+        public virtual DbSet<PointOfSale> PointOfSales { get; set; }
+        public virtual DbSet<PointOfSaleDetail> PointOfSaleDetails { get; set; }
         public virtual DbSet<PosSale> PosSales { get; set; }
         public virtual DbSet<Pricing> Pricings { get; set; }
         public virtual DbSet<Product> Products { get; set; }
@@ -144,7 +146,7 @@ namespace ABC.EFCore.Repository.Edmx
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-9MSQ351;Database=ABCDiscounts;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=NOUMAN;Database=ABCDiscounts;Trusted_Connection=True;");
             }
         }
 
@@ -744,7 +746,9 @@ namespace ABC.EFCore.Repository.Edmx
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.AccountId).HasColumnName("AccountID");
+                entity.Property(e => e.AccountId)
+                    .HasMaxLength(450)
+                    .HasColumnName("AccountID");
 
                 entity.Property(e => e.Balance).HasMaxLength(250);
 
@@ -837,6 +841,11 @@ namespace ABC.EFCore.Repository.Edmx
                 entity.Property(e => e.Website).HasMaxLength(250);
 
                 entity.Property(e => e.Zip).HasMaxLength(250);
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.CustomerInformations)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK__CustomerI__Accou__3A179ED3");
             });
 
             modelBuilder.Entity<CustomerNote>(entity =>
@@ -2091,6 +2100,48 @@ namespace ABC.EFCore.Repository.Edmx
                 entity.Property(e => e.TerminalName).HasMaxLength(250);
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<PointOfSale>(entity =>
+            {
+                entity.ToTable("PointOfSale");
+
+                entity.Property(e => e.Cost).HasMaxLength(50);
+
+                entity.Property(e => e.DemageQty).HasMaxLength(50);
+
+                entity.Property(e => e.InvoiceDate).HasColumnType("date");
+
+                entity.Property(e => e.PaidDate).HasColumnType("date");
+
+                entity.Property(e => e.ReturnQty).HasMaxLength(50);
+
+                entity.Property(e => e.ShipmentLimit).HasMaxLength(50);
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.PointOfSales)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PointOfSa__Custo__32767D0B");
+            });
+
+            modelBuilder.Entity<PointOfSaleDetail>(entity =>
+            {
+                entity.HasKey(e => e.PosSaleDetailId)
+                    .HasName("PK_PosSaleDetail");
+
+                entity.ToTable("PointOfSaleDetail");
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.PointOfSaleDetails)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PointOfSa__ItemI__36470DEF");
+
+                entity.HasOne(d => d.PointOfSale)
+                    .WithMany(p => p.PointOfSaleDetails)
+                    .HasForeignKey(d => d.PointOfSaleId)
+                    .HasConstraintName("FK__PointOfSa__Point__3552E9B6");
             });
 
             modelBuilder.Entity<PosSale>(entity =>

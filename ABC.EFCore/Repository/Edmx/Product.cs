@@ -7,6 +7,11 @@ namespace ABC.EFCore.Repository.Edmx
 {
     public partial class Product
     {
+        public Product()
+        {
+            PointOfSaleDetails = new HashSet<PointOfSaleDetail>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public int? ItemCategoryId { get; set; }
@@ -94,5 +99,7 @@ namespace ABC.EFCore.Repository.Edmx
         public string SttaxPerQty { get; set; }
         public string PriceDiff { get; set; }
         public string PriceDiffPercentage { get; set; }
+
+        public virtual ICollection<PointOfSaleDetail> PointOfSaleDetails { get; set; }
     }
 }
