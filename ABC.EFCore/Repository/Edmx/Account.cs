@@ -7,11 +7,17 @@ namespace ABC.EFCore.Repository.Edmx
 {
     public partial class Account
     {
+        public Account()
+        {
+            CustomerInformations = new HashSet<CustomerInformation>();
+        }
+
         public string AccountId { get; set; }
         public string Title { get; set; }
         public string AccountSubGroupId { get; set; }
         public int Status { get; set; }
 
         public virtual AccountSubGroup AccountSubGroup { get; set; }
+        public virtual ICollection<CustomerInformation> CustomerInformations { get; set; }
     }
 }

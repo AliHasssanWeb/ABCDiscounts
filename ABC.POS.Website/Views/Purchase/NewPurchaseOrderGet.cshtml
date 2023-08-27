@@ -6624,6 +6624,8 @@
         var id = val;
         $.ajax({
             type: "GET",
+            async: false,
+            cache: false,
             url: '@Url.Action("GetItemStockFinancialByIDForModels", "Items")',
 
             data: {
@@ -6631,16 +6633,17 @@
             },
             dataType: 'json',
             success: function (data) {
-                $("#rowid-" + indexex).find("#productId").val(data.id);
+                var check = $("#rowid-" + indexex).find("#productId").val(data.id);
                 if (data != null && data != "") {
                     var count = 0;
                     var exist = 0;
                     var notexist = true;
+                    debugger;
                     $('#mytable tr').each(function (index, tr) {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
-                            /*   var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
-                            var productId = parseInt($("#itemid-" + Id).html());
+                            var productId = parseInt($("#rowid-" + Id).find("#productId").val());
+                           // var productId = parseInt($("#itemid-" + Id).html());
                             if (productId === data.id) {
                                 exist++;
 
@@ -6739,6 +6742,7 @@
                     else {
                         swal("Error!", "Item Already Added!", "error");
                         RemoveRow(indexex);
+                        $(".add-row").trigger("click");
                     }
                 }
 
@@ -7563,6 +7567,7 @@
             $("#productList-" + val).append(dropdown);
             $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
+                    debugger;
                     GetItemByID(data_array[index].value, val, false);
                 }
             });
@@ -7616,11 +7621,14 @@
             $("#productList-" + val).append(dropdown);
             $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
+                    debugger;
                     if (additem) {
                         GetItemByID(data_array[index].value, val, additem);
                         additem = false;
+                        return false;
                     } else {
                         GetItemByID(data_array[index].value, val, additem);
+                        return false;
                     }
                 }
             });
