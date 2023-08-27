@@ -318,7 +318,7 @@
                                        
 
                                         <div class="col-lg-1 col-sm-5">
-                                            <i class="mdi mdi-pencil"></i>
+                                            <i class="mdi mdi-pencil" onclick="openCityEditModal()"></i>
 
                                         </div>
 
@@ -475,7 +475,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-1 col-sm-4" style="margin-left:40px">
-                                            <i class="mdi mdi-pencil"></i>
+                                            <i class="mdi mdi-pencil " onclick="openEditModal()"></i>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1379,6 +1379,135 @@
         </div>
     </div>
 </div>
+@*City Edit Modal*@
+<div id="CityEditModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:135%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel">Edit City</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeCityEditModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+                    <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
+                        <div id="" class="row" style="display: flex; align-items: center;">
+                            <div class="" style=" display: flex; align-items: center; padding: 5px;padding-bottom:30px">
+                                <div class="" style="border: 1px solid unset; margin: 3px; box-shadow: 2px 2px #888888; background-color: yellow; width: 20%; display: flex; justify-content: space-around; align-items: center;">
+                                    <i class="fa fa-step-backward" style="background: rgb(240, 240, 240); padding: 10px; padding-right: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-caret-left" style="background: rgb(240, 240, 240); padding: 10px; padding-right: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-caret-right" style="background: rgb(240, 240, 240); padding: 10px; padding-left: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-step-forward" style="background: rgb(240, 240, 240); padding: 10px; padding-left: 15px; border-right: 1px solid gray;"></i>
+                                </div>
+                                <i class="mdi mdi-plus" style="padding: 7px; background: rgb(239, 240, 241); width: auto; margin-left: 10px; color: black;" onclick="Addnewrowforzipcodetable()"></i>
+
+                                <div style="margin-left: 15px;">
+                                    <label for="searchDropdown" style="color: blue;">Select</label>
+                                    <select id="searchDropdown" style="margin-left: 0px;font-size: 12px;">
+                                        <option value="ledger">Sort by Ledger</option>
+                                        <option value="category">Sort by Category</option>
+                                    </select>
+                                </div> <br />
+
+                              
+                                <div style="margin-left: 10px;">
+                                    <label for="freeSearch" style="color: blue;">Free Search:</label>
+                                    <input type="text" id="freeSearch" style="margin-left: 0px; font-size:10px">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="fortablerowid" />
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" style="padding:0px;">
+                        <table class="table table-bordered table-condensed overflow-auto" style="border:0.7px solid; margin-bottom:15px;">
+                            <thead style="text-align:center;">
+                                <tr style="background:rgb(198, 201, 206);">
+                                    <th class="w-auto" style="color:blue;">Zip Code</th>
+                                    <th class="w-auto" style="color:blue;">City</th>
+                                    <th class="w-auto" style="color:blue;">ST</th>
+                                    <th class="w-auto" style="color:blue;">State</th>
+                              
+                                </tr>
+                            </thead>
+                            <tbody id="modalzipcodegetlisttable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit Modal*@
+<div id="EditModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:135%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel">Edit Add Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEditModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+                    <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
+                        <div id="" class="row" style="display: flex; align-items: center;">
+                            <div class="" style=" display: flex; align-items: center; padding: 5px;padding-bottom:30px">
+                                <div class="" style="border: 1px solid unset; margin: 3px; box-shadow: 2px 2px #888888; background-color: yellow; width: 20%; display: flex; justify-content: space-around; align-items: center;">
+                                    <i class="fa fa-step-backward" style="background: rgb(240, 240, 240); padding: 10px; padding-right: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-caret-left" style="background: rgb(240, 240, 240); padding: 10px; padding-right: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-caret-right" style="background: rgb(240, 240, 240); padding: 10px; padding-left: 15px; border-right: 1px solid gray;"></i>
+                                    <i class="fa fa-step-forward" style="background: rgb(240, 240, 240); padding: 10px; padding-left: 15px; border-right: 1px solid gray;"></i>
+                                </div>
+                                <i class="mdi mdi-plus" style="padding: 7px; background: rgb(239, 240, 241); width: auto; margin-left: 10px; color: black;" onclick="Addnewrowforzipcodetable()"></i>
+
+                               
+                                <input style="margin-left:10px" type="radio" id="ledg" name="fav_language" value="Ledger">
+                                <label for="html" style="margin-left: 5px;color:blue">Sort by Ledger</label> <br />
+                                <input style="margin-left:10px" type="radio" id="categ" name="fav_language" value="Category">
+                                <label for="css" style="margin-left: 5px;color:blue">Sort by Category</label>
+
+
+                                   @* <input type="radio">
+                                    <label for="css" style="margin-left: 5px;color:blue">Sort by Ledger</label>
+                              
+
+                                
+                                    <input type="radio">
+                                    <label for="css" style="margin-left: 5px; color:blue">Sort by Category</label>*@
+                             
+                            </div>
+                        </div>
+                      
+                        <input type="hidden" id="fortablerowid" />
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" style="padding:0px;">
+                        <table class="table table-bordered table-condensed overflow-auto" style="border:0.7px solid; margin-bottom:15px;">
+                            <thead style="text-align:center;">
+                                <tr style="background:rgb(198, 201, 206);  ">
+                                    <th class="w-auto" style="color:blue;">Ledger</th>
+                                    <th class="w-auto" style="color:blue;">Category</th>
+                                    <th class="w-auto" style="color:blue;">Payable</th>
+                                     <th class="w-auto" style="color:blue;">Rec</th>
+                                    <th class="w-auto" style="color:blue;">Adj .</th>
+                                    <th class="w-auto" style="color:blue;">Profit/Lost</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalzipcodegetlisttable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
     @*Notes Attachment Modal*@
 <div id="NotesAttachmentModal" class="modal fade" z-index="-1" role="dialog" style="margin-left:20px;">
@@ -2495,6 +2624,22 @@
     }
      function closeNotesModal() {
         $("#NotesModal").modal('hide');
+    }
+     function openCityEditModal() {
+        $("#CityEditModal").modal('show');
+       
+    }
+    function closeCityEditModal() {
+        $("#CityEditModal").modal('hide');
+
+    }
+    function openEditModal() {
+        $("#EditModal").modal('show');
+       
+    }
+    function closeEditModal() {
+        $("#EditModal").modal('hide');
+
     }
     $("#PlusN").click(function() {
         $("#NoteArea").show();
