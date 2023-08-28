@@ -428,7 +428,7 @@
                                                 </select>
                                                 </div>
                                                 <i style="font-size:25px;padding-right:20px" class="mdi mdi-close-box"></i>
-                                                <i style="font-size:25px" class="mdi mdi-printer"></i>
+                                                <i style="font-size:25px" class="mdi mdi-printer" onclick="openPrintModal()" ></i>
                                                
                                             </div>
                                         
@@ -1408,7 +1408,7 @@
                                         <option value="ledger">Sort by Ledger</option>
                                         <option value="category">Sort by Category</option>
                                     </select>
-                                </div> <br />
+                                </div> 
 
                               
                                 <div style="margin-left: 2px;">
@@ -1481,8 +1481,10 @@
                                 
                                     <input type="radio">
                                     <label for="css" style="margin-left: 5px; color:blue">Sort by Category</label>*@
-                             
+                                <i style="font-size:35px;margin-left:23px; margin-top:11px" class="mdi mdi-printer"></i>
+                                <i style="font-size:35px;padding-left:20px; margin-top:11px" class="mdi mdi-power" onclick="closeEditModal()"></i>
                             </div>
+                           
                         </div>
                       
                         <input type="hidden" id="fortablerowid" />
@@ -1510,6 +1512,47 @@
 </div>
 
 
+@*Print Modal*@
+<div id="PrintModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:50%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel" style="font-size:13px">Select an Option</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closePrintModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+                    <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
+                        <div id="" class="row" style="display: flex; align-items: center;">
+                         <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px">0-Print</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">1-Preview</p>
+                           <p style="font-weight:800; color:#1F3BB3; font-size:17px">2-Adobe PDF</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">3-PDF (Protected)</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">4-PDF Save As</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">5-PDF Save As Protected</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">6-Un-Protected Storage</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">7-Protected Storage</p>
+                              <p style="font-weight:800; color:#1F3BB3; font-size:17px">8-email PDF </p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">9-email PDF (Protected)</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row">
+            <p>PDF Protected Password :</p>
+            <input style="font-size:10px; width:35%" type="text"/>
+            </div>
+            <div>
+            <p>Protected Storage Location :</p>
+            <input style="font-size:13px" type="file" id="myfile" name="myfile">
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
     @*Notes Attachment Modal*@
@@ -1524,22 +1567,22 @@
             </div>
             <div class="modal-body" style="padding-top: 20px;padding-bottom:10px;">
                 <div class="row">
-                    <div class="col-lg-2 col-md-4 col-sm-6">
+                  @*  <div class="col-lg-2 col-md-4 col-sm-6">
                         <label class="text-primary">Type</label>
                         <select style="width:100%" id="typeSelect">
                             <option value="option1">Notes</option>
                             <option value="option2">2</option>
                             <option value="option3">3</option>
                         </select>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
+                    </div>*@
+                  @*  <div class="col-lg-2 col-md-4 col-sm-6">
                         <label class="text-primary">Id</label>
                         <select style="width:100%" id="idSelect">
                             <option value="option1">1</option>
                             <option value="option2">2</option>
                             <option value="option3">3</option>
                         </select>
-                    </div>
+                    </div>*@
                     <div class="col-lg-4 col-md-12">
                         <label class="text-primary">Search</label>
 
@@ -2634,6 +2677,14 @@
     }
     function closeCityEditModal() {
         $("#CityEditModal").modal('hide');
+
+    }
+    function openPrintModal() {
+        $("#PrintModal").modal('show');
+
+    }
+    function closePrintModal() {
+        $("#PrintModal").modal('hide');
 
     }
     function openEditModal() {
