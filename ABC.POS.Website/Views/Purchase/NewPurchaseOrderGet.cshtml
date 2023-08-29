@@ -3060,19 +3060,63 @@
 
 
 @*Search Modal*@
-<div id="SearchModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content mw-100" style="height:90%">
-            <div class="modal-header m-0 p-0">
-                <h5 class="modal-title mx-auto" id="ModalLabel">Smart Search-POrder  </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseInventorySecondModal()">
-                    <span aria-hidden="true" onclick="CloseSearchModal()">×</span>
+<div id="SearchModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:135%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel">Smart Search-POrder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseSearchModal()">
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
-          
+            <div class="modal-body" style="padding:0px; background-color:#e6e9ed">
+                <p style="padding:10px;    font-size: 15px;
+    font-weight: 800;color:#1515b7">Types of Search</p>
+                <div style="display: flex;border: 1px solid #ccc;">
+                    <!-- First Column -->
+                    <div style="flex: 1;  padding: 10px;">
+                        <input  type="radio" name="group1"> By Supplier Name
+                        <br>
+                        <br />
+                        <input type="radio" name="group1"> By Purchase Order Date
+                        <br>
+                          <br />
+                        <input type="radio" name="group1"> By Purchase Order Num
+                    </div>
+
+                    <!-- Second Column -->
+                    <div style="flex: 1;  padding: 10px;">
+                        <input type="radio" name="group2"> By Invoice Num
+                        <br>
+                          <br />
+                        <input type="radio" name="group2"> By PO Date
+                        <br>
+                          <br />
+                        <input type="radio" name="group2"> By Invoice Due Date
+                    </div>
+
+                    <!-- Third Column -->
+                    <div style="flex: 1; padding: 10px;">
+                        <input type="radio" name="group3"> Received PO
+                        <br>
+                        <br />
+                        <input type="radio" name="group3"> Not Received PO
+                      
+                    </div>
+
+               
+                   
+                </div>
+                <div  style="background-color: #bfbebe; padding: 10px; height:200px">
+                   <p style="font-size: 15px;font-weight:800">Select Supplier Name</p>
+                    <input style="width:100%;background-color: #bfbebe;" type="search" name="gsearch">
+                </div>
+             
+            </div>
         </div>
     </div>
 </div>
+
 
 @*Cheque Modal*@
 <div id="VendorChequeModal" class="modal fade" role="dialog">
