@@ -679,7 +679,7 @@
                                             </div>
                                             @Html.ValidationMessageFor(model => model.SupplierNumber, "", new { @class = "text-danger db" })
                                         </div>
-                                        <div class="col-4 col-lg-4 col-sm-4" style="margin-top: 31px;margin-left: -5rem;margin-right:5rem">
+                                        <div class="col-4 col-lg-4 col-sm-4" style="margin-top: 32px;margin-left: -5rem;margin-right:5rem">
                                             <div class="form-group">
 
                                                 <div class="datalist-wrap autocomplete">
@@ -976,6 +976,7 @@
                 </div>
             </div>
             <div class="modal-body pb-0" style="background-color: #f2f0f2;width:100%;">
+
                 <div class="row">
                     <p id="companyName" style="color:darkblue;font-weight:bolder;font-size:20px;"></p>
                 </div>
@@ -1008,6 +1009,7 @@
                         </div>
                     </div>
                     <div class="col-2">
+                        <i class="fa fa-pencil" id="" aria-hidden="true"></i>
                     </div>
                 </div>
 
@@ -3104,12 +3106,14 @@
                       
                     </div>
 
-               
                    
                 </div>
                 <div  style="background-color: #bfbebe; padding: 10px; height:200px">
                    <p style="font-size: 15px;font-weight:800">Select Supplier Name</p>
-                    <input style="width:100%;background-color: #bfbebe;" type="search" name="gsearch">
+                    <input style="width: 100%; background-color: #bfbebe; border: 1px solid #000;" type="search" name="gsearch">
+                    <div style="border: 1px solid black;height:80px;">
+                       
+                    </div>
                 </div>
              
             </div>
