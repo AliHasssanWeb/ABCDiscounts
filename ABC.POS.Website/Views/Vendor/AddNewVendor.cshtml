@@ -467,13 +467,22 @@
                                                
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-sm-4"  >
+                                        <div class="col-lg-4 col-sm-4">
                                             <div class="form-group">
-                                                <label class="dim " style="font-weight:bold; position:absolute">Ledger Code </label>
-                                                @Html.EditorFor(model => model.LedgerCode, new { htmlAttributes = new { @class = "form-control textboxcolor ledgercodecreate", placeholder = "LedgerCode", id = "txtLedgerCode" , @readonly="readonly", style=" border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:80%" } })
+                                                <label class="dim" style="font-weight:bold; position:absolute">Ledger Code </label>
+                                                @Html.EditorFor(model => model.LedgerCode, new { htmlAttributes = new { @class = "form-control textboxcolor ledgercodecreate", placeholder = "LedgerCode", id = "txtLedgerCode", @readonly = "readonly", style = "border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:80%" } })
                                                 @Html.ValidationMessageFor(model => model.LedgerCode, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
+
+                                        <!-- Add the new column here -->
+                                      @*  <div class="col-lg-4 col-sm-4">
+                                            <div class="form-group">
+                                                <label class="dim" style="font-weight:bold; position:absolute">New Column Label </label>
+                                               @Html.EditorFor(model => model.NewColumn, new { htmlAttributes = new { @class = "form-control textboxcolor newcolumn", placeholder = "NewColumn", id = "txtNewColumn", style = "border-top:1px solid gray; border-left:1px solid gray; background:white; margin-left:90px; width:80%" } })
+                                                @Html.ValidationMessageFor(model => model.NewColumn, "", new { @class = "text-danger db" })
+                                            </div>
+                                        </div>*@
                                         <div class="col-lg-1 col-sm-4" style="margin-left:40px">
                                             <i class="mdi mdi-pencil " onclick="openEditModal()"></i>
                                         </div>
