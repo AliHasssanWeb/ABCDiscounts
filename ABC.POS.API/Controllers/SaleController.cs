@@ -320,7 +320,7 @@ namespace ABC.POS.API.Controllers
 
 
 
-        [HttpPost("CheckSupervisorCreditAmountforUpdate/{customerId}/{possaleinvoive}")]
+        [HttpPost("CheckSupervisorCreditforUpdate/{customerId}/{possaleinvoive}")]
         public IActionResult CheckSupervisorCreditforUpdate(int? customerId, Supervisor supervisor, string possaleinvoive)
         {
             try
