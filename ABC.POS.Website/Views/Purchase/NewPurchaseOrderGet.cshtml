@@ -5880,108 +5880,80 @@
     function onRefresh() {
         location.reload();
     }
-    function CountTotalOfAllTD() {
+function CountTotalOfAllTD() {
+    var total = 0;
 
-        var total = 0
-        var count = 0;
-        $("#mytable tr").each(function () {
-            var self = $(this);
-            var col_9_value = self.find("td:eq(10)").text().trim();
-            var result = col_9_value.replace(/\$/g, '');
-            var afterparsing = parseFloat(result);
-            if (!isNaN(afterparsing)) {
-                total += afterparsing;
-            }
-
-            var ceilingvalue;
-            ceilingvalue = total.toFixed(2);
-
-
-            var getdis = $('#HiddenDiscount').val();
-            if (getdis != NaN && getdis != "") {
-                if (ceilingvalue > 0) {
-                    var getDisAmc = (ceilingvalue / 100) * parseFloat(getdis);
-                    var count = ceilingvalue - getDisAmc;
-                    var countt = count.toFixed(2);
-                    $("#SubTotal").val("$" + countt);
-                }
-                else {
-                    $("#SubTotal").val("$" + ceilingvalue);
-                }
-            }
-            else {
-                $("#SubTotal").val("$" + ceilingvalue);
-            }
-        
-            var freight = parseFloat($("#Freight").val()) || 0;
-            var taxidval = parseFloat($("#Tax").val()) || 0;
-            var otheridval = parseFloat($("#Other").val()) || 0;
-
-            // Calculate the sum of all expenses
-            var sumofallexpences = total + otheridval + taxidval + freight;
-
-            // Round the total to two decimal places and display as a string
-            let invoiceTotal = sumofallexpences.toFixed(2);
-            console.log('Invoice total ' + invoiceTotal)
-            if (invoiceTotal > ceilingvalue) {
-                $("#Total").val("$" + invoiceTotal);
-                $("#PoAmount").val(invoiceTotal);
-
-                if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
-                    var balance = invoiceTotal - $("#totalPaid").val();
-                    $("#poBalance").val(balance.toFixed(2));
-                    $("#poBalancee").val(balance.toFixed(2));
-                }
-            }
-            else {
-                $("#Total").val("$" + ceilingvalue);
-                $("#PoAmount").val(ceilingvalue);
-
-                if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
-                    var balance = ceilingvalue - $("#totalPaid").val();
-                    $("#poBalance").val(balance.toFixed(2));
-                    $("#poBalancee").val(balance.toFixed(2));
-                }
-            }
-
-            if (ceilingvalue != "0" && ceilingvalue != "" && ceilingvalue != '' && ceilingvalue != NaN && ceilingvalue > 0) {
-                $("#payment").prop("disabled", false);
-            }
-            else {
-                $("#payment").prop("disabled", true);
-            }
-
-            count++;
-        });
-        //Click-able Recevied CheckBox
-        if (count > 1) {
-            $("#Received").prop('disabled', false);
-            //    $("#otherpayment").prop('disabled', false);
+    $("#mytable tr").each(function () {
+        var self = $(this);
+        var col_9_value = self.find("td:eq(10)").text().trim();
+        var result = col_9_value.replace(/\$/g, '');
+        var afterparsing = parseFloat(result);
+        if (!isNaN(afterparsing)) {
+            total += afterparsing;
         }
-        //CalculatetaxPlusDiscount();
+    });
+
+    var originalTotal = total.toFixed(2);
+
+    var getdis = parseFloat($('#HiddenDiscount').val()) || 0;
+    var discountAmount = (total / 100) * getdis;
+    var discountedTotal = total - discountAmount;
+
+    var freight = parseFloat($("#Freight").val()) || 0;
+    var taxidval = parseFloat($("#Tax").val()) || 0;
+    var otheridval = parseFloat($("#Other").val()) || 0;
+
+    var sumofallexpences = discountedTotal + otheridval + taxidval + freight;
+    var invoiceTotal = sumofallexpences.toFixed(2);
+
+    if (invoiceTotal < 0) {
+        invoiceTotal = 0;
     }
+
+    var totalPaid = parseFloat($("#totalPaid").val()) || 0;
+    var balance = invoiceTotal - totalPaid;
+
+    $("#SubTotal").val("$" + originalTotal);
+    $("#Total").val("$" + invoiceTotal);
+    $("#Discount").val("$" + discountAmount.toFixed(2)); // Show discount amount
+    $("#PoAmount").val(invoiceTotal);
+
+    if ($("#ispartialPaid").val() == "not" && ($("#preorderPaid").val() != "0" || $("#preorderPaid").val() != "0.00") && $("#totalPaid").val() == $("#otherPaid").val()) {
+        $("#poBalance").val(balance.toFixed(2));
+        $("#poBalancee").val(balance.toFixed(2));
+    }
+
+    $("#payment").prop("disabled", total <= 0);
+
+    var count = $("#mytable tr").length - 1; // Excluding header row
+
+    if (count > 1) {
+        $("#Received").prop('disabled', false);
+    }
+}
+
     
 
     function CalculatetaxPlusDiscount() {
-        //var totalitems = $("#TotalItems").val();
-        //var subtotal = parseFloat($("#SubTotal").val().split('$')[1]) || 0;
-        //var freight = parseFloat($("#Freight").val()) || 0;
-        //var taxidval = parseFloat($("#Tax").val()) || 0;
-        //var otheridval = parseFloat($("#Other").val()) || 0;
-        //var total = $("#Total").val();
+        var totalitems = $("#TotalItems").val();
+        var subtotal = parseFloat($("#SubTotal").val().split('$')[1]) || 0;
+        var freight = parseFloat($("#Freight").val()) || 0;
+        var taxidval = parseFloat($("#Tax").val()) || 0;
+        var otheridval = parseFloat($("#Other").val()) || 0;
+        var total = $("#Total").val();
 
-        //// Calculate the sum of all expenses
-        //var sumofallexpences = subtotal + otheridval + taxidval + freight;
+        // Calculate the sum of all expenses
+        var sumofallexpences = subtotal + otheridval + taxidval + freight;
 
-        //// Round the total to two decimal places and display as a string
-        //var invoicetotal = sumofallexpences.toFixed(2);
+        // Round the total to two decimal places and display as a string
+        var invoicetotal = sumofallexpences.toFixed(2);
 
-        //if (isNaN(invoicetotal)) {
-        //    $("#Total").val("$" + 0);
-        //} else {
-        //    // Set the calculated total back to the "Total" input field
-        //    //$("#Total").val("$" + invoicetotal);
-        //}
+        if (isNaN(invoicetotal)) {
+            $("#Total").val("$" + 0);
+        } else {
+            // Set the calculated total back to the "Total" input field
+            //$("#Total").val("$" + invoicetotal);
+        }
         CountTotalOfAllTD();
     }
 
