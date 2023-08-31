@@ -1,12 +1,26 @@
+//{
+//  "profiles": {
+//    "ABC.POS.API": {
+//      "commandName": "Project"
+//    },
+//    "WSL": {
+//      "commandName": "WSL2",
+//      "environmentVariables": {},
+//      "distributionName": ""
+//    }
+//  }
+//}
+
+
 {
   "profiles": {
     "ABC.POS.API": {
-      "commandName": "Project"
-    },
-    "WSL": {
-      "commandName": "WSL2",
-      "environmentVariables": {},
-      "distributionName": ""
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:49784;http://localhost:49786"
     }
   }
 }
