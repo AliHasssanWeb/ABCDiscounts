@@ -58,16 +58,19 @@ namespace ABC.POS.Domain.DataConfig
             string resp = "";
             try
             {
-                //https://apps.ab-sol.net/abc.pos.api/
-                // https://localhost:5001/
-                //https://abc.vked.net/
-                //http://199.231.160.216/abcposapi/
-                //http://199.231.160.216/abcdposapi/
-                //http://204.2.194.223/abcdposapi/
-                //http://204.2.194.223/testposapi/
-                //http://45.35.97.246:5595/abcdposapi/
-                //http://10.10.10.98:5595/abcdposapi/
+            //https://apps.ab-sol.net/abc.pos.api/
+            // https://localhost:5001/
+            //https://abc.vked.net/
+            //http://199.231.160.216/abcposapi/
+            //http://199.231.160.216/abcdposapi/
+            //http://204.2.194.223/abcdposapi/
+            //http://204.2.194.223/testposapi/
+            //http://45.35.97.246:5595/abcdposapi/
+            //http://10.10.10.98:5595/abcdposapi/
+            //http://38.17.51.207:8047/                       // QA server url
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/" + otype + "/" + action);
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://38.17.51.207:8047/" + otype + "/" + action);
                 //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://10.10.10.98:5595/abcdposapi/" + otype + "/" + action);
                 request.Headers.Add("Authorization", "Bearer " + AccessToken);
                 request.Credentials = CredentialCache.DefaultCredentials;
