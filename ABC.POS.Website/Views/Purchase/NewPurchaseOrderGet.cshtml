@@ -4701,11 +4701,13 @@
 
 
     function Changerow(val, val2) {
+        event.preventDefault();
         var allrows = $(".itemnewtr").find('tr');
         $(allrows.prevObject).removeClass("selectedrow");
         $.each(allrows.prevObject, function (ind, it) {
             if ($(it).find('id').prevObject[0].id == ("rowlistid-" + val)) {
-                $('#itemquantitylabel').trigger('focus');
+                $('#itemquantitylabel');
+                  //$('#itemquantitylabel').trigger('focus');
                 $($(it).find('id').prevObject[0]).addClass("selectedrow");
                 return false;
             }
