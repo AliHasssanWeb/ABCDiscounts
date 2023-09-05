@@ -6005,9 +6005,6 @@ function CountTotalOfAllTD() {
         $("#Received").prop('disabled', false);
     }
 }
-
-    
-
     function CalculatetaxPlusDiscount() {
         var totalitems = $("#TotalItems").val();
         var subtotal = parseFloat($("#SubTotal").val().split('$')[1]) || 0;
@@ -7963,7 +7960,6 @@ function CountTotalOfAllTD() {
                 data: { InvoiceNumber: data, Method: method },
                 dataType: "json",
                 success: function (data) {
-
                     //var data = jQuery.parseJSON(JSON.stringify(response));
                     //   console.log("*******" + data);
 
@@ -8141,9 +8137,10 @@ function CountTotalOfAllTD() {
                         $("#descriptionPo").val(data[0].invoicePayments.comments);
                         $("#commentsPO").val(data[0].invoicePayments.comments);
 
+                       debugger;
                         $("#datepickerPO").datepicker({
                             dateFormat: "dd/MM/yy"
-                        }).datepicker('setDate', new Date(data[0].invoicePayments.date.toString()));
+                        }).datepicker('setDate', data[0].invoicePayments.date == null ? "" : new Date(data[0].invoicePayments.date.toString()));
                         if (data[0].invoicePayments.paymentType == "Cash") {
                           //  $("#otherPaid").val(parseFloat(data[0].invoicePayments.debit).toFixed(2));
                             $("#totalPaid").val(parseFloat(data[0].invoicePayments.debit).toFixed(2));
@@ -8717,7 +8714,7 @@ function CountTotalOfAllTD() {
             ////var PoBalance = (parseFloat(poAmount) + parseFloat(prevBalance));
             //var PoBalance = (parseFloat(poAmount));
             //PoBalance = PoBalance - parseFloat(totalPaid);
-            //// SaveItemSupplierNumber(true, false, true);
+            // SaveItemSupplierNumber(true, false, true);
             //$.ajax({
             //    type: "POST",
             //    url: '@Url.Action("SavePaymentOther", "Purchase")',
