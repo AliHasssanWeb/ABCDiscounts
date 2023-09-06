@@ -6030,6 +6030,27 @@ function CountTotalOfAllTD() {
         CountTotalOfAllTD();
     }
 
+    function RemoveRowPlusEmpty(val)
+    {
+        RemoveRow(val);
+         var addrow = false;
+         var rowCount = 1;
+        $('#mytable tr').each(function (index, tr) {
+           var descriptionIndex = $('#Description-' + rowCount).text();
+           if (descriptionIndex == '') {
+              RemoveRow(rowCount);
+              addrow = true;
+           } else {
+               rowCount++;
+               }
+         });
+
+         if(addrow)
+         {
+            $(".add-row").trigger("click");
+         }          
+    }
+
     function RemoveRow(val) {
 
         var ac = $("#rowid-" + val).find("td:eq(4)").text();
@@ -6059,14 +6080,16 @@ function CountTotalOfAllTD() {
                         $(it).text(i);
                     }
                     if (id[0] == "Description") {
-                        $(it).attr('onkeyup', 'GetItemByName(' + i + ')');
+                      //  $(it).attr('onkeyup', 'GetItemByName(' + i + ')');
+                        $(it).attr('onkeyup', 'GetItemList(' + i + ')');
                         $(it).attr('ondblclick', 'openinventory(' + i + ')');
                     }
                     if (id[0] == "Qty") {
                         $(it).attr('onkeyup', 'QuantityMultipyPrice(' + i + ')');
                     }
                     if (id[0] == "delete") {
-                        $(it).attr('onclick', 'RemoveRow(' + i + ')');
+                        //$(it).attr('onclick', 'RemoveRow(' + i + ')');
+                        $(it).attr('onclick', 'RemoveRowPlusEmpty(' + i + ')');
                     }
                     if (id[0] == "SupplierItemNumber") {
                         $(it).attr('onkeyup', 'SaveSupplierItemName(event,' + i + ')');
@@ -6688,7 +6711,7 @@ function CountTotalOfAllTD() {
                         if (count > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             var productId = parseInt($("#rowid-" + Id).find("#productId").val());
-                           // var productId = parseInt($("#itemid-" + Id).html());
+                            var productId1 = parseInt($("#itemid-" + Id).html());
                             if (productId === data.id) {
                                 exist++;
 
@@ -6766,7 +6789,7 @@ function CountTotalOfAllTD() {
                             //var check=currentRow.find("td:eq(2)").val();
                             var check = $("#rowid-" + jj).find("#Description-" + jj).text();
                             // alert(check);
-                            if (check[jj] == null || check[jj] == "") {
+                             if (check == null || check == "") {
                                 RemoveRow(jj);
                             }
                             jj++
@@ -7820,7 +7843,7 @@ function CountTotalOfAllTD() {
                                 var html = '';
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="">';
                                 html += '<td id="countser-' + sernum + '" style="width: 10px;display:none" class="counter brd" contenteditable="true">' + sernum + '</td>';
-                                html += '<td style="width: 10px" id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="width: 10px" id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td  id="SupplierItemNumber-' + sernum + '" style="width: 10px"  class="brd" contenteditable="true" onkeyup="SaveSupplierItemName(event,' + sernum + ')">' + value.supplierItemNumber + '</td>';
                                 html += '<td id="StockItemNumber-' + sernum + '" style="width: 10px" class="brd" contenteditable="true" onkeyup ="GetItemByItemNumber(event,' + sernum + ')">' + value.stockItemNumber + '</td>';
                                 html += '<td id="Description-' + sernum + '" contenteditable="false" class="searchdescname brd' + sernum + '">' + value.description + '</td>';
@@ -7866,7 +7889,7 @@ function CountTotalOfAllTD() {
 
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="">';
                                 html += '<td id="countser-' + sernum + '" style="width: 10px;display:none" class="counter brd" contenteditable="false">' + sernum + '</td>';
-                                html += '<td style="width: 10px" id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="width: 10px" id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td  id="SupplierItemNumber-' + sernum + '" style="width: 10px"  class="brd" contenteditable="false" onkeyup="SaveSupplierItemName(event,' + sernum + ')">' + value.supplierItemNumber + '</td>';
                                 html += '<td id="StockItemNumber-' + sernum + '" style="width: 10px" class="brd" contenteditable="false" onkeyup ="GetItemByItemNumber(event,' + sernum + ')">' + value.stockItemNumber + '</td>';
                                 html += '<td id="Description-' + sernum + '" contenteditable="false" class="searchdescname brd' + sernum + '">' + value.description + '</td>';
@@ -8174,7 +8197,7 @@ function CountTotalOfAllTD() {
                                 var html = '';
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="' + value.stockItemNumber + '">';
                                 html += '<td id="countser-' + sernum + '" style="width: 10px;display:none" class="counter brd" contenteditable="true">' + sernum + '</td>';
-                                html += '<td style="width: 10px"  id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="width: 10px"  id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td  id="SupplierItemNumber-' + sernum + '" style="width: 10px"  class="brd" contenteditable="true" onkeyup="SaveSupplierItemName(event,' + sernum + ')">' + value.supplierItemNumber + '</td>';
                                 html += '<td id="StockItemNumber-' + sernum + '" style="width: 10px" class="brd" contenteditable="true" onkeyup ="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
                                 html += '<td id="Description-' + sernum + '" contenteditable="false" class="searchdescname brd' + sernum + '">' + value.description + '</td>';
@@ -8243,7 +8266,7 @@ function CountTotalOfAllTD() {
 
                                 html += '<tr  id="rowid-' + sernum + '" class="tableRow" data-itemcode="' + value.stockItemNumber + '">';
                                 html += '<td id="countser-' + sernum + '" style="width: 10px;display:none" class="counter brd" contenteditable="false">' + sernum + '</td>';
-                                html += '<td style="width: 10px"  id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="width: 10px"  id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td  id="SupplierItemNumber-' + sernum + '" style="width: 10px"  class="brd xx" contenteditable="false" onkeyup="SaveSupplierItemName(event,' + sernum + ')">' + value.supplierItemNumber + '</td>';
                                 html += '<td id="StockItemNumber-' + sernum + '" style="width: 10px" class="brd" contenteditable="false" onkeyup ="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
                                 html += '<td id="Description-' + sernum + '" contenteditable="false" class="searchdescname brd' + sernum + '">' + value.description + '</td>';
@@ -8516,6 +8539,7 @@ function CountTotalOfAllTD() {
 
 
     $("#addnewitem").click(function () {
+        
         var isvalid = false;
         if ($("#setvendorid").text() == 0) {
             swal("Error!", "Kindly Select Vendor!", "error");
