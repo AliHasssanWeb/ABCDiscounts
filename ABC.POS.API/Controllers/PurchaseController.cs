@@ -514,25 +514,25 @@ namespace ABC.POS.API.Controllers
                     var productdetail = db.Products.Where(x => x.Id == obj[i].ItemId).FirstOrDefault();
                     if (productdetail.Cost != obj[i].Price)
                     {
-                        obj[i].ItemCode = productdetail.ProductCode;
-                        var itemcostchange = new ItemCostChange();
-                        itemcostchange.ItemId = obj[i].ItemId;
-                        itemcostchange.ItemName = obj[i].Description;
-                        itemcostchange.PoInvoiceNumber = obj[i].InvoiceNumber;
-                        itemcostchange.OldPrice = productdetail.Cost;
-                        itemcostchange.NewPrice = obj[i].Price;
-                        itemcostchange.PriceDiff = (float.Parse(productdetail.Cost) - float.Parse(obj[i].Price)).ToString();
-                        itemcostchange.PricePercentage = ((float.Parse(itemcostchange.PriceDiff) / float.Parse(productdetail.Cost)) * 100).ToString();
-                        itemcostchange.CreatedDate = DateTime.Now;
-                        itemcostchange.NewPrice = obj[i].Price;
-                        itemcostchange.CretedBy = obj[i].Currrentuser;
-                        db.ItemCostChanges.Add(itemcostchange);
+                       // obj[i].ItemCode = productdetail.ProductCode;
+                       // var itemcostchange = new ItemCostChange();
+                       // itemcostchange.ItemId = obj[i].ItemId;
+                       // itemcostchange.ItemName = obj[i].Description;
+                       // itemcostchange.PoInvoiceNumber = obj[i].InvoiceNumber;
+                       //// itemcostchange.OldPrice = productdetail.Cost;
+                       // //itemcostchange.NewPrice = obj[i].Price;
+                       // itemcostchange.PriceDiff = (float.Parse(productdetail.Cost) - float.Parse(obj[i].Price)).ToString();
+                       // itemcostchange.PricePercentage = ((float.Parse(itemcostchange.PriceDiff) / float.Parse(productdetail.Cost)) * 100).ToString();
+                       // itemcostchange.CreatedDate = DateTime.Now;
+                       // itemcostchange.NewPrice = obj[i].Price;
+                       // itemcostchange.CretedBy = obj[i].Currrentuser;
+                       // db.ItemCostChanges.Add(itemcostchange);
 
-                        productdetail.OldPrice = productdetail.Cost;
-                        productdetail.Cost = obj[i].Price;
-                        productdetail.PriceDiff = itemcostchange.PriceDiff;
-                        productdetail.PriceDiffPercentage = itemcostchange.PricePercentage;
-                        db.Entry(productdetail).State = EntityState.Modified;
+                       // productdetail.OldPrice = productdetail.Cost;
+                       // productdetail.Cost = obj[i].Price;
+                       // productdetail.PriceDiff = itemcostchange.PriceDiff;
+                       // productdetail.PriceDiffPercentage = itemcostchange.PricePercentage;
+                       // db.Entry(productdetail).State = EntityState.Modified;
                     }
                     db.SaveChanges();
                     if (obj[0].Received == true)
@@ -1598,23 +1598,24 @@ namespace ABC.POS.API.Controllers
                         var productdetail = db.Products.Where(x => x.Id == obj[i].ItemId).FirstOrDefault();
                         if (productdetail.Cost != obj[i].Price)
                         {
-                            var itemcostchange = new ItemCostChange();
-                            itemcostchange.ItemId = obj[i].ItemId;
-                            itemcostchange.ItemName = obj[i].Description;
-                            itemcostchange.PoInvoiceNumber = obj[i].InvoiceNumber;
-                            itemcostchange.OldPrice = productdetail.Cost;
-                            itemcostchange.NewPrice = obj[i].Price;
-                            itemcostchange.PriceDiff = (float.Parse(productdetail.Cost) - float.Parse(obj[i].Price)).ToString();
-                            itemcostchange.PricePercentage = ((float.Parse(itemcostchange.PriceDiff) / float.Parse(productdetail.Cost)) * 100).ToString();
-                            itemcostchange.CreatedDate = DateTime.Now;
-                            itemcostchange.NewPrice = obj[i].Price;
-                            itemcostchange.CretedBy = obj[i].Currrentuser;
-                            db.ItemCostChanges.Add(itemcostchange);
-                            productdetail.OldPrice = productdetail.Cost;
-                            productdetail.Cost = obj[i].Price;
-                            productdetail.PriceDiff = itemcostchange.PriceDiff;
-                            productdetail.PriceDiffPercentage = itemcostchange.PricePercentage;
-                            db.Entry(productdetail).State = EntityState.Modified;
+                           // var itemcostchange = new ItemCostChange();
+                           // itemcostchange.ItemId = obj[i].ItemId;
+                           // itemcostchange.ItemName = obj[i].Description;
+                           // itemcostchange.PoInvoiceNumber = obj[i].InvoiceNumber;
+                           //// itemcostchange.OldPrice = productdetail.Cost;
+                           // //itemcostchange.NewPrice = obj[i].Price;
+                           // //itemcostchange.PriceDiff = (float.Parse(productdetail.Cost) - float.Parse(obj[i].Price)).ToString();
+                           //// itemcostchange.PricePercentage = ((float.Parse(itemcostchange.PriceDiff) / float.Parse(productdetail.Cost)) * 100).ToString();
+                           // itemcostchange.CreatedDate = DateTime.Now;
+                           // //itemcostchange.NewPrice = obj[i].Price;
+                           // itemcostchange.CretedBy = obj[i].Currrentuser;
+                           // db.ItemCostChanges.Add(itemcostchange);
+
+                           // productdetail.OldPrice = productdetail.Cost;
+                           // productdetail.Cost = obj[i].Price;
+                           // productdetail.PriceDiff = itemcostchange.PriceDiff;
+                           // productdetail.PriceDiffPercentage = itemcostchange.PricePercentage;
+                           // db.Entry(productdetail).State = EntityState.Modified;
                         }
                         db.SaveChanges();
                         //Stock Update
