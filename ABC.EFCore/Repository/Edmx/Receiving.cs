@@ -34,5 +34,16 @@ namespace ABC.EFCore.Repository.Edmx
         public string Credit { get; set; }
         public DateTime? DueDate { get; set; }
         public string Change { get; set; }
+        public string SubTotal { get; set; }
+        public string InvTotal { get; set; }
+        public string InvBalance { get; set; }
+        public string PreBalance { get; set; }
+        public string Other { get; set; }
+        public string Freight { get; set; }
+        public int? CustomerId { get; set; }
+        public bool? IsPaid { get; set; }
+        public bool? IsPaidFirst { get; set; }
+
+        public virtual CustomerInformation Customer { get; set; }
     }
 }

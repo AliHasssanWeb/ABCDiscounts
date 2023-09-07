@@ -1,4 +1,5 @@
-﻿using ABC.EFCore.Entities.POS;
+﻿using ABC.DTOs.Library.SalesDTOs;
+using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.API.ViewModel;
 using ABC.Shared;
@@ -8,8 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NetBarcode;
+using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -2820,9 +2823,9 @@ namespace ABC.POS.API.Controllers
                 var Response = ResponseBuilder.BuildWSResponse<List<Vendor>>();
                 List<Vendor> dateObject = new List<Vendor>();
                 dateObject = (from data in db.Vendors
-                             orderby data.Company
-                             select new Vendor  { VendorId = data.VendorId, Company= data.Company }).ToList();
-              ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, dateObject);
+                              orderby data.Company
+                              select new Vendor { VendorId = data.VendorId, Company = data.Company }).ToList();
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, dateObject);
                 return Ok(Response);
             }
             catch (Exception ex)
@@ -4095,7 +4098,7 @@ namespace ABC.POS.API.Controllers
                     if (record.CategoryName != null)
                     {
                         var GetCat = db.ItemCategories.ToList().Where(x => x.Name == record.CategoryName).FirstOrDefault();
-                        if(GetCat != null)
+                        if (GetCat != null)
                         {
                             record.ItemCategoryId = GetCat.Id;
                         }
@@ -4103,7 +4106,7 @@ namespace ABC.POS.API.Controllers
                     if (record.SubCatName != null)
                     {
                         var GetCat = db.ItemSubCategories.ToList().Where(x => x.SubCategory == record.SubCatName).FirstOrDefault();
-                        if(GetCat != null)
+                        if (GetCat != null)
                         {
                             record.ItemSubCategoryId = GetCat.Id;
                         }
@@ -4851,7 +4854,7 @@ namespace ABC.POS.API.Controllers
         {
             try
             {
-               // var record = db.Products.ToList();
+                // var record = db.Products.ToList();
                 List<Product> dataObject = new List<Product>();
                 dataObject = (from e in db.Products
                               orderby e.Description
@@ -5591,7 +5594,7 @@ namespace ABC.POS.API.Controllers
                     var check = db.Financials.ToList();
                     var savefinancial = db.Financials.ToList().Where(x => x.ItemId == data.Id && x.ItemNumber == data.ItemNumber).FirstOrDefault();
                     //      data.Financial = new Financial();
-                    if(savefinancial != null)
+                    if (savefinancial != null)
                     {
                         if (newobjfinancial.Cost != null && newobjfinancial.Cost != "undefined")
                         {
@@ -5742,7 +5745,7 @@ namespace ABC.POS.API.Controllers
                         db.Entry(data.Financial).State = EntityState.Modified;
                         await db.SaveChangesAsync();
                     }
-                   
+
                     return Ok(Response);
                 }
                 return BadRequest();
@@ -6272,7 +6275,42 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpPost("SaleCreate1")]
+        public async Task<IActionResult> SaleCreate1(PointOfSale obj)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
 
+                var exist = await db.PointOfSales.Where(a => a.InvoiceNumber == obj.InvoiceNumber).FirstOrDefaultAsync();
+                if (exist == null)
+                {
+                    db.PointOfSales.Add(obj);
+                    db.SaveChanges();
+
+                    var SaleOrderCount = db.SystemCounts.FirstOrDefault();
+                    SaleOrderCount.SaleInvoiceCount = SaleOrderCount.SaleInvoiceCount + 1;
+                    db.Entry(SaleOrderCount).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("SaleCreate")]
         public async Task<IActionResult> SaleCreate(List<PosSale> obj)
@@ -6481,13 +6519,13 @@ namespace ABC.POS.API.Controllers
                     var getstock = db.InventoryStocks.ToList().Where(x => x.ProductId == obj[i].ItemId).FirstOrDefault();
                     //if (obj[0].IsClose == true)
                     //{
-                        if (getstock != null)
-                        {
-                            getstock.Quantity = (Convert.ToDouble(getstock.Quantity) - Convert.ToDouble(obj[i].RingerQuantity)).ToString();
-                            db.Entry(getstock).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                   // }
+                    if (getstock != null)
+                    {
+                        getstock.Quantity = (Convert.ToDouble(getstock.Quantity) - Convert.ToDouble(obj[i].RingerQuantity)).ToString();
+                        db.Entry(getstock).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    // }
                 }
 
 
@@ -6503,12 +6541,12 @@ namespace ABC.POS.API.Controllers
                         if (obj[0].IsPaid == false || obj[0].IsPaid == null)
                         {
                             Receivable objRec = new Receivable();
-                          //  var checcck = db.Receivables.ToList();
+                            //  var checcck = db.Receivables.ToList();
                             var GetRec = db.Receivables.ToList().Where(x => x.AccountNumber == getvendor.AccountId).ToList().FirstOrDefault();
                             if (GetRec != null)
                             {
                                 double last = Convert.ToDouble(GetRec.Amount);
-                                GetRec.Amount = (last +  grossamount).ToString();
+                                GetRec.Amount = (last + grossamount).ToString();
                                 db.Entry(GetRec).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
@@ -6634,7 +6672,7 @@ namespace ABC.POS.API.Controllers
                                     //receiving.PaymentType = "Wire";
 
                                 }
-                                else if(obj[0].PaymentTerms == "Cash")
+                                else if (obj[0].PaymentTerms == "Cash")
                                 {
                                     receiving.PaymentType = "Cash";
                                 }
@@ -6676,7 +6714,7 @@ namespace ABC.POS.API.Controllers
                     }
                     else
                     {
-                       // Account objAcc = new Account();
+                        // Account objAcc = new Account();
                         Account objAcc = null;
                         objAcc = new Account();
 
@@ -6873,6 +6911,53 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+
+        [HttpPost("SaleUpdate1")]
+        public async Task<IActionResult> SaleUpdate1(PointOfSale obj)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var exist = await db.PointOfSales.Where(a => a.PointOfSaleId == obj.PointOfSaleId).FirstOrDefaultAsync();
+                if (exist != null)
+                {
+                    var checkPayInvoice = db.Receivings.Where(f => f.InvoiceNumber == obj.InvoiceNumber).FirstOrDefault();
+                    if (checkPayInvoice == null)
+                    {
+                        if (obj.Count > exist.Count)
+                        {
+                            var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == obj.PointOfSaleId).ToList();
+
+                            if (savedItems.Count > 0)
+                            {
+                                db.Entry(exist).CurrentValues.SetValues(obj);
+                                db.PointOfSaleDetails.RemoveRange(savedItems);
+                                db.PointOfSaleDetails.AddRange(obj.PointOfSaleDetails);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+
+                }
+
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
 
 
@@ -7360,7 +7445,7 @@ namespace ABC.POS.API.Controllers
                     for (int i = 0; i < recordTicket.Count(); i++)
                     {
                         amount += Convert.ToDouble(recordTicket[i].Price);
-                            //Convert.ToDouble(obj[i].Quantity) * Convert.ToDouble(recordTicket[i].Price);
+                        //Convert.ToDouble(obj[i].Quantity) * Convert.ToDouble(recordTicket[i].Price);
                     }
                     for (int i = 0; i < recordTicket.Count(); i++)
                     {
@@ -7623,6 +7708,30 @@ namespace ABC.POS.API.Controllers
             }
 
         }
+
+        [HttpGet("GetinvoiceCount")]
+        public IActionResult GetinvoiceCount()
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SystemCount>();
+                var record = db.SystemCounts.FirstOrDefault();
+
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PosSale>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("SaleGet")]
         public IActionResult SaleGet()
         {
@@ -8044,7 +8153,7 @@ namespace ABC.POS.API.Controllers
 
 
 
-                      
+
                     }
                     else
                     {
@@ -9228,7 +9337,7 @@ namespace ABC.POS.API.Controllers
         }
 
 
-  
+
 
 
 
@@ -9782,7 +9891,27 @@ namespace ABC.POS.API.Controllers
             }
         }
 
-
+        [HttpGet("GetOpenSales1")]
+        public IActionResult GetOpenSales1()
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<string>>();
+                var record = db.PointOfSales.Where(x => x.IsOpen == true).Select(x => x.InvoiceNumber).ToList();
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PosSale>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("GetOpenSales")]
         public IActionResult GetOpenSales()
@@ -9806,6 +9935,27 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpGet("GetPostedsales1")]
+        public IActionResult GetPostedSales1()
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<string>>();
+                var record = db.PointOfSales.Where(x => x.IsClose == true).Select(f => f.InvoiceNumber).ToList();
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("GetPostedsales")]
         public IActionResult GetPostedsales()
@@ -9952,6 +10102,137 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+
+        [HttpPost("ChangePayment1")]
+        public IActionResult ChangePayment1(SaleInvoicesModel saleInvoices)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SalesInvoice>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var AccountId = "";
+                SalesInvoice saleInvoice = new SalesInvoice();
+                Receiving receiving = new Receiving();
+                var FoundInvoice = db.PointOfSales.ToList().Where(x => x.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
+
+                //if (obj.IsInvoicedPaid == true)
+                //{
+                //    FoundInvoice.IsPaid = true;
+                //}
+                FoundInvoice.IsClose = true;
+                FoundInvoice.IsOpen = false;
+                
+                saleInvoice.InvoiceNumber = saleInvoices.InvoiceNumber;
+                saleInvoice.Date = DateTime.Now;
+                saleInvoice.CustomerId = saleInvoices.CustomerId;
+                saleInvoice.TotalPaid = (saleInvoices.TotalPaid as string).Trim('$');
+                saleInvoice.TotalAmount = (saleInvoices.TotalAmount as string).Trim('$');
+                saleInvoice.Balance = (saleInvoices.InvBalance as string).Trim('$');
+                saleInvoice.Change = (saleInvoices.Change as string).Trim('$');
+                //saleInvoice.PreviousBalance = (saleInvoices.PreviousBalance as string).Trim('$');
+                saleInvoice.InvoiceBalance = (saleInvoices.InvoiceTotal as string).Trim('$');
+                saleInvoice.Buyer = saleInvoices.CustomerName;
+
+                db.Entry(FoundInvoice).State = EntityState.Modified;
+                db.SalesInvoices.Add(saleInvoice);
+                db.SaveChanges();
+
+                var customerInformation = db.CustomerInformations.Where(x => x.Id == Convert.ToInt32(saleInvoices.CustomerId)).FirstOrDefault();
+
+                 AccountId = db.Accounts.Where(a => a.AccountId == customerInformation.AccountId).Select(f =>f.AccountId).FirstOrDefault();
+                if (AccountId == null || AccountId == "")
+                {
+                    Account account = new Account();
+                    var accountSubGroupId = db.AccountSubGroups.ToList().Where(x => x.Title == "Customers").Select(x => x.AccountSubGroupId).FirstOrDefault();
+                    if (accountSubGroupId != null)
+                    {
+                        var customerCount = db.SystemCounts.Select(x => x.CustomerAccountNoCount).SingleOrDefault();
+
+                        account.AccountId = accountSubGroupId + "-" + string.Format("{0:0000}", customerCount);
+                        //account.Title = obj.CustomerName;
+                        account.Status = 1;
+                        account.AccountSubGroupId = accountSubGroupId;
+                        var saveAccount = db.Accounts.Add(account);
+                        db.SaveChanges();
+
+                        AccountId = saveAccount.Entity.AccountId;
+                    }
+                }
+                
+                var recevables = db.Receivables.Where(x => x.AccountId == AccountId).FirstOrDefault();
+                
+                var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
+                if (checkReceiving == null)
+                {
+                    receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
+                    receiving.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
+                    receiving.Date = DateTime.Now;
+                    receiving.Change = saleInvoices.Change;
+                    receiving.SubTotal = saleInvoices.SubTotal;
+                    receiving.InvTotal = saleInvoices.InvoiceTotal;
+                    receiving.InvBalance = saleInvoices.InvBalance;
+                    receiving.Change = saleInvoices.Change;
+                    receiving.Tax = saleInvoices.Tax;
+                    receiving.Discount = saleInvoices.Discount;
+                    receiving.Freight = saleInvoices.Freight;
+                    receiving.Other = saleInvoices.Other;
+                    receiving.PreBalance = recevables == null ? "0" : recevables.Amount;
+                    if (saleInvoices.InvBalance == "0" || saleInvoices.InvBalance == "$0.00")
+                    {
+                        receiving.IsPaid = true;
+                    }
+                    else
+                    {
+                        receiving.IsPaid = false;
+                    }
+                    db.Receivings.Add(receiving);
+                }
+                else
+                {
+                    var remaininginvoicePayAmount = Convert.ToDouble((checkReceiving.InvBalance as string).Trim('$')) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'));
+                    checkReceiving.InvBalance = Convert.ToString(remaininginvoicePayAmount);
+                    if (remaininginvoicePayAmount == 0)
+                    {
+                        checkReceiving.IsPaid = true;
+                    }
+                    db.Entry(checkReceiving).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+
+                if (recevables != null)
+                {
+                    double num1 = Convert.ToDouble((recevables.Amount as string).Trim('$'));
+                    double num2 = Convert.ToDouble(saleInvoice.TotalAmount);
+                    var num3 = num1 - num2;
+                    recevables.Amount = Convert.ToString(num3);
+                    db.Entry(recevables).State = EntityState.Modified;
+                }
+                else
+                {
+                    Receivable receivable = new Receivable();
+                    receivable.AccountId = AccountId;
+                    receivable.Amount = saleInvoices.InvoiceTotal;
+                    db.Receivables.Add(receivable);
+                }
+                db.SaveChanges();
+
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SalesInvoice>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("ChangePayment")]
         public IActionResult ChangePayment(SalesInvoice obj)
         {
@@ -9980,12 +10261,12 @@ namespace ABC.POS.API.Controllers
                 var getacc = db.CustomerInformations.Where(x => x.CustomerCode == obj.CustomerCode).FirstOrDefault();
                 //if (getacc != null)
                 //{
-                   
+
                 //}
                 var getaccount = db.Accounts.ToList().Where(a => a.AccountId == getacc.AccountNumber).FirstOrDefault();
-                if(getaccount != null)
+                if (getaccount != null)
                 {
-                   // var getCHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
+                    // var getCHaccount = db.Accounts.ToList().Where(a => a.Title == "Cash in hand").FirstOrDefault();
                     for (int i = 0; i < 2; i++)
                     {
                         Receiving transaction = null;
@@ -10075,9 +10356,9 @@ namespace ABC.POS.API.Controllers
                             transaction.InvoiceNumber = obj.InvoiceNumber;
                             transaction.Change = obj.Change;
                             transaction.Date = DateTime.Now;
-                            
-                            if (i == 0){ transaction.Credit = obj.Balance; transaction.Debit = "0.00"; }
-                            else{ transaction.Credit = "0.00"; transaction.Debit = obj.Balance; }
+
+                            if (i == 0) { transaction.Credit = obj.Balance; transaction.Debit = "0.00"; }
+                            else { transaction.Credit = "0.00"; transaction.Debit = obj.Balance; }
 
                             db.Receivings.Add(transaction);
                             db.SaveChanges();
@@ -10087,7 +10368,7 @@ namespace ABC.POS.API.Controllers
                 }
 
 
-                
+
                 return Ok(Response);
             }
             catch (Exception ex)
@@ -10095,6 +10376,40 @@ namespace ABC.POS.API.Controllers
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
                     var Response = ResponseBuilder.BuildWSResponse<SalesInvoice>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("SalesInvoiceTransactions1")]
+        public async Task<IActionResult> SalesInvoiceTransactions1(List<SalesInvTransaction> obj)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SalesInvTransaction>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                for (int i = 0; i < obj.Count(); i++)
+                {
+                    var SaleInvId = db.SalesInvoices.Where(x => x.InvoiceNumber == obj[0].InvoiceNumber).FirstOrDefault();
+                    if (SaleInvId != null)
+                    {
+                        obj[i].SalesInvoiceId = SaleInvId.Id;
+                    }
+                    await db.SalesInvTransactions.AddAsync(obj[i]);
+                    await db.SaveChangesAsync();
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SalesInvTransaction>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
@@ -10119,8 +10434,8 @@ namespace ABC.POS.API.Controllers
                     {
                         obj[i].SalesInvoiceId = SaleInvId.Id;
                     }
-                   await db.SalesInvTransactions.AddAsync(obj[i]);
-                   await db.SaveChangesAsync();
+                    await db.SalesInvTransactions.AddAsync(obj[i]);
+                    await db.SaveChangesAsync();
                 }
                 return Ok(Response);
             }

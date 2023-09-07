@@ -6,6 +6,7 @@ using ABC.Shared.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -671,6 +672,114 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpGet("PosSaleByInvoiceNumber1/{invoicenumber}/{method}")]
+        public IActionResult PosSaleByInvoiceNumber1(string invoicenumber, string method)
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<PointOfSaleModel>();
+                PointOfSale record = db.PointOfSales.Where(x => x.InvoiceNumber == invoicenumber).FirstOrDefault();
+
+                PointOfSaleModel obj = new PointOfSaleModel();
+                obj.PointOfSaleId = record.PointOfSaleId;
+                obj.InvoiceNumber = record.InvoiceNumber;
+                obj.CustomerId = record.CustomerId;
+                obj.Other = record.Other;
+                obj.Tax = record.Tax;
+                obj.IsPaid = record.IsPaid;
+                obj.IsOpen = record.IsOpen;
+                obj.IsClose = record.IsClose;
+                obj.Count = Convert.ToString(record.Count);
+                obj.SubTotal = record.SubTotal;
+
+                if (record != null)
+                {
+                    record.PointOfSaleDetails = db.PointOfSaleDetails.Where(x => x.PointOfSaleId == record.PointOfSaleId).ToList();
+                    if (record.PointOfSaleDetails.Count > 0)
+                    {
+                        var query = (
+                            from itemsdetails in db.PointOfSaleDetails
+                            join P in db.Products on itemsdetails.ItemId equals P.Id into result
+                            from jrresult in result.DefaultIfEmpty()
+                            join InvS in db.InventoryStocks on itemsdetails.ItemId equals InvS.ProductId into InvStockResult
+                            from jrresult1 in InvStockResult.DefaultIfEmpty()
+                            where itemsdetails.PointOfSaleId == record.PointOfSaleId
+                            select new
+                            {
+                                itemsdetails.PointOfSaleId,
+                                itemsdetails.PosSaleDetailId,
+                                itemsdetails.ItemId,
+                                itemsdetails.InDiscount,
+                                itemsdetails.OutDiscount,
+                                itemsdetails.Quantity,
+                                itemsdetails.InUnit,
+                                itemsdetails.OutUnit,
+                                itemsdetails.Price,
+                                itemsdetails.Total,
+                                itemsdetails.RingerQty,
+                                Description = jrresult.Description,
+                                ItemNumber = jrresult.ItemNumber,
+                                AmountRetail = jrresult.SaleRetail,
+                                SalesLimit = jrresult.SalesLimit,
+                                NeedHighAuthorization = jrresult.NeedHighAuthorization,
+                                HighLimitOn = jrresult.HighlimitOn,
+                                StockQty = jrresult1.Quantity
+                            }
+                            ).ToList();
+
+                        foreach( var item in query )
+                        {
+                            PointOfSaleDetailModel pointOfSaleDetailModel = new PointOfSaleDetailModel();
+                            pointOfSaleDetailModel.PointOfSaleId = Convert.ToString(item.PointOfSaleId);
+                            pointOfSaleDetailModel.ItemId = Convert.ToString(item.ItemId);
+                            pointOfSaleDetailModel.InDiscount = item.InDiscount;
+                            pointOfSaleDetailModel.OutDiscount = item.OutDiscount;
+                            pointOfSaleDetailModel.Quantity = item.Quantity;
+                            pointOfSaleDetailModel.InUnit = item.InUnit;
+                            pointOfSaleDetailModel.OutUnit = item.OutUnit;
+                            pointOfSaleDetailModel.Price = item.Price;
+                            pointOfSaleDetailModel.Total = item.Total;
+                            pointOfSaleDetailModel.RingerQty = item.RingerQty;
+                            pointOfSaleDetailModel.Description = item.Description;
+                            pointOfSaleDetailModel.ItemNumber = item.ItemNumber;
+                            pointOfSaleDetailModel.AmountRetail = item.AmountRetail;
+                            pointOfSaleDetailModel.SalesLimit = item.SalesLimit;
+                            pointOfSaleDetailModel.NeedHighAuthorization = item.NeedHighAuthorization;
+                            pointOfSaleDetailModel.HighLimitOn = item.HighLimitOn;
+                            pointOfSaleDetailModel.StockQty = item.StockQty;
+
+                            obj.PointOfSaleDetails.Add( pointOfSaleDetailModel );
+                        }
+
+                        var receiving = db.Receivings.Where(f => f.InvoiceNumber == invoicenumber).FirstOrDefault();
+                        if(receiving != null)
+                        {
+                            obj.InvoiceBalance = receiving.InvBalance;
+                        }
+                    }
+                }
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, obj);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("PosSaleByInvoiceNumber/{invoicenumber}/{method}")]
         public IActionResult PosSaleByInvoiceNumber(string invoicenumber, string method)
