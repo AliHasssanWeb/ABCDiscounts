@@ -1483,7 +1483,66 @@
 
                 <div id="InvoicePayments" class="tabcontent">
                     <h3>InvoicePayments</h3>
-                    <p>Paris is the capital of France.</p>
+                    <p style="color:#010083;font-weight:700">All Invoice Payments</p>
+                    <div class="row mt-2" style="background-color: #cccccc; ">
+
+
+                        <div class="col-lg-12" style="border:1px solid #e3e8f1" ">
+                            <div class="row" style="border-bottom:1px solid black;padding-top:5px;">
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Amount Paid</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Amount Alloc</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Payment Type</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">CK/Card Num</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:#010083">Date</h5>
+                                </div>
+                            </div>
+                            <div style="height:150px"> </div>
+
+
+                        </div>
+
+                    </div>
+                    <p style="color:#010083;padding-top:10px;font-weight:700"> Payments posted from this invoice</p>
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" style="border:1px solid #e3e8f1" ">
+                            <div class="row" style="border-bottom:1px solid black;padding-top:5px;">
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Amount Paid</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Amount Alloc</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Payment Type</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">CK/Card Num</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:white">Change</h5>
+                                </div>
+                                <div class="col">
+                                    <h5 style="font-size:13px;color:#010083">Date</h5>
+                                </div>
+                            </div>
+                            <div style="height:150px"> </div>
+
+
+                        </div>
+                      
+
+                    </div>
                     <div class="row mt-2" style="background-color: #cccccc">
 
 
@@ -1547,11 +1606,286 @@
 
                 <div id="PrintOptions" class="tabcontent">
                     <h3>PrintOptions</h3>
-                    <p>Tokyo is the capital of Japan.</p>
+                    <div class="row">
+                        <!-- First Div with 4 Columns -->
+                        <div class="col-md-5" >
+                            <div class=" p-3" style="border:inset">
+                                <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Simple Invoice</label><br>
+                               <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Categorized</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> In Order</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Snapshot</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Pre-Printed Forms</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> With OTP Taxes</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Custom Forms</label><br>
+                                 <input type="checkbox" id="" name="" value="">
+                                <label for="vehicle1"> Landscape</label><br>
+                             
+                            </div>
+                        </div>
+
+                        <!-- Second Div with 8 Columns -->
+                        <div class="col-md-7" style="border:inset">
+                            <div class="row" style="padding:15px">
+                                <div class="col-md-6">
+                                    <div  p-3">
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Auto Number</label><br><br>
+                                  @*      <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Print Footer Messeges</label><br>*@
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Separate Lines </label><br><br>
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> View SPR</label><br><br>
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> View Charge</label><br><br>
+                                      @*  <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> View Barcode in Invoice</label><br>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div >
+                                        <div style="padding-bottom:15px">
+                                        <label for="vehicle1"> Copies</label>  <input style="width:25%;margin-right:10px;" type="number" id=""><input style="width:25%" type="number" id=""><br>
+                                        </div>
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Print Discounts</label><br><br>
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Print Payments</label><br><br>
+                                      @*  <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Print Prev Balance</label><br>*@
+                                        <input type="checkbox" id="" name="" value="">
+                                        <label for="vehicle1"> Print Statistics</label><br><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" >
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-7"> <button type="button" class="btn btn-light p-3" style="border-radius: 0;">Process Invoices</button></div>
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Email Copy Default Setting</label>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-7"></div>
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Text Copy Default Setting</label>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-7 " style="padding-bottom:10px">
+                                 
+                              
+                                 <p>Backup Location</p>
+                                    <input style="border :ridge; background-color:#cccccc; border: 1px solid white;" type="text">
+
+                                </div>
+                                <div class="col-lg-1">
+                                   
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: #010083;">Keep Change</label>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" style="border:ridge">
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Email Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Text Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 ">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
+                                </div>
+
+                                <div class="col-lg-3 ">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
                 <div id="FooterMessages" class="tabcontent">
                     <h3>FooterMessages</h3>
-                    <p>Tokyo is the capital of Japan.</p>
+                    <div style="border:inset;padding:15px;">
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-md-10" style="text-align: right; display: flex">
+                                <p style="font-size: 14px; font-family: initial; color: black; padding-right:10px;">Copy #1:</p>
+                                <input class="col-auto" style="line-height: 40px; flex-grow: 1;" type="text">
+                            </div>
+                        </div>
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-md-10" style="text-align: right; display: flex">
+                                <p style="font-size: 14px; font-family: initial; color: black;padding-right:10px;">Copy #2:</p>
+                                <input class="col-auto" style="line-height: 40px; flex-grow: 1;" type="text">
+                            </div>
+                        </div>
+                        <div class="row" style="padding-bottom: 10px">
+                            <div class="col-md-10" style="text-align: right; display: flex">
+                                <p style="font-size: 14px; font-family: initial; color: black;padding-right:10px;">Copy #3:</p>
+                                <input class="col-auto" style="line-height: 40px; flex-grow: 1;" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px">
+
+                        <div class="col-md-10" style="text-align:right; display:flex">
+                            <p style="font-size: 14px;font-family: initial; color: #010083; padding-right:10px; width:20% ">Sales Order Message</p>
+
+                            <input style="line-height:40px;padding-right:70px;" type="text">
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px">
+                        <div class="col-md-10" style="text-align:right; display:flex">
+                            <p style="font-size: 14px;font-family: initial; color: #010083; padding-right:10px;width:20% ">Above Signature Message</p>
+
+                            <input style="line-height:40px;padding-right:70px;" type="text">
+                        </div>
+                    </div>
+                 
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" style="border:ridge">
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Email Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Text Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 ">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
+                                </div>
+
+                                <div class="col-lg-3 ">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
                 <div id="UnPaidInvoices" class="tabcontent">
                     <h3>UnPaidInvoices</h3>
