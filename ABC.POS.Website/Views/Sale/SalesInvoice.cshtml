@@ -5015,6 +5015,7 @@
                     if (data.customerClassification != null && data.customerClassification != "undefined") {
                         $("#customerAddToMail").text(data.customerClassification.addtoMaillingList);
                         if (data.customerClassification.viewInvoicePrevBalance) {
+                            if($("#posted-invoice").val() == "value"){
                             if (data.receivable != null) {
 
                                 $("#previousbalance").val(data.receivable.amount);
@@ -5022,6 +5023,8 @@
                                 ShowReceivables(data);
                             } else {
                                 $("#previousbalance").val("");
+                            }
+
                             }
                         }
                         else {
@@ -6460,6 +6463,8 @@
                             $('#searchname').attr("readonly", true);
 
                              $('#InvoiceBalance').val(data.invoiceBalance);
+                            $('#previousbalance').val(data.preBalance);
+                             
 
                             $(".saverecord").hide();
                             $(".printrecord").hide();

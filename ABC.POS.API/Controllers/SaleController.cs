@@ -755,6 +755,7 @@ namespace ABC.POS.API.Controllers
                         if(receiving != null)
                         {
                             obj.InvoiceBalance = receiving.InvBalance;
+                            obj.PreBalance = receiving.PreBalance;
                         }
                     }
                 }
