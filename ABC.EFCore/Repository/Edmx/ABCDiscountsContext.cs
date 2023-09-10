@@ -133,6 +133,7 @@ namespace ABC.EFCore.Repository.Edmx
         public virtual DbSet<SupplierOtherPayment> SupplierOtherPayments { get; set; }
         public virtual DbSet<SupplierType> SupplierTypes { get; set; }
         public virtual DbSet<SuppliersPayment> SuppliersPayments { get; set; }
+        public virtual DbSet<SystemCount> SystemCounts { get; set; }
         public virtual DbSet<Terminal> Terminals { get; set; }
         public virtual DbSet<TerminalAccess> TerminalAccesses { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
@@ -2106,17 +2107,93 @@ namespace ABC.EFCore.Repository.Edmx
             {
                 entity.ToTable("PointOfSale");
 
-                entity.Property(e => e.Cost).HasMaxLength(50);
+                entity.Property(e => e.AmountDue)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.DemageQty).HasMaxLength(50);
+                entity.Property(e => e.CashierName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Charges)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cost)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DemageQty)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Discount)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Freight)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FromScreen)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.InvoiceDate).HasColumnType("date");
 
+                entity.Property(e => e.InvoiceNumber)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InvoiceTotal)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IsPostStatus)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OrderTime)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Other)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.PaidDate).HasColumnType("date");
 
-                entity.Property(e => e.ReturnQty).HasMaxLength(50);
+                entity.Property(e => e.PaymentTerms)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.ShipmentLimit).HasMaxLength(50);
+                entity.Property(e => e.PreviousBalance)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ReturnQty)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SaleManagerCreditAllow)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShipmentLimit)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SubTotal)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SupervisorCreditAllow)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Tax)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.PointOfSales)
@@ -2131,6 +2208,22 @@ namespace ABC.EFCore.Repository.Edmx
                     .HasName("PK_PosSaleDetail");
 
                 entity.ToTable("PointOfSaleDetail");
+
+                entity.Property(e => e.InDiscount).HasMaxLength(250);
+
+                entity.Property(e => e.InUnit).HasMaxLength(250);
+
+                entity.Property(e => e.OutDiscount).HasMaxLength(250);
+
+                entity.Property(e => e.OutUnit).HasMaxLength(250);
+
+                entity.Property(e => e.Price).HasMaxLength(250);
+
+                entity.Property(e => e.Quantity).HasMaxLength(250);
+
+                entity.Property(e => e.RingerQty).HasMaxLength(250);
+
+                entity.Property(e => e.Total).HasMaxLength(250);
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.PointOfSaleDetails)
@@ -2482,6 +2575,18 @@ namespace ABC.EFCore.Repository.Edmx
 
                 entity.Property(e => e.DueDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Freight)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InvBalance)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InvTotal)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.InvoiceNumber).HasMaxLength(50);
 
                 entity.Property(e => e.InvoiceTypeId)
@@ -2490,19 +2595,36 @@ namespace ABC.EFCore.Repository.Edmx
 
                 entity.Property(e => e.NetAmount).HasMaxLength(50);
 
+                entity.Property(e => e.Other)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.PayFromAccount).HasMaxLength(50);
 
                 entity.Property(e => e.PayFromAccountId).HasColumnName("PayFromAccountID");
 
                 entity.Property(e => e.PaymentType).HasMaxLength(50);
 
+                entity.Property(e => e.PreBalance)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
                 entity.Property(e => e.StoreName).HasMaxLength(50);
 
+                entity.Property(e => e.SubTotal)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Tax).HasMaxLength(50);
 
                 entity.Property(e => e.TaxAmount).HasMaxLength(50);
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.Receivings)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_CustomerId");
             });
 
             modelBuilder.Entity<Route>(entity =>
@@ -2876,6 +2998,11 @@ namespace ABC.EFCore.Repository.Edmx
                 entity.Property(e => e.Ponumber).HasColumnName("PONumber");
 
                 entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
+            });
+
+            modelBuilder.Entity<SystemCount>(entity =>
+            {
+                entity.ToTable("SystemCount");
             });
 
             modelBuilder.Entity<Terminal>(entity =>

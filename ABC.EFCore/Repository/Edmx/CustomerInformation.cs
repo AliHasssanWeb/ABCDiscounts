@@ -10,6 +10,7 @@ namespace ABC.EFCore.Repository.Edmx
         public CustomerInformation()
         {
             PointOfSales = new HashSet<PointOfSale>();
+            Receivings = new HashSet<Receiving>();
         }
 
         public int Id { get; set; }
@@ -77,5 +78,6 @@ namespace ABC.EFCore.Repository.Edmx
 
         public virtual Account Account { get; set; }
         public virtual ICollection<PointOfSale> PointOfSales { get; set; }
+        public virtual ICollection<Receiving> Receivings { get; set; }
     }
 }

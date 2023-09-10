@@ -66,8 +66,8 @@
         width: 2rem;
         margin-left: 7rem;
         /*position: relative;
-                        left: 15%;
-                        border:0px solid;*/
+                            left: 15%;
+                            border:0px solid;*/
     }
 
     .wd-10 {
@@ -118,8 +118,8 @@
     }
 
     /*.tablesize {
-                            width: 1180px;
-                        }*/
+                                width: 1180px;
+                            }*/
 
 
     .ti-close {
@@ -623,18 +623,20 @@
                         <div class="w-100 p-3 h-100 w-100 d-inline-block actionbox" id="listbtns">
                             <div id="onlisticon" class="di">
                                 <img id="refresh-id" src="../images/refresh.png" style="width:50px" title="Refresh" onclick="ReloadPage()" />
-                                <img class="saverecord" src="../images/save.png" style="width:50px" title="Save" onclick="creditCheck(false, false,false,false)" />
-                                <img class="editrecord" src="../images/edit.png" style="width: 50px; display: none" title="Edit" onclick="creditCheck(false,true,false,false)" />
+                                @*   <img class="saverecord" src="../images/save.png" style="width:50px" title="Save" onclick="creditCheck(false, false,false,false)" /> *@
+                                <img class="saverecord" src="../images/save.png" style="width:50px" title="Save" onclick="InsertSaleDetails1(false, false)" />
+                               @*  <img class="editrecord" src="../images/edit.png" style="width: 50px; display: none" title="Edit" onclick="creditCheck(false,true,false,false)" /> *@
+                                <img class="editrecord" src="../images/edit.png" style="width: 50px; display: none" title="Edit" onclick="InsertSaleDetails1(false,false)" />
                                 <img class="hide-icon" src="../images/delete.png" style="width:50px" title="Delete" onclick="" />
 
                                 <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />
                                 <div class="di div-style" style=" margin-left: 30px;">
-                                    <select onchange="nextinvoice('null',this.value)" id="posted-invoice">
+                                    <select onchange="nextinvoice1('null',this.value)" id="posted-invoice">
                                         <option value="value">Posted</option>
                                     </select>
                                 </div>
                                 <div class="di div-style">
-                                    <select onchange="nextinvoice('null',this.value)" id="open-invoice">
+                                    <select onchange="nextinvoice1('null',this.value)" id="open-invoice">
                                         <option value="value">Open</option>
                                     </select>
                                 </div>
@@ -687,6 +689,10 @@
                                                 </label>
                                             </div>
                                         </div>
+                                         <div>
+                                             @*PosSaleId Field *@
+                                                <input type="hidden" id="PointOfSaleId" name="PointOfSaleId" value="">
+                                            </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
@@ -1174,6 +1180,9 @@
                             <label style="color: #8f2000; font-weight: 700;">
                                 Balance Due <span id="BalanceDueP" class="ms-5"></span>
                             </label>
+                
+                              @*InvoiceBalanceField *@
+                              <input type="hidden" id="InvoiceBalance" name="InvoiceBalance" value="">
 
                         </div>
                         <div class="col-lg-1">
@@ -1236,16 +1245,16 @@
 
                                 </div>
                             </div>
-                               <div class="col-lg-2 col-md-6 col-sm-12 col-12">
-                              @*  <div class="form-group bordercolormodal">
-                                   
-                                    
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                @*  <div class="form-group bordercolormodal">
+
+
                                 </div>*@
                                 <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-left"></i></button>
-                                       <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>
-                                   
+                                <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>
+
                                 @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
-                                  
+
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
@@ -2824,7 +2833,7 @@
                                 <button id="slctbtn" onclick="GetItemDataAppendForDesModal3()" class="btn btn-outline-primary btn-icon-text mt-2 pt-2 pb-2">Select</button>
                             </div>
                             <div class="col di div-style wd-3" style="display:none;">
-                                 <input type="text" id="Pcd" />
+                                <input type="text" id="Pcd" />
                             </div>
                         </div>
                     </div>
@@ -2921,10 +2930,10 @@
                                                                         <input autocomplete="off" class="imginput" id="productImage1s" type="file" accept="image/*" onchange="loadFile1(event)" name="ProfileImage">
 
                                                                         <script>
-                                                                            var loadFile1 = function(event) {
+                                                                            var loadFile1 = function (event) {
                                                                                 var output = document.getElementById('output1');
                                                                                 output.src = URL.createObjectURL(event.target.files[0]);
-                                                                                output.onload = function() {
+                                                                                output.onload = function () {
                                                                                     URL.revokeObjectURL(output.src) // free memory
                                                                                 }
                                                                                 output.style.display = "block";
@@ -4073,7 +4082,7 @@
     var formatDate = nowDay + "/" + nowMonth + "/" + nowYear;
     var sernum = 1;
     var paymentserial = 1;
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
         $.ajax({
@@ -4081,11 +4090,11 @@
             async: false,
             contentType: "application/json;",
             dataType: "json",
-            success: function(data) {
-                $.each(data, function(index, item) {
+            success: function (data) {
+                $.each(data, function (index, item) {
 
                     var html = '';
-                    html += '<tr id="rowlistid-' + index + '" onclick ="Changerow(' + index + ',' + item.id + ','+ item.productCode + ' )"  class="itemnewtr">';
+                    html += '<tr id="rowlistid-' + index + '" onclick ="Changerow(' + index + ',' + item.id + ',' + item.productCode + ' )"  class="itemnewtr">';
                     html += '<td id="deslistid-' + index + '">' + item.description + '</td>';
                     html += '<td id="retlistid-' + index + '">' + item.retail + '</td>';
                     html += '</tr >';
@@ -4094,7 +4103,7 @@
                 });
 
             },
-            error: function(error) {
+            error: function (error) {
                 //alert(error);
             }
         });
@@ -4106,7 +4115,7 @@
 
         AppendAllMissions(event);
         var grosstotal = 0;
-        $('.add-row').click(function() {
+        $('.add-row').click(function () {
             if ($("#customerid").val() == "") {
                 Swal.fire(
                     'Kindly Slect',
@@ -4117,7 +4126,7 @@
                 return false;
             }
             var count = 0;
-            $("#saletable tr").each(function(index, value) {
+            $("#saletable tr").each(function (index, value) {
                 count++;
             });
             sernum = count;
@@ -4166,11 +4175,11 @@
 
 
 
-            $(".descc").dblclick(function() {
+            $(".descc").dblclick(function () {
                 if (this.value == null || this.value == "") {
                     $("#VendorDesModal").modal('show');
                 }
-                
+
 
             });
             //$(".Descca").dblclick(function() {
@@ -4183,7 +4192,8 @@
 
 
 
-        $("#btn").click(function() {
+        $("#btn").click(function () {
+            debugger;
             InsertSaleDetails(false, false);
         });
 
@@ -4194,10 +4204,10 @@
 
 
 
-    function Changerow(val, val2 , val3) {
+    function Changerow(val, val2, val3) {
         $("#Pcd").val(val3);
         var allrows = $(".itemnewtr").find('tr');
-        $.each(allrows.prevObject, function(ind, it) {
+        $.each(allrows.prevObject, function (ind, it) {
             if ($(it).find('id').prevObject[0].id == ("rowlistid-" + val)) {
                 $('#itemquantitylabel').trigger('focus');
                 $($(it).find('id').prevObject[0]).addClass("selectedrow");
@@ -4235,7 +4245,7 @@
 
 
     /*  /to append list on posted open dropdown/*/
-    $('.add-rowpayment').click(function() {
+    $('.add-rowpayment').click(function () {
 
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
@@ -4332,39 +4342,80 @@
 
         }
     }
-    var openinvoices = $('#open-invoice');
+    // var openinvoices = $('#open-invoice');
+    // $.ajax({
+    //     type: "GET",
+    //     url: '@Url.Action("GetOpensales", "Sale")',
+    //     dataType: 'json',
+    //     success: function (data) {
+
+    //         $.each(data, function (val, text) {
+    //             openinvoices.append(
+    //                 /*  $('<option></option>').val(val).html("<div onclick=seletchdkjsa(" + text.currentInvoiceNumber + ")" + text.currentInvoiceNumber + "-" + text.customerNumber + "-" + text.customerName +"</div>")*/
+    //                 $('<option></option>').val(text).html(text/* + "-" + text.customerNumber + "-" + text.customerName*/)
+    //             );
+    //         });
+    //     },
+    //     error: function (xhr, status, error) {
+    //         var errorMessage = xhr.status + ': ' + xhr.statusText
+    //     },
+    // });
+
+    // === function Open invoice Created By NOUMAN
+     var openinvoices1 = $('#open-invoice');
     $.ajax({
         type: "GET",
-        url: '@Url.Action("GetOpensales", "Sale")',
+        url: '@Url.Action("GetOpensales1", "Sale")',
         dataType: 'json',
-        success: function(data) {
-
-            $.each(data, function(val, text) {
-                openinvoices.append(
+        success: function (data) {
+            $.each(data, function (val, text) {
+             
+                openinvoices1.append(
                     /*  $('<option></option>').val(val).html("<div onclick=seletchdkjsa(" + text.currentInvoiceNumber + ")" + text.currentInvoiceNumber + "-" + text.customerNumber + "-" + text.customerName +"</div>")*/
                     $('<option></option>').val(text).html(text/* + "-" + text.customerNumber + "-" + text.customerName*/)
                 );
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText
         },
     });
-    var postedinvoices = $('#posted-invoice');
+
+    // var postedinvoices = $('#posted-invoice');
+    // $.ajax({
+    //     type: "GET",
+    //     url: '@Url.Action("GetPostedsales", "Sale")',
+    //     dataType: 'json',
+    //     success: function (data) {
+    //         console.log(data);
+    //         $.each(data, function (val, text) {
+    //             postedinvoices.append(
+    //                 $('<option></option>').val(text).html(text /* + "-" + text.customerNumber + "-" + text.customerName*/)
+
+    //             );
+    //         });
+    //     },
+    //     error: function (xhr, status, error) {
+    //         var errorMessage = xhr.status + ': ' + xhr.statusText
+    //     },
+    // });
+
+    // === function Posted invoice Created By NOUMAN
+     var postedinvoices1 = $('#posted-invoice');
     $.ajax({
         type: "GET",
-        url: '@Url.Action("GetPostedsales", "Sale")',
+        url: '@Url.Action("GetPostedsales1", "Sale")',
         dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            $.each(data, function(val, text) {
-                postedinvoices.append(
+        success: function (data) {
+           debugger
+            $.each(data, function (val, text) {
+                postedinvoices1.append(
                     $('<option></option>').val(text).html(text /* + "-" + text.customerNumber + "-" + text.customerName*/)
 
                 );
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText
         },
     });
@@ -4374,7 +4425,7 @@
         var total = 0
 
         //   var alltr = $("#saletable").find('tr');
-        $("#saletable tr").each(function() {
+        $("#saletable tr").each(function () {
             var self = $(this);
 
             var col_11_value = self.find("td:eq(10)").text().trim();
@@ -4420,13 +4471,13 @@
         $("#rowid-" + val).remove();
         var alltr = $("#saletable").find('tr');
 
-        $.each(alltr, function(i, t) {
+        $.each(alltr, function (i, t) {
             if (i > 0) {
                 var TRid = $(t)[0].id.split('-');
                 $(t).attr('id', TRid[0] + "-" + i);
 
                 var alltd = $(t).find('td');
-                $.each(alltd, function(f, it) {
+                $.each(alltd, function (f, it) {
                     //  console.log($(it)[0].id.split('-'));
                     var id = $(it)[0].id.split('-');
                     if (id[0] == "countser") {
@@ -4458,13 +4509,13 @@
         $("#rowidsalepayment-" + val).remove();
         var alltr = $("#customerpaymentsaletable").find('tr');
 
-        $.each(alltr, function(i, t) {
+        $.each(alltr, function (i, t) {
             if (i > 0) {
                 var TRid = $(t)[0].id.split('-');
                 $(t).attr('id', TRid[0] + "-" + i);
 
                 var alltd = $(t).find('td');
-                $.each(alltd, function(f, it) {
+                $.each(alltd, function (f, it) {
                     var id = $(it)[0].id.split('-');
 
 
@@ -4505,18 +4556,24 @@
         $("#payment").modal('hide');
     }
     function openmodal() {
+        debugger;
+
+        var chksubTotal = $("#subtotalauto").val();
+        var chkinvTotal = $("#invoicetotal").val();
+        if(chksubTotal == "" && chkinvTotal == ""){
+            $("#customerpayment").modal('hide');
+            return;
+        }
+
         var invoicetotal = $("#invoicetotal").val();
-        var amountdue = $("#amountdue").val();
+        var invoiceBalance = $("#InvoiceBalance").val();
 
         $("#InvoiceTotalP").text(invoicetotal);
-        $("#BalanceDueP").text(amountdue);
-       $("#BalanceP").text(amountdue);
-var balanceText = $("#BalanceP").text().trim();
-var numericValue = parseFloat(balanceText.replace(/[^\d.-]/g, ""));
-var isNegative = balanceText.includes("(") && balanceText.includes(")");
-
-
-
+        $("#BalanceDueP").text(invoiceBalance);
+        $("#BalanceP").text(invoiceBalance);
+        var balanceText = $("#BalanceP").text().trim();
+        var numericValue = parseFloat(balanceText.replace(/[^\d.-]/g, ""));
+        var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
         $("#customerpayment").modal('show');
     }
@@ -4534,7 +4591,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
     }
 
-    $('.add-row1').click(function() {
+    $('.add-row1').click(function () {
 
         var html = '';
         html += '<tr class="">';
@@ -4577,9 +4634,176 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
 
     }
-    //tosearchh
-    function InsertSaleDetails(printorNot, update, Ispaid,IsInvoicePaid) {
 
+
+    function InsertSaleDetails1(Isprint, Ispaid) {
+        debugger;
+        var customername = $("#searchname").val();
+        var customercode = $("#customercodeinfo").val();
+        var CustomerId = $("#customerid").val();
+        var saleman = $("#salesmanid").text();
+        var invoicenumber = $("#invoicenumber").val();
+        var invoicetotal = $("#invoicetotal").val();
+        var discountidadd = $("#discountidadd").val();
+        var subtotal = $("#subtotalauto").val();
+        var otherid = $("#otherid").val();
+        var AccNum = $("#Accountnumber").val();
+        var taxid = $("#taxid").val();
+        var freightid = $("#freightid").val();
+        var GetSaleDiscount = $("#getsalediscount").is(':checked');
+        var CountNumber = $("#countnum").text();
+        var drivingLicense = $("#drivingLicense").val();
+        var plateNo = $("#plateNo").val();
+        var PointOfSaleId = $("#PointOfSaleId").val();
+
+
+        $("#saletable TBODY TR").each(function () {
+            if ($(this).find("#productId").val() == '') {
+                RemoveRow(($(this).attr("id")).split("rowid-")[1]);
+            }
+        });
+
+        var Sale = {};
+
+       // Sale.drivingLicense = drivingLicense;
+       // Sale.plateNo = plateNo;
+       // Sale.CustomerName = customername;
+       // Sale.CustomerNumber = customercode;
+        Sale.CustomerId = CustomerId;
+       // Sale.SaleManName = saleman;
+        Sale.InvoiceNumber = invoicenumber;
+        Sale.InvoiceTotal = invoicetotal;
+        // Sale.Discount = discountidadd;
+        Sale.Charges = discountidadd;
+        Sale.SubTotal = subtotal;
+        Sale.Other = otherid;
+      //  Sale.CustomerAccountNumber = AccNum;
+        Sale.Tax = taxid;
+        Sale.Freight = freightid;
+        Sale.PointOfSaleId = PointOfSaleId != "" ? PointOfSaleId : 0 ;
+
+        if (GetSaleDiscount == true) {
+            Sale.GetSaleDiscount = true;
+        } else {
+
+            Sale.GetSaleDiscount = false;
+
+        }
+
+        if (Isprint) {
+            Sale.IsPrintinvoice = true;
+            // Sale.IsClose = true;
+            // Sale.IsOpen = false;
+
+        }
+        // else {
+        //     Sale.IsClose = false;
+        //     Sale.IsOpen = true;
+        // }
+
+        if (Sale.IsPrintinvoice == true) {
+            Sale.OnCredit = "true";
+        }
+       // Sale.BusinessAddress = $("#bussinessAddress").text();
+       // if ($("#customerAddToMail").text() == "true") {
+          //  Sale.AddToMailList = true;
+      //  }
+      //  else {
+          //  Sale.AddToMailList = false;
+        //}
+       // Sale.CustomerEmail = $("#customerEmail").text();
+        Sale.Count = CountNumber;
+        Sale.SupervisorId = parseInt($("#supervisorId").text());
+
+
+        var itemsdetails = new Array();
+        var count1 = 1;
+        $("#saletable TBODY TR").each(function () {
+
+            var row = $(this);
+            if (row.find("TD").eq(14).html() == '') {
+                RemoveRow(count1);
+                //count1--;
+                return;
+            }
+
+            var itemDetail = {};
+         // itemDetail.ItemNumber = row.find("TD").eq(1).html();
+           // itemDetail.ItemNumber = itemDetail.ItemNumber.replace('-', '');
+           /// itemDetail.ItemDescription = row.find("TD").eq(2).html();
+            itemDetail.Quantity = row.find("TD").eq(3).html();
+            itemDetail.AmountRetail = row.find("TD").eq(4).html();
+            itemDetail.InDiscount = row.find("TD").eq(5).html();    
+            itemDetail.OutDiscount = row.find("TD").eq(6).html();
+            itemDetail.InUnit = row.find("TD").eq(7).html();
+            itemDetail.OutUnit = row.find("TD").eq(8).html();
+            itemDetail.Price = row.find("TD").eq(9).html(); 
+            itemDetail.Total = row.find("TD").eq(10).html();
+            itemDetail.RingerQty = row.find("TD").eq(17).html();    
+            itemDetail.ItemId = row.find("TD").eq(14).html();
+          //  itemDetail.ItemName = row.find("TD").eq(2).html();
+
+          if(PointOfSaleId != null || PointOfSaleId != ""){
+                itemDetail.PointOfSaleId = PointOfSaleId;
+          }
+
+            itemsdetails.push(itemDetail);
+            count1++;
+        });
+
+      Sale.PointOfSaleDetails = itemsdetails;
+     
+
+      if(PointOfSaleId == "" || PointOfSaleId == undefined){
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddSalePos1", "Sale")',
+
+            data: JSON.stringify(Sale),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            cache: false,
+            success: function (data) {
+                if(data == true){
+                    toastr.success('Invoice Saved Successfully');
+                    location.reload();
+                }
+            }
+        });
+      }
+      else{
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateSalePos1", "Sale")',
+
+                data: JSON.stringify(Sale),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                   
+                        if (data == true) {
+                            if(Ispaid == true){
+                                ChangePayment1(true);
+                            }
+                        // if (Isprint == true) {
+                        //     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
+                        //     window.open(actionUrl);
+                        //     location.reload();
+                        // }
+                        return alert("success");
+                        // else {
+                        //     location.reload();
+                        // }
+                    }
+                }
+            });
+      }
+    }
+
+    //tosearchh
+    function InsertSaleDetails(printorNot, update, Ispaid, IsInvoicePaid) {
+        debugger;
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
         var CustomerID = $("#customerid").val();
@@ -4598,13 +4822,14 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var plateNo = $("#plateNo").val();
 
         var SaleDetails = new Array();
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             if ($(this).find("#productId").val() == '') {
                 RemoveRow(($(this).attr("id")).split("rowid-")[1]);
             }
         });
         var count1 = 1;
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
+            debugger;
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(14).html() == '') {
@@ -4612,6 +4837,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 //count1--;
                 return;
             }
+
             Sale.ItemNumber = row.find("TD").eq(1).html();
             Sale.ItemNumber = Sale.ItemNumber.replace('-', '');
             Sale.ItemDescription = row.find("TD").eq(2).html();
@@ -4631,7 +4857,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             Sale.SaleManName = saleman;
             Sale.InvoiceNumber = invoicenumber;
             Sale.InvoiceTotal = invoicetotal;
-           // Sale.Discount = discountidadd;
+            // Sale.Discount = discountidadd;
             Sale.Charges = discountidadd;
             Sale.SubTotal = subtotal;
             Sale.Other = otherid;
@@ -4754,20 +4980,20 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                             dataType: "json",
                                             async: false,
                                             cache: false,
-                                            success: function(data) {
+                                            success: function (data) {
                                                 //debugger;
     @*if (data.success) {
                                                     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                     window.open(actionUrl);
                                                     location.reload();
                                                     }*@
-                                                                        if (data == true) {
-                                                                             if(IsInvoicePaid){
-                                                                ChangePayment(true);
+                                                                            if (data == true) {
+                                                    if (IsInvoicePaid) {
+                                                        ChangePayment(true);
 
-                                                                }else{
-                                                                ChangePayment(false);
-                                                                }
+                                                    } else {
+                                                        ChangePayment(false);
+                                                    }
                                                     //toastr.success('Invoice Saved Successfully');
                                                     //setTimeout(function() {
                                                     //    if (printorNot == true) {
@@ -4800,20 +5026,20 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                     dataType: "json",
                                     async: false,
                                     cache: false,
-                                    success: function(data) {
+                                    success: function (data) {
                                         if (data == true) {
 
-                                            if(IsInvoicePaid){
-                                            ChangePayment(true);
+                                            if (IsInvoicePaid) {
+                                                ChangePayment(true);
 
-                                            }else{
-                                            ChangePayment(false);
+                                            } else {
+                                                ChangePayment(false);
                                             }
                                         }
                                         else {
-                                                    toastr.error('Invoice failed to save');
+                                            toastr.error('Invoice failed to save');
 
-                                                }
+                                        }
                                     }
                                 });
                             }
@@ -4833,7 +5059,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                         title: 'Save New Sale Invoice!',
                         content: 'Are you sure to save new Sale Invoice?',
                         buttons: {
-                            confirm: function() {
+                            confirm: function () {
                                 //debugger;
                                 var isamountValid = true;
                                 if ($("#isExclude").text() == "true") {
@@ -4871,17 +5097,17 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                                         dataType: "json",
                                                         async: false,
                                                         cache: false,
-                                                        success: function(data) {
+                                                        success: function (data) {
                                                             //debugger;
     @*if (data.success) {
                                                                 var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                                 window.open(actionUrl);
                                                                 location.reload();
                                                                 }*@
-                                                                        if (data == true) {
+                                                                            if (data == true) {
 
                                                                 toastr.success('Invoice Saved Successfully');
-                                                                setTimeout(function() {
+                                                                setTimeout(function () {
                                                                     if (printorNot == true) {
                                                                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                                         window.open(actionUrl);
@@ -4912,13 +5138,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                                 dataType: "json",
                                                 async: false,
                                                 cache: false,
-                                                success: function(data) {
+                                                success: function (data) {
                                                     //debugger;
     @*if (data.success) {
                                                         window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                         //window.open('Purchase/PurchaseInvoice','_blank');
                                                         }*@
-                                                                if (data == true) {
+                                                                    if (data == true) {
                                                         if (printorNot == true) {
                                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                             window.open(actionUrl);
@@ -4944,7 +5170,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                 }
 
                             },
-                            cancel: function() {
+                            cancel: function () {
                             },
                         }
                     });
@@ -4956,7 +5182,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     title: 'Update Sale Invoice!',
                     content: 'Are you sure to Update Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             //debugger;
                             var isamountValid = true;
                             if ($("#isExclude").text() == "true") {
@@ -4983,14 +5209,14 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                                 data: { 'SaleDetails': SaleDetails },
                                                 //contentType: "application/json; charset=utf-8",
                                                 dataType: "json",
-                                                success: function(data) {
+                                                success: function (data) {
                                                     //debugger;
     @*if (data.success) {
                                                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                         window.open(actionUrl);
                                                         location.reload();
                                                         }*@
-                                                                        if (data == true) {
+                                                                            if (data == true) {
                                                         if (printorNot == true) {
                                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                             window.open(actionUrl);
@@ -5013,13 +5239,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                         data: JSON.stringify(SaleDetails),
                                         contentType: "application/json; charset=utf-8",
                                         dataType: "json",
-                                        success: function(data) {
+                                        success: function (data) {
                                             //debugger;
     @*if (data.success) {
                                                 window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                 //window.open('Purchase/PurchaseInvoice','_blank');
                                                 }*@
-                                                                if (data == true) {
+                                                                    if (data == true) {
                                                 if (printorNot == true) {
                                                     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                     window.open(actionUrl);
@@ -5043,7 +5269,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
                             }
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -5052,7 +5278,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         }
     }
     function SaveOnGoingSales() {
-
+        debugger;
         var isValid = true;
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
@@ -5069,7 +5295,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var CountNumber = $("#countnum").text();
         var desnam = $("#description-1").text();
         var SaleDetails = new Array();
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
             Sale.ItemNumber = row.find("TD").eq(1).html();
@@ -5162,7 +5388,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 dataType: "json",
                 async: false,
                 cache: false,
-                success: function(data) {
+                success: function (data) {
 
                 }
             });
@@ -5256,7 +5482,8 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var previousbalance = $("#previousbalance").val();
         $("#amountdue").text("$" + foundtotal.toFixed(2));
     }
-     function CalculatetaxPlusDiscount() {
+    function CalculatetaxPlusDiscount() {
+        debugger;
         var subtotal = $("#subtotalauto").val().split('$');
         var prevBalance = $("#previousbalance").val();
         var discount = $("#discountidadd").val();
@@ -5266,6 +5493,11 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var dueAmount = $("#amountdue").val();
 
         var discountAmount = 0;
+
+        if(discount > 100){
+             Swal.fire("Error","Discount Not Be More Then 100%",'error');
+            return;
+        }
 
         if (discount == "") {
             discount = 0;
@@ -5280,17 +5512,16 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         } if (freight == "") {
             freight = 0;
 
-        } if(prevBalance == ""){
+        } if (prevBalance == "") {
             prevBalance = 0;
         }
 
-        var newsubtotal = subtotal; //subtotal[1];
+        var newsubtotal = subtotal[1]; //subtotal[1];
         //   alert(newsubtotal);
         // var newdiscount = discount[1];
         //debugger;
         var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
-        if(parseFloat(discount) > 0)
-        {
+        if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
         }
         var minusdiscount = parseFloat(sumofallexpences) - discountAmount;  //+ parseFloat(discount);
@@ -5299,15 +5530,17 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
         if (isNaN(invoicetotal)) {
             $("#invoicetotal").val("$" + 0);
-            if(parseFloat(prevBalance) > 0 )
-            {
+            if (parseFloat(prevBalance) > 0) {
                 $("#amountdue").val("$" + parseFloat(prevBalance).toFixed(2));
-            }else {
+            } else {
                 $("#amountdue").val("$" + 0);
-            }  
+            }
         } else {
             $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
-
+            var checkInvoiceBalance = $("#InvoiceBalance").val();
+            //if (checkInvoiceBalance == "" || checkInvoiceBalance == "$0.00") {
+                $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
+            //}
             var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
             $("#amountdue").val("$" + amountDue.toFixed(2));
         }
@@ -5342,7 +5575,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     }
     function GetItemByItemNumber(event, val) {
         //   var blocker = $("#itemnumber" + ID).text();
-
+        debugger
         if (event != null) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
             if (keycode == '13') {
@@ -5353,10 +5586,11 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             else {
                 return false;
             }
-        }
+        }   
         else {
 
         }
+        debugger
         var total = $("#total-" + val).text();
         var subtotalnew = $("#subtotalauto").val();
         var finalsubtotalvalue = subtotalnew.split('$');
@@ -5398,7 +5632,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
             dataType: 'json',
 
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
 
                 $("#rowid-" + val).find("#productId").val(data.id);
@@ -5406,7 +5640,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 var count = 0;
                 var exist = 0;
                 var notexist = true;
-                $('#saletable tr').each(function(index, tr) {
+                $('#saletable tr').each(function (index, tr) {
                     if (count > 0) {
                         var Id = tr.attributes["id"].value.split("rowid-")[1];
                         var productId = parseInt($("#rowid-" + Id).find("#productId").val());
@@ -5474,7 +5708,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
                         var price = 0;
                         if (window.stTax != null) {
-                            $.each(window.stTax, function(index, value) {
+                            $.each(window.stTax, function (index, value) {
                                 var firstVal = (value.productId).toString();
                                 var tax = parseInt(value.tax);
                                 if (data.id == firstVal) {
@@ -5507,12 +5741,12 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     }
                     CalculatetaxPlusDiscount();
 
-                    SaveOnGoingSales();
+                   // SaveOnGoingSales();
                 }
 
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -5524,7 +5758,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
                 var inner = '';
                 var opts = jQuery.parseJSON(JSON.stringify(data));
                 console.log(opts);
@@ -5534,7 +5768,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 $("#listallmissions").empty();
                 console.log(data);
                 //$('#ddlAllMission').empty();
-                $.each(opts, function(i, d) {
+                $.each(opts, function (i, d) {
                     inner = '';
                     inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCompanyByID(' + d.id + ',true)";>';
                     if (i == 0) {
@@ -5550,7 +5784,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -5573,14 +5807,14 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             items.parent().hide();
             $("#customerid").val("");
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
         }
         Increament++;
     };
     function GetCompanyByID(val, showReceivables) {
-
+        debugger;
         var id = val;
         $.ajax({
             type: "GET",
@@ -5590,8 +5824,8 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
-                //debugger;
+            success: function (data) {
+                debugger;
                 if (data != null) {
                     //if (showReceivables == true) {
 
@@ -5643,6 +5877,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     if (data.customerClassification != null && data.customerClassification != "undefined") {
                         $("#customerAddToMail").text(data.customerClassification.addtoMaillingList);
                         if (data.customerClassification.viewInvoicePrevBalance) {
+                            if($("#posted-invoice").val() == "value"){
                             if (data.receivable != null) {
 
                                 $("#previousbalance").val(data.receivable.amount);
@@ -5650,6 +5885,8 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                 ShowReceivables(data);
                             } else {
                                 $("#previousbalance").val("");
+                            }
+
                             }
                         }
                         else {
@@ -5701,12 +5938,12 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                 cache: false,
                                 url: '@Url.Action("GetSttax", "Sale")',
                                 dataType: 'json',
-                                success: function(data) {
+                                success: function (data) {
                                     window.stTax = data;
-                                    $.each(data, function(index, value) {
+                                    $.each(data, function (index, value) {
                                         var firstVal = (value.productId).toString();
                                         var tax = parseInt(value.tax);
-                                        $("#saletable tr").each(function(index, value) {
+                                        $("#saletable tr").each(function (index, value) {
 
                                             if (index > 0) {
                                                 var secondVal = $("#rowid-" + index).find("#productId").val();
@@ -5724,13 +5961,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                                     });
 
                                 },
-                                error: function(xhr, status, error) {
+                                error: function (xhr, status, error) {
                                     var errorMessage = xhr.status + ': ' + xhr.statusText
                                 },
                             });
                         }
                         else {
-                            $("#saletable tr").each(function(index, value) {
+                            $("#saletable tr").each(function (index, value) {
                                 if (index > 0) {
                                     var price = parseInt($("#ringerqty-" + index).text()) * parseFloat(($("#amount-" + index).text()).split("$")[1]);
                                     $("#price-" + index).text($("#amount-" + index).text());
@@ -5807,7 +6044,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     $('#paymentTermsid').append((data.customerBillingInfo != null) ? data.customerBillingInfo.paymentTerms : '');
                     $('#shippedViaid').append((data.customerClassification != null && data.customerClassification != "undefined" ? data.customerClassification.shippedVia : ''));
                     $('#driverid').append((data.customerClassification != null && data.customerClassification != "undefined" ? data.customerClassification.driverName : ''));
-                    CalculatetaxPlusDiscount();
+                   // CalculatetaxPlusDiscount();
                 }
                 $("#CustomerShortModal").modal('show');
 
@@ -5825,7 +6062,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -5835,23 +6072,23 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     function CloseCustomerModal() {
         $("#CustomerShortModal").modal('hide');
     }
-     function ReloadRefresh(){
-         $("#searchname").val('');
-         $("#customercodeinfo").val('');
-         $("#previousbalance").val('');
-         $("#subtotalauto").val('');
-         $("#invoicetotal").val('');
-         $("#amountdue").val('');
-     }
+    function ReloadRefresh() {
+        $("#searchname").val('');
+        $("#customercodeinfo").val('');
+        $("#previousbalance").val('');
+        $("#subtotalauto").val('');
+        $("#invoicetotal").val('');
+        $("#amountdue").val('');
+    }
     function ReloadPage() {
         ReloadRefresh();
         location.reload();
     }
     var isCtrl = false;
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.which == 17)
             isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 83 && isCtrl == true) {
             InsertSaleDetails(false, false);
@@ -5859,10 +6096,10 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             return false;
         }
     });
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
 
         if (e.which == 17) isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 73 && isCtrl == true) {
             $(".add-row").trigger("click");
@@ -5871,7 +6108,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             return false;
         }
     });
-    $('body').keydown(function(event) {
+    $('body').keydown(function (event) {
         var letter = String.fromCharCode(event.which);
 
         if (event.keyCode == 46) {
@@ -6043,7 +6280,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
 
     function GetItemList(val) {
-
+        debugger;
         var data_array = [];
         var search = $("#DescriptionInput-" + val).val();
         $("#productList-" + val).empty();
@@ -6054,9 +6291,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             cache: false,
             url: '@Url.Action("GetAllItem", "Sale")',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (search != "") {
                         if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -6070,13 +6307,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 });
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
 
         $("#productList-" + val).append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -6102,9 +6339,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             cache: false,
             url: '@Url.Action("GetAllItem", "Sale")',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (search != "") {
                         if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -6118,13 +6355,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 });
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
 
         $("#productList").append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -6150,9 +6387,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             cache: false,
             url: '@Url.Action("GetAllItem", "Sale")',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (search != "") {
                         if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -6166,13 +6403,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 });
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
 
         $("#productList1").append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -6185,7 +6422,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     }
 
 
-    $('#itemnumberModal1').keypress(function(event) {
+    $('#itemnumberModal1').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             GetItemByItemNumberModal1();
@@ -6201,7 +6438,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
             data: { itemno: itemno },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
                 console.log(data);
                 if (data != null && data != "" && data != "false") {
@@ -6230,35 +6467,35 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     $("#productList").empty();
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
 
     }
 
-     function DiscountPer(val) {
+    function DiscountPer(val) {
         var quantity = $("#discountin-" + val).text();
-        if(quantity == '$0.00'){
+        if (quantity == '$0.00') {
             $("#discountin-" + val).text('');
         }
-        else  if(quantity == ''){
+        else if (quantity == '') {
             //$("#discountin-" + val).text('$0.00');
         }
     }
 
-     function DiscuntChangePriceRate(val) {
+    function DiscuntChangePriceRate(val) {
 
         var quantity = $("#ringerqty-" + val).text();
         var tootal = $("#price-" + val).text();
         var check = $("#discountin-" + val).text();
         var discount = parseFloat(($("#discountin-" + val).text()));
 
-          if(check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN|| check == undefined){
-          //  $("#discountin-" + val).text('$0.00');
-          discount = parseFloat("0.00");
+        if (check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN || check == undefined) {
+            //  $("#discountin-" + val).text('$0.00');
+            discount = parseFloat("0.00");
         }
-        
+
         console.log(discount);
         //if(discount == '' || discount == "" || discount == "$0.00" || discount == "undefined" || discount == "NaN" || discount == NaN|| discount == undefined){
         //    $("#discountin-" + val).text('$0.00');
@@ -6278,18 +6515,18 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         }
         CountTotalOfAllTD();
     }
-     function DiscountPerPerc(val) {
+    function DiscountPerPerc(val) {
         var quantity = $("#discountout-" + val).text();
-        if(quantity == '0.00%'){
+        if (quantity == '0.00%') {
             $("#discountout-" + val).text('');
         }
-        else  if(quantity == ''){
-           // $("#discountout-" + val).text('0.00%');
+        else if (quantity == '') {
+            // $("#discountout-" + val).text('0.00%');
         }
     }
 
 
-    $('#itemnumberModal').keypress(function(event) {
+    $('#itemnumberModal').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             GetItemByItemNumberModal();
@@ -6306,7 +6543,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
             data: { itemno: itemno },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
 
                 console.log(data);
                 if (data != null && data != "" && data != "false") {
@@ -6332,7 +6569,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     $("#productList").empty();
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -6340,7 +6577,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     }
 
 
-    $('#customQuantityM').keydown(function(e) {
+    $('#customQuantityM').keydown(function (e) {
 
         if (e.which == 13) {
             var customQty = $('#customQuantityM').val();
@@ -6354,11 +6591,11 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
             if (customQty != null && customQty != '') {
                 var InStock = $("#qtyOnHandM").val();
-                if(parseFloat(InStock) > 0){
-                GetItemDataAppendForDesModal();
+                if (parseFloat(InStock) > 0) {
+                    GetItemDataAppendForDesModal();
 
-                }else{
-                swal("Error!", "Stock Not Available", "error");
+                } else {
+                    swal("Error!", "Stock Not Available", "error");
 
                 }
             } else {
@@ -6379,9 +6616,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var tootal = $("#price-" + val).text();
         var discount = parseFloat(($("#discountout-" + val).text()).split("%")[0]);
         var check = $("#discountout-" + val).text();
-          if(check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN|| check == undefined){
-          //  $("#discountin-" + val).text('$0.00');
-          discount = parseFloat("0.00");
+        if (check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN || check == undefined) {
+            //  $("#discountin-" + val).text('$0.00');
+            discount = parseFloat("0.00");
         }
         var ReplacedAmount = tootal.replace(/\$/g, '');
         var priceDiscount = (ReplacedAmount / 100) * discount;
@@ -6393,263 +6630,263 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         CountTotalOfAllTD();
     }
 
-   
+
     var printorNotStatus = false;
     var updatestatus = false;
-    function creditCheck(printorNot, update, Ispaid,IsInvoicePaid) {
-
+    function creditCheck(printorNot, update, Ispaid, IsInvoicePaid) {
+        debugger;
         //var customer = $("#searchname").val();
         //if(customer == "" || customer == null || customer == "undefined"){
         //    swal("Error!", "Please Select Customer", "error");
         //}
 
-          var customerId = $("#customerid").val();
+        var customerId = $("#customerid").val();
 
-            if (customerId == "") {
-                Swal.fire(
-                    "Message",
-                    "Kindly Select Customer",
-                    'error'
-                );
-                return false;
-            }
+        if (customerId == "") {
+            Swal.fire(
+                "Message",
+                "Kindly Select Customer",
+                'error'
+            );
+            return false;
+        }
 
-         var tablecount = $("#saletable TBODY TR").length;
+        var tablecount = $("#saletable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
             swal("Error!", "Please Complete Current Invoice", "error");
-        }else{
-
-            var Total = $("#invoicetotal").val();
-            if(Total == "$0.00"){
-            swal("Error!", "Please Complete Current Invoice", "error");
-                return false;
-            }
-        printorNotStatus = printorNot;
-        updatestatus = update;
-        window.isSuperVisorCreditSuccess = false;
-        GetCompanyByID($("#customerid").val());
-        var CheckCreditAllow = $("#iscredithold").text();
-        console.log(CheckCreditAllow);
-        if (CheckCreditAllow != "" && CheckCreditAllow != null && CheckCreditAllow != "0" && CheckCreditAllow != 0 && CheckCreditAllow == false && Ispaid != null && Ispadi != true) {
-            Swal.fire(
-                'Customer Credit is On Hold',
-                "Please Proceed with invoice payment",
-                'error'
-            )
-
         } else {
 
-            var i = 1;
-            var issue = false;
-            var productname = "";
-            var exceedlimit = false;
-            $(".saleslimitexeeded").each(function() {
-                var description = $("#description-" + i).text();
-                //console.log("hello" + description);
+            var Total = $("#invoicetotal").val();
+            if (Total == "$0.00") {
+                swal("Error!", "Please Complete Current Invoice", "error");
+                return false;
+            }
+            printorNotStatus = printorNot;
+            updatestatus = update;
+            window.isSuperVisorCreditSuccess = false;
+            GetCompanyByID($("#customerid").val());
+            var CheckCreditAllow = $("#iscredithold").text();
+            console.log(CheckCreditAllow);
+            if (CheckCreditAllow != "" && CheckCreditAllow != null && CheckCreditAllow != "0" && CheckCreditAllow != 0 && CheckCreditAllow == false && Ispaid != null && Ispadi != true) {
+                Swal.fire(
+                    'Customer Credit is On Hold',
+                    "Please Proceed with invoice payment",
+                    'error'
+                )
 
-                if (description == "") {
-                    $("#delete-" + i).trigger("click");
-                }
-                i++;
-            });
-            i = 1;
-            $(".saleslimitexeeded").each(function() {
-                //alert(1);
-                if (update == false) {
-                    var quantity = $("#ringerqty-" + i).text();
-                    if (quantity == "") {
-                        quantity = "0";
-                    }
+            } else {
 
-                    var getStock = $("#stockno-" + i).text();
-                    if (getStock == null || getStock == 0 || getStock == "" || getStock == "undefined") {
-                        Swal.fire(
-                            "Stock is not available",
-                            "you cannot sale " + $("#description-" + i).text() + " because stock is not available.. Kindly Set it",
-                            'error'
-                        );
+                var i = 1;
+                var issue = false;
+                var productname = "";
+                var exceedlimit = false;
+                $(".saleslimitexeeded").each(function () {
+                    var description = $("#description-" + i).text();
+                    //console.log("hello" + description);
+
+                    if (description == "") {
                         $("#delete-" + i).trigger("click");
-                        issue = true;
-                        return false;
                     }
-                    if (parseInt(quantity) > parseInt(getStock)) {
-                        /*alert('you cannot excede the existing stock');*/
-                        Swal.fire(
-                            'Invalid Quantity of ' + $("#description-" + i).text(),
-                            "you cannot sale " + $("#description-" + i).text() + " because quantity is exceeded than stock.. Kindly Set it",
-                            'error'
-                        );
-                        $("#delete-" + i).trigger("click");
-                        issue = true;
-                        return false;
-                    }
-                    if ($("#ringerqty-" + i).text() == "" || !/^[0-9]+$/.test($("#ringerqty-" + i).text()) || $("#ringerqty-" + i).text() == "0") {
-                        Swal.fire(
-                            'Invalid Quantity of ' + $("#description-" + i).text(),
-                            "Invalid Quantity of " + $("#description-" + i).text() + " Kindly Set it",
-                            'error'
-                        );
-                        issue = true;
-                        return false;
-                    }
-
-                    if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
-                        $("#saleslimitexeeded-" + i).val("true");
-                    }
-                    else {
-                        $("#saleslimitexeeded-" + i).val("false");
-                    }
-    @*if ('@requestapprove' == 'False') {
-
-                        if ($("#saleslimitexeeded-" + i).val() == "true") {
-                        Swal.fire(
-                        'Ringer Quantity Exceeded of ' + $("#description-" + i).text(),
-                        /*"Ringer Quantity of " + $("#description-" + i).text() + " is Greater then Shipment Limit.. Kindly Set it",*/
-                        "Kindy Send Request For Approval",
-                        'error'
-                        );
-                        issue = true;
-                        return false;
+                    i++;
+                });
+                i = 1;
+                $(".saleslimitexeeded").each(function () {
+                    //alert(1);
+                    if (update == false) {
+                        var quantity = $("#ringerqty-" + i).text();
+                        if (quantity == "") {
+                            quantity = "0";
                         }
 
-                        //if (parseInt($("#Quantity-" + i).text()) < parseInt($("#ringer-" + i).text())) {
-                        //    Swal.fire(
-                        //        'Ringer Quantity Exceeded of ' + $("#description-" + i).text(),
-                        //       /* "Ringer Quantity is greater than  quantity of " + $("#description-" + i).text() + "",*/
-                        //        "Kindy Send Request For Approval",
-                        //        'error'
-                        //    );
-                        //    issue = true;
-                        //    return false;
-                        //    }
-                        }*@
+                        var getStock = $("#stockno-" + i).text();
+                        if (getStock == null || getStock == 0 || getStock == "" || getStock == "undefined") {
+                            Swal.fire(
+                                "Stock is not available",
+                                "you cannot sale " + $("#description-" + i).text() + " because stock is not available.. Kindly Set it",
+                                'error'
+                            );
+                            $("#delete-" + i).trigger("click");
+                            issue = true;
+                            return false;
+                        }
+                        if (parseInt(quantity) > parseInt(getStock)) {
+                            /*alert('you cannot excede the existing stock');*/
+                            Swal.fire(
+                                'Invalid Quantity of ' + $("#description-" + i).text(),
+                                "you cannot sale " + $("#description-" + i).text() + " because quantity is exceeded than stock.. Kindly Set it",
+                                'error'
+                            );
+                            $("#delete-" + i).trigger("click");
+                            issue = true;
+                            return false;
+                        }
+                        if ($("#ringerqty-" + i).text() == "" || !/^[0-9]+$/.test($("#ringerqty-" + i).text()) || $("#ringerqty-" + i).text() == "0") {
+                            Swal.fire(
+                                'Invalid Quantity of ' + $("#description-" + i).text(),
+                                "Invalid Quantity of " + $("#description-" + i).text() + " Kindly Set it",
+                                'error'
+                            );
+                            issue = true;
+                            return false;
+                        }
 
-
-
-                                    if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
-                        //issue = true;
-                        $.confirm({
-                            title: 'Message',
-                            content: "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
-                            buttons: {
-                                confirm: function() {
-                                    //window.isSuperVisorCreditSuccess = true;
-                                    //InsertSaleDetails(printorNotStatus, updatestatus);
-                                    $("#supervisorModal").modal("show");
-                                },
-                                //cancel: function () {
-                                //},
-
-                            }
-                        });
-
-                        issue = true;
-
-
-                        //Swal.fire(
-                        //    "Message",
-                        //    "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
-                        //    'error'
-                        //);
-                        //issue = true;
-                        //return false;
-
-                    }
-
-
-                    var needhighotherizationstatus = $("#needhighotherization-" + i).text();
-                    var booldata = needhighotherizationstatus;
-                    var highlimiton = parseInt($("#highlimiton-" + i).text());
-                    var ringerquantity = parseInt($("#ringerqty-" + i).text());
-                    if (booldata == "true") {
-                        var itemid = parseInt($("#itemid-" + i).text());
-                        $("#approvedetails").attr("data-itemId", itemid);
-                        $("#approvedetails").attr("data-ticketID", '@ViewBag.InvoiceNumber');
-
-                        if (ringerquantity >= highlimiton) {
-                            //$("#input-delivery").modal('show');
-                            exceedlimit = true;
-                            productname += $("#description-" + i).text() + ", ";
-
+                        if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
+                            $("#saleslimitexeeded-" + i).val("true");
                         }
                         else {
-                            return true;
+                            $("#saleslimitexeeded-" + i).val("false");
                         }
+    @*if ('@requestapprove' == 'False') {
+
+                            if ($("#saleslimitexeeded-" + i).val() == "true") {
+                            Swal.fire(
+                            'Ringer Quantity Exceeded of ' + $("#description-" + i).text(),
+                            /*"Ringer Quantity of " + $("#description-" + i).text() + " is Greater then Shipment Limit.. Kindly Set it",*/
+                            "Kindy Send Request For Approval",
+                            'error'
+                            );
+                            issue = true;
+                            return false;
+                            }
+
+                            //if (parseInt($("#Quantity-" + i).text()) < parseInt($("#ringer-" + i).text())) {
+                            //    Swal.fire(
+                            //        'Ringer Quantity Exceeded of ' + $("#description-" + i).text(),
+                            //       /* "Ringer Quantity is greater than  quantity of " + $("#description-" + i).text() + "",*/
+                            //        "Kindy Send Request For Approval",
+                            //        'error'
+                            //    );
+                            //    issue = true;
+                            //    return false;
+                            //    }
+                            }*@
+
+
+
+                                        if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
+                            //issue = true;
+                            $.confirm({
+                                title: 'Message',
+                                content: "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
+                                buttons: {
+                                    confirm: function () {
+                                        //window.isSuperVisorCreditSuccess = true;
+                                        //InsertSaleDetails(printorNotStatus, updatestatus);
+                                        $("#supervisorModal").modal("show");
+                                    },
+                                    //cancel: function () {
+                                    //},
+
+                                }
+                            });
+
+                            issue = true;
+
+
+                            //Swal.fire(
+                            //    "Message",
+                            //    "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
+                            //    'error'
+                            //);
+                            //issue = true;
+                            //return false;
+
+                        }
+
+
+                        var needhighotherizationstatus = $("#needhighotherization-" + i).text();
+                        var booldata = needhighotherizationstatus;
+                        var highlimiton = parseInt($("#highlimiton-" + i).text());
+                        var ringerquantity = parseInt($("#ringerqty-" + i).text());
+                        if (booldata == "true") {
+                            var itemid = parseInt($("#itemid-" + i).text());
+                            $("#approvedetails").attr("data-itemId", itemid);
+                            $("#approvedetails").attr("data-ticketID", '@ViewBag.InvoiceNumber');
+
+                            if (ringerquantity >= highlimiton) {
+                                //$("#input-delivery").modal('show');
+                                exceedlimit = true;
+                                productname += $("#description-" + i).text() + ", ";
+
+                            }
+                            else {
+                                return true;
+                            }
+                        }
+
                     }
+                });
+                i++;
+                //alert(2);
 
+                if (issue == true) {
+                    return false;
                 }
-            });
-            i++;
-            //alert(2);
-
-            if (issue == true) {
-                return false;
-            }
-            //alert(3);
-            if (i == 1) {
-                Swal.fire(
-                    "Message",
-                    "Kindly Select Any Item",
-                    'error'
-                );
-                issue = true;
-                return false;
-            }
-            var customerId = $("#customerid").val();
-
-            if (customerId == "") {
-                Swal.fire(
-                    "Message",
-                    "Kindly Select Customer",
-                    'error'
-                );
-                issue = true;
-                return false;
-            }
-
-            if (issue == true) {
-                return false;
-            }
-
-
-            if (update == false) {
-                if (exceedlimit == true) {
-                    $("#productnamE").html(productname);
-                    $("#input-delivery").modal('show');
-                }
-            }
-            if (issue == true) {
-                return false;
-            }
-
-
-            if ($("#previousbalance").val() == "" || $("#previousbalance").val() == null || Ispaid == true) {
-
-                if (Ispaid != true) {
-                    window.isSuperVisorCreditSuccess = true;
-                    InsertSaleDetails(printorNotStatus, updatestatus, false,IsInvoicePaid);
-                } else {
-                    window.isSuperVisorCreditSuccess = true;
-                    InsertSaleDetails(printorNotStatus, updatestatus, true,IsInvoicePaid);
-                }
-            }
-            else {
-                var amount = $("#remainingamount").text();
-                if ($("#isBilltoBill").text() == "0" && $("#isBilltoBill").text() == 0 && amount != "" && amount != "0") {
+                //alert(3);
+                if (i == 1) {
                     Swal.fire(
-                        'Customer Bill to Bill Is Set',
-                        "Customer have to pay previous Balance of " + pendingAmount + "$ ",
+                        "Message",
+                        "Kindly Select Any Item",
                         'error'
-                    )
-                } else {
-                    $("#supervisorModal").modal("show");
-
+                    );
+                    issue = true;
+                    return false;
                 }
-            }
+                var customerId = $("#customerid").val();
 
+                if (customerId == "") {
+                    Swal.fire(
+                        "Message",
+                        "Kindly Select Customer",
+                        'error'
+                    );
+                    issue = true;
+                    return false;
+                }
+
+                if (issue == true) {
+                    return false;
+                }
+
+
+                if (update == false) {
+                    if (exceedlimit == true) {
+                        $("#productnamE").html(productname);
+                        $("#input-delivery").modal('show');
+                    }
+                }
+                if (issue == true) {
+                    return false;
+                }
+
+
+                if ($("#previousbalance").val() == "" || $("#previousbalance").val() == null || Ispaid == true) {
+
+                    if (Ispaid != true) {
+                        window.isSuperVisorCreditSuccess = true;
+                        InsertSaleDetails(printorNotStatus, updatestatus, false, IsInvoicePaid);
+                    } else {
+                        window.isSuperVisorCreditSuccess = true;
+                        InsertSaleDetails(printorNotStatus, updatestatus, true, IsInvoicePaid);
+                    }
+                }
+                else {
+                    var amount = $("#remainingamount").text();
+                    if ($("#isBilltoBill").text() == "0" && $("#isBilltoBill").text() == 0 && amount != "" && amount != "0") {
+                        Swal.fire(
+                            'Customer Bill to Bill Is Set',
+                            "Customer have to pay previous Balance of " + pendingAmount + "$ ",
+                            'error'
+                        )
+                    } else {
+                        $("#supervisorModal").modal("show");
+
+                    }
+                }
+
+            }
         }
-        }
-       
+
     }
     function authorizeSupervisor() {
 
@@ -6685,7 +6922,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             data: data1,
             dataType: 'json',
             url: url1,
-            success: function(response) {
+            success: function (response) {
                 //debugger;
                 console.log("MESG" + response.message);
                 if (response.message == "Success.") {
@@ -6736,7 +6973,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     )
                 }
             },
-            error: function(err) {
+            error: function (err) {
 
             }
 
@@ -6857,12 +7094,262 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         $('#searchPro').val('');
     }
 
-    var showicon = function(method, selectedinvoicenumber) {
+    var showicon = function (method, selectedinvoicenumber) {
         $(".fa-eye").removeClass("d-none");
         $('.fa-eye').attr('onClick', 'nextinvoice("' + method + '","' + selectedinvoicenumber + '")');
     }
 
-    var nextinvoice = function(method, selectedinvoicenumber) {
+
+    // Function Load Data Created by Nouman
+
+
+    var nextinvoice1 = function (method, selectedinvoicenumber) {
+          var data = $("#txtInvoiceNumber").text();
+        if (method == 'null') { data = selectedinvoicenumber }
+
+        if (data != '') {
+
+            $.ajax({
+                url: '@Url.Action("GetSaleInvoiceByInvoiceNumber1", "Sale")',
+                async: false,
+                Type: 'GET',
+                data: { InvoiceNumber: data, Method: method },
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+
+                    var sernum = 1;
+                    // debugger;
+                   // $("#salesmanid").text(data.saleManName);
+                    $("#invoicetotal").val(data.invoiceTotal);
+                    $("#discountidadd").val(data.charges);
+                    $("#subtotalauto").val(data.subTotal);
+                    $("#otherid").val(data.other);
+                    $("#taxid").val(data.tax);
+                    $("#freightid").val(data.freight);
+                    $("#PointOfSaleId").val(data.pointOfSaleId);
+                    if (data.GetSaleDiscount == true) {
+
+                        $("#discountidadd").attr("disabled", true);
+                        $("#discountidadd").val("");
+                        $('#getsalediscount').prop('checked', true);
+                    } else {
+
+                        $("#discountidadd").attr("disabled", false);
+                        $('#getsalediscount').prop('checked', false);
+                    }
+                    $("#countnum").text(data.count);
+                    $("#invoicenumber").val(data.invoiceNumber);
+                  //  $("#supervisorId").text(data.supervisorID);
+                    if (data.pointOfSaleDetails.length > 0) {
+                        if (data.isOpen == true) {  
+
+                            $(".Paid").addClass("d-none");
+                            var customername = $("#customername").val();
+                            var customercode = $("#customercodeinfo").val();
+                            var CustomerID = $("#customerid").val();
+                            $("#appendnewrowforsale").html("");
+                            $("#open-invoices").val("true");
+                            
+                             
+                            $.each(data.pointOfSaleDetails, function (index, value) {
+                                debugger;
+                                var inunit = (value.inUnit != null) ? value.inUnit : '';
+                                var outunit = (value.outUnit != null) ? value.outUnit : '';
+                                var itemnumber = value.itemNumber;
+
+                                var string = value.itemNumber;
+                                string = string.substring(0, 2) + '-' + string.substring(2, string.length);
+
+                                var html = '';
+                                html += '<tr  id="rowid-' + sernum + '" class="">';
+                                html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
+                                html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
+                                html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
+                                html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
+                                html += '<td id="amount-' + sernum + '" contenteditable="false">$' + value.amountRetail + '</td>';
+                                html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
+                                html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
+                                html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
+                                html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
+                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">$' + value.price + '</td>';
+                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">$' + value.total + '</td>';
+                                html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
+                                html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
+                                html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
+                                html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
+                                html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
+                                html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
+                                html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
+                                html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
+                                html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
+                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
+                                html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
+                                html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
+                                html += '</tr >';
+                                $("#appendnewrowforsale").append(html); 
+
+                                $(".add-row").css("pointer-events", "auto");
+                                // $("#addnewitem").css("pointer-events", "none");
+
+                                sernum++;
+
+                            });
+                                 debugger;
+                                    var total = $("#total-" + sernum).text();
+                                var subtotalnew = $("#subtotalauto").val();
+                                var finalsubtotalvalue = subtotalnew.split('$');
+
+                                if (total != null && total != '') {
+                                    var newtotal = total.split('$');
+                                    var newtotalsuplitted = newtotal[1];
+                                    var subtotalsuplitednew = finalsubtotalvalue[1];
+                                    if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+
+                                        var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                                        $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+
+                                    }
+                                }
+                            
+                           
+                            $('#previousbalance').attr("readonly", false);
+                            $('#subtotalauto').attr("readonly", false);
+                            $('#discountidadd').attr("readonly", false);
+                            $('#otherid').attr("readonly", false);
+                            $('#taxid').attr("readonly", false);
+                            $('#freightid').attr("readonly", false);
+                            $('#invoicetotal').attr("readonly", false);
+                            $('#amountdue').attr("readonly", false);
+                            $('#searchname').attr("readonly", false);
+
+                            GetCompanyByID(data.customerId, false);
+
+                            CalculatetaxPlusDiscount();
+
+                            //SaveOnGoingSales();
+
+                            $(".saverecord").hide();
+                            $(".printrecord").hide();
+                            $(".editrecord").show();
+                        }
+                        else {
+                            if (data.isPaid != null && data.isPaid != false && data.isPaid != "undefined") {
+                                $(".Paid").removeClass("d-none");
+                            }
+                            var customername = $("#customername").val();
+                            var customercode = $("#customercodeinfo").val();
+                            var CustomerID = $("#customerid").val();
+                            $("#appendnewrowforsale").html("");
+                            $("#open-invoices").val("false");
+                            $.each(data.pointOfSaleDetails, function (index, value) {
+
+                                var inunit = (value.inUnit != null) ? value.inUnit : '';
+                                var outunit = (value.outUnit != null) ? value.outUnit : '';
+                                var itemnumber = value.itemNumber;
+
+                                var string = value.itemNumber;
+                                string = string.substring(0, 2) + '-' + string.substring(2, string.length);
+
+                                var html = '';
+                                html += '<tr  id="rowid-' + sernum + '" class="">';
+                                html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
+                                html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
+                                html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
+                                html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
+                                html += '<td id="amount-' + sernum + '" contenteditable="false">$' + value.amountRetail + '</td>';
+                                html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
+                                html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
+                                html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
+                                html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
+                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">$' + value.price + '</td>';
+                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">$' + value.total + '</td>';
+                                html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
+                                html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
+                                html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
+                                html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
+                                html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
+                                html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
+                                html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
+                                html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
+                                html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
+                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
+                                html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
+                                html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
+                                html += '</tr >';
+                                $("#appendnewrowforsale").append(html);
+
+
+                                $(".add-row").css("pointer-events", "none");
+
+                                $("#delete-" + sernum).prop("onclick", null);
+
+                                sernum++;
+
+                            });
+
+                            var total = $("#total-" + sernum).text();
+                            var subtotalnew = $("#subtotalauto").val();
+                            var finalsubtotalvalue = subtotalnew.split('$');
+
+                            if (total != null && total != '') {
+                                var newtotal = total.split('$');
+                                var newtotalsuplitted = newtotal[1];
+                                var subtotalsuplitednew = finalsubtotalvalue[1];
+                                if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+
+                                    var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                                    $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+
+                                }
+                            }
+
+                            GetCompanyByID(data.customerId, false);
+
+                            CalculatetaxPlusDiscount();
+                            
+                           // SaveOnGoingSales();
+
+                           
+
+                            $('#previousbalance').attr("readonly", true);
+                            $('#subtotalauto').attr("readonly", true);
+                            $('#discountidadd').attr("readonly", true);
+                            $('#otherid').attr("readonly", true);
+                            $('#taxid').attr("readonly", true);
+                            $('#freightid').attr("readonly", true);
+                            $('#invoicetotal').attr("readonly", true);
+                            $('#amountdue').attr("readonly", true);
+                            $('#searchname').attr("readonly", true);
+
+                             $('#InvoiceBalance').val(data.invoiceBalance);
+                            $('#previousbalance').val(data.preBalance);
+                             
+
+                            $(".saverecord").hide();
+                            $(".printrecord").hide();
+                            $(".editrecord").hide();
+                        }
+                    }
+                    else {
+                        $('#appendnewrowforsale').html('');
+                        $(".saverecord").show();
+                        $(".printrecord").show();
+                        $(".editrecord").show();
+
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                },
+            });
+        }
+    }
+
+    var nextinvoice = function (method, selectedinvoicenumber) {
         $(".fa-eye").addClass("d-none");
         var data = $("#txtInvoiceNumber").text();
 
@@ -6875,11 +7362,11 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 Type: 'GET',
                 data: { InvoiceNumber: data, Method: method },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     console.log("USMAN" + data);
 
                     var sernum = 1;
-                   // debugger;
+                    // debugger;
                     $("#salesmanid").text(data[0].saleManName);
                     $("#invoicetotal").val(data[0].invoiceTotal);
                     $("#discountidadd").val(data[0].charges);
@@ -6909,7 +7396,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                             var CustomerID = $("#customerid").val();
                             $("#appendnewrowforsale").html("");
                             $("#open-invoices").val("true");
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
 
                                 var inunit = (value.inUnits != null) ? value.inUnits : '';
                                 var outunit = (value.outUnits != null) ? value.outUnits : '';
@@ -7006,7 +7493,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                             var CustomerID = $("#customerid").val();
                             $("#appendnewrowforsale").html("");
                             $("#open-invoices").val("false");
-                            $.each(data, function(index, value) {
+                            $.each(data, function (index, value) {
 
                                 var inunit = (value.inUnits != null) ? value.inUnits : '';
                                 var outunit = (value.outUnits != null) ? value.outUnits : '';
@@ -7108,7 +7595,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     }
 
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     var errorMessage = xhr.status + ': ' + xhr.statusText
                 },
             });
@@ -7118,10 +7605,10 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
 
 
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.which == 17)
             isCtrl = false;
-    }).keydown(function(e) {
+    }).keydown(function (e) {
         if (e.which == 17) isCtrl = true;
         if (e.which == 117 && isCtrl == true) {
             if ($("#open-invoices").val() == "true") {
@@ -7160,7 +7647,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     });
 
 
-    $('#itemquantitylabel').on('keypress', function(event) {
+    $('#itemquantitylabel').on('keypress', function (event) {
 
 
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -7182,12 +7669,12 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         }
     });
 
-    $("#searchPro").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#proTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    $("#searchPro").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#proTable tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
     });
-  });
 
     function keycodeget() {
 
@@ -7195,7 +7682,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
 
         var number = 0;
-        $('#saletable tr').each(function(index, tr) {
+        $('#saletable tr').each(function (index, tr) {
             number++;
 
         });
@@ -7216,7 +7703,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
         $("#additemshort").modal('hide');
     }
-    $('#customerCode').keydown(function(e) {
+    $('#customerCode').keydown(function (e) {
 
         if (e.which == 13) {
             GetCustomerData();
@@ -7227,7 +7714,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     function GetItemByIDaForShortModal(val, indexex, qustmQty) {
 
         var count = 0;
-        $('#saletable tbody tr').each(function(index, tr) {
+        $('#saletable tbody tr').each(function (index, tr) {
 
 
             count++;
@@ -7242,7 +7729,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 console.log("F###   " + data);
                 //console.log("Hemlooooooooo",data);
                 if (data != null && data != "" && data != "false") {
@@ -7252,7 +7739,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     var exist = 0;
                     var notexist = true;
                     var count1 = 0;
-                    $('#saletable tr').each(function(index, tr) {
+                    $('#saletable tr').each(function (index, tr) {
                         if (count1 > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -7282,7 +7769,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                     }
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -7295,7 +7782,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var count = 0;
 
         //  $(".add-row").trigger("click");
-        $('#saletable tbody tr').each(function(index, tr) {
+        $('#saletable tbody tr').each(function (index, tr) {
 
 
             count++;
@@ -7309,7 +7796,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var count1 = 0;
         var exist = 0;
         var notexist = true;
-        $('#saletable tr').each(function(index, tr) {
+        $('#saletable tr').each(function (index, tr) {
             if (count1 > 0) {
                 var Id = tr.attributes["id"].value.split("rowid-")[1];
                 var productnumber = $("#itemnumber-" + Id).text();
@@ -7355,7 +7842,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 id: id
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 $('#customerCode').val((data.customerCode != null && data.customerCode != "undefined" ? data.customerCode : ''));
                 $(".searchnameee").val((data.company != null && data.company != "undefined" ? data.company : (data.firstName + data.lastName)));
             },
@@ -7377,9 +7864,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
 
-                $.each(data, function(index, value) {
+                $.each(data, function (index, value) {
                     if (search != "") {
                         if (value.company.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.customerCode + '" value="' + value.company + '"></option>';
@@ -7393,13 +7880,13 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
                 });
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
 
         $("#customerNames").append(dropdown);
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 //var string = data_array[index].value;
                 //string = string.substring(0, 2) + '-' + string.substring(2, string.length);
@@ -7413,21 +7900,21 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
     }
 
-    function RemoveEmptyRows(Description){
-         var rowCount = 1;
-         $('#saletable tbody tr').each(function(index, tr) {
+    function RemoveEmptyRows(Description) {
+        var rowCount = 1;
+        $('#saletable tbody tr').each(function (index, tr) {
             var descriptionIndex = $('#' + Description + '-' + rowCount).text();
-         if(descriptionIndex == ''){
-            RemoveRow(rowCount);
-         }else{
-            rowCount++;
-         }
-         });
+            if (descriptionIndex == '') {
+                RemoveRow(rowCount);
+            } else {
+                rowCount++;
+            }
+        });
     }
 
 
 
-    $('#customQuantity').keydown(function(e) {
+    $('#customQuantity').keydown(function (e) {
 
         if (e.which == 13) {
             var customQty = $('#customQuantity').val();
@@ -7442,10 +7929,10 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
             if (customQty != null && customQty != '') {
 
                 var InStock = $("#qtyOnHand").val();
-                if(parseFloat(InStock) > 0){
-                GetItemDataAppendForDesModal1();
-                }else{
-                swal("Error!", "Stock Not Available!", "error");
+                if (parseFloat(InStock) > 0) {
+                    GetItemDataAppendForDesModal1();
+                } else {
+                    swal("Error!", "Stock Not Available!", "error");
 
                 }
             } else {
@@ -7461,14 +7948,14 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
 
         var jj = 1;
-        $('#saletable tr').each(function() {
-           // debugger;
+        $('#saletable tr').each(function () {
+            // debugger;
             var currentRow = $(this).closest("tr");
             //var check=currentRow.find("td:eq(2)").val();
             var check = $("#rowid-" + jj).find("#itemnumber-" + jj).text();
             // alert(check);
             if (check[jj] == null || check[jj] == "") {
-               // RemoveRow(jj);
+                // RemoveRow(jj);
             }
             jj++
         });
@@ -7476,7 +7963,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
 
         var count = 0;
 
-        $('#saletable tr').each(function(index, tr) {
+        $('#saletable tr').each(function (index, tr) {
 
             count++;
         });
@@ -7489,7 +7976,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         var count1 = 0;
         var exist = 0;
         var notexist = true;
-        $('#saletable tr').each(function(index, tr) {
+        $('#saletable tr').each(function (index, tr) {
             if (count1 > 0) {
                 var Id = tr.attributes["id"].value.split("rowid-")[1];
                 var productnumber = $("#itemnumber-" + Id).text();
@@ -7526,9 +8013,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         $("#customerpayment").modal('hide');
     }
 
-    $("#Custpaymenttable").on('input', '.txtCal', function() {
+    $("#Custpaymenttable").on('input', '.txtCal', function () {
         var calculated_total_sum = 0;
-        $("#Custpaymenttable .txtCal").each(function() {
+        $("#Custpaymenttable .txtCal").each(function () {
             var get_textbox_value = $(this).text();
             if ($.isNumeric(get_textbox_value)) {
                 calculated_total_sum += parseFloat(get_textbox_value);
@@ -7539,10 +8026,10 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
         $("#TotalPaidP").text("$" + calculated_total_sum.toFixed(2));
     });
 
-    $("#Custpaymenttable").on('input', '.txtCal1', function() {
+    $("#Custpaymenttable").on('input', '.txtCal1', function () {
         var calculated_total_sum = 0;
 
-        $("#Custpaymenttable .txtCal1").each(function() {
+        $("#Custpaymenttable .txtCal1").each(function () {
             var get_textbox_value = $(this).text();
             if ($.isNumeric(get_textbox_value)) {
                 calculated_total_sum += parseFloat(get_textbox_value);
@@ -7561,7 +8048,7 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     });
 
 
-    $('#ChangeP').keyup(function() {
+    $('#ChangeP').keyup(function () {
         var m = $("#TotalPaidP").text(); m = m.replace(/\$/g, '');
         var s = $("#ChangeP").val(); s = s.replace(/\$/g, '');
         var z = $("#totalpaidd").text(); z = z.replace(/\$/g, '');
@@ -7573,9 +8060,9 @@ var isNegative = balanceText.includes("(") && balanceText.includes(")");
     });
 
 
-$("#PrintInvoicef10").click(function() {
-   
-    var tablecount = $("#saletable TBODY TR").length;
+    $("#PrintInvoicef10").click(function () {
+        debugger;
+        var tablecount = $("#saletable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
 
             var customerId = $("#customerid").val();
@@ -7589,21 +8076,22 @@ $("#PrintInvoicef10").click(function() {
                 return false;
             }
             swal("Error!", "Please Complete Current Invoice", "error");
-        }else{
+        } else {
 
             var Total = $("#invoicetotal").val();
-            if(Total == "$0.00"){
-            swal("Error!", "Please Complete Current Invoice", "error");
+            if (Total == "$0.00") {
+                swal("Error!", "Please Complete Current Invoice", "error");
                 return false;
             }
-            creditCheck(true,false,true,false);
+           // creditCheck(true, false, true, false);
+            InsertSaleDetails1(false, true);
         }
 
-});     
+    });
 
-    $("#PrintInvoicef3").click(function() {
-   
-    var tablecount = $("#saletable TBODY TR").length;
+    $("#PrintInvoicef3").click(function () {
+
+        var tablecount = $("#saletable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
 
             var customerId = $("#customerid").val();
@@ -7617,18 +8105,136 @@ $("#PrintInvoicef10").click(function() {
                 return false;
             }
             swal("Error!", "Please Complete Current Invoice", "error");
-        }else{
-            creditCheck(true,false,true,true);
+        } else {
+            creditCheck(true, false, true, true);
         }
 
-}); 
+    });
+
+     function ChangePayment1(IsInvoicedPaid) {
+        debugger;
+
+        var OnlyPayment = false;
+        var customername = $("#searchname").val();
+        // var customercode = $("#customercodeinfo").val();
+        var customerId = $("#customerid").val();
+        var saleman = $("#salesmanid").text();
+        var invoicenumber = $("#invoicenumber").val();
+        var invoicetotal = $("#invoicetotal").val();
+        //var balanceDueP = $("#BalanceDueP").text();
+        var totalPaidP = $("#TotalPaidP").text();
+        var totalAllocation = $("#totalpaidd").text();
+        
+        var change = $("#ChangeP").val();
+        var InvBalance = $("#BalanceP").text();
+        var SubTotal = $("#subtotalauto").val();
+        var AmountDue = $("#amountdue").val();
+        var Other = $("#otherid").val();
+        var discount = $("#discountidadd").val();
+        var tax = $("#taxid").val();
+        var freight = $("#freightid").val();
+
+        var Sale = {}   
+        Sale.InvoiceNumber = invoicenumber;
+        Sale.CustomerId = customerId;
+        Sale.CustomerName = customername;
+        Sale.SubTotal = SubTotal
+        Sale.InvoiceTotal = invoicetotal;
+       // Sale.PreviousBalance = balanceDueP;
+        Sale.TotalPaid = totalPaidP;
+        Sale.TotalAmount = totalAllocation;
+        Sale.Change = change;
+        Sale.InvBalance = InvBalance;
+        Sale.IsInvoicedPaid = IsInvoicedPaid;
+        Sale.Other = Other;
+        Sale.Discount = discount;
+        Sale.Tax = tax;
+        Sale.Freight = freight;
+
+        var SaleArray = new Array();
+        var count1 = 1;
+        $("#Custpaymenttable TBODY TR").each(function () {
+            debugger;
+            var row = $(this);
+            var SaleDetail = {};
+
+            var xx = $("#selectid-" + count1).val();
+            var zz = $("#DateP-" + count1).val();
+            var dateNow = new Date(zz);
+                dateNow.setHours(23);
+                dateNow.setMinutes(59);
+                dateNow.setSeconds(59);
+                dateNow.setMilliseconds(999);
+
+            var aa = row.find("TD").eq(0).text();
+            var bb = row.find("TD").eq(1).text();
+            var cc = row.find("TD").eq(2).html();
+            var dd = row.find("TD").eq(3).text();
+            var ee = row.find("TD").eq(4).val();
+
+            if (aa != null && aa != "" && aa != "undefined") {
+
+                SaleDetail.AmountPaid = row.find("TD").eq(0).text();
+            }
+            if (bb != null && bb != "" && bb != "undefined") {
+
+                SaleDetail.AmountAllocate = row.find("TD").eq(1).text();
+            }
+            if (cc != null && cc != "" && cc != "undefined") {
+
+                SaleDetail.PaymentType = xx;
+            }
+            if (dd != null && dd != "" && dd != "undefined") {
+
+                SaleDetail.ChequeNumber = dd;
+            }
+          
+            SaleDetail.HoldDate = dateNow;
+            SaleDetail.InvoiceNumber = invoicenumber;
+            SaleArray.push(SaleDetail);
+            count1++;
+        });
+         Sale.saleInvoiceTransactionModel = SaleArray;
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ChangePayment1", "Sale")',
+            async: false,
+            cache: false,
+            data: JSON.stringify(Sale),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                if (data == true) {
+                    //swal("Success!", "Updated Successfully");
+                    CustomerPMOdalhide();
+                    // creditCheckWithPayment(true, false);
+                    toastr.success('Payment Received');
+
+                    //if(OnlyPayment){
+                    var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
+                    window.open(actionUrl);
+                    location.reload();
+                    //}
+                    // location.reload();
+                }
+
+                else {
+                    swal("Error!", "Transaction Discard", "Error");
+                }
+
+            }
+        });
+    }
+
     function ChangePayment(IsInvoicedPaid) {
 
 
-
+        debugger;
 
         var OnlyPayment = false;
-   
+
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
         var customerID = $("#customerid").val();
@@ -7643,7 +8249,7 @@ $("#PrintInvoicef10").click(function() {
 
         var SaleDetails = new Array();
         var count1 = 1;
-        $("#Custpaymenttable TBODY TR").each(function() {
+        $("#Custpaymenttable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
 
@@ -7701,11 +8307,11 @@ $("#PrintInvoicef10").click(function() {
             type: "POST",
             url: '@Url.Action("ChangePayment", "Sale")',
             async: false,
-            cache:false,
+            cache: false,
             data: JSON.stringify(SaleDetails),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
                 if (data == true) {
                     //swal("Success!", "Updated Successfully");
@@ -7714,11 +8320,11 @@ $("#PrintInvoicef10").click(function() {
                     toastr.success('Payment Received');
 
                     //if(OnlyPayment){
-                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
-                         window.open(actionUrl);
-                         location.reload();
+                    var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
+                    window.open(actionUrl);
+                    location.reload();
                     //}
-                        // location.reload();
+                    // location.reload();
                 }
 
                 else {
@@ -7812,7 +8418,7 @@ $("#PrintInvoicef10").click(function() {
             var issue = false;
             var productname = "";
             var exceedlimit = false;
-            $(".saleslimitexeeded").each(function() {
+            $(".saleslimitexeeded").each(function () {
                 var description = $("#description-" + i).text();
                 //console.log("hello" + description);
 
@@ -7822,7 +8428,7 @@ $("#PrintInvoicef10").click(function() {
                 i++;
             });
             i = 1;
-            $(".saleslimitexeeded").each(function() {
+            $(".saleslimitexeeded").each(function () {
                 //alert(1);
                 if (update == false) {
                     var quantity = $("#ringerqty-" + i).text();
@@ -7895,13 +8501,13 @@ $("#PrintInvoicef10").click(function() {
 
 
 
-                                    if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
+                                        if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
                         //issue = true;
                         $.confirm({
                             title: 'Message',
                             content: "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
                             buttons: {
-                                confirm: function() {
+                                confirm: function () {
                                     //window.isSuperVisorCreditSuccess = true;
                                     //InsertSaleDetails(printorNotStatus, updatestatus);
                                     $("#supervisorModal").modal("show");
@@ -8037,13 +8643,13 @@ $("#PrintInvoicef10").click(function() {
         var plateNo = $("#plateNo").val();
 
         var SaleDetails = new Array();
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             if ($(this).find("#productId").val() == '') {
                 RemoveRow(($(this).attr("id")).split("rowid-")[1]);
             }
         });
         var count1 = 1;
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(14).html() == '') {
@@ -8191,11 +8797,11 @@ $("#PrintInvoicef10").click(function() {
                                         dataType: "json",
                                         async: false,
                                         cache: false,
-                                        success: function(data) {
+                                        success: function (data) {
                                             if (data == true) {
 
                                                 toastr.success('Invoice Saved Successfully');
-                                                setTimeout(function() {
+                                                setTimeout(function () {
                                                     if (printorNot == true) {
                                                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                         window.open(actionUrl);
@@ -8226,7 +8832,7 @@ $("#PrintInvoicef10").click(function() {
                                 dataType: "json",
                                 async: false,
                                 cache: false,
-                                success: function(data) {
+                                success: function (data) {
                                     if (data == true) {
                                         if (printorNot == true) {
                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
@@ -8262,7 +8868,7 @@ $("#PrintInvoicef10").click(function() {
                     title: 'Update Sale Invoice!',
                     content: 'Are you sure to Update Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             //debugger;
                             var isamountValid = true;
                             if ($("#isExclude").text() == "true") {
@@ -8289,7 +8895,7 @@ $("#PrintInvoicef10").click(function() {
                                                 data: { 'SaleDetails': SaleDetails },
                                                 //contentType: "application/json; charset=utf-8",
                                                 dataType: "json",
-                                                success: function(data) {
+                                                success: function (data) {
                                                     if (data == true) {
                                                         if (printorNot == true) {
                                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
@@ -8313,7 +8919,7 @@ $("#PrintInvoicef10").click(function() {
                                         data: JSON.stringify(SaleDetails),
                                         contentType: "application/json; charset=utf-8",
                                         dataType: "json",
-                                        success: function(data) {
+                                        success: function (data) {
                                             if (data == true) {
                                                 if (printorNot == true) {
                                                     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
@@ -8338,7 +8944,7 @@ $("#PrintInvoicef10").click(function() {
 
                             }
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -8353,9 +8959,9 @@ $("#PrintInvoicef10").click(function() {
         $('#myButton').click(function () {
             var balanceValue = $('#BalanceP').text();
             var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
-           
+
             $('#ChangeP').val(cleanBalanceValue);
-           $('#rightButton').show();
+            $('#rightButton').show();
             $('#myButton').hide();
             $('#BalanceP').text('0');
 
@@ -8377,30 +8983,30 @@ $("#PrintInvoicef10").click(function() {
         var Balanceduep = $("#BalanceDueP").text().split('$');
         var BalanceDueP = Balanceduep[1];
         //$("#amountallocate-" + val).text(getamc);
-        if(amountpayed != "" && isNaN(amountpayed) == false ){
+        if (amountpayed != "" && isNaN(amountpayed) == false) {
             $("#TotalPaidP").text("$" + amountpayed);
             $('#rightButton').hide();
             $('#myButton').show();
 
             if (parseFloat(amountpayed) > parseFloat(BalanceDueP)) {
-               $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
-               $("#totalpaidd").text("$" + parseFloat(BalanceDueP).toFixed(2));
-                 $("#myButton").prop("disabled", false);
-               
-               var change = parseFloat(amountpayed) - parseFloat(BalanceDueP);
-             //  $("#ChangeP").val("$" + change.toFixed(2));
-             $("#ChangeP").val("$" + 0.00);
-               $("#BalanceP").text("$(" + change.toFixed(2) + ")");
+                $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
+                $("#totalpaidd").text("$" + parseFloat(BalanceDueP).toFixed(2));
+                $("#myButton").prop("disabled", false);
+
+                var change = parseFloat(amountpayed) - parseFloat(BalanceDueP);
+                //  $("#ChangeP").val("$" + change.toFixed(2));
+                $("#ChangeP").val("$" + 0.00);
+                $("#BalanceP").text("$(" + change.toFixed(2) + ")");
             } else {
                 $("#myButton").prop("disabled", true);
                 $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
                 $("#totalpaidd").text("$" + parseFloat(amountpayed).toFixed(2));
 
-                var balance =  parseFloat(BalanceDueP) - parseFloat(amountpayed);
+                var balance = parseFloat(BalanceDueP) - parseFloat(amountpayed);
                 $("#ChangeP").val("$" + 0.00);
                 $("#BalanceP").text("$" + balance.toFixed(2));
             }
-        }else if(amountpayed == "" || isNaN(amountpayed) == true) {
+        } else if (amountpayed == "" || isNaN(amountpayed) == true) {
 
             $("#TotalPaidP").text('');
             $("#totalpaidd").text('');
@@ -8409,13 +9015,13 @@ $("#PrintInvoicef10").click(function() {
             $("#BalanceP").text("$" + Balanceduep[1]);
             Swal.fire('please enter Numeric value');
         }
-        
-       // PaymentAdd2(val);
+
+        // PaymentAdd2(val);
     }
     function PaymentAdd2(val) {
 
         var calculated_total_sum = 0;
-        $("#Custpaymenttable .txtCal").each(function(id, value) {
+        $("#Custpaymenttable .txtCal").each(function (id, value) {
             id = id + 1;
             var get_textbox_value = $(this).text();
             if ($("#cardnumber-" + id).hasClass("CreditC")) {
@@ -8467,7 +9073,7 @@ $("#PrintInvoicef10").click(function() {
             var issue = false;
             var productname = "";
             var exceedlimit = false;
-            $(".saleslimitexeeded").each(function() {
+            $(".saleslimitexeeded").each(function () {
                 var description = $("#description-" + i).text();
                 //console.log("hello" + description);
 
@@ -8477,7 +9083,7 @@ $("#PrintInvoicef10").click(function() {
                 i++;
             });
             i = 1;
-            $(".saleslimitexeeded").each(function() {
+            $(".saleslimitexeeded").each(function () {
                 //alert(1);
                 if (update == false) {
                     var quantity = $("#ringerqty-" + i).text();
@@ -8550,13 +9156,13 @@ $("#PrintInvoicef10").click(function() {
 
 
 
-                            if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
+                                if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
                         //issue = true;
                         $.confirm({
                             title: 'Message',
                             content: "You ringged up for " + $("#description-" + i).text() + " with greater quantity than Sales limit",
                             buttons: {
-                                confirm: function() {
+                                confirm: function () {
                                     //window.isSuperVisorCreditSuccess = true;
                                     //InsertSaleDetails(printorNotStatus, updatestatus);
                                     $("#supervisorModal").modal("show");
@@ -8692,13 +9298,13 @@ $("#PrintInvoicef10").click(function() {
         var plateNo = $("#plateNo").val();
 
         var SaleDetails = new Array();
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             if ($(this).find("#productId").val() == '') {
                 RemoveRow(($(this).attr("id")).split("rowid-")[1]);
             }
         });
         var count1 = 1;
-        $("#saletable TBODY TR").each(function() {
+        $("#saletable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(14).html() == '') {
@@ -8813,7 +9419,7 @@ $("#PrintInvoicef10").click(function() {
                     title: 'Save New Sale Invoice!',
                     content: 'Are you sure to save new Sale Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             //debugger;
                             var isamountValid = true;
                             if ($("#isExclude").text() == "true") {
@@ -8851,14 +9457,14 @@ $("#PrintInvoicef10").click(function() {
                                                     dataType: "json",
                                                     async: false,
                                                     cache: false,
-                                                    success: function(data) {
+                                                    success: function (data) {
                                                         //debugger;
     @*if (data.success) {
                                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                             window.open(actionUrl);
                                                             location.reload();
                                                             }*@
-                                                                if (data == true) {
+                                                                    if (data == true) {
 
                                                             toastr.success('Invoice Saved Successfully');
 
@@ -8879,7 +9485,7 @@ $("#PrintInvoicef10").click(function() {
                                             dataType: "json",
                                             async: false,
                                             cache: false,
-                                            success: function(data) {
+                                            success: function (data) {
                                                 //debugger;
     @*if (data.success) {
                                                     window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
@@ -8903,7 +9509,7 @@ $("#PrintInvoicef10").click(function() {
                             }
 
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -8913,7 +9519,7 @@ $("#PrintInvoicef10").click(function() {
                     title: 'Update Sale Invoice!',
                     content: 'Are you sure to Update Invoice?',
                     buttons: {
-                        confirm: function() {
+                        confirm: function () {
                             //debugger;
                             var isamountValid = true;
                             if ($("#isExclude").text() == "true") {
@@ -8940,14 +9546,14 @@ $("#PrintInvoicef10").click(function() {
                                                 data: { 'SaleDetails': SaleDetails },
                                                 //contentType: "application/json; charset=utf-8",
                                                 dataType: "json",
-                                                success: function(data) {
+                                                success: function (data) {
                                                     //debugger;
     @*if (data.success) {
                                                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                         window.open(actionUrl);
                                                         location.reload();
                                                         }*@
-                                                                if (data == true) {
+                                                                    if (data == true) {
                                                         if (printorNot == true) {
                                                             var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                             window.open(actionUrl);
@@ -8970,13 +9576,13 @@ $("#PrintInvoicef10").click(function() {
                                         data: JSON.stringify(SaleDetails),
                                         contentType: "application/json; charset=utf-8",
                                         dataType: "json",
-                                        success: function(data) {
+                                        success: function (data) {
                                             //debugger;
     @*if (data.success) {
                                                 window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                 //window.open('Purchase/PurchaseInvoice','_blank');
                                                 }*@
-                                                        if (data == true) {
+                                                            if (data == true) {
                                                 if (printorNot == true) {
                                                     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                     window.open(actionUrl);
@@ -9000,7 +9606,7 @@ $("#PrintInvoicef10").click(function() {
 
                             }
                         },
-                        cancel: function() {
+                        cancel: function () {
                         },
                     }
                 });
@@ -9013,7 +9619,7 @@ $("#PrintInvoicef10").click(function() {
 
 
 
-    $("#InvFirst-1").click(function() {
+    $("#InvFirst-1").click(function () {
         // creditCheckOnlyInv(true, false);
 
         var customername = $("#searchname").val();
@@ -9030,7 +9636,7 @@ $("#PrintInvoicef10").click(function() {
 
         var SaleDetails = new Array();
         var count1 = 1;
-        $("#Custpaymenttable TBODY TR").each(function() {
+        $("#Custpaymenttable TBODY TR").each(function () {
             var row = $(this);
             var Sale = {};
 
@@ -9092,7 +9698,7 @@ $("#PrintInvoicef10").click(function() {
             data: JSON.stringify(SaleDetails),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
 
                 if (data == true) {
                     //swal("Success!", "Updated Successfully");
@@ -9110,12 +9716,12 @@ $("#PrintInvoicef10").click(function() {
     })
 
     // Append F3
-   
+
     function GetItemDataAppendForDesModal3() {
-       
+
 
         var jj = 1;
-        $('#saletable tr').each(function() {
+        $('#saletable tr').each(function () {
             debugger;
             var currentRow = $(this).closest("tr");
             var check = $("#rowid-" + jj).find("#itemnumber-" + jj).text();
@@ -9128,7 +9734,7 @@ $("#PrintInvoicef10").click(function() {
         var count = 0;
         $(".add-row").trigger("click");
 
-        $('#saletable tbody tr').each(function(index, tr) {
+        $('#saletable tbody tr').each(function (index, tr) {
 
             count++;
         });
@@ -9139,7 +9745,7 @@ $("#PrintInvoicef10").click(function() {
         var count1 = 0;
         var exist = 0;
         var notexist = true;
-        $('#saletable tr').each(function(index, tr) {
+        $('#saletable tr').each(function (index, tr) {
             if (count1 > 0) {
                 var Id = tr.attributes["id"].value.split("rowid-")[1];
                 var productnumber = $("#itemnumber-" + Id).text();
@@ -9171,8 +9777,8 @@ $("#PrintInvoicef10").click(function() {
 
     function GetItemByIDaForShortModalF(val, indexex, qustmQty) {
 
-            var count = 0;
-        $('#saletable tbody tr').each(function(index, tr) {
+        var count = 0;
+        $('#saletable tbody tr').each(function (index, tr) {
 
 
             count++;
@@ -9188,7 +9794,7 @@ $("#PrintInvoicef10").click(function() {
                 id: id
             },
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 console.log("F###   " + data);
                 //console.log("Hemlooooooooo",data);
                 if (data != null && data != "" && data != "false") {
@@ -9198,7 +9804,7 @@ $("#PrintInvoicef10").click(function() {
                     var exist = 0;
                     var notexist = true;
                     var count1 = 0;
-                    $('#saletable tr').each(function(index, tr) {
+                    $('#saletable tr').each(function (index, tr) {
                         if (count1 > 0) {
                             var Id = tr.attributes["id"].value.split("rowid-")[1];
                             /*var productId = parseInt($("#rowid-" + Id).find("#productId").val());*/
@@ -9216,9 +9822,9 @@ $("#PrintInvoicef10").click(function() {
                         }
 
                         count1++;
-                                           
+
                     });
-                     if (notexist == true) {
+                    if (notexist == true) {
 
                         GetItemByItemNumber(null, count);
                         var itemquantity = $("#itemquantitylabel").val();
@@ -9228,7 +9834,7 @@ $("#PrintInvoicef10").click(function() {
                     }
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -9272,7 +9878,7 @@ $("#PrintInvoicef10").click(function() {
             dataType: 'json',
             // Success start
 
-            success: function(data) {
+            success: function (data) {
                 console.log("Here is data " + data);
                 $("#existingitemnumbers").empty();
                 //$("#defaultlisticonss").empty();
@@ -9552,7 +10158,7 @@ $("#PrintInvoicef10").click(function() {
 
                     if (data.vendors != null && data.vendors.length > 0) {
                         $("#appendsuppliersmains").empty();
-                        $.each(data.vendors, function(index, item) {
+                        $.each(data.vendors, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -9607,7 +10213,7 @@ $("#PrintInvoicef10").click(function() {
 
                     if (data.vendors != null && data.vendors.length > 0) {
                         $("#appendsuppliersmains").empty();
-                        $.each(data.vendors, function(index, item) {
+                        $.each(data.vendors, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -9661,7 +10267,7 @@ $("#PrintInvoicef10").click(function() {
                     }
                     if (data.purchaseOrders != null && data.purchaseOrders.length > 0) {
                         $("#appendpurchaseordersmains").empty();
-                        $.each(data.purchaseOrders, function(index, item) {
+                        $.each(data.purchaseOrders, function (index, item) {
 
                             // var myitem = item.invoiceNumber.toString();
 
@@ -9692,7 +10298,7 @@ $("#PrintInvoicef10").click(function() {
                     if (data.saleOrders != null && data.saleOrders.length > 0) {
 
                         $('#appendsaleorders').empty();
-                        $.each(data.saleOrders, function(index, item) {
+                        $.each(data.saleOrders, function (index, item) {
                             var html = '';
                             html += '<tr>';
                             html += '<td style="width: 10px" id="" class="grids-td">' + (index + 1) + '</td>';
@@ -9726,12 +10332,12 @@ $("#PrintInvoicef10").click(function() {
                 $("#listallmissions").empty();
 
                 GetCheapestValue(id);
-                setTimeout(function() {
+                setTimeout(function () {
                     $.unblockUI();
                 }, 2500);
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
 
@@ -9752,10 +10358,10 @@ $("#PrintInvoicef10").click(function() {
             },
             dataType: "json",
 
-            success: function(data) {
+            success: function (data) {
 
                 if (data != null && data != "undefined") {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
 
                         $('#progressbarheights').css("height", val.quantity + '%');
                         $('#progressbarheights').text(val.quantity + "%");
@@ -9779,7 +10385,7 @@ $("#PrintInvoicef10").click(function() {
                     })
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
 
                 var errorMessage = xhr.status + ': ' + xhr.statusText
 

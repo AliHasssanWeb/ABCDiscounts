@@ -2107,9 +2107,19 @@ namespace ABC.POS.API.Controllers
             try
             {
                 var Response = ResponseBuilder.BuildWSResponse<Payable>();
-                var record = db.Payables.Where(x => x.AccountNumber == id).FirstOrDefault();
+                var record = db.Payables.FirstOrDefault(x => x.AccountNumber == id);
 
-                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                }
+                else
+                {
+                    // If record is null, create a new Payable with Amount set to 0
+                    var emptyRecord = new Payable { Amount = "0" };
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, emptyRecord);
+                }
+
                 return Ok(Response);
             }
             catch (Exception ex)

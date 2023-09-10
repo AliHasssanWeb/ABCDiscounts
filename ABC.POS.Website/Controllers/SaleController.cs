@@ -1,19 +1,23 @@
-﻿using ABC.EFCore.Entities.POS;
+﻿using ABC.DTOs.Library.SalesDTOs;
+using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
 using ABC.POS.Domain.DataConfig.Configurations;
 using ABC.POS.Website.Models;
 using ABC.Shared;
 using ABC.Shared.DataConfig;
+using iTextSharp.tool.xml.html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Ocsp;
 using Rotativa.AspNetCore;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Grid;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -439,157 +443,18 @@ namespace ABC.POS.Website.Controllers
             try
             {
                 PosSale model = new PosSale();
-                SResponse respcustomer = RequestSender.Instance.CallAPI("api", "Inventory/SaleGet", "GET");
-                if (respcustomer.Status && (respcustomer.Resp != null) && (respcustomer.Resp != ""))
-                {
-                    ResponseBack<List<PosSale>> record = JsonConvert.DeserializeObject<ResponseBack<List<PosSale>>>(respcustomer.Resp);
-                    if (record != null && record.Data.Count() > 0)
-                    {
-                        PosSale newcustomer = new PosSale();
-                        var fullcode = "";
-                        if (record.Data[0].InvoiceNumber != null && record.Data[0].InvoiceNumber != "string" && record.Data[0].InvoiceNumber != "")
-                        {
 
-                            int large, small;
-                            int POSSALEID = 0;
-                            large = Convert.ToInt32(record.Data[0].InvoiceNumber.Split('-')[1]);
-                            small = Convert.ToInt32(record.Data[0].InvoiceNumber.Split('-')[1]);
-                            for (int i = 0; i < record.Data.Count(); i++)
-                            {
-                                if (record.Data[i].InvoiceNumber != null)
-                                {
-                                    var t = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-                                    if (Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]) > large)
-                                    {
-                                        POSSALEID = Convert.ToInt32(record.Data[i].PossaleId);
-                                        large = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-                                    }
-                                    else if (Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]) < small)
-                                    {
-                                        small = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-                                    }
-                                    else
-                                    {
-                                        if (large < 2)
-                                        {
-                                        POSSALEID = Convert.ToInt32(record.Data[i].PossaleId);
-                                        }
-                                    }
-                                }
-                            }
-                            newcustomer = record.Data.ToList().Where(x => x.PossaleId == POSSALEID).FirstOrDefault();
-                            if (newcustomer != null)
-                            {
-                                if (newcustomer.InvoiceNumber != null)
-                                {
+                SResponse response = RequestSender.Instance.CallAPI("api", "Inventory/GetinvoiceCount", "GET");
 
-                                    int code = 0;
-                                    var VcodeSplit = newcustomer.InvoiceNumber.Split('-');
+                ResponseBack<SystemCountModel> record = JsonConvert.DeserializeObject<ResponseBack<SystemCountModel>>(response.Resp);
 
-                                    code = Convert.ToInt32(VcodeSplit[1]) + 1;
-
-                                    long checknumber = Convert.ToInt64(VcodeSplit[1]);
-                                    if (checknumber > 9999)
-                                    {
-                                        long ndcode = Convert.ToInt64(VcodeSplit[0]) + 1;
-                                        fullcode = "000000" + Convert.ToString(ndcode) + "-" + "9999";
-                                    }
-                                    else if (checknumber > 999)
-                                    {
-                                        fullcode = "0000000-" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 99)
-                                    {
-                                        fullcode = "0000000-0" + Convert.ToString(code);
-                                    }
-                                    else if (checknumber > 9)
-                                    {
-                                        fullcode = "0000000-00" + Convert.ToString(code);
-                                    }
-                                    else
-                                    {
-                                        fullcode = "0000000-000" + Convert.ToString(code);
-                                    }
-                                }
-                                else
-                                {
-                                    fullcode = "0000000" + "-" + "0001";
-                                }
-                                ViewBag.InvoiceNumber = fullcode;
-                            }
-                            else
-                            {
-                                fullcode = "0000000" + "-" + "0001";
-                                ViewBag.InvoiceNumber = fullcode;
-                            }
-                            model.InvoiceNumber = ViewBag.InvoiceNumber;
-
-                            //int large, small;
-                            //int CustomerInfoID = 0;
-                            //large = Convert.ToInt32(record.Data[0].InvoiceNumber.Split('-')[1]);
-                            //small = Convert.ToInt32(record.Data[0].InvoiceNumber.Split('-')[1]);
-                            //for (int i = 0; i < record.Data.Count; i++)
-                            //{
-                            //    if (record.Data[i].InvoiceNumber != null)
-                            //    {
-                            //        var t = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-                            //        if (Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]) > large)
-                            //        {
-                            //            CustomerInfoID = Convert.ToInt32(record.Data[i].PossaleId);
-                            //            large = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-
-                            //        }
-                            //        else if (Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]) < small)
-                            //        {
-                            //            small = Convert.ToInt32(record.Data[i].InvoiceNumber.Split('-')[1]);
-                            //        }
-                            //        else
-                            //        {
-                            //            if (large < 2)
-                            //            {
-                            //                CustomerInfoID = Convert.ToInt32(record.Data[i].PossaleId);
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                            //newcustomer = record.Data.ToList().Where(x => x.PossaleId == CustomerInfoID).FirstOrDefault();
-                            //if (newcustomer != null)
-                            //{
-                            //    if (newcustomer.InvoiceNumber != null)
-                            //    {
-                            //        var VcodeSplit = newcustomer.InvoiceNumber.Split('-');
-                            //        int code = Convert.ToInt32(VcodeSplit[1]) + 1;
-                            //        fullcode = "00-" + Convert.ToString(code);
-                            //    }
-                            //    else
-                            //    {
-                            //        fullcode = "00-" + "1";
-                            //    }
-                            //}
-                            //else
-                            //{
-                            //    fullcode = "00-" + "1";
-                            //}
-                        }
-                        else
-                        {
-                            //fullcode = "00-" + "1";
-                            fullcode = "0000000" + "-" + "0001";
-                        }
-
-                        ViewBag.InvoiceNumber = fullcode;
-                    }
-                    else
-                    {
-                        ViewBag.InvoiceNumber = "0000000" + "-" + "0001";
-                    }
-                    model.InvoiceNumber = ViewBag.InvoiceNumber;
-                }
-                else
-                {
-                    ViewBag.InvoiceNumber = "0000000" + "-" + "0001";
-                    model.InvoiceNumber = ViewBag.InvoiceNumber;
-                }
+                var fullcode = "";
+                long code = 0;
+                code = record.Data.SaleInvoiceCount;
+                string invCount = string.Format("{0:00000000000}", code);
+                fullcode = invCount.Insert(7, "-");
+                ViewBag.InvoiceNumber = fullcode;
+                model.InvoiceNumber = ViewBag.InvoiceNumber;
 
                 return View(model);
             }
@@ -1512,7 +1377,80 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
+        public IActionResult AddSalePos1([FromBody] PointOfSaleModel sale)
+        {
+            try
+            {
+                PointOfSale pointOfSale = new PointOfSale();
 
+                pointOfSale.CustomerId = sale.CustomerId;
+                pointOfSale.GetSaleDiscount = sale.GetSaleDiscount;
+                pointOfSale.Count = Convert.ToInt32(sale.Count);
+                pointOfSale.InvoiceNumber = sale.InvoiceNumber;
+                pointOfSale.SubTotal = sale.SubTotal;
+                pointOfSale.Other = sale.Other;
+                pointOfSale.Tax = sale.Tax;
+                pointOfSale.Freight = sale.Freight;
+                pointOfSale.IsPaid = sale.IsPaid;
+                pointOfSale.IsOpen = true;
+                pointOfSale.IsClose = false;
+                pointOfSale.OnCash = sale.OnCash;
+                pointOfSale.OnCredit = sale.OnCredit;
+                pointOfSale.Charges = sale.Charges;
+
+                foreach (var itemsDetails in sale.PointOfSaleDetails)
+                {
+                    PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
+                    pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
+                    pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
+                    string inDiscountTrim = (itemsDetails.InDiscount as string).Trim('$');
+                    pointOfSaleDetail.InDiscount = Convert.ToString(inDiscountTrim);
+                    string OutDiscountTrim = (itemsDetails.OutDiscount as string).Trim('%');
+                    pointOfSaleDetail.OutDiscount = Convert.ToString(OutDiscountTrim);
+                    pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
+                    pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
+                    string PriceTrim = (itemsDetails.Price as string).Trim('$');
+                    pointOfSaleDetail.Price = Convert.ToString(PriceTrim);
+                    string TotalTrim = (itemsDetails.Total as string).Trim('$');
+                    pointOfSaleDetail.Total = Convert.ToString(TotalTrim);
+                    pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
+
+                    pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
+
+                }
+
+                var body = JsonConvert.SerializeObject(pointOfSale);
+                //TempData["saleorder"] = body;
+                //TempData["saleorderInfo"] = saleInfo;
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleCreate1", "POST", body);
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {   //Send Mail If Add to Mail list is true
+                    //if (obj.AddToMailList)
+                    //{
+                    //    MailRequest mail = new MailRequest();
+                    //    mail.ToEmail = obj.CustomerEmail;
+                    //    mail.Subject = "Invoice Generated";
+                    //    mail.Body = "Check mail";
+                    //    var mailbody = JsonConvert.SerializeObject(mail);
+                    //SResponse mailresp = RequestSender.Instance.CallAPI("api", "Sale/MailToCustomer", "POST", mailbody);
+                    //if (mailresp.Status && (mailresp.Resp != null) && (mailresp.Resp != ""))
+                    //{
+                    //    TempData["Msg"] = "Mail Sent Successfully";
+                    //}
+                    //else
+                    //{
+                    //    TempData["Msg"] = resp.Resp + " " + "Unable To Sent Mail";
+                    //}
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return View();
+        }
 
         public IActionResult AddSalePos([FromBody] List<JsonPosSale> SaleDetails)
         {
@@ -1643,7 +1581,7 @@ namespace ABC.POS.Website.Controllers
                         }
                         else
                         {
-                            if(Convert.ToDouble(model.Price) < 0)
+                            if (Convert.ToDouble(model.Price) < 0)
                             {
                                 model.Price = "0";
                             }
@@ -1655,12 +1593,12 @@ namespace ABC.POS.Website.Controllers
                             model.OutDiscount = trimmed;
                             var ValueItem = Convert.ToDouble(model.Price) * Convert.ToDouble(model.RingerQuantity);
                             var CalValue = Convert.ToDouble((Convert.ToDouble(model.OutDiscount) / 100) * ValueItem);
-                            TotalDiscount += Math.Round(CalValue,2);
+                            TotalDiscount += Math.Round(CalValue, 2);
                         }
                     }
                     if (sale.InDiscount != null && sale.InDiscount != "undefined")
                     {
-                        if(sale.InDiscount == "" || sale.InDiscount == "$0.00")
+                        if (sale.InDiscount == "" || sale.InDiscount == "$0.00")
                         {
                             model.InDiscount = "0.00";
                         }
@@ -1691,7 +1629,7 @@ namespace ABC.POS.Website.Controllers
                         model.SupervisorId = int.Parse(sale.SupervisorId);
 
                     }
-                  
+
                     if (sale.ShipmentLimit != null && sale.ShipmentLimit != "undefined" && sale.ShipmentLimit != "")
                     {
                         model.ShipmentLimit = sale.ShipmentLimit;
@@ -1722,7 +1660,7 @@ namespace ABC.POS.Website.Controllers
                     {
                         model.Charges = sale.Charges;
 
-                    } 
+                    }
                     if (sale.SubTotal != null && sale.SubTotal != "undefined" && sale.SubTotal != "")
                     {
                         if (sale.SubTotal == "" || sale.SubTotal == "$0.00")
@@ -1817,7 +1755,75 @@ namespace ABC.POS.Website.Controllers
         }
 
 
+        public IActionResult UpdateSalePos1([FromBody] PointOfSaleModel SaleModel)
+        {
+            try
+            {
 
+                PointOfSale pointOfSale = new PointOfSale();
+
+                pointOfSale.PointOfSaleId = SaleModel.PointOfSaleId;
+                pointOfSale.CustomerId = SaleModel.CustomerId;
+                pointOfSale.GetSaleDiscount = SaleModel.GetSaleDiscount;
+                pointOfSale.Count = Convert.ToInt32(SaleModel.Count);
+                pointOfSale.InvoiceNumber = SaleModel.InvoiceNumber;
+                pointOfSale.SubTotal = SaleModel.SubTotal;
+                pointOfSale.Other = SaleModel.Other;
+                pointOfSale.Tax = SaleModel.Tax;
+                pointOfSale.Freight = SaleModel.Freight;
+                pointOfSale.IsPaid = SaleModel.IsPaid;
+                pointOfSale.IsOpen = true;
+                pointOfSale.IsClose = false;
+                pointOfSale.OnCash = SaleModel.OnCash;
+                pointOfSale.OnCredit = SaleModel.OnCredit;
+                pointOfSale.Charges = SaleModel.Charges;
+
+                foreach (var itemsDetails in SaleModel.PointOfSaleDetails)
+                {
+                    PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
+                    pointOfSaleDetail.PointOfSaleId = Convert.ToInt32(itemsDetails.PointOfSaleId);
+                    pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
+                    pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
+                    string inDiscountTrim = (itemsDetails.InDiscount as string).Trim('$');
+                    pointOfSaleDetail.InDiscount = Convert.ToString(inDiscountTrim);
+                    string OutDiscountTrim = (itemsDetails.OutDiscount as string).Trim('%');
+                    pointOfSaleDetail.OutDiscount = Convert.ToString(OutDiscountTrim);
+                    pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
+                    pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
+                    string PriceTrim = (itemsDetails.Price as string).Trim('$');
+                    pointOfSaleDetail.Price = Convert.ToString(PriceTrim);
+                    string TotalTrim = (itemsDetails.Total as string).Trim('$');
+                    pointOfSaleDetail.Total = Convert.ToString(TotalTrim);
+                    pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
+
+                    pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
+                   
+                   
+                }
+                var body = JsonConvert.SerializeObject(pointOfSale);
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleUpdate1", "POST", body);
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+
+                    TempData["Msg"] = "Update Successfully";
+                    return Json(true);
+
+
+                }
+                else
+                {
+                    TempData["Msg"] = resp.Resp + " " + "Unable To add";
+                    return Json(resp.Status);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+           
+        }
 
 
         public IActionResult UpdateSalePos([FromBody] List<JsonPosSale> SaleDetails)
@@ -2281,7 +2287,7 @@ namespace ABC.POS.Website.Controllers
 
                         if (SaleDetails[0].IsPrintinvoice)
                         {
-                           return Json(true);
+                            return Json(true);
                             //return RedirectToAction("OrdersForInvoice", "Customer");
                         }
                         // TempData["Msg"] = "Add Successfully";
@@ -2291,7 +2297,7 @@ namespace ABC.POS.Website.Controllers
                     }
                     else
                     {
-                       // TempData["Msg"] = resp1.Resp + " " + "Unable To add";
+                        // TempData["Msg"] = resp1.Resp + " " + "Unable To add";
                         //return RedirectToAction("OrdersForInvoice", "Customer");
                         return Json(false);
 
@@ -2307,7 +2313,7 @@ namespace ABC.POS.Website.Controllers
                 }
                 else
                 {
-                   // TempData["Msg"] = resp.Resp + " " + "Unable To add";
+                    // TempData["Msg"] = resp.Resp + " " + "Unable To add";
                     //return RedirectToAction("OrdersForInvoice", "Customer");
                     return Json(false);
 
@@ -2354,7 +2360,7 @@ namespace ABC.POS.Website.Controllers
                         list2[i].Discount = list2[i].Discount.Replace("%", "");
 
                     }
-                    if(list2[i].RingerQuantity != null && list2[i].Price != null)
+                    if (list2[i].RingerQuantity != null && list2[i].Price != null)
                     {
                         decimal current = (decimal.Parse(list2[i].RingerQuantity)) * (decimal.Parse(list2[i].Price));
                         list2[i].AmountRetail = (Math.Round((current), 2)).ToString();
@@ -2374,7 +2380,7 @@ namespace ABC.POS.Website.Controllers
                 //total.Discount = (Math.Round(decimal.Parse(total.Discount), 2)).ToString();
                 //var total1 = (Math.Round((decimal.Parse(total.SubTotal) - decimal.Parse(total.Discount)), 2)).ToString();
                 total.Total = list2[0].InvoiceTotal;
-                    //(Math.Round((decimal.Parse(total1) + (decimal.Parse(total.Other))), 2)).ToString();
+                //(Math.Round((decimal.Parse(total1) + (decimal.Parse(total.Other))), 2)).ToString();
                 var pdfResult = new ViewAsPdf(invoiceModel);
                 return pdfResult;
 
@@ -2388,7 +2394,7 @@ namespace ABC.POS.Website.Controllers
         }
 
 
-       
+
 
         public IActionResult SendApproval([FromBody] List<JsonPosSale> SaleDetails)
         {
@@ -2702,6 +2708,42 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
+        public JsonResult GetOpensales1()
+        {
+            try
+            {
+                SResponse ress = RequestSender.Instance.CallAPI("api",
+                    "Inventory/GetOpenSales1", "GET");
+                if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+                {
+
+                    ResponseBack<List<string>> response =
+                                JsonConvert.DeserializeObject<ResponseBack<List<string>>>(ress.Resp);
+
+                    if (response.Data.Count() > 0)
+                    {
+
+                        //List<PosSale> responseObject = response.Data;
+                        //List<string> responseObject = response.Data.Select(x => x.InvoiceNumber).ToList();
+
+
+                        //var query = responseObject.GroupBy(x => x.CurrentInvoiceNumber).Select(g => g.FirstOrDefault()).ToList();
+
+                        return Json(response.Data);
+                    }
+                    else
+                    {
+                        TempData["response"] = "No Sale List Found. Please Enter Sale First.";
+                    }
+                }
+                return Json("NotFound");
+            }
+            catch (Exception ex)
+            {
+                return Json("NotFound");
+            }
+        }
+
 
         public JsonResult GetOpensales()
         {
@@ -2739,7 +2781,38 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
+        public JsonResult GetPostedsales1()
+        {
+            try
+            {
+                SResponse ress = RequestSender.Instance.CallAPI("api",
+                    "Inventory/GetPostedSales1", "GET");
+                if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+                {
 
+                    ResponseBack<List<string>> response =
+                                JsonConvert.DeserializeObject<ResponseBack<List<string>>>(ress.Resp);
+
+                    if (response.Data.Count() > 0)
+                    {
+                        // List<string> responseObject = response.Data.Select(x => x.InvoiceNumber).Distinct().ToList(); ;
+
+                        //var query = responseObject.GroupBy(x => x.CurrentInvoiceNumber).Select(g => g.FirstOrDefault()).ToList();
+
+                        return Json(response.Data);
+                    }
+                    else
+                    {
+                        TempData["response"] = "No Sale List Found. Please Enter Sale First.";
+                    }
+                }
+                return Json("NotFound");
+            }
+            catch (Exception ex)
+            {
+                return Json("NotFound");
+            }
+        }
 
         public JsonResult GetPostedsales()
         {
@@ -2775,6 +2848,33 @@ namespace ABC.POS.Website.Controllers
         }
 
 
+        [HttpGet]
+        public JsonResult GetSaleInvoiceByInvoiceNumber1(string InvoiceNumber = "", string Method = "")
+        {
+            var Msg = "";
+
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/PosSaleByInvoiceNumber1/" + InvoiceNumber + "/" + Method, "GET");
+            if (res.Status && (res.Resp != null) && (res.Resp != ""))
+            {
+                ResponseBack<PointOfSaleModel> response = JsonConvert.DeserializeObject<ResponseBack<PointOfSaleModel>>(res.Resp);
+                if (response.Data != null)
+                {
+                    PointOfSaleModel responseobj = response.Data;
+                    return Json(responseobj);
+
+                }
+                else
+                {
+                    return Json("false");
+                }
+
+            }
+            else
+            {
+                return Json("false");
+            }
+
+        }
 
         [HttpGet]
         public JsonResult GetSaleInvoiceByInvoiceNumber(string InvoiceNumber = "", string Method = "")
@@ -2804,7 +2904,78 @@ namespace ABC.POS.Website.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost]  
+        public IActionResult ChangePayment1([FromBody] SaleInvoicesModel Sale)
+        {
+            try
+            {
+               
+                List<SalesInvTransaction> invTransactionslist = new List<SalesInvTransaction>();
+
+                var saleInfo = JsonConvert.SerializeObject(Sale);
+
+                foreach (var sale in Sale.saleInvoiceTransactionModel)
+                {
+                    SalesInvTransaction invTransactions = new SalesInvTransaction();
+                    if (sale.AmountPaid != null && sale.AmountPaid != "undefined")
+                    {
+                        string amountPaid = (sale.AmountPaid as string).Trim('$');
+                        invTransactions.AmountPaid = amountPaid;
+
+                    }
+                    if (sale.AmountAllocate != null && sale.AmountAllocate != "undefined")
+                    {
+                        string amountAllocate = (sale.AmountAllocate as string).Trim('$');
+                        invTransactions.AmountAllocate = amountAllocate;
+
+                    }
+                    if (sale.PaymentType != null && sale.PaymentType != "undefined")
+                    {
+                        invTransactions.PaymentType = sale.PaymentType;
+                    }
+                    if (sale.ChequeNumber != null && sale.ChequeNumber != "undefined")
+                    {
+                        invTransactions.ChequeNumber = sale.ChequeNumber;
+                    }
+                    if (sale.HoldDate != null)
+                    {
+                        invTransactions.HoldDate = sale.HoldDate;
+                    }
+                    if (sale.InvoiceNumber != null && sale.InvoiceNumber != "undefined")
+                    {
+                        invTransactions.InvoiceNumber = sale.InvoiceNumber;
+                    }
+
+                    invTransactionslist.Add(invTransactions);
+                }
+                var seralizeInvTransactions = JsonConvert.SerializeObject(invTransactionslist);
+
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/ChangePayment1", "POST", saleInfo);
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    SResponse ressp = RequestSender.Instance.CallAPI("api", "Inventory/SalesInvoiceTransactions1", "POST", seralizeInvTransactions);
+                    if (ressp.Status && (ressp.Resp != null) && (ressp.Resp != ""))
+                    {
+                        return Json(true);
+                    }
+                    else
+                    {
+                        return Json(false);
+                    }
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+            [HttpPost]
         public IActionResult ChangePayment([FromBody] List<SalesInvoicesJson> SaleDetails)
         {
             try
