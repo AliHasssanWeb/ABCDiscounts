@@ -8112,10 +8112,10 @@ namespace ABC.POS.API.Controllers
                 if (record != null)
                 {
                     var zipData = db.ZipCodes.ToList().Where(x => x.Id == Convert.ToInt32(record.Zip)).FirstOrDefault();
-                    var getpay = db.Receivables.ToList().Where(x => x.AccountId == record.AccountId).FirstOrDefault();
+                    var receiveable = db.Receivables.ToList().Where(x => x.AccountId == record.AccountId).FirstOrDefault();
                     var classificationdata = db.CustomerClassifications.Where(x => x.CustomerInfoId == record.Id && x.CustomerCode == record.CustomerCode).FirstOrDefault();
                     var billingData = db.CustomerBillingInfos.Where(x => x.CustomerInformationId == record.Id && x.CustomerCode == record.CustomerCode).AsQueryable()?.FirstOrDefault();
-                    var recieveableData = db.Receivables.Where(x => x.AccountId == record.AccountId && x.AccountNumber == record.AccountNumber)?.FirstOrDefault();
+                    //var recieveableData = db.Receivables.Where(x => x.AccountId == record.AccountId && x.AccountNumber == record.AccountNumber)?.FirstOrDefault();
                     if (zipData != null)
                     {
                         record.ZipCode = zipData;
@@ -8129,30 +8129,27 @@ namespace ABC.POS.API.Controllers
                     {
                         record.CustomerBillingInfo = billingData;
                     }
-                    if (recieveableData != null)
+                    if (receiveable != null)
                     {
-                        if (recieveableData.Amount == null)
+                        if (receiveable.Amount == null)
                         {
-                            recieveableData.Amount = "0.00";
+                            receiveable.Amount = "0.00";
                         }
                         else
                         {
-                            var amount = Convert.ToDouble(recieveableData.Amount);
-                            recieveableData.Amount = Math.Round(amount, 2).ToString();
+                            var amount = Convert.ToDouble(receiveable.Amount);
+                            receiveable.Amount = Math.Round(amount, 2).ToString();
                         }
-                        record.Receivable = recieveableData;
+                        record.Receivable = receiveable;
                     }
                     if (classificationdata != null)
                     {
                         record.CustomerClassification = classificationdata;
-                        if (getpay != null)
+                        if (receiveable != null)
                         {
 
-                            record.Balance = getpay.Amount;
+                            record.Balance = receiveable.Amount;
                         }
-
-
-
 
                     }
                     else
@@ -10165,22 +10162,22 @@ namespace ABC.POS.API.Controllers
                 var recevables = db.Receivables.Where(x => x.AccountId == AccountId).FirstOrDefault();
                 
                 var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
+                
                 if (checkReceiving == null)
                 {
                     receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
                     receiving.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
                     receiving.Date = DateTime.Now;
-                    receiving.Change = saleInvoices.Change;
-                    receiving.SubTotal = saleInvoices.SubTotal;
-                    receiving.InvTotal = saleInvoices.InvoiceTotal;
-                    receiving.InvBalance = saleInvoices.InvBalance;
-                    receiving.Change = saleInvoices.Change;
+                    receiving.SubTotal = (saleInvoices.SubTotal as string).Trim('$');
+                    receiving.InvTotal = (saleInvoices.InvoiceTotal as string).Trim('$');
+                    receiving.InvBalance = (Convert.ToDouble((saleInvoices.SubTotal as string).Trim('$')) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'))).ToString("F");
+                    receiving.Change = (saleInvoices.Change as string).Trim('$');
                     receiving.Tax = saleInvoices.Tax;
                     receiving.Discount = saleInvoices.Discount;
                     receiving.Freight = saleInvoices.Freight;
                     receiving.Other = saleInvoices.Other;
                     receiving.PreBalance = recevables == null ? "0" : recevables.Amount;
-                    if (saleInvoices.InvBalance == "0" || saleInvoices.InvBalance == "$0.00")
+                    if (saleInvoices.InvBalance == "0" || saleInvoices.InvBalance == "0.00")
                     {
                         receiving.IsPaid = true;
                     }
@@ -10192,9 +10189,9 @@ namespace ABC.POS.API.Controllers
                 }
                 else
                 {
-                    var remaininginvoicePayAmount = Convert.ToDouble((checkReceiving.InvBalance as string).Trim('$')) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'));
-                    checkReceiving.InvBalance = Convert.ToString(remaininginvoicePayAmount);
-                    if (remaininginvoicePayAmount == 0)
+                    checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'))).ToString("F");
+                    checkReceiving.Change = (saleInvoices.Change as string).Trim('$');
+                    if (checkReceiving.InvBalance == "0.00")
                     {
                         checkReceiving.IsPaid = true;
                     }
@@ -10202,12 +10199,23 @@ namespace ABC.POS.API.Controllers
                 }
                 db.SaveChanges();
 
+
                 if (recevables != null)
                 {
-                    double num1 = Convert.ToDouble((recevables.Amount as string).Trim('$'));
+                    double num1 = 0;
+
+                    if (checkReceiving == null)
+                    {
+                        num1 = Convert.ToDouble((recevables.Amount as string).Trim('$')) + Convert.ToDouble((saleInvoices.InvoiceTotal as string).Trim('$'));
+                    }
+                    else
+                    {
+                        num1 = Convert.ToDouble((recevables.Amount as string).Trim('$'));
+                    }
+                   
                     double num2 = Convert.ToDouble(saleInvoice.TotalAmount);
                     var num3 = num1 - num2;
-                    recevables.Amount = Convert.ToString(num3);
+                    recevables.Amount = num3.ToString("F");
                     db.Entry(recevables).State = EntityState.Modified;
                 }
                 else
