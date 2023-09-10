@@ -1441,8 +1441,12 @@ namespace ABC.POS.Website.Controllers
                     //{
                     //    TempData["Msg"] = resp.Resp + " " + "Unable To Sent Mail";
                     //}
+                    return Json(true);
                 }
-
+                else
+                {
+                    return Json(false);
+                }
             }
             catch (Exception ex)
             {

@@ -3903,9 +3903,13 @@
             async: false,
             cache: false,
             success: function (data) {
+                debugger;
                 if(data == true){
-                    toastr.success('Invoice Saved Successfully');
-                    location.reload();
+                    if(Ispaid == true){
+                        ChangePayment1(true);
+                       }
+                    //toastr.success('Invoice Saved Successfully');
+                    //location.reload();
                 }
             }
         });
@@ -4623,7 +4627,7 @@
     function CalculatetaxPlusDiscount() {
         debugger;
         var subtotal = $("#subtotalauto").val().split('$');
-        var prevBalance = $("#previousbalance").val();
+        var prevBalance = $("#previousbalance").val().split('$');
         var discount = $("#discountidadd").val();
         var otheridval = $("#otherid").val();
         var taxidval = $("#taxid").val();
@@ -4650,8 +4654,8 @@
         } if (freight == "") {
             freight = 0;
 
-        } if (prevBalance == "") {
-            prevBalance = 0;
+        } if (prevBalance[0] == "") {
+            prevBalance[1] = 0;
         }
 
         var newsubtotal = subtotal[1]; //subtotal[1];
@@ -4675,11 +4679,8 @@
             }
         } else {
             $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
-            var checkInvoiceBalance = $("#InvoiceBalance").val();
-            //if (checkInvoiceBalance == "" || checkInvoiceBalance == "$0.00") {
-                $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
-            //}
-            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
+            $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
+            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance[1]);
             $("#amountdue").val("$" + amountDue.toFixed(2));
         }
 
@@ -5016,16 +5017,19 @@
                         $("#customerAddToMail").text(data.customerClassification.addtoMaillingList);
                         if (data.customerClassification.viewInvoicePrevBalance) {
                             if($("#posted-invoice").val() == "value"){
-                            if (data.receivable != null) {
+                                if (data.receivable != null) {
 
-                                $("#previousbalance").val(data.receivable.amount);
+                                    $("#previousbalance").val('$' + data.receivable.amount);
+                                    $("#amountdue").val('$' + data.receivable.amount);
 
-                                ShowReceivables(data);
-                            } else {
-                                $("#previousbalance").val("");
-                            }
+                                    ShowReceivables(data);
+                                } 
+                                else {
+                                    $("#previousbalance").val("");
+                                    $("#amountdue").val("");
+                                    }
 
-                            }
+                              }
                         }
                         else {
                             $("#previousbalance").val("");
@@ -6446,6 +6450,8 @@
 
                             GetCompanyByID(data.customerId, false);
 
+                            $('#previousbalance').val('$' + data.preBalance);
+
                             CalculatetaxPlusDiscount();
                             
                            // SaveOnGoingSales();
@@ -6462,8 +6468,8 @@
                             $('#amountdue').attr("readonly", true);
                             $('#searchname').attr("readonly", true);
 
-                             $('#InvoiceBalance').val(data.invoiceBalance);
-                            $('#previousbalance').val(data.preBalance);
+                            $('#InvoiceBalance').val('$' + data.invoiceBalance);
+                            
                              
 
                             $(".saverecord").hide();
