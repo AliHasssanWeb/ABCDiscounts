@@ -1133,6 +1133,7 @@
                 <button class="tablinks" onclick="openCity(event, 'PrintOptions')">Print Options</button>
                 <button class="tablinks" onclick="openCity(event, 'FooterMessages')">FooterMessages</button>
                 <button class="tablinks" onclick="openCity(event, 'UnPaidInvoices')">UnPaidInvoices</button>
+                <button class="tablinks" onclick="openCity(event, 'Payments')">Payments</button>
             </div>
             <div class="modal-body " style="background-color:#cccccc">
 
@@ -1961,6 +1962,224 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-4 ">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
+                                </div>
+
+                                <div class="col-lg-3 ">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="Payments" class="tabcontent">
+                    <h3>Payments</h3>
+                    <div class="row">
+                        <div class="col-lg-12" style="border:ridge;padding-top:10px;padding-bottom:10px;">
+
+
+                            <div class="row">
+                                  <div class="col-lg-1 ">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+                              
+                                <div class="col-lg-4 ">
+                                   <label>E-mail</label>
+                                  <input style="width:65%" type="text" id="" name="">
+                                  <input type="checkbox">
+                                   <label>Text</label>
+                                    <input style="width:65%; margin-left:7%"  type="number" id="" name="">
+                                  <input type="checkbox">
+                                </div>
+
+                                <div class="col-lg-2 ">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12" style="border:ridge;padding-top:10px;padding-bottom:10px;">
+
+
+                            <div class="row">
+                             
+
+                                <div class="col-lg-3 ">
+                                    <input style="width:100%;" type="text" id="" name=""> 
+                                  
+                                </div>
+
+                                <div class="col-lg-2 ">
+                                    <input style="width:100%;" type="text" id="" name="">
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="checkbox">
+                                    <Label>List All</Label>
+                                   
+                                </div>
+                                <div class="col-lg-5">
+                                    <label>Balance</label>
+                                    <input style="width:60%" type="text" id="" name="">
+                                </div>
+
+                              
+                            </div>
+
+                        </div>
+                        <div class="col-lg-7">
+
+                            <label id="CustomerNameP" style="color: #010083; font-size: 20px; font-weight: 600; "> 1803 Gondals 786 ltc </label>
+
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-4">
+
+                            <label id="CustomerCodeP" style="color: #010083; font-weight: 700; font-size: 18px; "> 01 </label>
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div style="background-color: #ffff00; border: 2px solid #d1d6e1; display: block; text-align: center;">
+                                <label style="font-weight: 600; color: #848091; font-size: 22px;">
+                                    Invoice#
+                                </label>
+                                <br>
+                                <label id="InvoiceNumber2P" style="color: #848091; font-weight: 500; font-size: 20px;">
+                                    1121208-22222
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-5" style="border: 2px solid #bbb4b4; font-size: 18px; ">
+                            <label style="color: #848091; font-weight: 700;">
+                                Invoice Total <span id="InvoiceTotalP" class="ms-5"></span>
+                            </label>
+
+                            <label style="color: #8f2000; font-weight: 700;">
+                                Balance Due <span id="BalanceDueP" class="ms-5"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-lg-1">
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row " style="background-color: #cccccc;border: 2px solid #e3e8f1;">
+                        <div class="col-lg-12 mt-1 col-md-12 col-sm-12 col-12 table-responsive" id="">
+                            <table class="table table-bordered table-condensed table-responsive-lg" id="Custpaymenttable" style="border:0.7px solid;">
+                                <thead>
+                                    <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                        <th style="color: #020caf;">Amount Paid</th>
+                                        <th>Amount Alloc</th>
+                                        <th>Payment Type</th>
+                                        <th>Ck/Card Number</th>
+                                        <th style="color: #c92d21">Hold Date</th>
+
+                                        <th><span class="add-rowpayment ti-plus"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentmodaltable" style="background-color: white;">
+                                    <!-- hidden row -->
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Paid
+                                    </label>
+                                    <label id="TotalPaidP" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $0.00
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Alloc
+                                    </label>
+                                    <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $0.00
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:red">
+                                        Change
+                                    </label>
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:100%; text-align:center;" readonly />
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                @*  <div class="form-group bordercolormodal">
+
+
+                                </div>*@
+                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-left"></i></button>
+                             @*   <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>*@
+
+                                @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
+
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:blue">
+                                        Balance
+                                    </label>
+                                    <label id="BalanceP" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        $0.00
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" style="border:ridge">
+        
+
                             <div class="row">
                                 <div class="col-lg-4 ">
                                     <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
