@@ -4785,13 +4785,24 @@
             $('#itemquantitylabel').trigger('focus');
         }
     });
+        // Function to clear the search and show all table rows
+       function clearSearch() {
+            $("#searchPro").val(""); // Clear the search input
+            $("#proTable tr").show(); // Show all table rows
+       }
+        // Listen for the Ctrl + F3 keyboard shortcut
+        $(document).keydown(function (e) {
+            if (e.ctrlKey && e.keyCode === 114) { // 114 corresponds to the F3 key
+                clearSearch();
+                e.preventDefault(); // Prevent the default browser search behavior
+            }
+        });
     $("#searchPro").on("keyup", function () {
         var value = $(this).val().toLowerCase();
         $("#proTable tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
-
     function GetItemWithIDForSlectItemList(val2) {
 
         if (window.newseq != "" && window.newseq != "undefined") {
