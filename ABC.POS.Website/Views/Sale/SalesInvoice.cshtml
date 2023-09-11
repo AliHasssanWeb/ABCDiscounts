@@ -2114,10 +2114,10 @@
                                         <th>Ck/Card Number</th>
                                         <th style="color: #c92d21">Hold Date</th>
 
-                                        <th><span class="add-rowpayment ti-plus"></span></th>
+                                        <th><span class="add-generalpaymentrow ti-plus"></span></th>
                                     </tr>
                                 </thead>
-                                <tbody id="paymentmodaltable" style="background-color: white;">
+                                <tbody id="generalpaymentmodaltable" style="background-color: white;">
                                     <!-- hidden row -->
 
                                 </tbody>
@@ -4277,6 +4277,41 @@
         $("#DateP-" + paymentserial).datepicker("setDate", "10w+1");
         paymentserial++;
     });
+
+    $('.add-generalpaymentrow').click(function () {
+
+        var html = '';
+        html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
+        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="PaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
+        html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" class="table-warning" readonly ></td>';
+        html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash PaymentMethodP txtCalCredit" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
+        html += '<option value="Cash">Cash</option>';
+        html += '<option value="MoneyOrder">MoneyOrder</option>';
+        html += '<option value="CreditCard">CreditCard</option>';
+        html += '<option value="DebitCard">DebitCard</option>';
+        html += '<option value="cust">Cust.Advance</option>';
+        html += '<option value = "Check" >Check</option >';
+        html += '</select ></td>';
+        html += '<td id="cardnumber-' + paymentserial + '" contenteditable="true" class="table-warning"></td>';
+        html += '<td id="holddate-' + paymentserial + '" contenteditable="true" class="table-warning " style="color: #c92d21;font-weight: 500;"><input type="text" id="DateP-' + paymentserial + '" style="background:#fff3cd; border:none;" disabled></td>';
+        html += '<td id="paymentrowdelete-' + paymentserial + '"  onclick="RemoveRowPayment(' + paymentserial + ')"><span class="delete-row ti-close"></span></td>';
+        html += '</tr >';
+
+
+
+        CountTotalOfAllTDOfPayment();
+        $('#generalpaymentmodaltable').append(html);
+
+        //$("#DateP-" + paymentserial).datepicker({
+        //    dateFormat: "dd/MM/yy"
+        //});
+        //SetDate(paymentserial);
+        $("#DateP-" + paymentserial).datepicker();
+        $("#DateP-" + paymentserial).datepicker("setDate", "10w+1");
+        paymentserial++;
+    });
+
+
 
     function SetDate(val) {
         $("#DateP-" + val).datepicker();
