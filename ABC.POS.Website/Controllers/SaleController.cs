@@ -1,4 +1,5 @@
-﻿using ABC.DTOs.Library.SalesDTOs;
+﻿using ABC.DTOs.Library.Adaptors;
+using ABC.DTOs.Library.SalesDTOs;
 using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
@@ -2851,6 +2852,33 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult LoadUnPaidInvoices(string CustomerId = "")
+        {
+            var Msg = "";
+
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/LoadUnPaidInvoices/" + CustomerId, "GET");
+            if (res.Status && (res.Resp != null) && (res.Resp != ""))
+            {
+                ResponseBack<List<ReceivingAdp>> response = JsonConvert.DeserializeObject<ResponseBack<List<ReceivingAdp>>>(res.Resp);
+                if (response.Data != null)
+                {
+                    List<ReceivingAdp> responseobj = response.Data;
+                    return Json(responseobj);
+
+                }
+                else
+                {
+                    return Json("false");
+                }
+
+            }
+            else
+            {
+                return Json("false");
+            }
+
+        }
 
         [HttpGet]
         public JsonResult GetSaleInvoiceByInvoiceNumber1(string InvoiceNumber = "", string Method = "")

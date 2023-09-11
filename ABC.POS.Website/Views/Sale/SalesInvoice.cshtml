@@ -1900,10 +1900,10 @@
                 <div id="UnPaidInvoices" class="tabcontent">
                     <h3>UnPaidInvoices</h3>
                     <div class="row" style="border:ridge">
-                        <table class=" table-bordered">
+                        <table class=" table-bordered" id="tblunpaidinv">
                             <thead>
                                 <tr style="background-color:white;color:#010083">
-                                    <th></th>
+                                    @* <th></th> *@
                                     <th>Invoice #</th>
                                     <th>Date</th>
                                     <th>Days</th>
@@ -1914,8 +1914,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="background-color:white">
-                                    <td>
+                                @* <tr style="background-color:white"> *@
+                                  @*   <td>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
                                             <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
                                         </svg>
@@ -1925,12 +1925,13 @@
                                     <td>Data 4</td>
                                     <td>Data 5</td>
                                     <td>Data 6</td>
-                                    <td>Data 7</td>
-                                    <td style="background-color:#cccccc">  
-                    <input type="radio" name="payOrder" value="option1"> 
-                    <input type="radio" name="payOrder" value="option2">
-                </td>
-                                </tr>
+                                    <td>Data 7</td> *@
+
+                                  @* <td style="background-color:#cccccc">   *@
+                  @*   <input type="radio" name="payOrder" value="option1"> 
+                    <input type="radio" name="payOrder" value="option2"> *@
+                @* </td> *@
+                                @* </tr> *@
                                 <!-- Add more rows with data here -->
                             </tbody>
                         </table>
@@ -4591,14 +4592,14 @@
         $("#payment").modal('hide');
     }
     function openmodal() {
-        debugger;
+       
 
-        var chksubTotal = $("#subtotalauto").val();
-        var chkinvTotal = $("#invoicetotal").val();
-        if(chksubTotal == "" && chkinvTotal == ""){
-            $("#customerpayment").modal('hide');
-            return;
-        }
+        // var chksubTotal = $("#subtotalauto").val();
+        // var chkinvTotal = $("#invoicetotal").val();
+        // if(chksubTotal == "" && chkinvTotal == ""){
+        //     $("#customerpayment").modal('hide');
+        //     return;
+        // }
 
         var invoicetotal = $("#invoicetotal").val();
         var invoiceBalance = $("#InvoiceBalance").val();
@@ -6180,6 +6181,9 @@
 
 
     function openCity(evt, cityName) {
+
+        debugger;
+
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -6191,10 +6195,35 @@
         }
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
+
+        if(cityName == "UnPaidInvoices"){
+            LoadUnpaidInvoices();
+        }
     }
 
 
+    function LoadUnpaidInvoices(){
+        debugger;
+        var customerId = $("#customerid").val();    
+        if(customerId !=""){
+            $.ajax({
+                url: '@Url.Action("LoadUnPaidInvoices", "Sale")',
+                async: false,
+                Type: 'GET',
+                data: { CustomerId: customerId },
+                dataType: "json",
+                success: function (data) {
+                      $.each(data, function (val, text) {
+                      
+                          $('#tblunpaidinv > tbody:last-child').append('<tr><td> ' + text.invoiceNumber + ' </td> <td> ' + text.date + ' </td> <td> ' + text.days + ' </td> <td> ' + text.invTotal + ' </td> <td> ' + text.totalPaid + ' </td> <td> ' + text.invBalance + ' </td> <td> <input type="radio" name="payOrder" value="option1">   <input type="radio" name="payOrder" value="option2"> </td> </tr>');
+                    }); 
+                 
+                    }   
+                }); 
+        }
+    }
 
+        
     function ShowReceivables(data) {
         if (data != null && data != "undefined") {
             $(".forremovingmodel").empty();
@@ -8254,8 +8283,8 @@
                     toastr.success('Payment Received');
 
                     //if(OnlyPayment){
-                    var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
-                    window.open(actionUrl);
+                    // var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
+                    // window.open(actionUrl);
                     location.reload();
                     //}
                     // location.reload();
