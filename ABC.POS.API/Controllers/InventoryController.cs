@@ -8137,7 +8137,7 @@ namespace ABC.POS.API.Controllers
                         }
                         else
                         {
-                            var amount = Convert.ToDouble(receiveable.Amount);
+                            var amount = Convert.ToDouble((receiveable.Amount as string).Trim('$'));
                             receiveable.Amount = Math.Round(amount, 2).ToString();
                         }
                         record.Receivable = receiveable;

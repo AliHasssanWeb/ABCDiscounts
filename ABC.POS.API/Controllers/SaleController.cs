@@ -1,4 +1,5 @@
-﻿using ABC.EFCore.Repository.Edmx;
+﻿using ABC.DTOs.Library.Adaptors;
+using ABC.EFCore.Repository.Edmx;
 using ABC.Shared;
 using ABC.Shared.DataConfig;
 using ABC.Shared.Interface;
@@ -6,6 +7,7 @@ using ABC.Shared.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -667,6 +669,52 @@ namespace ABC.POS.API.Controllers
                     var Response = ResponseBuilder.BuildWSResponse<Supervisor>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
                     return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("LoadUnPaidInvoices/{CustomerId}")]
+        public IActionResult LoadUnPaidInvoices(string CustomerId)
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<List<ReceivingAdp>>();
+                List<ReceivingAdp> recevinglist= new List<ReceivingAdp>();
+
+                var record = (from receiving in db.Receivings
+                              where receiving.CustomerId == Convert.ToInt32(CustomerId) && receiving.IsPaid == false
+                              orderby receiving.Date descending
+                              select new ReceivingAdp
+                              {
+                                      InvoiceNumber = receiving.InvoiceNumber,
+                                      Date = receiving.Date,
+                                      InvTotal = receiving.InvTotal,
+                                      TotalPaid = (Convert.ToDouble(receiving.InvTotal) - Convert.ToDouble(receiving.InvBalance)).ToString(),
+                                      InvBalance = receiving.InvBalance,
+                                      Days = (EF.Functions.DateDiffDay(receiving.Date, DateTime.Now)).ToString()
+                                  
+                              }).ToList();
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var response = ResponseBuilder.BuildWSResponse<PointOfSale>();
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
                 }
                 return BadRequest(ex.Message);
             }
