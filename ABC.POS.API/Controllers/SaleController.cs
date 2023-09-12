@@ -685,7 +685,7 @@ namespace ABC.POS.API.Controllers
 
                 var record = (from receiving in db.Receivings
                               where receiving.CustomerId == Convert.ToInt32(CustomerId) && receiving.IsPaid == false
-                              orderby receiving.Date descending
+                              orderby receiving.IsPaidFirst descending, receiving.Date ascending
                               select new ReceivingAdp
                               {
                                       InvoiceNumber = receiving.InvoiceNumber,

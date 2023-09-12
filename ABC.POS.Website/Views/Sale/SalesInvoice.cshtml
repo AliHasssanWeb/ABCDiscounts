@@ -6146,9 +6146,6 @@
 
 
     function openCity(evt, cityName) {
-
-        debugger;
-
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -6168,8 +6165,12 @@
 
 
     function LoadUnpaidInvoices(){
-        debugger;
-        var customerId = $("#customerid").val();    
+        // for Clear Old Table Data
+        var checktable =  $('#tblunpaidinv').dataTable();
+        checktable.fnClearTable();
+        checktable.fnDestroy();
+
+        var customerId = $("#customerid").val();
         if(customerId !=""){
             $.ajax({
                 url: '@Url.Action("LoadUnPaidInvoices", "Sale")',
@@ -6178,9 +6179,29 @@
                 data: { CustomerId: customerId },
                 dataType: "json",
                 success: function (data) {
+                      var inner = '';
                       $.each(data, function (val, text) {
-                      
-                          $('#tblunpaidinv > tbody:last-child').append('<tr><td> ' + text.invoiceNumber + ' </td> <td> ' + text.date + ' </td> <td> ' + text.days + ' </td> <td> ' + text.invTotal + ' </td> <td> ' + text.totalPaid + ' </td> <td> ' + text.invBalance + ' </td> <td> <input type="radio" name="payOrder" value="option1">   <input type="radio" name="payOrder" value="option2"> </td> </tr>');
+
+                          // Invoice Date Formating
+                          var d = new Date(text.date)
+                          var day = d.getDate();
+                          var month = d.getMonth();
+                          var year = d.getFullYear();
+                          var InvDate = day + '-' + month + '-' + year;
+                        
+                        //Invoice Row
+                        inner = '';
+                        inner += '<tr>';
+                        inner += '<td> ' + text.invoiceNumber + ' </td>';   
+                        inner += '<td> ' + InvDate + ' </td>';
+                        inner += '<td> ' + text.days + ' </td>';
+                        inner += '<td> ' + text.invTotal + ' </td>';
+                        inner += '<td> ' + text.totalPaid + ' </td>';
+                        inner += '<td> ' + text.invBalance + ' </td>';
+                        inner += '<td> <input type="radio" name="payOrder" value="option1">   <input type="radio" name="payOrder" value="option2"> </td>';
+                        inner += '</tr>';
+                       $('#tblunpaidinv > tbody:last-child').append(inner);
+
                     }); 
                  
                     }   
