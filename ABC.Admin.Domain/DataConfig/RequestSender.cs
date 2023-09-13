@@ -66,7 +66,9 @@ namespace ABC.Admin.Domain.DataConfig
                 //http://204.2.194.223/testadminapi/
                 //http://45.35.97.246:5595/abcdadminapi/
                 //http://10.10.10.98:5595/abcdadminapi/
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://10.10.10.98:5595/abcdadminapi/" + otype + "/" + action);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/" + otype + "/" + action);
+                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://38.17.51.207:8049/" + otype + "/" + action);
+               // HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://10.10.10.98:5595/abcdadminapi/" + otype + "/" + action);
                 request.Headers.Add("Authorization", "Bearer " + AccessToken);
                 request.Credentials = CredentialCache.DefaultCredentials;
                 request.Method = method;
