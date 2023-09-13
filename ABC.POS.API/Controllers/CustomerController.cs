@@ -1,4 +1,5 @@
-﻿using ABC.EFCore.Repository.Edmx;
+﻿using ABC.DTOs.Library.Adaptors;
+using ABC.EFCore.Repository.Edmx;
 using ABC.Shared.DataConfig;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -5599,6 +5600,38 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpGet("CustomerNoteById/{CustomerId}")]
+        public IActionResult CustomerNoteById(string CustomerId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<CustomerNotesAdp>>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var response = db.CustomerNotes.Where(x => x.CustomerId == Convert.ToInt32(CustomerId)).Select(x => new CustomerNotesAdp {
+                    NoteId = x.NoteId,
+                    NoteDate = x.NoteDate,
+                    CustomerNote = x.CustomerNote1
+                }).ToList();
+
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, response);
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<List<CustomerNotesAdp>>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("CustomerNoteCreate")]
         public IActionResult CustomerNoteCreate(CustomerNote data)
         {
@@ -5609,21 +5642,13 @@ namespace ABC.POS.API.Controllers
                 {
                     return BadRequest();
                 }
-                
-                var check = db.CustomerNotes.ToList().Where(x=>x.CustomerId == data.CustomerId).ToList();
-                if (check.Count() > 0)
-                {
-                    ResponseBuilder.SetWSResponse(Response, StatusCodes.Already_Exists, null, null);
-                }
-                else
-                {
-                
-                    data.NoteDate = DateTime.Now;
-                    db.CustomerNotes.Add(data);
-                    db.SaveChanges();
-                    
-                }
-                return Ok(Response);
+
+                data.NoteDate = DateTime.Now;
+                db.CustomerNotes.Add(data);
+                db.SaveChanges();
+
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, data);
+                return Ok(data);
             }
             catch (Exception ex)
             {
