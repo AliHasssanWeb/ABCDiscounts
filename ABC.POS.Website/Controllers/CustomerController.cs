@@ -1,3 +1,4 @@
+using ABC.DTOs.Library.Adaptors;
 using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
@@ -2467,6 +2468,34 @@ namespace ABC.POS.Website.Controllers
             }
 
         }
+
+        public JsonResult CustomerNoteDropDown(string CustomerId)
+        {
+            if (CustomerId != null)
+            {
+          
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Customer/CustomerNoteById" + "/" + CustomerId , "GET");
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    var response = JsonConvert.DeserializeObject<ResponseBack<List<CustomerNotesAdp>>>(resp.Resp);
+                    if (response.Data != null)
+                    {
+                        var responseObject = response.Data;
+                        return Json(responseObject);
+                    }
+                    else
+                    {
+                        TempData["response"] = "NotFound.";
+                    }
+                }
+                else
+                {
+                    return Json("false");
+                }
+            }
+            return Json("false");
+        }
+
 
         public JsonResult AddCustomerNote(CustomerNote data)
         {
