@@ -1358,7 +1358,10 @@
                     </div>
                     <div class="col-lg-3" style="margin-top:-22px" >
                         <label style="width: 62px;color: blue; font-size:12px">Note'sDate</label>
-                        <input class="form-control"  id="NoteAddDate"  />
+                        <select class="form-control" id="NoteAddDate">
+                            @* <option value="option"></option>
+                            <option value="option1">Option</option>*@
+                        </select>
                     </div>
                 </div>
                 <div class="row" style="margin-top:10px;">
@@ -2394,11 +2397,16 @@
                 }
                 $("#NoteAddDate").val(data.noteDate);
                 $("#NoteArea").val(data.customerNote);
-                if (data.customerNote == null || data.customerNote == "" || data.customerNote == "undefined") {
-                        $("#UpdateNoteBtn").prop('disabled', true);
-                    }
-                    else {
-                        $("#UploadNoteBtn").prop('disabled', true);
+                  // Assuming you have two buttons with ids "UpdateNoteBtn" and "UploadNoteBtn"
+                    var updateNoteBtn = $("#UpdateNoteBtn");
+                    var uploadNoteBtn = $("#UploadNoteBtn");
+
+                    if (data.customerNote === null || data.customerNote === "" || data.customerNote === "undefined") {
+                        updateNoteBtn.prop('disabled', true);
+                        uploadNoteBtn.prop('disabled', false); // Disable the "Upload Note" button
+                    } else {
+                        updateNoteBtn.prop('disabled', true); // Disable the "Update Note" button
+                        uploadNoteBtn.prop('disabled', false); // Enable the "Upload Note" button
                     }
                 $("#AddnewUpdatebtn").hide();
                 $("#Addnewbtn").hide();
@@ -2670,12 +2678,71 @@
     function ClosePurchaseOrderParModal() {
         $("#PurchaseOrderParModal").modal('hide');
     }
+
+
+    function loadNotesDropdown(customerId){
+        $.ajax({
+        url: '@Url.Action("CustomerNoteDropDown", "Customer")',
+        data : {CustomerId : customerId},
+       type: "GET",
+        dataType: 'json',
+        success: function (data) {
+            try {
+                // Verify that data is received correctly
+                console.log("Data received:", data);
+
+                // Populate the dropdown with the received data
+                var dropdown = $('#NoteAddDate');
+
+                // Clear existing options (if any)
+                dropdown.empty();
+
+                // Check if data is an array and not empty
+                if (Array.isArray(data) && data.length > 0) {
+                    // Iterate through the data and create options
+                    $.each(data, function (index, item) {
+                         debugger;
+                        var d = new Date(item.noteDate)
+                         var day = d.getDate();
+                         var month = d.getMonth();
+                         var year = d.getFullYear();
+                         var noteDate = day + '-' + month + '-' + year;
+                        // Assuming 'item' has properties 'customerId' and 'customerName'
+                        dropdown.append($('<option>', {
+                            value: item.customerId, // Replace with the appropriate value from your data
+                            text: noteDate // Replace with the appropriate text from your data
+                        }));
+                    });
+                } else {
+                    // Handle the case when no data is received
+                    console.log("No data received.");
+                    // Optionally, you can add a default option or display an error message
+                    dropdown.append($('<option>', {
+                        value: '',
+                        text: 'No data available'
+                    }));
+                }
+            } catch (error) {
+                // Handle any JavaScript errors that may occur
+                console.error('Error:', error);
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            // Handle AJAX request errors
+            console.error('AJAX Error:', textStatus, errorThrown);
+        }
+    });
+    }
+
+
     function openNotesModal() {
         $("#NotesModal").modal('show');
         var pp = $("#itemsupplierfound").text();
         var nn = $("#txtCompnay").val();
         $("#CustomerCodeNa").text(pp);
         $("#CustomerNameNote").val(nn);
+
+        loadNotesDropdown(pp);
     }
      function closeNotesModal() {
         $("#NotesModal").modal('hide');
@@ -2704,10 +2771,22 @@
         $("#EditModal").modal('hide');
 
     }
-    $("#PlusN").click(function() {
+    $("#PlusN").click(function () {
+        var noteArea = $("#NoteArea");
+        var attachImg = $("#AttachImg");
+
+        if (noteArea.is(":visible")) {
+            noteArea.hide();
+            attachImg.hide();
+        } else {
+            noteArea.show();
+            attachImg.show();
+        }
+    });
+   @* $("#PlusN").click(function() {
         $("#NoteArea").show();
         $("#AttachImg").show();
-    });
+    });*@
     function ShowNotesAttachment() {
         var id = $("#itemsupplierfound").text();
         NotesAttachmentsHistory(id);
@@ -2723,6 +2802,10 @@
         var customerId = $("#itemsupplierfound").text();
         var customerNote = $("#NoteArea").val();
         var customerName = $("#CustomerNameNote").val();
+        if (customerNote == "" || customerNote == undefined) {
+        swal("Error!", "Please Enter Some Text");
+        return false; 
+         }
         var data = {};
         data = new FormData();
 
