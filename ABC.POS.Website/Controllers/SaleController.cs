@@ -538,11 +538,14 @@ namespace ABC.POS.Website.Controllers
         public JsonResult GetCompanyByID(int id)
         {
             var Msg = "";
+            //SResponse ress = RequestSender.Instance.CallAPI("api",
+            //   "Inventory/CustomerInformationByID" + "/" + id, "GET");
+
             SResponse ress = RequestSender.Instance.CallAPI("api",
-               "Inventory/CustomerInformationByID" + "/" + id, "GET");
+              "Inventory/CustomerDetailById" + "/" + id, "GET");
             if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
             {
-                var response = JsonConvert.DeserializeObject<ResponseBack<CustomerInformation>>(ress.Resp);
+                var response = JsonConvert.DeserializeObject<ResponseBack<CustomerDetailModel>>(ress.Resp);
                 if (response.Data != null)
                 {
                     var responseObject = response.Data;
@@ -2935,6 +2938,32 @@ namespace ABC.POS.Website.Controllers
             }
 
         }
+
+        [HttpPost]
+        public IActionResult MultiPaymentInvoice([FromBody] SaleMultiInvoicePayModel multiInvoicePay)
+        {
+            try
+            {
+                var invTrans = JsonConvert.SerializeObject(multiInvoicePay);
+
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/MultiPaymentInvoice", "POST", invTrans);
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(false);
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
         [HttpPost]  
         public IActionResult ChangePayment1([FromBody] SaleInvoicesModel Sale)

@@ -1,4 +1,5 @@
-﻿using ABC.DTOs.Library.SalesDTOs;
+﻿using ABC.DTOs.Library.Adaptors;
+using ABC.DTOs.Library.SalesDTOs;
 using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.API.ViewModel;
@@ -6929,8 +6930,8 @@ namespace ABC.POS.API.Controllers
                     var checkPayInvoice = db.Receivings.Where(f => f.InvoiceNumber == obj.InvoiceNumber).FirstOrDefault();
                     if (checkPayInvoice == null)
                     {
-                        if (obj.Count > exist.Count)
-                        {
+                        //if (obj.Count > exist.Count)
+                        //{
                             var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == obj.PointOfSaleId).ToList();
 
                             if (savedItems.Count > 0)
@@ -6940,7 +6941,7 @@ namespace ABC.POS.API.Controllers
                                 db.PointOfSaleDetails.AddRange(obj.PointOfSaleDetails);
                                 db.SaveChanges();
                             }
-                        }
+                       // }
                     }
 
                 }
@@ -8102,6 +8103,81 @@ namespace ABC.POS.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("CustomerDetailById/{id}")]
+        public IActionResult CustomerDetailById(int id)
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<CustomerDetailModel>();
+
+                var record = (from cusInfo in db.CustomerInformations
+                              join cusClassification in db.CustomerClassifications on cusInfo.Id equals cusClassification.CustomerInfoId into cusClasresult
+                              from jrresult in cusClasresult.DefaultIfEmpty()
+                              join rec in db.Receivables on cusInfo.AccountId equals rec.AccountId into receiveableresult
+                              from jrresult1 in receiveableresult.DefaultIfEmpty()
+                              join cusBillinfo in db.CustomerBillingInfos on cusInfo.Id equals cusBillinfo.CustomerInformationId into cusbillinforesult
+                              from jrresult2 in cusbillinforesult.DefaultIfEmpty()
+                              where cusInfo.Id == id
+                              select new CustomerDetailModel
+                              {
+                                  CustomerId = cusInfo.Id,
+                                  Company = cusInfo.Company,
+                                  FirstName = cusInfo.FirstName,
+                                  LastName = cusInfo.LastName,
+                                  Street = cusInfo.Street,
+                                  City = cusInfo.City,
+                                  State = cusInfo.State,
+                                  Zip = cusInfo.Zip,
+                                  Cell = cusInfo.Cell,
+                                  Provider = cusInfo.Provider,
+                                  CheckAddress = cusInfo.CheckAddress,
+                                  Email = cusInfo.Email,
+                                  CustomerCode = cusInfo.CustomerCode,
+                                  AccountId = cusInfo.AccountId,
+                                  BusinessAddress = cusInfo.BusinessAddress,
+                                  TaxIdfein = cusInfo.TaxIdfein,
+                                  TaxExempt = cusInfo.TaxExempt,
+                                  Salesman = jrresult.Salesman,
+                                  AddtoMaillingList = jrresult.AddtoMaillingList,
+                                  ViewInvoicePrevBalance = jrresult.ViewInvoicePrevBalance,
+                                  ShippedVia = jrresult.ShippedVia,
+                                  DriverName = jrresult.DriverName,
+                                  Amount = jrresult1.Amount,
+                                  IsBillToBill = jrresult2.IsBillToBill,
+                                  IsCreditHold = jrresult2.IsCreditHold,
+                                  AdditionalInvoiceCharge = jrresult2.AdditionalInvoiceDiscount,
+                                  IsExclude = jrresult2.IsExclude,
+                                  IsPopupMessage = jrresult2.IsExclude,
+                                  PopupMessage = jrresult2.PopupMessage,
+                                  IsGetSalesDiscounts = jrresult2.IsGetSalesDiscounts,
+                                  PaymentTerms = jrresult2.PaymentTerms
+                              }
+                              ).FirstOrDefault();
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<CustomerInformation>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("CustomerInformationByID/{id}")]
         public IActionResult CustomerInformationByID(int id)
         {
@@ -9333,12 +9409,6 @@ namespace ABC.POS.API.Controllers
             }
         }
 
-
-
-
-
-
-
         [HttpGet("GetSaleHistory")]
         public IActionResult GetSaleHistory()
         {
@@ -10099,6 +10169,75 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpPost("MultiPaymentInvoice")]
+        public IActionResult MultiPaymentInvoice(SaleMultiInvoicePayModel multiInvoicePay)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SaleMultiInvoicePayModel>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                double TotalAllocation = Convert.ToDouble((multiInvoicePay.TotalAmountAllocation as string).Trim('$'));
+                var TotalAmount = TotalAllocation;
+                var CheckInvoices = db.Receivings.Where(f => f.CustomerId == Convert.ToInt32(multiInvoicePay.CustomerId) && f.IsPaid == false).OrderByDescending(f => f.IsPaid).OrderBy(f => f.Date).ToList();
+                if (CheckInvoices.Count > 0)
+                {
+                    foreach (var item in CheckInvoices)
+                    {
+                        double InvBalance = Convert.ToDouble(item.InvBalance);
+
+                        if (TotalAllocation == 0.00)
+                        {
+                            break;
+                        }
+                        if (TotalAllocation >= InvBalance)
+                        {
+                            TotalAllocation = TotalAllocation - InvBalance;
+                            item.IsPaid = true;
+                            item.InvBalance = "0";
+                        }
+                        else
+                        {
+                            item.InvBalance = (InvBalance - TotalAllocation).ToString();
+                            TotalAllocation = 0.00;
+                        }
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+
+                    var RecevableQuery = (from cusInfo in db.CustomerInformations
+                                  join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
+                                  from jrresult in result.DefaultIfEmpty()
+                                  where cusInfo.Id == Convert.ToInt32(multiInvoicePay.CustomerId)
+                                  select new { Amount = jrresult.Amount, RecevingId = jrresult.Id, AccountId = jrresult.AccountId }).FirstOrDefault();
+                                 
+
+                    double remainingAmount = Convert.ToDouble(RecevableQuery.Amount) - TotalAmount;
+                    Receivable receivable = new Receivable();
+                    receivable.Amount = remainingAmount.ToString("F");
+                    receivable.AccountId = RecevableQuery.AccountId;
+                    receivable.Id = RecevableQuery.RecevingId;
+                    db.Entry(receivable).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
+
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SaleMultiInvoicePayModel>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("ChangePayment1")]
         public IActionResult ChangePayment1(SaleInvoicesModel saleInvoices)
@@ -10121,7 +10260,7 @@ namespace ABC.POS.API.Controllers
                 //}
                 FoundInvoice.IsClose = true;
                 FoundInvoice.IsOpen = false;
-                
+
                 saleInvoice.InvoiceNumber = saleInvoices.InvoiceNumber;
                 saleInvoice.Date = DateTime.Now;
                 saleInvoice.CustomerId = saleInvoices.CustomerId;
@@ -10139,30 +10278,37 @@ namespace ABC.POS.API.Controllers
 
                 var customerInformation = db.CustomerInformations.Where(x => x.Id == Convert.ToInt32(saleInvoices.CustomerId)).FirstOrDefault();
 
-                 AccountId = db.Accounts.Where(a => a.AccountId == customerInformation.AccountId).Select(f =>f.AccountId).FirstOrDefault();
+                AccountId = db.Accounts.Where(a => a.AccountId == customerInformation.AccountId).Select(f => f.AccountId).FirstOrDefault();
                 if (AccountId == null || AccountId == "")
                 {
                     Account account = new Account();
                     var accountSubGroupId = db.AccountSubGroups.ToList().Where(x => x.Title == "Customers").Select(x => x.AccountSubGroupId).FirstOrDefault();
                     if (accountSubGroupId != null)
                     {
-                        var customerCount = db.SystemCounts.Select(x => x.CustomerAccountNoCount).SingleOrDefault();
+                        var customerCount = db.SystemCounts.FirstOrDefault();
 
-                        account.AccountId = accountSubGroupId + "-" + string.Format("{0:0000}", customerCount);
-                        //account.Title = obj.CustomerName;
+                        account.AccountId = accountSubGroupId + "-" + string.Format("{0:0000}", customerCount.CustomerAccountNoCount);
+                        account.Title = saleInvoices.CustomerName;
                         account.Status = 1;
                         account.AccountSubGroupId = accountSubGroupId;
                         var saveAccount = db.Accounts.Add(account);
+
+                        customerCount.CustomerAccountNoCount = customerCount.CustomerAccountNoCount + 1;
+                        db.Entry(customerCount).State = EntityState.Modified;
                         db.SaveChanges();
 
                         AccountId = saveAccount.Entity.AccountId;
+
+                        customerInformation.AccountId = AccountId;
+                        db.Entry(customerCount).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
-                
+
                 var recevables = db.Receivables.Where(x => x.AccountId == AccountId).FirstOrDefault();
-                
+
                 var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
-                
+
                 if (checkReceiving == null)
                 {
                     receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
@@ -10177,7 +10323,7 @@ namespace ABC.POS.API.Controllers
                     receiving.Freight = saleInvoices.Freight;
                     receiving.Other = saleInvoices.Other;
                     receiving.PreBalance = recevables == null ? "0" : recevables.Amount;
-                    if (saleInvoices.InvBalance == "0" || saleInvoices.InvBalance == "0.00")
+                    if (receiving.InvBalance == "0" || receiving.InvBalance == "0.00")
                     {
                         receiving.IsPaid = true;
                     }
@@ -10212,7 +10358,7 @@ namespace ABC.POS.API.Controllers
                     {
                         num1 = Convert.ToDouble((recevables.Amount as string).Trim('$'));
                     }
-                   
+
                     double num2 = Convert.ToDouble(saleInvoice.TotalAmount);
                     var num3 = num1 - num2;
                     recevables.Amount = num3.ToString("F");
@@ -10220,9 +10366,12 @@ namespace ABC.POS.API.Controllers
                 }
                 else
                 {
+                    double tempInvTotal = Convert.ToDouble((saleInvoices.InvoiceTotal as string).Trim('$'));
+                    double tempTotalAmount = Convert.ToDouble(saleInvoice.TotalAmount);
+
                     Receivable receivable = new Receivable();
                     receivable.AccountId = AccountId;
-                    receivable.Amount = saleInvoices.InvoiceTotal;
+                    receivable.Amount = (tempInvTotal - tempTotalAmount).ToString("F");
                     db.Receivables.Add(receivable);
                 }
                 db.SaveChanges();
@@ -10233,7 +10382,7 @@ namespace ABC.POS.API.Controllers
             {
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
-                    var Response = ResponseBuilder.BuildWSResponse<SalesInvoice>();
+                    var Response = ResponseBuilder.BuildWSResponse<SaleInvoicesModel>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
@@ -10758,6 +10907,25 @@ namespace ABC.POS.API.Controllers
                 }
                 return BadRequest(ex.Message);
             }
+
+        }
+
+        public List<ReceivingAdp> ReceiveableQuery(int CustomerId)
+        {
+            var record = (from receiving in db.Receivings
+                          where receiving.CustomerId == Convert.ToInt32(CustomerId) && receiving.IsPaid == false
+                          orderby receiving.IsPaidFirst descending, receiving.Date ascending
+                          select new ReceivingAdp
+                          {
+                              InvoiceNumber = receiving.InvoiceNumber,
+                              Date = receiving.Date,
+                              InvTotal = receiving.InvTotal,
+                              TotalPaid = (Convert.ToDouble(receiving.InvTotal) - Convert.ToDouble(receiving.InvBalance)).ToString(),
+                              InvBalance = receiving.InvBalance,
+                              Days = (EF.Functions.DateDiffDay(receiving.Date, DateTime.Now)).ToString()
+
+                          }).ToList();
+            return record;
         }
     }
 

@@ -2021,7 +2021,7 @@
                                     <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
                                 </div>
                                 <div class="col-lg-3">
-                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;" onclick="SaveMultiPayment()">PrintInvoiceF5</button>
                                 </div>
                                 <div class="col-lg-2">
                                     <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
@@ -2055,7 +2055,7 @@
                                 </div>
                                 <div class="col-lg-5">
                                     <label>Balance</label>
-                                    <input style="width:60%" type="text" id="" name="">
+                                    <input disabled style="width:60%" type="text" id="CustomerBalance" name="">
                                 </div>
 
                               
@@ -2068,7 +2068,7 @@
                     <br>
                     <div class="row " style="background-color: #cccccc;border: 2px solid #e3e8f1;">
                         <div class="col-lg-12 mt-1 col-md-12 col-sm-12 col-12 table-responsive" id="">
-                            <table class="table table-bordered table-condensed table-responsive-lg" id="Custpaymenttable" style="border:0.7px solid;">
+                            <table class="table table-bordered table-condensed table-responsive-lg" id="CusMultiPaymentsTable" style="border:0.7px solid;">
                                 <thead>
                                     <tr style="border:0.7px solid;border-bottom:1.4px solid">
                                         <th style="color: #020caf;">Amount Paid</th>
@@ -2093,7 +2093,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Paid
                                     </label>
-                                    <label id="TotalPaidP" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                    <label id="TotalPaidAmount" class="dim col-sm-12 label-style" style="color: #53adcb">
                                         $0.00
                                     </label>
 
@@ -2104,7 +2104,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Alloc
                                     </label>
-                                    <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                    <label id="totalAmountAllocation" class="dim col-sm-12 label-style" style="color: #53adcb">
                                         $0.00
                                     </label>
 
@@ -2116,7 +2116,7 @@
                                         Change
                                     </label>
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        <input type="text" name="CJ" id="ChangeP" style="border:none; color: #53adcb; width:100%; text-align:center;" readonly />
+                                        <input type="text" name="CJ" id="ChangeAmount" style="border:none; color: #53adcb; width:100%; text-align:center;" readonly />
                                     </label>
 
                                 </div>
@@ -2126,8 +2126,8 @@
 
 
                                 </div>*@
-                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-left"></i></button>
-                             @*   <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>*@
+                                <button id="thumbRightButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
+                                <button id="thumbLeftButton" style="font-size:30px ; padding:9px 15px" > <i class="fa fa-hand-o-left"></i></button>
 
                                 @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
 
@@ -2138,7 +2138,7 @@
                                     <label class="dim col-sm-12 label-style" style="color:blue">
                                         Balance
                                     </label>
-                                    <label id="BalanceP" class="dim col-sm-12 label-style" style="color: #53adcb">
+                                    <label id="CustomerBalanceDue" class="dim col-sm-12 label-style" style="color: #53adcb">
                                         $0.00
                                     </label>
                                 </div>
@@ -4212,10 +4212,10 @@
     });
 
     $('.add-generalpaymentrow').click(function () {
-
+        debugger;
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
-        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="PaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
+        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="MultiPaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
         html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" class="table-warning" readonly ></td>';
         html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash PaymentMethodP txtCalCredit" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
         html += '<option value="Cash">Cash</option>';
@@ -4738,8 +4738,8 @@
                     if(Ispaid == true){
                         ChangePayment1(true);
                        }
-                    //toastr.success('Invoice Saved Successfully');
-                    //location.reload();
+                    toastr.success('Invoice Saved Successfully');
+                    location.reload();
                 }
             }
         });
@@ -4764,6 +4764,7 @@
                         //     location.reload();
                         // }
                         return alert("success");
+                        location.reload();
                         // else {
                         //     location.reload();
                         // }
@@ -5474,24 +5475,27 @@
         if (discount == "") {
             discount = 0;
 
-        } if (otheridval == "") {
+        } 
+        if (otheridval == "") {
             otheridval = 0;
 
         }
         if (taxidval == "") {
             taxidval = 0;
 
-        } if (freight == "") {
+        } 
+        if (freight == "") {
             freight = 0;
 
-        } if (prevBalance[0] == "") {
+        }
+        if (prevBalance[0] == "" && prevBalance[1] == undefined) {
             prevBalance[1] = 0;
         }
 
         var newsubtotal = subtotal[1]; //subtotal[1];
-        //   alert(newsubtotal);
+
         // var newdiscount = discount[1];
-        //debugger;
+
         var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
         if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
@@ -5795,232 +5799,252 @@
             dataType: 'json',
             success: function (data) {
                 debugger;
-                if (data != null) {
+                if (data != null || data !="") {
                     //if (showReceivables == true) {
 
                     //    ShowReceivables(data);
                     //}
+                    //$("#CustomerCodeShort").html(data.customerCode);
 
+                 
+                   
+                    //------ Open PopUp Tabs Start -------
                     $("#DivSP2").removeClass("di");
                     $("#DivSP2").css({ 'display': 'none' });
 
                     $("#DivSP").addClass("di");
                     $("#DivSP").css({ 'display': '' });
+                     //------ Open PopUp Tabs End -------
 
+                     //------ General Payment PopUp Binding Field Start -------
                     var p = $("#invoicenumber").val();
                     $("#InvoiceP").text("Print Invoice Dialog invoice#" + p);
                     $("#InvoiceNumber2P").text(p);
-
-                    //$("#CustomerCodeShort").html(data.customerCode);
-                    // $("#CustomerCodeP").text(data.customerCode);
-                    $("#CompanyShort").html(data.company);
                     $("#CustomerNameP").text(data.company);
+                    $('#CustomerCodeP').val((data.customerCode != null && data.customerCode != "undefined" ? data.customerCode : ''));
+                    //------ General Payment PopUp Binding Field End -------
+
+                    // ------- Customer's info PopUp Fields Bind Start ---------
+                    $("#CompanyShort").html(data.company);
+                     if (data.checkAddress == false) {  
+                        $('#ChAdShort').prop('checked', false);
+                    }
+                    else {
+                        $('#ChAdShort').prop('checked', true);
+                    }
+                   
                     $("#StreetShort").val(data.street);
                     $("#CityShort").val(data.city);
                     $("#StateShort").val(data.state);
-                    console.log("SSSS" + data.zipCode);
                     if (data.zipCode != null && data.zipCode != "" && data.zipCode != "undefined") {
                         $("#ZipCodeShort").val(data.zipCode.code);
                     }
                     $("#CellShort").val(data.cell);
-                    $("#EmailShort").val(data.email);
-                    $("#TaxIdShort").val(data.taxIdfein);
-                    console.log("tax", data.taxIdfein);
                     $("#ProviderShort").val(data.provider);
+                    $("#TaxIdShort").val(data.taxIdfein);
+                    $("#EmailShort").val(data.email);
                     if (data.taxExempt == false) {
                         $('#TxExeShort').prop('checked', false);
                     }
                     else {
                         $('#TxExeShort').prop('checked', true);
                     }
-                    if (data.checkAddress == false) {
-                        $('#ChAdShort').prop('checked', false);
-                    }
-                    else {
-                        $('#ChAdShort').prop('checked', true);
-                    }
-                    $('#CustomerCodeP').val((data.customerCode != null && data.customerCode != "undefined" ? data.customerCode : ''));
+                    $("#CustomerShortModal").modal('show');
+                    // ------- Customer's info PopUp Binding Fields  End ---------
+
+                   // ------- Main Screen Binding Fields Start ----------
                     $("#searchname").val((data.company != null && data.company != "undefined" ? data.company : (data.firstName + data.lastName)));
-                    $("#bussinessAddress").text(data.businessAddress);
-                    $("#customerEmail").text(data.email);
-                    if (data.customerClassification != null && data.customerClassification != "undefined") {
-                        $("#customerAddToMail").text(data.customerClassification.addtoMaillingList);
-                        if (data.customerClassification.viewInvoicePrevBalance) {
+
+                     if (data.viewInvoicePrevBalance) {
                             if($("#posted-invoice").val() == "value"){
-                                if (data.receivable != null) {
+                               if (data.amount != null) {
+                                   // ------- Customer Main Screen Previous Balance Binding Fields ------
+                                    $("#previousbalance").val('$' + data.amount);
+                                    $("#amountdue").val('$' + data.amount);
+                                    // ------- Customer Main Screen Previous Balance Binding Fields ------
 
-                                    $("#previousbalance").val('$' + data.receivable.amount);
-                                    $("#amountdue").val('$' + data.receivable.amount);
+                                    // ------- Customer Multi Payment Tab Binding Fields ------
+                                    $("#CustomerBalance").val('$' + data.amount);
+                                    $("#CustomerBalanceDue").text('$' + data.amount);
+                                    // ------- Customer Multi Payment Tab Binding Fields ------
 
+                                    // ------- Validation Binding Field ------
+                                    $("#remainingAmount").text(data.amount);
+                                     // ------- Validation Binding Field ------
+
+                                    //----- Previous Balance Popup Show Function Call ----
                                     ShowReceivables(data);
-                                } 
-                                else {
-                                    $("#previousbalance").val("");
-                                    $("#amountdue").val("");
+                                //----- Previous Balance Popup Show Function Call ----
+                               } 
+                               else {
+                                        $("#previousbalance").val("");
+                                        $("#amountdue").val("");
+                                        $("#remainingAmount").text("");
+                                        $("#CustomerBalance").val("");
+                                        $("#CustomerBalanceDue").val("");
                                     }
 
-                              }
+                              } 
                         }
-                        else {
-                            $("#previousbalance").val("");
-                        }
-                    }
-                    if (data.receivable != null && data.receivable != "undefined") {
-                        $("#remainingAmount").text(data.receivable.amount);
-                    } else {
-                        $("#remainingAmount").text("0");
-
-                    }
-                    if (data.customerBillingInfo != null && data.customerBillingInfo != "undefined") {
-
-                        if (data.customerBillingInfo.isBillToBill != null) {
-                            $("#isBilltoBill").text(data.customerBillingInfo.isBillToBill);
+                   
+                       if (data.isBillToBill != null) {
+                            $("#isBilltoBill").text(data.isBillToBill);
 
                         } else {
                             $("#isBilltoBill").text("0");
                         }
-                        console.log(data.customerBillingInfo);
-                        if (data.customerBillingInfo.isCreditHold != null) {
-                            $("#iscredithold").text(data.customerBillingInfo.isCreditHold);
+                 
+                        if (data.isCreditHold != null) {
+                            $("#iscredithold").text(data.isCreditHold);
 
                         } else {
                             $("#iscredithold").text("0");
                         }
-                        if (data.customerBillingInfo.additionalInvoiceCharge == "" || data.customerBillingInfo.additionalInvoiceCharge == null) {
+
+                        if (data.additionalInvoiceCharge == "" || data.additionalInvoiceCharge == null) {
                             $("#otherid").val("0");
                         }
-                        else {
-                            $("#otherid").val(data.customerBillingInfo.additionalInvoiceCharge);
-                        }
-                        $("#isExclude").text(data.customerBillingInfo.isExclude);
-                        $("#isPopupMessage").text(data.customerBillingInfo.isPopupMessage);
-                        if (data.customerBillingInfo.isPopupMessage) {
-                            $("#popupMessage").text(data.customerBillingInfo.popupMessage);
-                            if (data.customerBillingInfo.popupMessage == "" || data.customerBillingInfo.popupMessage == null) {
+                       else {
+                            $("#otherid").val(data.additionalInvoiceCharge);
+                       }
+                        $("#isExclude").text(data.isExclude);
+                        $("#isPopupMessage").text(data.isPopupMessage);
+                        if (data.isPopupMessage) {
+                            $("#popupMessage").text(data.popupMessage);
+                            if (data.popupMessage == "" || data.popupMessage == null) {
                                 $("#popupMessage").text("Default Message Not Set yet, but you can save invoice");
 
                             }
-                        } else {
+                        } 
+                        else {
                             $("#popupMessage").text("Default Message Not Set yet, but you can save invoice");
                         }
-                        if (data.customerBillingInfo.isTaxExempt == false) {
-                            $.ajax({
-                                type: "GET",
-                                async: false,
-                                cache: false,
-                                url: '@Url.Action("GetSttax", "Sale")',
-                                dataType: 'json',
-                                success: function (data) {
-                                    window.stTax = data;
-                                    $.each(data, function (index, value) {
-                                        var firstVal = (value.productId).toString();
-                                        var tax = parseInt(value.tax);
-                                        $("#saletable tr").each(function (index, value) {
 
-                                            if (index > 0) {
-                                                var secondVal = $("#rowid-" + index).find("#productId").val();
-                                                if (firstVal == secondVal) {
-                                                    var newValue = tax + parseFloat(($("#amount-" + index).text()).split("$")[1]);
 
-                                                    $("#price-" + index).text("$" + newValue);
-                                                    var qty = parseInt($("#ringerqty-" + index).text());
-                                                    var total = qty * newValue;
-                                                    $("#total-" + index).text("$" + total.toFixed(2));
-                                                }
-                                                CountTotalOfAllTD();
-                                            }
-                                        });
-                                    });
+                        //-------------commented by nouman start---------------------
+                        // if (data.customerBillingInfo.isTaxExempt == false) {
+                        //     $.ajax({
+                        //         type: "GET",
+                        //         async: false,
+                        //         cache: false,
+                        //         url: '@Url.Action("GetSttax", "Sale")',
+                        //         dataType: 'json',
+                        //         success: function (data) {
+                        //             window.stTax = data;
+                        //             $.each(data, function (index, value) {
+                        //                 var firstVal = (value.productId).toString();
+                        //                 var tax = parseInt(value.tax);
+                        //                 $("#saletable tr").each(function (index, value) {
 
-                                },
-                                error: function (xhr, status, error) {
-                                    var errorMessage = xhr.status + ': ' + xhr.statusText
-                                },
-                            });
-                        }
-                        else {
-                            $("#saletable tr").each(function (index, value) {
-                                if (index > 0) {
-                                    var price = parseInt($("#ringerqty-" + index).text()) * parseFloat(($("#amount-" + index).text()).split("$")[1]);
-                                    $("#price-" + index).text($("#amount-" + index).text());
-                                    $("#total-" + index).text("$" + price.toFixed(2));
-                                    CountTotalOfAllTD();
-                                }
-                            });
-                            window.stTax = null;
-                        }
-                    }
+                        //                     if (index > 0) {
+                        //                         var secondVal = $("#rowid-" + index).find("#productId").val();
+                        //                         if (firstVal == secondVal) {
+                        //                             var newValue = tax + parseFloat(($("#amount-" + index).text()).split("$")[1]);
+
+                        //                             $("#price-" + index).text("$" + newValue);
+                        //                             var qty = parseInt($("#ringerqty-" + index).text());
+                        //                             var total = qty * newValue;
+                        //                             $("#total-" + index).text("$" + total.toFixed(2));
+                        //                         }
+                        //                         CountTotalOfAllTD();
+                        //                     }
+                        //                 });
+                        //             });
+
+                        //         },
+                        //         error: function (xhr, status, error) {
+                        //             var errorMessage = xhr.status + ': ' + xhr.statusText
+                        //         },
+                        //     });
+                        // }
+                        // else {
+                        //     $("#saletable tr").each(function (index, value) {
+                        //         if (index > 0) {
+                        //             var price = parseInt($("#ringerqty-" + index).text()) * parseFloat(($("#amount-" + index).text()).split("$")[1]);
+                        //             $("#price-" + index).text($("#amount-" + index).text());
+                        //             $("#total-" + index).text("$" + price.toFixed(2));
+                        //             CountTotalOfAllTD();
+                        //         }
+                        //     });
+                        //     window.stTax = null;
+                        // }
+                        //-------------commented by nouman end---------------------
+  
                     if (data.customerCode != null && data.customerCode != "undefined") {
 
                         $("#customercodeinfo").val(data.customerCode);
+                    } 
 
-
-
-
-                    } if (data.id != null && data.id != "undefined") {
-                        console.log(data.customerCode);
-                        $("#customerid").val(data.id);
-
-
-
-
+                    if (data.customerId != null && data.customerId != "undefined") {
+                        $("#customerid").val(data.customerId);
                     }
+
                     if (data.company != null && data.company != "undefined") {
-                        console.log(data.customerCode);
                         $("#customername").val(data.company);
                     }
-                    if (data.accountNumber != null && data.accountNumber != "undefined") {
-                        console.log(data.accountNumber);
-                        $("#Accountnumber").val(data.accountNumber);
+
+                    if (data.accountId != null && data.accountId != "undefined") {
+                        $("#Accountnumber").val(data.accountId);
                     }
+
                     //if (data.balance != null && data.balance != "undefined") {
                     //    $("#previousbalance").val(data.balance);
 
                     //} else {
                     //    $("#previousbalance").val("0");
                     //}
-                    if (data.customerClassification != null && data.customerClassification != "undefined") {
 
-                        if (data.customerClassification.salesman != null && data.customerClassification.salesman != "undefined") {
+                    // ------------- Duplication Code -----------
+                    // if (data.customerClassification != null && data.customerClassification != "undefined") {
 
-                            $("#salesmanid").text(data.customerClassification.salesman);
-                        }
-                        if (data.customerClassification.driverName != null && data.customerClassification.driverName != "undefined") {
+                    //     if (data.customerClassification.salesman != null && data.customerClassification.salesman != "undefined") {
 
-                            $("#driverid").text(data.customerClassification.driverName);
-                        }
+                    //         $("#salesmanid").text(data.customerClassification.salesman);
+                    //     }
+                    //     if (data.customerClassification.driverName != null && data.customerClassification.driverName != "undefined") {
 
-                    }
-                    if (data.customerBillingInfo != null && data.customerBillingInfo != "undefined") {
-                        if (data.customerBillingInfo.isGetSalesDiscounts == false) {
+                    //         $("#driverid").text(data.customerClassification.driverName);
+                    //     }
+
+                    // }
+                    // ------------- Duplication Code -----------
+
+                 //   if (data.customerBillingInfo != null && data.customerBillingInfo != "undefined") {
+                        if (data.isGetSalesDiscounts == false) {
 
                             $("#discountidadd").attr("disabled", true);
                             $("#discountidadd").val("");
                             $('#getsalediscount').prop('checked', true);
-                        } else {
+                        } 
+                        else {
 
                             $("#discountidadd").attr("disabled", false);
                             $('#getsalediscount').prop('checked', false);
                         }
-                    }
+                   // }
                     $('#salesmanid').empty();
                     $('#paymentTermsid').empty();
                     $('#shippedViaid').empty();
                     $('#driverid').empty();
                     $('#weightid').empty();
-                    if (data.customerClassification != null && data.customerClassification != "undefined") {
-                        if (data.customerClassification.salesman != null && data.customerClassification.salesman != "undefined") {
-                            $('#salesmanid').append(data.customerClassification.salesman);
+                   // if (data.customerClassification != null && data.customerClassification != "undefined") {
+                        if (data.salesman != null && data.salesman != "undefined") {
+                            $('#salesmanid').append(data.salesman);
                         }
-                    }
-                    $('#paymentTermsid').append((data.customerBillingInfo != null) ? data.customerBillingInfo.paymentTerms : '');
-                    $('#shippedViaid').append((data.customerClassification != null && data.customerClassification != "undefined" ? data.customerClassification.shippedVia : ''));
-                    $('#driverid').append((data.customerClassification != null && data.customerClassification != "undefined" ? data.customerClassification.driverName : ''));
+                   // }
+                    $('#paymentTermsid').append((data != null) ? data.paymentTerms : '');
+                    $('#shippedViaid').append((data != null && data != "undefined" ? data.shippedVia : ''));
+                    $('#driverid').append((data != null && data != "undefined" ? data.driverName : ''));
                    // CalculatetaxPlusDiscount();
                 }
-                $("#CustomerShortModal").modal('show');
+               
 
                 $("#listallmissions").empty();
+                // ---------- Display None Properties --------
+                  $("#bussinessAddress").text(data.businessAddress);
+                  $("#customerEmail").text(data.email);
+                  $("#customerAddToMail").text(data.addtoMaillingList);
+                  // ---------- Display None Properties --------
 
                 var amount = $("#remainingAmount").text();
                 if ($("#isBilltoBill").text() == "0" && $("#isBilltoBill").text() == 0 && amount != "" && amount != "0") {
@@ -6029,10 +6053,10 @@
                         "Customer have to pay previous Balance of " + amount + "$ ",
                         'error'
                     )
-                } else {
-                    SaveOnGoingSales();
+                } //else {
+                   // SaveOnGoingSales();         //   Comment by Nouman
 
-                }
+                //}
             },
             error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
@@ -6128,6 +6152,7 @@
         if(cityName == "UnPaidInvoices"){
             LoadUnpaidInvoices();
         }
+
     }
 
 
@@ -6175,9 +6200,9 @@
                 }); 
         }
     }
-
         
     function ShowReceivables(data) {
+        debugger;
         if (data != null && data != "undefined") {
             $(".forremovingmodel").empty();
             var html = "";
@@ -6217,7 +6242,7 @@
             html += '</div>';
             html += '<div class="row mt-2">';
             html += '<div class="col-lg-12 col-md-12 col-sm-12 col text-center">';
-            html += '<input type="text" class="text-center st-1" id="BlcDuePk" name="name" value="$' + data.receivable.amount + '"  />';
+            html += '<input type="text" class="text-center st-1" id="BlcDuePk" name="name" value="$' + data.amount + '"  />';
             html += '</div>';
             html += '</div>';
             html += '<div class="row mt-2">';
@@ -7217,8 +7242,8 @@
                                 sernum++;
 
                             });
-                                 debugger;
-                                    var total = $("#total-" + sernum).text();
+                                debugger;
+                                var total = $("#total-" + sernum).text();
                                 var subtotalnew = $("#subtotalauto").val();
                                 var finalsubtotalvalue = subtotalnew.split('$');
 
@@ -7227,9 +7252,8 @@
                                     var newtotalsuplitted = newtotal[1];
                                     var subtotalsuplitednew = finalsubtotalvalue[1];
                                     if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
-
-                                        var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
-                                        $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+                                      var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                                      $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
 
                                     }
                                 }
@@ -8134,6 +8158,86 @@
 
     });
 
+    function SaveMultiPayment(){
+        debugger;
+        var customerId = $("#customerid").val();
+        var TotalPaidAmount = $("#TotalPaidAmount").text();
+        var totalAmountAllocation = $("#totalAmountAllocation").text();
+        var ChangeAmount = $("#ChangeAmount").val();
+        var CusBalanceDue = $("#CustomerBalanceDue").text();
+
+        var multiPayments = {}
+        multiPayments.CustomerId = customerId;
+        multiPayments.TotalPaidAmount = TotalPaidAmount;
+        multiPayments.TotalAmountAllocation = totalAmountAllocation;
+        multiPayments.ChangeAmount = ChangeAmount;
+        multiPayments.CustomerBalanceDue = CusBalanceDue;
+
+
+        var multiPaymentArray = new Array();
+        var count1 = 1;
+        $("#CusMultiPaymentsTable TBODY TR").each(function () {
+            debugger;
+            var row = $(this);
+            var objmultipay = {};
+
+            var xx = $("#selectid-" + count1).val();
+            var zz = $("#DateP-" + count1).val();
+            var dateNow = new Date(zz);
+            dateNow.setHours(23);
+            dateNow.setMinutes(59);
+            dateNow.setSeconds(59);
+            dateNow.setMilliseconds(999);
+
+            var aa = row.find("TD").eq(0).text();
+            var bb = row.find("TD").eq(1).text();
+            var cc = row.find("TD").eq(2).html();
+            var dd = row.find("TD").eq(3).text();
+            var ee = row.find("TD").eq(4).val();
+
+            if (aa != null && aa != "" && aa != "undefined") {
+
+                objmultipay.AmountPaid = row.find("TD").eq(0).text();
+            }
+            if (bb != null && bb != "" && bb != "undefined") {
+
+                objmultipay.AmountAllocate = row.find("TD").eq(1).text();
+            }
+            if (cc != null && cc != "" && cc != "undefined") {
+
+                objmultipay.PaymentType = xx;
+            }
+            if (dd != null && dd != "" && dd != "undefined") {
+
+                objmultipay.ChequeNumber = dd;
+            }
+            objmultipay.HoldDate = dateNow;
+            multiPaymentArray.push(objmultipay);
+            count1++;
+        });
+        multiPayments.multiInvoiceTransaction = multiPaymentArray;
+
+          $.ajax({
+            type: "POST",
+            url: '@Url.Action("MultiPaymentInvoice", "Sale")',
+            async: false,
+            cache: false,
+            data: JSON.stringify(multiPayments),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data == true) {
+                   toastr.success('Multi Invoices Payment Received');
+                   location.reload();
+                }
+                else {
+                    swal("Error!", "Transaction Discard", "Error");
+                }
+            }
+        });
+
+    }
+
      function ChangePayment1(IsInvoicedPaid) {
         debugger;
 
@@ -9000,6 +9104,83 @@
     });
 
 
+    $(document).ready(function () {
+        
+        $('#thumbLeftButton').hide();
+        $('#thumbLeftButton').click(function () {   
+            debugger;
+            var balanceValue = $('#CustomerBalanceDue').text();
+            var customerBalance = $("#CustomerBalance").val().split('$');
+            var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
+
+            $("#totalAmountAllocation").text("$" + parseFloat(customerBalance[1]).toFixed(2));
+            $('#ChangeAmount').val(cleanBalanceValue);
+            $('#thumbRightButton').show();
+            $("#thumbRightButton").prop("disabled", false);
+            $('#thumbLeftButton').hide();
+            $('#CustomerBalanceDue').text('0');
+ 
+        });
+        $('#thumbRightButton').click(function () {
+            debugger;
+            var changeValue = $('#ChangeAmount').val();
+            var TotalPaidAmount = $("#TotalPaidAmount").text();
+            $("#totalAmountAllocation").text(TotalPaidAmount);
+            $('#CustomerBalanceDue').text('(' + changeValue + ')');
+            $('#ChangeAmount').val('0');
+            $('#thumbRightButton').hide();
+            $('#thumbLeftButton').show();
+            $("#thumbLeftButton").prop("disabled", false);
+        });
+    });
+
+
+    function MultiPaymentAdd(val) {
+        debugger;
+        var amountpayed = $("#amountpayed-" + val).text().split('$');
+        var CusBalanceDue = $("#CustomerBalance").val().split('$');
+        var CusDueBalance = CusBalanceDue[1];
+        //$("#amountallocate-" + val).text(getamc);
+        if (amountpayed != "" && isNaN(amountpayed) == false) {
+            $("#TotalPaidAmount").text("$" + amountpayed);
+            $('#thumbRightButton').show();
+            $('#thumbLeftButton').hide();
+                
+            if (parseFloat(amountpayed[0]) > parseFloat(CusDueBalance)) {
+                $("#amountallocate-" + val).text(parseFloat(amountpayed[0]).toFixed(2));
+                $("#totalAmountAllocation").text("$" + parseFloat(amountpayed[0]).toFixed(2));
+                $("#thumbLeftButton").prop("disabled", false);
+                $('#thumbLeftButton').show();
+                $('#thumbRightButton').hide();
+
+                var change = parseFloat(amountpayed) - parseFloat(CusDueBalance);
+                //  $("#ChangeP").val("$" + change.toFixed(2));
+                $("#ChangeAmount").val("$" + 0.00);
+                $("#CustomerBalanceDue").text("$(" + change.toFixed(2) + ")");
+            } else {
+                $("#thumbRightButton").prop("disabled", true);
+                $('#thumbLeftButton').hide();
+                $('#thumbRightButton').show();
+                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
+                $("#totalAmountAllocation").text("$" + parseFloat(amountpayed).toFixed(2));
+
+                var balance = parseFloat(CusDueBalance) - parseFloat(amountpayed);
+                $("#ChangeAmount").val("$" + 0.00);
+                $("#CustomerBalanceDue").text("$" + balance.toFixed(2));
+            }
+        } else if (amountpayed == "" || isNaN(amountpayed) == true) {
+
+            $("#TotalPaidAmount").text('');
+            $("#totalAmountAllocation").text('');
+            $("#ChangeAmount").val('');
+            $("#amountallocate-" + val).text('');
+            $("#CustomerBalanceDue").text("$" + CusDueBalance);
+            Swal.fire('Please Enter Numeric Value');
+        }
+
+    }
+
+
     function PaymentAdd(val) {
         debugger;
         var amountpayed = $("#amountpayed-" + val).text().split('$');
@@ -9036,7 +9217,7 @@
             $("#ChangeP").val('');
             $("#amountallocate-" + val).text('');
             $("#BalanceP").text("$" + Balanceduep[1]);
-            Swal.fire('please enter Numeric value');
+            Swal.fire('Please Enter Numeric Value');
         }
 
         // PaymentAdd2(val);
