@@ -2402,7 +2402,8 @@
                 else {
                     $("#ReportTaxesToStateNc").prop("checked", false);
                 }
-                $("#NoteAddDate").val(data.noteDate);
+                //comment by awais
+              @*  $("#NoteAddDate").val(data.noteDate);
                 $("#NoteArea").val(data.customerNote);
                   // Assuming you have two buttons with ids "UpdateNoteBtn" and "UploadNoteBtn"
                     var updateNoteBtn = $("#UpdateNoteBtn");
@@ -2414,7 +2415,7 @@
                     } else {
                         updateNoteBtn.prop('disabled', true); // Disable the "Update Note" button
                         uploadNoteBtn.prop('disabled', false); // Enable the "Upload Note" button
-                    }
+                    }*@
                 $("#AddnewUpdatebtn").hide();
                 $("#Addnewbtn").hide();
                 $("#Deletebtn").show();
@@ -2695,31 +2696,45 @@
         dataType: 'json',
         success: function (data) {
             try {
-                // Verify that data is received correctly
-                console.log("Data received:", data);
-
-                // Populate the dropdown with the received data
                 var dropdown = $('#NoteAddDate');
 
                 // Clear existing options (if any)
                 dropdown.empty();
-
+                var count = 1;
                 // Check if data is an array and not empty
                 if (Array.isArray(data) && data.length > 0) {
                     // Iterate through the data and create options
                     $.each(data, function (index, item) {
-                         debugger;
                         var d = new Date(item.noteDate)
                          var day = d.getDate();
                          var month = d.getMonth();
                          var year = d.getFullYear();
                          var noteDate = day + '-' + month + '-' + year;
-                        // Assuming 'item' has properties 'customerId' and 'customerName'
-                        dropdown.append($('<option>', {
-                            value: item.customerId, // Replace with the appropriate value from your data
-                            text: noteDate // Replace with the appropriate text from your data
-                        }));
+
+                         if(count == 1)
+                         {
+                             dropdown.append('<option selected="true" value="0">select date</option>');
+                             count++;
+                         }
+                            dropdown.append($('<option>').val(item.noteId).text(noteDate));                        
                     });
+                      // Attach a change event handler to the dropdown
+                            dropdown.on("change", function () {
+                                // Get the selected value
+                                var selectedValue = $(this).val();
+                                 var updateNoteBtn = $("#UpdateNoteBtn");
+                                 var uploadNoteBtn = $("#UploadNoteBtn");
+
+                                if(selectedValue == 0)
+                                {
+                                     updateNoteBtn.prop('disabled', true);
+                                     uploadNoteBtn.prop('disabled', false);
+                                }else{
+                                    myOnClickFunction(selectedValue);
+                                      updateNoteBtn.prop('disabled', false);
+                                     uploadNoteBtn.prop('disabled', true);
+                                }
+                            });
                 } else {
                     // Handle the case when no data is received
                     console.log("No data received.");
@@ -2741,6 +2756,27 @@
     });
     }
 
+          // Your selected value onclick function
+        function myOnClickFunction(selectedValue) {
+            $.ajax({
+            url: '@Url.Action("GetNoteById", "Customer")',
+            data : {noteId : selectedValue},
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                if (selectedValue === "0") {
+                    // If selectedValue is "0", show a blank value in the NoteArea
+                    $("#NoteArea").val("");
+                } else {
+                    // If selectedValue is not "0", populate the NoteArea with the received data
+                    $("#NoteArea").val(data.customerNote1);
+                }
+
+            }
+
+
+          });
+        }
 
     function openNotesModal() {
         $("#NotesModal").modal('show');
@@ -2795,6 +2831,7 @@
         $("#AttachImg").show();
     });*@
     function ShowNotesAttachment() {
+         $("#NotesAttachmentBody").empty();
         var id = $("#itemsupplierfound").text();
         NotesAttachmentsHistory(id);
         $("#NotesAttachmentModal").modal('show');
@@ -2950,6 +2987,7 @@
     @*Submit Note Attachments*@
 
         $("#SubmitNoteAttachment").on('click', function() {
+            debugger;
             var customerId = $("#itemsupplierfound").text();
             var DocumentName = $("#AttachmentName").val();
             var val = $("#NoteFile").val().toLowerCase(),
@@ -2988,7 +3026,7 @@
                                 $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
                                 $.ajax({
                                     type: "POST",
-                                    url: '@Url.Action("AddCustomerNotesDocument", "Customer")',
+                                    url: '@Url.Action("AddCustomerNotesMultipleDocument", "Customer")',
                                     data: record,
                                     dataType: "json",
                                     processData: false,
