@@ -5560,6 +5560,7 @@ namespace ABC.POS.API.Controllers
                 byte[] bytes = str;
                 System.IO.File.WriteAllBytes(imgPath, bytes);
                 imgPath = "https://localhost:44371/images/documents/" + imageName;
+               // imgPath = "https://localhost:5001/images/documents/" + imageName;
                 return imgPath;
             }
             else if (!string.IsNullOrEmpty(hostRootPath))
@@ -5570,7 +5571,8 @@ namespace ABC.POS.API.Controllers
                 //imgPath = path + imageName;
                 byte[] bytes = str;
                 System.IO.File.WriteAllBytes(imgPath, bytes);
-                imgPath = "https://localhost:44371/images/documents/" + imageName;
+               imgPath = "https://localhost:44371/images/documents/" + imageName;
+               // imgPath = "https://localhost:5001/images/documents/" + imageName;
                 return imgPath;
             }
             imgPath = imgPath.Replace(" ", "");
@@ -5625,6 +5627,41 @@ namespace ABC.POS.API.Controllers
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
                     var Response = ResponseBuilder.BuildWSResponse<List<CustomerNotesAdp>>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetNotesByID/{noteId}")]
+        public IActionResult GetNotesByID(int noteId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<CustomerNote>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var note = db.CustomerNotes.FirstOrDefault(x => x.NoteId == noteId);
+
+                if (note != null)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, note);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<CustomerNote>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
@@ -5732,6 +5769,55 @@ namespace ABC.POS.API.Controllers
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
                     var Response = ResponseBuilder.BuildWSResponse<CustomerNote>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("CustomerNotesMultipleDocumentCreate")]
+        public IActionResult CustomerNotesMultipleDocumentCreate(CustomerDocument document)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<CustomerDocument>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                bool checkname = db.CustomerDocuments.ToList().Exists(p => p.DocumentName != null && p.DocumentName.Equals(document?.DocumentName, StringComparison.CurrentCultureIgnoreCase));
+
+                if (checkname)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.Already_Exists, null, null);
+                }
+
+
+                if (document.Image != null)
+                {
+                    var imgPath = SaveDocument(document.Image, Guid.NewGuid().ToString());
+                    document.ImageByPath = imgPath;
+                    document.Image = null;
+
+                }
+
+                if (document.DocumentType == null)
+                {
+
+                    document.DocumentType = "Customer Notes";
+
+                }
+                document.UploadDate = DateTime.Now;
+                db.CustomerDocuments.Add(document);
+                db.SaveChanges();
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<CustomerDocument>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }

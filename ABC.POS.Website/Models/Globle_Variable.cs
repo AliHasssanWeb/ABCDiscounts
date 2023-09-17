@@ -28,8 +28,8 @@ namespace ABC.POS.Website.Models
                 Microsoft.AspNetCore.Mvc.Controller controller = context.Controller as Microsoft.AspNetCore.Mvc.Controller;
                 controller.TempData["response"] = "Session Expired";
                 //context.Result = new RedirectResult("http://45.35.97.246:5595/pos");
-                //context.Result = new RedirectResult("https://localhost:49790/");
-                context.Result = new RedirectResult("http://10.10.10.98:5595/pos/");
+                context.Result = new RedirectResult("https://localhost:5001/");
+                // context.Result = new RedirectResult("http://10.10.10.98:5595/pos/");
 
             }
 
