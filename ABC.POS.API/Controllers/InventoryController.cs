@@ -10264,12 +10264,12 @@ namespace ABC.POS.API.Controllers
                 saleInvoice.InvoiceNumber = saleInvoices.InvoiceNumber;
                 saleInvoice.Date = DateTime.Now;
                 saleInvoice.CustomerId = saleInvoices.CustomerId;
-                saleInvoice.TotalPaid = (saleInvoices.TotalPaid as string).Trim('$');
-                saleInvoice.TotalAmount = (saleInvoices.TotalAmount as string).Trim('$');
-                saleInvoice.Balance = (saleInvoices.InvBalance as string).Trim('$');
-                saleInvoice.Change = (saleInvoices.Change as string).Trim('$');
+                saleInvoice.TotalPaid = saleInvoices.TotalPaid;
+                saleInvoice.TotalAmount = saleInvoices.TotalAmount;
+                saleInvoice.Balance = saleInvoices.InvBalance;
+                saleInvoice.Change = saleInvoices.Change;
                 //saleInvoice.PreviousBalance = (saleInvoices.PreviousBalance as string).Trim('$');
-                saleInvoice.InvoiceBalance = (saleInvoices.InvoiceTotal as string).Trim('$');
+                saleInvoice.InvoiceBalance = saleInvoices.InvoiceTotal;
                 saleInvoice.Buyer = saleInvoices.CustomerName;
 
                 db.Entry(FoundInvoice).State = EntityState.Modified;
@@ -10314,10 +10314,10 @@ namespace ABC.POS.API.Controllers
                     receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
                     receiving.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
                     receiving.Date = DateTime.Now;
-                    receiving.SubTotal = (saleInvoices.SubTotal as string).Trim('$');
-                    receiving.InvTotal = (saleInvoices.InvoiceTotal as string).Trim('$');
-                    receiving.InvBalance = (Convert.ToDouble((saleInvoices.SubTotal as string).Trim('$')) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'))).ToString("F");
-                    receiving.Change = (saleInvoices.Change as string).Trim('$');
+                    receiving.SubTotal = saleInvoices.SubTotal;
+                    receiving.InvTotal = saleInvoices.InvoiceTotal;
+                    receiving.InvBalance = (Convert.ToDouble(saleInvoices.SubTotal) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
+                    receiving.Change = saleInvoices.Change;
                     receiving.Tax = saleInvoices.Tax;
                     receiving.Discount = saleInvoices.Discount;
                     receiving.Freight = saleInvoices.Freight;
@@ -10335,9 +10335,9 @@ namespace ABC.POS.API.Controllers
                 }
                 else
                 {
-                    checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble((saleInvoices.TotalAmount as string).Trim('$'))).ToString("F");
-                    checkReceiving.Change = (saleInvoices.Change as string).Trim('$');
-                    if (checkReceiving.InvBalance == "0.00")
+                    checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
+                    checkReceiving.Change = saleInvoices.Change;
+                    if (checkReceiving.InvBalance == "0.00" || checkReceiving.InvBalance == "0")
                     {
                         checkReceiving.IsPaid = true;
                     }
@@ -10352,11 +10352,11 @@ namespace ABC.POS.API.Controllers
 
                     if (checkReceiving == null)
                     {
-                        num1 = Convert.ToDouble((recevables.Amount as string).Trim('$')) + Convert.ToDouble((saleInvoices.InvoiceTotal as string).Trim('$'));
+                        num1 = Convert.ToDouble(recevables.Amount) + Convert.ToDouble(saleInvoices.InvoiceTotal);
                     }
                     else
                     {
-                        num1 = Convert.ToDouble((recevables.Amount as string).Trim('$'));
+                        num1 = Convert.ToDouble(recevables.Amount);
                     }
 
                     double num2 = Convert.ToDouble(saleInvoice.TotalAmount);
@@ -10366,7 +10366,7 @@ namespace ABC.POS.API.Controllers
                 }
                 else
                 {
-                    double tempInvTotal = Convert.ToDouble((saleInvoices.InvoiceTotal as string).Trim('$'));
+                    double tempInvTotal = Convert.ToDouble(saleInvoices.InvoiceTotal);
                     double tempTotalAmount = Convert.ToDouble(saleInvoice.TotalAmount);
 
                     Receivable receivable = new Receivable();
