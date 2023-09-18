@@ -4611,9 +4611,9 @@
         var CustomerId = $("#customerid").val();
         var saleman = $("#salesmanid").text();
         var invoicenumber = $("#invoicenumber").val();
-        var invoicetotal = $("#invoicetotal").val();
+        var invoicetotal = abc_general.dollarRemove($("#invoicetotal").val());
         var discountidadd = $("#discountidadd").val();
-        var subtotal = $("#subtotalauto").val();
+        var subtotal = abc_general.dollarRemove($("#subtotalauto").val());
         var otherid = $("#otherid").val();
         var AccNum = $("#Accountnumber").val();
         var taxid = $("#taxid").val();
@@ -4641,7 +4641,7 @@
        // Sale.SaleManName = saleman;
         Sale.InvoiceNumber = invoicenumber;
         Sale.InvoiceTotal = invoicetotal;
-        // Sale.Discount = discountidadd;
+        Sale.Discount = discountidadd;
         Sale.Charges = discountidadd;
         Sale.SubTotal = subtotal;
         Sale.Other = otherid;
@@ -4696,20 +4696,17 @@
             }
 
             var itemDetail = {};
-         // itemDetail.ItemNumber = row.find("TD").eq(1).html();
-           // itemDetail.ItemNumber = itemDetail.ItemNumber.replace('-', '');
-           /// itemDetail.ItemDescription = row.find("TD").eq(2).html();
+        
             itemDetail.Quantity = row.find("TD").eq(3).html();
-            itemDetail.AmountRetail = row.find("TD").eq(4).html();
-            itemDetail.InDiscount = row.find("TD").eq(5).html();    
-            itemDetail.OutDiscount = row.find("TD").eq(6).html();
+            itemDetail.AmountRetail = abc_general.dollarRemove(row.find("TD").eq(4).html());
+            itemDetail.InDiscount = abc_general.dollarRemove(row.find("TD").eq(5).html());    
+            itemDetail.OutDiscount = abc_general.signRemove(row.find("TD").eq(6).html(), '%');
             itemDetail.InUnit = row.find("TD").eq(7).html();
             itemDetail.OutUnit = row.find("TD").eq(8).html();
-            itemDetail.Price = row.find("TD").eq(9).html(); 
-            itemDetail.Total = row.find("TD").eq(10).html();
+            itemDetail.Price = abc_general.dollarRemove(row.find("TD").eq(9).html());  
+            itemDetail.Total = abc_general.dollarRemove(row.find("TD").eq(10).html());
             itemDetail.RingerQty = row.find("TD").eq(17).html();    
             itemDetail.ItemId = row.find("TD").eq(14).html();
-          //  itemDetail.ItemName = row.find("TD").eq(2).html();
 
           if(PointOfSaleId != null || PointOfSaleId != ""){
                 itemDetail.PointOfSaleId = PointOfSaleId;
@@ -5457,8 +5454,8 @@
     }
     function CalculatetaxPlusDiscount() {
         debugger;
-        var subtotal = $("#subtotalauto").val().split('$');
-        var prevBalance = $("#previousbalance").val().split('$');
+        var subtotal = abc_general.dollarRemove($("#subtotalauto").val());
+        var prevBalance = abc_general.dollarRemove($("#previousbalance").val());
         var discount = $("#discountidadd").val();
         var otheridval = $("#otherid").val();
         var taxidval = $("#taxid").val();
@@ -5488,15 +5485,15 @@
             freight = 0;
 
         }
-        if (prevBalance[0] == "" && prevBalance[1] == undefined) {
-            prevBalance[1] = 0;
+        if (prevBalance == "") {
+            prevBalance = 0;
         }
 
-        var newsubtotal = subtotal[1]; //subtotal[1];
+        //var newsubtotal = subtotal; //subtotal[1];
 
         // var newdiscount = discount[1];
 
-        var sumofallexpences = parseFloat(newsubtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
+        var sumofallexpences = parseFloat(subtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
         if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
         }
@@ -5514,7 +5511,7 @@
         } else {
             $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
             $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
-            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance[1]);
+            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
             $("#amountdue").val("$" + amountDue.toFixed(2));
         }
 
@@ -7169,7 +7166,7 @@
                    // $("#salesmanid").text(data.saleManName);
                     $("#invoicetotal").val(data.invoiceTotal);
                     $("#discountidadd").val(data.charges);
-                    $("#subtotalauto").val(data.subTotal);
+                    $("#subtotalauto").val(abc_general.dollarAdd(data.subTotal));  
                     $("#otherid").val(data.other);
                     $("#taxid").val(data.tax);
                     $("#freightid").val(data.freight);
@@ -7213,13 +7210,13 @@
                                 html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
                                 html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
                                 html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
-                                html += '<td id="amount-' + sernum + '" contenteditable="false">$' + value.amountRetail + '</td>';
+                                html += '<td id="amount-' + sernum + '" contenteditable="false">' + abc_general.dollarAdd(value.amountRetail) + '</td>';
                                 html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
                                 html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
                                 html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
                                 html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
-                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">$' + value.price + '</td>';
-                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">$' + value.total + '</td>';
+                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.price) + '</td>';
+                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.total) + '</td>';
                                 html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
                                 html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
                                 html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
@@ -8247,19 +8244,19 @@
         var customerId = $("#customerid").val();
         var saleman = $("#salesmanid").text();
         var invoicenumber = $("#invoicenumber").val();
-        var invoicetotal = $("#invoicetotal").val();
+        var invoicetotal = abc_general.dollarRemove($("#invoicetotal").val());
         //var balanceDueP = $("#BalanceDueP").text();
-        var totalPaidP = $("#TotalPaidP").text();
-        var totalAllocation = $("#totalpaidd").text();
+        var totalPaidP = abc_general.dollarRemove($("#TotalPaidP").text());
+        var totalAllocation = abc_general.dollarRemove($("#totalpaidd").text());
         
-        var change = $("#ChangeP").val();
-        var InvBalance = $("#BalanceP").text();
-        var SubTotal = $("#subtotalauto").val();
-        var AmountDue = $("#amountdue").val();
-        var Other = $("#otherid").val();
-        var discount = $("#discountidadd").val();
-        var tax = $("#taxid").val();
-        var freight = $("#freightid").val();
+        var change = abc_general.dollarRemove($("#ChangeP").val());
+        var InvBalance = abc_general.dollarRemove($("#BalanceP").text());
+        var SubTotal = abc_general.dollarRemove($("#subtotalauto").val());
+        var AmountDue = abc_general.dollarRemove($("#amountdue").val());
+        var Other = abc_general.dollarRemove($("#otherid").val());
+        var discount = abc_general.dollarRemove($("#discountidadd").val());
+        var tax = abc_general.dollarRemove($("#taxid").val());
+        var freight = abc_general.dollarRemove($("#freightid").val());
 
         var Sale = {}   
         Sale.InvoiceNumber = invoicenumber;
