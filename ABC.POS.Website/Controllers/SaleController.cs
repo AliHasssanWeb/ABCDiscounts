@@ -1393,6 +1393,7 @@ namespace ABC.POS.Website.Controllers
                 pointOfSale.InvoiceNumber = sale.InvoiceNumber;
                 pointOfSale.SubTotal = sale.SubTotal;
                 pointOfSale.Other = sale.Other;
+                pointOfSale.Discount = sale.Discount;
                 pointOfSale.Tax = sale.Tax;
                 pointOfSale.Freight = sale.Freight;
                 pointOfSale.IsPaid = sale.IsPaid;
@@ -1407,16 +1408,12 @@ namespace ABC.POS.Website.Controllers
                     PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
                     pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
                     pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
-                    string inDiscountTrim = (itemsDetails.InDiscount as string).Trim('$');
-                    pointOfSaleDetail.InDiscount = Convert.ToString(inDiscountTrim);
-                    string OutDiscountTrim = (itemsDetails.OutDiscount as string).Trim('%');
-                    pointOfSaleDetail.OutDiscount = Convert.ToString(OutDiscountTrim);
+                    pointOfSaleDetail.InDiscount = itemsDetails.InDiscount;
+                    pointOfSaleDetail.OutDiscount = itemsDetails.OutDiscount;
                     pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
                     pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
-                    string PriceTrim = (itemsDetails.Price as string).Trim('$');
-                    pointOfSaleDetail.Price = Convert.ToString(PriceTrim);
-                    string TotalTrim = (itemsDetails.Total as string).Trim('$');
-                    pointOfSaleDetail.Total = Convert.ToString(TotalTrim);
+                    pointOfSaleDetail.Price = itemsDetails.Price;
+                    pointOfSaleDetail.Total = itemsDetails.Total;
                     pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
 
                     pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
@@ -1424,27 +1421,10 @@ namespace ABC.POS.Website.Controllers
                 }
 
                 var body = JsonConvert.SerializeObject(pointOfSale);
-                //TempData["saleorder"] = body;
-                //TempData["saleorderInfo"] = saleInfo;
+              
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleCreate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
-                {   //Send Mail If Add to Mail list is true
-                    //if (obj.AddToMailList)
-                    //{
-                    //    MailRequest mail = new MailRequest();
-                    //    mail.ToEmail = obj.CustomerEmail;
-                    //    mail.Subject = "Invoice Generated";
-                    //    mail.Body = "Check mail";
-                    //    var mailbody = JsonConvert.SerializeObject(mail);
-                    //SResponse mailresp = RequestSender.Instance.CallAPI("api", "Sale/MailToCustomer", "POST", mailbody);
-                    //if (mailresp.Status && (mailresp.Resp != null) && (mailresp.Resp != ""))
-                    //{
-                    //    TempData["Msg"] = "Mail Sent Successfully";
-                    //}
-                    //else
-                    //{
-                    //    TempData["Msg"] = resp.Resp + " " + "Unable To Sent Mail";
-                    //}
+                {   
                     return Json(true);
                 }
                 else

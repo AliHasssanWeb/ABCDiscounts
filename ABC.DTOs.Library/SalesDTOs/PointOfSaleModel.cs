@@ -26,6 +26,7 @@ namespace ABC.EFCore.Repository.Edmx
         public string SubTotal { get; set; }
        // public string Discount { get; set; }
         public string Other { get; set; }
+        public string Discount { get; set; }
         public string Tax { get; set; }
         public string Freight { get; set; }
         public string InvoiceTotal { get; set; }
