@@ -5560,7 +5560,7 @@ namespace ABC.POS.API.Controllers
                 byte[] bytes = str;
                 System.IO.File.WriteAllBytes(imgPath, bytes);
                 //imgPath = "https://localhost:44371/images/documents/" + imageName;
-                imgPath = "http://38.17.51.207:8048/images/documents/" + imageName;
+                imgPath = "http://38.17.51.207:8047/images/documents/" + imageName;
                // imgPath = "https://localhost:5001/images/documents/" + imageName;
                 return imgPath;
             }
@@ -5573,7 +5573,7 @@ namespace ABC.POS.API.Controllers
                 byte[] bytes = str;
                 System.IO.File.WriteAllBytes(imgPath, bytes);
                //imgPath = "https://localhost:44371/images/documents/" + imageName;
-               imgPath = "http://38.17.51.207:8048/images/documents/" + imageName;
+               imgPath = "http://38.17.51.207:8047/images/documents/" + imageName;
                // imgPath = "https://localhost:5001/images/documents/" + imageName;
                 return imgPath;
             }
