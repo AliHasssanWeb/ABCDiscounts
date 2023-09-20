@@ -3212,12 +3212,6 @@ namespace ABC.POS.Website.Controllers
             }
             return Json("false");
         }
-
-
-
-
-
-
         public JsonResult GetOpenPurchase()
         {
             try

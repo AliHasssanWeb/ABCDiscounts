@@ -4151,16 +4151,20 @@
 
 
     function Changerow(val, val2, val3) {
+        event.preventDefault();
+       // debugger;
         $("#Pcd").val(val3);
         var allrows = $(".itemnewtr").find('tr');
+         $(allrows.prevObject).removeClass("selectedrow");
         $.each(allrows.prevObject, function (ind, it) {
             if ($(it).find('id').prevObject[0].id == ("rowlistid-" + val)) {
-                $('#itemquantitylabel').trigger('focus');
+                //$('#itemquantitylabel').trigger('focus');
                 $($(it).find('id').prevObject[0]).addClass("selectedrow");
-
-            } else {
-                $($(it).find('id').prevObject[0]).removeClass("selectedrow");
-            }
+                 return false;
+            } 
+            //else {
+            //    $($(it).find('id').prevObject[0]).removeClass("selectedrow");
+            //}
         });
 
 
@@ -5686,7 +5690,7 @@
         });
     }
     function AppendAllMissions(event) {
-        debugger;
+        //debugger;
         $.ajax({
             type: "GET",
             url: "@Url.Action("AutoCompleteSearchCustomerInfo", "Sale")",
@@ -5724,7 +5728,7 @@
         });
     };
     function GetAllMatchedItems(event) {
-        debugger;
+        //debugger;
         //if (Increament != 0) {
         //    AppendAllMissions();
         //}
@@ -6377,20 +6381,13 @@
 
 
     function GetItemListModal1() {
-
+       // debugger;
         var data_array = [];
         var search = $("#DescriptionInput1").val();
         $("#productList1").empty();
         var dropdown = '';
-        $.ajax({
-            type: "GET",
-            async: false,
-            cache: false,
-            url: '@Url.Action("GetAllItem", "Sale")',
-            dataType: 'json',
-            success: function (data) {
 
-                $.each(data, function (index, value) {
+                $.each(AllItemsList, function (index, value) {
                     if (search != "") {
                         if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
@@ -6402,12 +6399,6 @@
                         }
                     }
                 });
-
-            },
-            error: function (xhr, status, error) {
-                var errorMessage = xhr.status + ': ' + xhr.statusText
-            },
-        });
 
         $("#productList1").append(dropdown);
         $.each(data_array, function (index, value) {
@@ -6436,12 +6427,9 @@
         $.ajax({
             type: "GET",
             url: '@Url.Action("ItemWithUcpAndItemNo", "Purchase")',
-
             data: { itemno: itemno },
             dataType: 'json',
             success: function (data) {
-
-                console.log(data);
                 if (data != null && data != "" && data != "false") {
                     $("#productList1").empty();
 
@@ -9868,7 +9856,7 @@
     // Append F3
 
     function GetItemDataAppendForDesModal3() {
-
+       // debugger;
 
         var jj = 1;
         $('#saletable tr').each(function () {
