@@ -5457,8 +5457,9 @@
         var previousbalance = $("#previousbalance").val();
         $("#amountdue").text("$" + foundtotal.toFixed(2));
     }
+
     function CalculatetaxPlusDiscount() {
-        var subtotal = abc_general.dollarRemove($("#subtotalauto").val());
+        var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
         var prevBalance = abc_general.parenthRemove($("#previousbalance").val(), "(");
         var discount = abc_general.dollarRemove($("#discountidadd").val());
         var otheridval = abc_general.dollarRemove($("#otherid").val());
@@ -5473,33 +5474,21 @@
             return;
         }
 
-        if (discount == "") {
-            discount = 0;
-        } 
-
-        if (otheridval == "") {
-            otheridval = 0;
-        }
-
-        if (taxidval == "") {
-            taxidval = 0;
-        } 
-
-        if (freight == "") {
-            freight = 0;
-        }
-
-        if (prevBalance == "") {
-            prevBalance = 0;
-        }
+        discount == "" ? (discount = 0) : discount;
+        otheridval == "" ? (otheridval = 0) : otheridval;
+        taxidval == "" ? (taxidval = 0) : taxidval;
+        freight == "" ? (freight = 0) : freight;
+        prevBalance == "" ? (prevBalance = 0) : prevBalance;
 
         var sumofallexpences = parseFloat(subtotalInv) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
+
         if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
         }
+
         var subtotalInv = parseFloat(parseFloat(sumofallexpences) - discountAmount).toFixed(2);  //+ parseFloat(discount);
 
-        if (isNaN(subtotalInv)) {
+        if(isNaN(subtotalInv)) {
 
             $("#invoicetotal").val(abc_general.dollarAdd(0));
             if (parseFloat(prevBalance) > 0) {
@@ -5507,10 +5496,11 @@
             } else {
                 $("#amountdue").val(abc_general.dollarAdd(0));
             }
-        } else {
-            $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
-            $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
-            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
+        } 
+        else {
+            $("#invoicetotal").val(abc_general.dollarAdd(subtotalInv));
+            $('#InvoiceBalance').val(abc_general.dollarAdd(subtotalInv));
+            var amountDue = parseFloat(subtotalInv) + parseFloat(prevBalance);
             var amountDueParse = parseFloat(amountDue).toFixed(2);
             amountDueParse = abc_general.parenthAdd(amountDueParse.toString());
             $("#amountdue").val(amountDueParse);
