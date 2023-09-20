@@ -20,6 +20,7 @@ namespace ABC.DTOs.Library.SalesDTOs
         public DateTime? Date { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public string AccountId { get; set; }
         public string TotalPaid { get; set; }
         public string TotalAmount { get; set; }
         public string Change { get; set; }

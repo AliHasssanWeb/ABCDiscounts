@@ -8175,6 +8175,36 @@ namespace ABC.POS.API.Controllers
             {
                 var response = ResponseBuilder.BuildWSResponse<CustomerDetailModel>();
 
+                // Customer AccountId Generate If Null
+                var AccountId = "";
+                var CustomerInformation = db.CustomerInformations.Where(x => x.Id == id).FirstOrDefault();
+                AccountId = db.Accounts.Where(a => a.AccountId == CustomerInformation.AccountId).Select(f => f.AccountId).FirstOrDefault();
+                if (AccountId == null || AccountId == "")
+                {
+                    Account account = new Account();
+                    var accountSubGroupId = db.AccountSubGroups.ToList().Where(x => x.Title == "Customers").Select(x => x.AccountSubGroupId).FirstOrDefault();
+                    if (accountSubGroupId != null)
+                    {
+                        var customerCount = db.SystemCounts.FirstOrDefault();
+
+                        account.AccountId = accountSubGroupId + "-" + string.Format("{0:0000}", customerCount.CustomerAccountNoCount);
+                        account.Title = CustomerInformation.Company;
+                        account.Status = 1;
+                        account.AccountSubGroupId = accountSubGroupId;
+                        var saveAccount = db.Accounts.Add(account);
+
+                        customerCount.CustomerAccountNoCount = customerCount.CustomerAccountNoCount + 1;
+                        db.Entry(customerCount).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        AccountId = saveAccount.Entity.AccountId;
+
+                        CustomerInformation.AccountId = AccountId;
+                        db.Entry(customerCount).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
                 var record = (from cusInfo in db.CustomerInformations
                               join cusClassification in db.CustomerClassifications on cusInfo.Id equals cusClassification.CustomerInfoId into cusClasresult
                               from jrresult in cusClasresult.DefaultIfEmpty()
@@ -8198,7 +8228,7 @@ namespace ABC.POS.API.Controllers
                                   CheckAddress = cusInfo.CheckAddress,
                                   Email = cusInfo.Email,
                                   CustomerCode = cusInfo.CustomerCode,
-                                  AccountId = cusInfo.AccountId,
+                                  AccountId = cusInfo.AccountId != null || cusInfo.AccountId != "" ? cusInfo.AccountId : AccountId,
                                   BusinessAddress = cusInfo.BusinessAddress,
                                   TaxIdfein = cusInfo.TaxIdfein,
                                   TaxExempt = cusInfo.TaxExempt,
@@ -8218,6 +8248,8 @@ namespace ABC.POS.API.Controllers
                                   PaymentTerms = jrresult2.PaymentTerms
                               }
                               ).FirstOrDefault();
+
+
                 if (record != null)
                 {
                     ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
@@ -10313,15 +10345,11 @@ namespace ABC.POS.API.Controllers
                 {
                     return BadRequest();
                 }
-                var AccountId = "";
+
                 SalesInvoice saleInvoice = new SalesInvoice();
                 Receiving receiving = new Receiving();
                 var FoundInvoice = db.PointOfSales.ToList().Where(x => x.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
 
-                //if (obj.IsInvoicedPaid == true)
-                //{
-                //    FoundInvoice.IsPaid = true;
-                //}
                 FoundInvoice.IsClose = true;
                 FoundInvoice.IsOpen = false;
 
@@ -10332,7 +10360,6 @@ namespace ABC.POS.API.Controllers
                 saleInvoice.TotalAmount = saleInvoices.TotalAmount;
                 saleInvoice.Balance = saleInvoices.InvBalance;
                 saleInvoice.Change = saleInvoices.Change;
-                //saleInvoice.PreviousBalance = (saleInvoices.PreviousBalance as string).Trim('$');
                 saleInvoice.InvoiceBalance = saleInvoices.InvoiceTotal;
                 saleInvoice.Buyer = saleInvoices.CustomerName;
 
@@ -10340,36 +10367,7 @@ namespace ABC.POS.API.Controllers
                 db.SalesInvoices.Add(saleInvoice);
                 db.SaveChanges();
 
-                var customerInformation = db.CustomerInformations.Where(x => x.Id == Convert.ToInt32(saleInvoices.CustomerId)).FirstOrDefault();
-
-                AccountId = db.Accounts.Where(a => a.AccountId == customerInformation.AccountId).Select(f => f.AccountId).FirstOrDefault();
-                if (AccountId == null || AccountId == "")
-                {
-                    Account account = new Account();
-                    var accountSubGroupId = db.AccountSubGroups.ToList().Where(x => x.Title == "Customers").Select(x => x.AccountSubGroupId).FirstOrDefault();
-                    if (accountSubGroupId != null)
-                    {
-                        var customerCount = db.SystemCounts.FirstOrDefault();
-
-                        account.AccountId = accountSubGroupId + "-" + string.Format("{0:0000}", customerCount.CustomerAccountNoCount);
-                        account.Title = saleInvoices.CustomerName;
-                        account.Status = 1;
-                        account.AccountSubGroupId = accountSubGroupId;
-                        var saveAccount = db.Accounts.Add(account);
-
-                        customerCount.CustomerAccountNoCount = customerCount.CustomerAccountNoCount + 1;
-                        db.Entry(customerCount).State = EntityState.Modified;
-                        db.SaveChanges();
-
-                        AccountId = saveAccount.Entity.AccountId;
-
-                        customerInformation.AccountId = AccountId;
-                        db.Entry(customerCount).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                }
-
-                var recevables = db.Receivables.Where(x => x.AccountId == AccountId).FirstOrDefault();
+                var recevables = db.Receivables.Where(x => x.AccountId == saleInvoices.AccountId).FirstOrDefault();
 
                 var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
 
@@ -10380,13 +10378,14 @@ namespace ABC.POS.API.Controllers
                     receiving.Date = DateTime.Now;
                     receiving.SubTotal = saleInvoices.SubTotal;
                     receiving.InvTotal = saleInvoices.InvoiceTotal;
-                    receiving.InvBalance = (Convert.ToDouble(saleInvoices.SubTotal) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
-                    receiving.Change = saleInvoices.Change;
-                    receiving.Tax = saleInvoices.Tax;
-                    receiving.Discount = saleInvoices.Discount;
-                    receiving.Freight = saleInvoices.Freight;
-                    receiving.Other = saleInvoices.Other;
-                    receiving.PreBalance = recevables == null ? "0" : recevables.Amount;
+                    if (Convert.ToDouble(saleInvoices.TotalAmount) >= Convert.ToDouble(saleInvoices.SubTotal))
+                    {
+                        receiving.InvBalance = "0.00";
+                    }
+                    else
+                    {
+                        receiving.InvBalance = (Convert.ToDouble(saleInvoices.SubTotal) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
+                    }
                     if (receiving.InvBalance == "0" || receiving.InvBalance == "0.00")
                     {
                         receiving.IsPaid = true;
@@ -10395,11 +10394,25 @@ namespace ABC.POS.API.Controllers
                     {
                         receiving.IsPaid = false;
                     }
+                    receiving.Change = saleInvoices.Change;
+                    receiving.Tax = saleInvoices.Tax;
+                    receiving.Discount = saleInvoices.Discount;
+                    receiving.Freight = saleInvoices.Freight;
+                    receiving.Other = saleInvoices.Other;
+                    receiving.PreBalance = recevables == null ? "0.00" : recevables.Amount;
+
                     db.Receivings.Add(receiving);
                 }
                 else
                 {
-                    checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
+                    if (Convert.ToDouble(saleInvoices.TotalAmount) >= Convert.ToDouble(checkReceiving.InvBalance))
+                    {
+                        checkReceiving.InvBalance = "0.00";
+                    }
+                    else
+                    {
+                        checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
+                    }
                     checkReceiving.Change = saleInvoices.Change;
                     if (checkReceiving.InvBalance == "0.00" || checkReceiving.InvBalance == "0")
                     {
@@ -10434,7 +10447,7 @@ namespace ABC.POS.API.Controllers
                     double tempTotalAmount = Convert.ToDouble(saleInvoice.TotalAmount);
 
                     Receivable receivable = new Receivable();
-                    receivable.AccountId = AccountId;
+                    receivable.AccountId = saleInvoices.AccountId;
                     receivable.Amount = (tempInvTotal - tempTotalAmount).ToString("F");
                     db.Receivables.Add(receivable);
                 }

@@ -1264,8 +1264,8 @@
 
 
                                 </div>*@
-                                <button id="myButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-left"></i></button>
-                                <button id="rightButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-right"></i></button>
+                                <button id="myButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-left"></i></button>
+                                <button id="rightButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
 
                                 @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
 
@@ -4769,7 +4769,6 @@
                         //     window.open(actionUrl);
                         //     location.reload();
                         // }
-                        return alert("success");
                         location.reload();
                         // else {
                         //     location.reload();
@@ -5459,13 +5458,13 @@
         $("#amountdue").text("$" + foundtotal.toFixed(2));
     }
     function CalculatetaxPlusDiscount() {
-        var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
-        var prevBalance = abc_general.dollarRemove($("#previousbalance").val());
-        var discount = $("#discountidadd").val();
-        var otheridval = $("#otherid").val();
-        var taxidval = $("#taxid").val();
-        var freight = $("#freightid").val();
-        var dueAmount = $("#amountdue").val();
+        var subtotal = abc_general.dollarRemove($("#subtotalauto").val());
+        var prevBalance = abc_general.parenthRemove($("#previousbalance").val(), "(");
+        var discount = abc_general.dollarRemove($("#discountidadd").val());
+        var otheridval = abc_general.dollarRemove($("#otherid").val());
+        var taxidval = abc_general.dollarRemove($("#taxid").val());
+        var freight = abc_general.dollarRemove($("#freightid").val());
+        var dueAmount = abc_general.dollarRemove($("#amountdue").val());
 
         var discountAmount = 0;
 
@@ -5509,11 +5508,12 @@
                 $("#amountdue").val(abc_general.dollarAdd(0));
             }
         } else {
-
-            $("#invoicetotal").val(abc_general.dollarAdd(subtotalInv.toFixed(2)));
-            $('#InvoiceBalance').val(abc_general.dollarAdd(subtotalInv.toFixed(2)));
-            var amountDue = parseFloat(subtotalInv) + parseFloat(prevBalance);
-            $("#amountdue").val(abc_general.dollarAdd(amountDue.toFixed(2)));
+            $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
+            $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
+            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
+            var amountDueParse = parseFloat(amountDue).toFixed(2);
+            amountDueParse = abc_general.parenthAdd(amountDueParse.toString());
+            $("#amountdue").val(amountDueParse);
         }
 
         //if (invoicetotal == "NaN") {
@@ -5829,14 +5829,22 @@
                      if (data.viewInvoicePrevBalance) {
                             if($("#posted-invoice").val() == "value"){
                                if (data.amount != null) {
+                                   var PreviousBalance = "";
+                                   if(Math.sign(data.amount) == -1){
+                                       PreviousBalance = Math.abs(data.amount);
+                                       PreviousBalance = abc_general.dollarParenthAdd(PreviousBalance);
+                                   }
+                                   else{
+                                       PreviousBalance = abc_general.dollarAdd(data.amount);
+                                   }
                                    // ------- Customer Main Screen Previous Balance Binding Fields ------
-                                    $("#previousbalance").val('$' + data.amount);
-                                    $("#amountdue").val('$' + data.amount);
+                                    $("#previousbalance").val(PreviousBalance);
+                                    $("#amountdue").val(PreviousBalance);
                                     // ------- Customer Main Screen Previous Balance Binding Fields ------
 
                                     // ------- Customer Multi Payment Tab Binding Fields ------
-                                    $("#CustomerBalance").val('$' + data.amount);
-                                    $("#CustomerBalanceDue").text('$' + data.amount);
+                                    $("#CustomerBalance").val(PreviousBalance);
+                                    $("#CustomerBalanceDue").text(PreviousBalance);
                                     // ------- Customer Multi Payment Tab Binding Fields ------
 
                                     // ------- Validation Binding Field ------
@@ -6172,9 +6180,17 @@
         }
     }
         
-    function ShowReceivables(data) {   
+    function ShowReceivables(data) {
         if (data != null && data != "undefined") {
             $(".forremovingmodel").empty();
+            var PopupPreBalance = "";
+            if(Math.sign(data.amount) == -1){
+                PopupPreBalance = Math.abs(data.amount);
+                PopupPreBalance = abc_general.dollarParenthAdd(PopupPreBalance);
+            }
+            else{
+                PopupPreBalance = abc_general.dollarAdd(data.amount);
+             }
             var html = "";
 
             html += '<div class="modal-content forremovingmodel">';
@@ -6197,12 +6213,12 @@
             html += '</div>';
             html += '<div class="row mt-1">';
             html += '<div class="col-lg-6 col-md-12 col-sm-12 col font-size">';
-            html += '<label>' + data.businessAddress + '</label>';
+            html += '<label>' + data.businessAddress !== null || data.businessAddress !== undefined || typeOf(data.businessAddress) !=="undefined" ? data.businessAddress : "" + '</label>';
             html += '</div>';
             html += '</div>';
             html += '<div class="row mt-1">';
             html += '<div class="col-lg-12 col-md-12 col-sm-12 col font-size">';
-            html += '<label>Tel: <label id="telno">' + data.mobile + '</label></label>';
+            html += '<label>Tel: <label id="telno">' + data.cell !==null || data.cell !==undefined ? data.cell : "" + '</label></label>';
             html += '</div>';
             html += '</div>';
             html += '<div class="row mt-2">';
@@ -6212,7 +6228,7 @@
             html += '</div>';
             html += '<div class="row mt-2">';
             html += '<div class="col-lg-12 col-md-12 col-sm-12 col text-center">';
-            html += '<input type="text" class="text-center st-1" id="BlcDuePk" name="name" value="$' + data.amount + '"  />';
+            html += '<input type="text" class="text-center st-1" id="BlcDuePk" name="name" value="' + PopupPreBalance + '"  />';
             html += '</div>';
             html += '</div>';
             html += '<div class="row mt-2">';
@@ -6296,7 +6312,6 @@
 
 
     function GetItemList(val) {
-        //debugger;
         var data_array = [];
         var search = $("#DescriptionInput-" + val).val();
         $("#productList-" + val).empty();
@@ -7120,7 +7135,6 @@
                 success: function (data) {
 
                     var sernum = 1;
-                    // debugger;
                    // $("#salesmanid").text(data.saleManName);
                     $("#invoicetotal").val(data.invoiceTotal);
                     $("#discountidadd").val(data.charges);
@@ -7196,7 +7210,6 @@
                                 sernum++;
 
                             });
-
                                 var total = $("#total-" + sernum).text();
                                 var subtotalnew = $("#subtotalauto").val();
                                 var finalsubtotalvalue = subtotalnew.split('$');
@@ -8190,17 +8203,19 @@
     }
 
      function ChangePayment1(IsInvoicedPaid) {
+
         var OnlyPayment = false;
         var customername = $("#searchname").val();
         // var customercode = $("#customercodeinfo").val();
         var customerId = $("#customerid").val();
         var saleman = $("#salesmanid").text();
         var invoicenumber = $("#invoicenumber").val();
+        var AccountId = $("#Accountnumber").val();
         var invoicetotal = abc_general.dollarRemove($("#invoicetotal").val());
         //var balanceDueP = $("#BalanceDueP").text();
         var totalPaidP = abc_general.dollarRemove($("#TotalPaidP").text());
         var totalAllocation = abc_general.dollarRemove($("#totalpaidd").text());
-        
+ 
         var change = abc_general.dollarRemove($("#ChangeP").val());
         var InvBalance = abc_general.dollarRemove($("#BalanceP").text());
         var SubTotal = abc_general.dollarRemove($("#subtotalauto").val());
@@ -8214,6 +8229,7 @@
         Sale.InvoiceNumber = invoicenumber;
         Sale.CustomerId = customerId;
         Sale.CustomerName = customername;
+        Sale.AccountId = AccountId;
         Sale.SubTotal = SubTotal
         Sale.InvoiceTotal = invoicetotal;
        // Sale.PreviousBalance = balanceDueP;
@@ -8573,7 +8589,7 @@
 
 
 
-                                        if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
+                       if (parseInt($("#ringerqty-" + i).text()) > parseInt($("#saleslimit-" + i).text())) {
                         //issue = true;
                         $.confirm({
                             title: 'Message',
@@ -9027,13 +9043,16 @@
 
 
     $(document).ready(function () {
-        $('#rightButton').hide();
+        $('#myButton').hide();
         $('#myButton').click(function () {
             var balanceValue = $('#BalanceP').text();
+            var invoiceBalance = $("#BalanceDueP").text();
             var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
 
+            $('#totalpaidd').text(invoiceBalance);
             $('#ChangeP').val(cleanBalanceValue);
             $('#rightButton').show();
+            $("#rightButton").prop("disabled", false);
             $('#myButton').hide();
             $('#BalanceP').text('0');
 
@@ -9041,10 +9060,13 @@
         });
         $('#rightButton').click(function () {
             var changeValue = $('#ChangeP').val();
+            var totalPayAmount = $('#TotalPaidP').text();
+            $('#totalpaidd').text(totalPayAmount);
             $('#BalanceP').text('(' + changeValue + ')');
             $('#ChangeP').val('0');
             $('#rightButton').hide();
             $('#myButton').show();
+            $("#myButton").prop("disabled", false);
         });
     });
 
@@ -9082,7 +9104,6 @@
         var amountpayed = $("#amountpayed-" + val).text().split('$');
         var CusBalanceDue = $("#CustomerBalance").val().split('$');
         var CusDueBalance = CusBalanceDue[1];
-        //$("#amountallocate-" + val).text(getamc);
         if (amountpayed != "" && isNaN(amountpayed) == false) {
             $("#TotalPaidAmount").text("$" + amountpayed);
             $('#thumbRightButton').show();
@@ -9124,32 +9145,34 @@
 
 
     function PaymentAdd(val) {
-        var amountpayed = $("#amountpayed-" + val).text().split('$');
-        var Balanceduep = $("#BalanceDueP").text().split('$');
-        var BalanceDueP = Balanceduep[1];
-        //$("#amountallocate-" + val).text(getamc);
+        var amountpayed = abc_general.dollarRemove($("#amountpayed-" + val).text());
+        var Balanceduep = abc_general.dollarRemove($("#BalanceDueP").text());
         if (amountpayed != "" && isNaN(amountpayed) == false) {
-            $("#TotalPaidP").text("$" + amountpayed);
-            $('#rightButton').hide();
-            $('#myButton').show();
+            $("#TotalPaidP").text(abc_general.dollarAdd(amountpayed));
+            $('#rightButton').show();
+            $('#myButton').hide();
 
-            if (parseFloat(amountpayed) > parseFloat(BalanceDueP)) {
-                $("#amountallocate-" + val).text(parseFloat(BalanceDueP).toFixed(2));
-                $("#totalpaidd").text("$" + parseFloat(BalanceDueP).toFixed(2));
+            if (parseFloat(amountpayed) > parseFloat(Balanceduep)) {
+                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
+                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(amountpayed).toFixed(2)));
                 $("#myButton").prop("disabled", false);
+                $('#myButton').show();
+                $('#rightButton').hide();
 
-                var change = parseFloat(amountpayed) - parseFloat(BalanceDueP);
-                //  $("#ChangeP").val("$" + change.toFixed(2));
-                $("#ChangeP").val("$" + 0.00);
-                $("#BalanceP").text("$(" + change.toFixed(2) + ")");
+                var change = parseFloat(amountpayed) - parseFloat(Balanceduep);
+                $("#ChangeP").val(abc_general.dollarAdd(0.00));
+                $("#BalanceP").text(abc_general.dollarParenthAdd(change.toFixed(2)));
             } else {
                 $("#myButton").prop("disabled", true);
-                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
-                $("#totalpaidd").text("$" + parseFloat(amountpayed).toFixed(2));
+                $('#myButton').hide();
+                $('#rightButton').show();
 
-                var balance = parseFloat(BalanceDueP) - parseFloat(amountpayed);
-                $("#ChangeP").val("$" + 0.00);
-                $("#BalanceP").text("$" + balance.toFixed(2));
+                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
+                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(amountpayed).toFixed(2)));
+
+                var balance = parseFloat(Balanceduep) - parseFloat(amountpayed);
+                $("#ChangeP").val(abc_general.dollarAdd(0.00));
+                $("#BalanceP").text(abc_general.dollarAdd(balance.toFixed(2)));
             }
         } else if (amountpayed == "" || isNaN(amountpayed) == true) {
 
@@ -9157,7 +9180,7 @@
             $("#totalpaidd").text('');
             $("#ChangeP").val('');
             $("#amountallocate-" + val).text('');
-            $("#BalanceP").text("$" + Balanceduep[1]);
+            $("#BalanceP").text(abc_general.dollarAdd(Balanceduep));
             Swal.fire('Please Enter Numeric Value');
         }
 
@@ -9182,7 +9205,6 @@
                 }
             }
         });
-        console.log("SAMERR" + calculated_total_sum);
 
         //var getamcValue = $("#TotalPaidP").text();
         //getamcValue = getamcValue.replace("$", "");

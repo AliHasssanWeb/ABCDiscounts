@@ -681,20 +681,20 @@ namespace ABC.POS.API.Controllers
             try
             {
                 var response = ResponseBuilder.BuildWSResponse<List<ReceivingAdp>>();
-                List<ReceivingAdp> recevinglist= new List<ReceivingAdp>();
+                List<ReceivingAdp> recevinglist = new List<ReceivingAdp>();
 
                 var record = (from receiving in db.Receivings
                               where receiving.CustomerId == Convert.ToInt32(CustomerId) && receiving.IsPaid == false
                               orderby receiving.IsPaidFirst descending, receiving.Date ascending
                               select new ReceivingAdp
                               {
-                                      InvoiceNumber = receiving.InvoiceNumber,
-                                      Date = receiving.Date,
-                                      InvTotal = receiving.InvTotal,
-                                      TotalPaid = (Convert.ToDouble(receiving.InvTotal) - Convert.ToDouble(receiving.InvBalance)).ToString(),
-                                      InvBalance = receiving.InvBalance,
-                                      Days = (EF.Functions.DateDiffDay(receiving.Date, DateTime.Now)).ToString()
-                                  
+                                  InvoiceNumber = receiving.InvoiceNumber,
+                                  Date = receiving.Date,
+                                  InvTotal = receiving.InvTotal,
+                                  TotalPaid = (Convert.ToDouble(receiving.InvTotal) - Convert.ToDouble(receiving.InvBalance)).ToString(),
+                                  InvBalance = receiving.InvBalance,
+                                  Days = (EF.Functions.DateDiffDay(receiving.Date, DateTime.Now)).ToString()
+
                               }).ToList();
 
                 if (record != null)
@@ -732,39 +732,41 @@ namespace ABC.POS.API.Controllers
                 obj.PointOfSaleId = record.PointOfSaleId;
                 obj.InvoiceNumber = record.InvoiceNumber;
                 obj.CustomerId = record.CustomerId;
-                obj.Other = record.Other;
-                obj.Tax = record.Tax;
                 obj.IsPaid = record.IsPaid;
                 obj.IsOpen = record.IsOpen;
                 obj.IsClose = record.IsClose;
-                obj.Count = Convert.ToString(record.Count);
+                obj.Count = record.Count.ToString();
                 obj.SubTotal = record.SubTotal;
+                obj.Other = record.Other;
+                obj.Discount = record.Discount;
+                obj.Tax = record.Tax;
+                obj.Freight = record.Freight;
 
                 if (record != null)
                 {
                     record.PointOfSaleDetails = db.PointOfSaleDetails.Where(x => x.PointOfSaleId == record.PointOfSaleId).ToList();
                     if (record.PointOfSaleDetails.Count > 0)
                     {
-                        var query = (
+                        var PointOfSaleDetailQry = (
                             from itemsdetails in db.PointOfSaleDetails
                             join P in db.Products on itemsdetails.ItemId equals P.Id into result
                             from jrresult in result.DefaultIfEmpty()
                             join InvS in db.InventoryStocks on itemsdetails.ItemId equals InvS.ProductId into InvStockResult
                             from jrresult1 in InvStockResult.DefaultIfEmpty()
                             where itemsdetails.PointOfSaleId == record.PointOfSaleId
-                            select new
+                            select new PointOfSaleDetailModel
                             {
-                                itemsdetails.PointOfSaleId,
-                                itemsdetails.PosSaleDetailId,
-                                itemsdetails.ItemId,
-                                itemsdetails.InDiscount,
-                                itemsdetails.OutDiscount,
-                                itemsdetails.Quantity,
-                                itemsdetails.InUnit,
-                                itemsdetails.OutUnit,
-                                itemsdetails.Price,
-                                itemsdetails.Total,
-                                itemsdetails.RingerQty,
+                                PointOfSaleId = (itemsdetails.PointOfSaleId).ToString(),
+                                PosSaleDetailId = itemsdetails.PosSaleDetailId,
+                                ItemId = (itemsdetails.ItemId).ToString(),
+                                InDiscount = itemsdetails.InDiscount,
+                                OutDiscount = itemsdetails.OutDiscount,
+                                Quantity = itemsdetails.Quantity,
+                                InUnit = itemsdetails.InUnit,
+                                OutUnit = itemsdetails.OutUnit,
+                                Price = itemsdetails.Price,
+                                Total = itemsdetails.Total,
+                                RingerQty = itemsdetails.RingerQty,
                                 Description = jrresult.Description,
                                 ItemNumber = jrresult.ItemNumber,
                                 AmountRetail = jrresult.SaleRetail,
@@ -775,32 +777,10 @@ namespace ABC.POS.API.Controllers
                             }
                             ).ToList();
 
-                        foreach( var item in query )
-                        {
-                            PointOfSaleDetailModel pointOfSaleDetailModel = new PointOfSaleDetailModel();
-                            pointOfSaleDetailModel.PointOfSaleId = Convert.ToString(item.PointOfSaleId);
-                            pointOfSaleDetailModel.ItemId = Convert.ToString(item.ItemId);
-                            pointOfSaleDetailModel.InDiscount = item.InDiscount;
-                            pointOfSaleDetailModel.OutDiscount = item.OutDiscount;
-                            pointOfSaleDetailModel.Quantity = item.Quantity;
-                            pointOfSaleDetailModel.InUnit = item.InUnit;
-                            pointOfSaleDetailModel.OutUnit = item.OutUnit;
-                            pointOfSaleDetailModel.Price = item.Price;
-                            pointOfSaleDetailModel.Total = item.Total;
-                            pointOfSaleDetailModel.RingerQty = item.RingerQty;
-                            pointOfSaleDetailModel.Description = item.Description;
-                            pointOfSaleDetailModel.ItemNumber = item.ItemNumber;
-                            pointOfSaleDetailModel.AmountRetail = item.AmountRetail;
-                            pointOfSaleDetailModel.SalesLimit = item.SalesLimit;
-                            pointOfSaleDetailModel.NeedHighAuthorization = item.NeedHighAuthorization;
-                            pointOfSaleDetailModel.HighLimitOn = item.HighLimitOn;
-                            pointOfSaleDetailModel.StockQty = item.StockQty;
-
-                            obj.PointOfSaleDetails.Add( pointOfSaleDetailModel );
-                        }
+                        obj.PointOfSaleDetails = PointOfSaleDetailQry;
 
                         var receiving = db.Receivings.Where(f => f.InvoiceNumber == invoicenumber).FirstOrDefault();
-                        if(receiving != null)
+                        if (receiving != null)
                         {
                             obj.InvoiceBalance = receiving.InvBalance;
                             obj.PreBalance = receiving.PreBalance;

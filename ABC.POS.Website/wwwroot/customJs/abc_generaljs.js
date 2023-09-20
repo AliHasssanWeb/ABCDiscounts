@@ -34,4 +34,15 @@
         return result;
     },
 
+    parenthRemove: function (value, sign) {
+        var result = value.includes(sign) == true ? this.dollarParenthRemove(value) : this.dollarRemove(value);
+        return result;
+    },
+
+    parenthAdd: function (value) {
+        var result = value.includes("-") == true ? this.dollarParenthAdd(value) : this.dollarAdd(value);
+        return result;
+    },
+
+
 }
