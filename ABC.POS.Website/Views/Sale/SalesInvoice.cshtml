@@ -5696,12 +5696,11 @@
             success: function (data) {
                 var inner = '';
                 var opts = jQuery.parseJSON(JSON.stringify(data));
-                console.log(opts);
+
                 if (opts.length > 0) {
                     //$("#matchedCharityTemplate").show();
                 }
                 $("#listallmissions").empty();
-                console.log(data);
                 //$('#ddlAllMission').empty();
                 $.each(opts, function (i, d) {
                     inner = '';
@@ -5724,19 +5723,15 @@
             },
         });
     };
-    var Increament = 0;
     function GetAllMatchedItems(event) {
         debugger;
-        if (Increament != 0) {
-            AppendAllMissions();
-        }
+        //if (Increament != 0) {
+        //    AppendAllMissions();
+        //}
         var naming = $(".searchname").val();
-        //var naming = event.key;
-        if (naming == "") {
+        
             $(".item_name").parent().hide();
-            $("#customerid").val("");
-        }
-        else {
+            $("#customerid").val("");     
             var text = naming;
             var items = $(".item_name");
             //first, hide all:
@@ -5746,8 +5741,6 @@
             items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) >= 0;
             }).parent().show();
-        }
-        Increament++;
     };
     function GetCompanyByID(val, showReceivables) {
         var id = val;
