@@ -23,7 +23,6 @@
         });
 
         return allItem_array;
-        console.log(allItem_array);
     },
 
     AllItem4Model: function () {
@@ -48,7 +47,6 @@
         });
 
         return allItemModel_array;
-        console.log(allItem_array);
     },
 
 

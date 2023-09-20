@@ -468,10 +468,29 @@ namespace ABC.POS.Website.Controllers
 
         }
 
+        public JsonResult GetItemStockFinancialByItemNumber_1(string itemnumber)
+        {
+            var Msg = "";
+            SResponse ress = RequestSender.Instance.CallAPI("api", "Inventory/ItemGetWithStockAndFinancialByItemnumber1" + "/" + itemnumber, "GET");
+
+            if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+            {
+                var response = JsonConvert.DeserializeObject<ResponseBack<InvStockModel>>(ress.Resp);
+                if (response.Data != null)
+                {
+                    var responseObject = response.Data;
+                    return Json(responseObject);
+                }
+                else
+                {
+                    TempData["response"] = "Server is down.";
+                }
+            }
+            return Json(Msg);
+        }
         public JsonResult GetItemStockFinancialByItemNumber(string itemnumber)
         {
-            SResponse ress = RequestSender.Instance.CallAPI("api",
-               "Inventory/ItemGetWithStockAndFinancialByItemnumber/" + itemnumber, "GET");
+            SResponse ress = RequestSender.Instance.CallAPI("api","Inventory/ItemGetWithStockAndFinancialByItemnumber/" + itemnumber, "GET");
             var Msg = "";
 
             if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
@@ -952,38 +971,30 @@ namespace ABC.POS.Website.Controllers
             try
             {
 
-                //if (GlobalPOS.listcart.Count() > 0)
-                //{
-                //    var productDropDown = GlobalPOS.listcart.Select(x => new { ID = x.ItemNumber, Value = x.Name });
-                //    var Productlist = new SelectList(productDropDown, "ID", "Value");
-                //    return Json(Productlist);
-                //}
-
-                List<Product> responseObject = new List<Product>();
-                var FoundSession = HttpContext.Session.GetString("loadedProducts");
+               // List<Product> responseObject = new List<Product>();
                 List<Product> FoundSession_Result = new List<Product>();
+
+                var FoundSession = HttpContext.Session.GetString("loadedProducts");
                 if (FoundSession != null && FoundSession.Count() > 0 && FoundSession != "null")
                 {
                     FoundSession_Result = JsonConvert.DeserializeObject<List<Product>>(FoundSession);
                 }
+
                 if (FoundSession_Result != null && FoundSession_Result.Count() < 1)
                 {
-
-                    var productDropDown = FoundSession_Result.Select(x => new { ID = x.ItemNumber, Value = x.Name });
-                    var Productlist = new SelectList(productDropDown, "ID", "Value");
+                    var Productlist = FoundSession_Result.Select(x => new SelectListItem {  Value = x.ItemNumber, Text = x.Name });
                     return Json(Productlist);
                 }
                 else
                 {
-                    SResponse respEmp = RequestSender.Instance.CallAPI("api",
-                                   "Inventory/GetAllItem/", "GET");
+                    SResponse respEmp = RequestSender.Instance.CallAPI("api","Inventory/GetAllItem/", "GET");
+
                     if (respEmp.Status && (respEmp.Resp != null) && (respEmp.Resp != ""))
                     {
                         ResponseBack<List<Product>> record = JsonConvert.DeserializeObject<ResponseBack<List<Product>>>(respEmp.Resp);
                         if (record != null && record.Data.Count() > 0)
                         {
-                            var productDropDown = record.Data.Select(x => new { ID = x.ItemNumber, Value = x.Name });
-                            var Productlist = new SelectList(productDropDown, "ID", "Value");
+                            var Productlist = record.Data.Select(x => new SelectListItem { Value = x.ItemNumber, Text = x.Name });
                             HttpContext.Session.SetString("loadedProducts", JsonConvert.SerializeObject(record.Data));
 
                             return Json(Productlist);

@@ -6932,16 +6932,16 @@ namespace ABC.POS.API.Controllers
                     {
                         //if (obj.Count > exist.Count)
                         //{
-                            var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == obj.PointOfSaleId).ToList();
+                        var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == obj.PointOfSaleId).ToList();
 
-                            if (savedItems.Count > 0)
-                            {
-                                db.Entry(exist).CurrentValues.SetValues(obj);
-                                db.PointOfSaleDetails.RemoveRange(savedItems);
-                                db.PointOfSaleDetails.AddRange(obj.PointOfSaleDetails);
-                                db.SaveChanges();
-                            }
-                       // }
+                        if (savedItems.Count > 0)
+                        {
+                            db.Entry(exist).CurrentValues.SetValues(obj);
+                            db.PointOfSaleDetails.RemoveRange(savedItems);
+                            db.PointOfSaleDetails.AddRange(obj.PointOfSaleDetails);
+                            db.SaveChanges();
+                        }
+                        // }
                     }
 
                 }
@@ -7970,6 +7970,70 @@ namespace ABC.POS.API.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        [HttpGet("ItemGetWithStockAndFinancialByItemnumber1/{itemnumber}")]
+        public IActionResult ItemGetWithStockAndFinancialByItemnumber1(string itemnumber)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<InvStockModel>();
+                var record = (from p in db.Products
+                              join ins in db.InventoryStocks on p.Id equals ins.ProductId into invstockResult
+                              from INS in invstockResult.DefaultIfEmpty()
+                              join f in db.Financials on p.Id equals f.ItemId into financeresult
+                              from FN in financeresult.DefaultIfEmpty()
+                              where p.ItemNumber == itemnumber
+                              select new InvStockModel
+                              {
+                                  Id = p.Id,
+                                  ProductId = Convert.ToInt32(INS.ProductId),
+                                  Quantity = INS.Quantity,
+                                  ItemName = INS.ItemName,
+                                  ItemBarCode = INS.ItemBarCode,
+                                  Cost = FN.Cost,
+                                  ItemCode = INS.ItemCode,
+                                  StockId = Convert.ToInt32(INS.StockId),
+                                  ItemId = Convert.ToInt32(FN.ItemId),
+                                  SaleRetail = p.SaleRetail,
+                                  Retail = p.Retail,
+                                  Sku = p.Sku,
+                                  stTax = Convert.ToInt32(p.stTax),
+                                  Price = FN.Price,
+                                  FixedCost = Convert.ToInt32(FN.FixedCost),
+                                  SalesLimit = p.SalesLimit,
+                                  ShipmentLimit = p.ShipmentLimit,
+                                  CategoryName = p.CategoryName,
+                                  Description = p.Description,
+                                  Profit = FN.Profit,
+                                  NeedHighAuthorization = p.NeedHighAuthorization,
+                                  HighlimitOn = p.HighlimitOn
+                              }
+                        ).FirstOrDefault();
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(Response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(Response);
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<InvStockModel>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -10209,11 +10273,11 @@ namespace ABC.POS.API.Controllers
 
 
                     var RecevableQuery = (from cusInfo in db.CustomerInformations
-                                  join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
-                                  from jrresult in result.DefaultIfEmpty()
-                                  where cusInfo.Id == Convert.ToInt32(multiInvoicePay.CustomerId)
-                                  select new { Amount = jrresult.Amount, RecevingId = jrresult.Id, AccountId = jrresult.AccountId }).FirstOrDefault();
-                                 
+                                          join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
+                                          from jrresult in result.DefaultIfEmpty()
+                                          where cusInfo.Id == Convert.ToInt32(multiInvoicePay.CustomerId)
+                                          select new { Amount = jrresult.Amount, RecevingId = jrresult.Id, AccountId = jrresult.AccountId }).FirstOrDefault();
+
 
                     double remainingAmount = Convert.ToDouble(RecevableQuery.Amount) - TotalAmount;
                     Receivable receivable = new Receivable();

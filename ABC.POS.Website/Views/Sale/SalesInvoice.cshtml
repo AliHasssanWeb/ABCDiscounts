@@ -11,6 +11,20 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
+@* get data on page load *@
+<script>
+    var AllItemsList = [];
+
+    $(document).ready(function () {
+
+         if (AllItemsList.length < 1) {
+            AllItemsList = ABCPOSWebsite.init();
+        }
+
+    });
+</script>
+
+
 <style>
 
     .aqua {
@@ -4126,7 +4140,6 @@
 
 
         $("#btn").click(function () {
-            debugger;
             InsertSaleDetails(false, false);
         });
 
@@ -4212,7 +4225,6 @@
     });
 
     $('.add-generalpaymentrow').click(function () {
-        debugger;
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
         html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="MultiPaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
@@ -4375,7 +4387,6 @@
         url: '@Url.Action("GetPostedsales1", "Sale")',
         dataType: 'json',
         success: function (data) {
-           debugger
             $.each(data, function (val, text) {
                 postedinvoices1.append(
                     $('<option></option>').val(text).html(text /* + "-" + text.customerNumber + "-" + text.customerName*/)
@@ -4605,7 +4616,6 @@
 
 
     function InsertSaleDetails1(Isprint, Ispaid) {
-        debugger;
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
         var CustomerId = $("#customerid").val();
@@ -4730,7 +4740,6 @@
             async: false,
             cache: false,
             success: function (data) {
-                debugger;
                 if(data == true){
                     if(Ispaid == true){
                         ChangePayment1(true);
@@ -4773,7 +4782,6 @@
 
     //tosearchh
     function InsertSaleDetails(printorNot, update, Ispaid, IsInvoicePaid) {
-        debugger;
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
         var CustomerID = $("#customerid").val();
@@ -4799,7 +4807,6 @@
         });
         var count1 = 1;
         $("#saletable TBODY TR").each(function () {
-            debugger;
             var row = $(this);
             var Sale = {};
             if (row.find("TD").eq(14).html() == '') {
@@ -5248,7 +5255,6 @@
         }
     }
     function SaveOnGoingSales() {
-        debugger;
         var isValid = true;
         var customername = $("#searchname").val();
         var customercode = $("#customercodeinfo").val();
@@ -5453,8 +5459,7 @@
         $("#amountdue").text("$" + foundtotal.toFixed(2));
     }
     function CalculatetaxPlusDiscount() {
-        debugger;
-        var subtotal = abc_general.dollarRemove($("#subtotalauto").val());
+        var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
         var prevBalance = abc_general.dollarRemove($("#previousbalance").val());
         var discount = $("#discountidadd").val();
         var otheridval = $("#otherid").val();
@@ -5471,48 +5476,44 @@
 
         if (discount == "") {
             discount = 0;
-
         } 
+
         if (otheridval == "") {
             otheridval = 0;
-
         }
+
         if (taxidval == "") {
             taxidval = 0;
-
         } 
+
         if (freight == "") {
             freight = 0;
-
         }
+
         if (prevBalance == "") {
             prevBalance = 0;
         }
 
-        //var newsubtotal = subtotal; //subtotal[1];
-
-        // var newdiscount = discount[1];
-
-        var sumofallexpences = parseFloat(subtotal) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
+        var sumofallexpences = parseFloat(subtotalInv) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
         if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
         }
-        var minusdiscount = parseFloat(sumofallexpences) - discountAmount;  //+ parseFloat(discount);
-        var invoicetotal = parseFloat(minusdiscount);
+        var subtotalInv = parseFloat(parseFloat(sumofallexpences) - discountAmount).toFixed(2);  //+ parseFloat(discount);
 
+        if (isNaN(subtotalInv)) {
 
-        if (isNaN(invoicetotal)) {
-            $("#invoicetotal").val("$" + 0);
+            $("#invoicetotal").val(abc_general.dollarAdd(0));
             if (parseFloat(prevBalance) > 0) {
-                $("#amountdue").val("$" + parseFloat(prevBalance).toFixed(2));
+                $("#amountdue").val(abc_general.dollarAdd(parseFloat(prevBalance).toFixed(2)));
             } else {
-                $("#amountdue").val("$" + 0);
+                $("#amountdue").val(abc_general.dollarAdd(0));
             }
         } else {
-            $("#invoicetotal").val("$" + invoicetotal.toFixed(2));
-            $('#InvoiceBalance').val("$" + invoicetotal.toFixed(2));
-            var amountDue = parseFloat(invoicetotal) + parseFloat(prevBalance);
-            $("#amountdue").val("$" + amountDue.toFixed(2));
+
+            $("#invoicetotal").val(abc_general.dollarAdd(subtotalInv.toFixed(2)));
+            $('#InvoiceBalance').val(abc_general.dollarAdd(subtotalInv.toFixed(2)));
+            var amountDue = parseFloat(subtotalInv) + parseFloat(prevBalance);
+            $("#amountdue").val(abc_general.dollarAdd(amountDue.toFixed(2)));
         }
 
         //if (invoicetotal == "NaN") {
@@ -5545,34 +5546,28 @@
     }
     function GetItemByItemNumber(event, val) {
         //   var blocker = $("#itemnumber" + ID).text();
-        debugger
-        if (event != null) {
-            var keycode = (event.keyCode ? event.keyCode : event.which);
-            if (keycode == '13') {
+        //debugger
+        //if (event != null) {
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
 
-                /*alert('You pressed a "enter" key in textbox');*/
-            }
+        //        /*alert('You pressed a "enter" key in textbox');*/
+        //    }
 
-            else {
-                return false;
-            }
-        }   
-        else {
-
-        }
-        debugger
-        var total = $("#total-" + val).text();
-        var subtotalnew = $("#subtotalauto").val();
-        var finalsubtotalvalue = subtotalnew.split('$');
+        //    else {
+        //        return false;   
+        //    }
+        //}   
+        //else {
+        //}
         //debugger;
-        if (total != null && total != '') {
-            var newtotal = total.split('$');
-            var newtotalsuplitted = newtotal[1];
-            var subtotalsuplitednew = finalsubtotalvalue[1];
-            if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+        var itemTotal = abc_general.dollarRemove($("#total-" + val).text());
+        var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
 
-                var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
-                $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+        if (!abc_general.isNullOrEmpty(itemTotal) && !abc_general.isNullOrEmpty(subtotalInv) && subtotalInv != "$NaN" ) {
+
+                var subtractedtotal = parseFloat(subtotalInv) - parseFloat(itemTotal);
+                $("#subtotalauto").val(abc_general.dollarAdd(subtractedtotal.toFixed(2)));
                 $("#itemnumber-" + val).empty();
                 $("#ringerqty-" + val).empty();
                 $("#amount-" + val).empty();
@@ -5583,28 +5578,17 @@
                 $("#price-" + val).empty();
                 $("#total-" + val).empty();
                 $("#description-" + val).empty();
-            }
         }
 
-        var itemnumber = $("#itemnumber-" + val).text();
-
-        var thirdcharacter = itemnumber.substring(2, 3);
-        if (thirdcharacter == "-") {
-            itemnumber = itemnumber.replace('-', '');
-        }
+        var itemnumber = abc_general.signRemove($("#itemnumber-" + val).text(),"-");
 
         $.ajax({
             type: "GET",
-            url: '@Url.Action("GetItemStockFinancialByItemNumber", "Sale")',
-
+            url: '@Url.Action("GetItemStockFinancialByItemNumber_1", "Sale")',
             data: { 'itemnumber': itemnumber },
             async: false,
-
             dataType: 'json',
-
             success: function (data) {
-                console.log(data);
-
                 $("#rowid-" + val).find("#productId").val(data.id);
                 var Id = data.id;
                 var count = 0;
@@ -5612,97 +5596,91 @@
                 var notexist = true;
                 $('#saletable tr').each(function (index, tr) {
                     if (count > 0) {
+
                         var Id = tr.attributes["id"].value.split("rowid-")[1];
                         var productId = parseInt($("#rowid-" + Id).find("#productId").val());
-                        //debugger;
+
                         if (productId === data.id) {
                             exist++;
                         }
+
                         if (exist > 1) {
                             swal("Error!", "Item Already Added!", "error");
                             notexist = false;
                             RemoveRow(val);
                         }
-
                     }
-
                     count++;
                 });
+
                 if (notexist === true) {
-                    if (data.stock != null) {
-                        if (data.stock.quantity != null && data.stock.quantity != "undefined") {
-                            $("#stockno-" + val).text(data.stock.quantity);
+                                      
+                        if (!abc_general.isNullOrEmpty(data.quantity)) {
+                            $("#stockno-" + val).text(data.quantity);
 
                         } else {
-                            $("#stockno-" + val).text(data.stock.quantity);
+                            $("#stockno-" + val).text(data.quantity);
 
                         }
-                    }
-                    //debugger;
-                    if (data.name != null && data.name != "undefined") {
-                        $("#description-" + val).text(data.name);
+
+                    if (!abc_general.isNullOrEmpty(data.itemName)) {
+                        $("#description-" + val).text(data.itemName);
                         $("#description-" + val).attr('contenteditable', 'false');
-
                     }
 
-                    if (data.salesLimit != null && data.salesLimit != "undefined") {
+                    if (!abc_general.isNullOrEmpty(data.salesLimit)) {
                         $("#saleslimit-" + val).text(data.salesLimit);
                         $("#saleslimit-" + val).attr('contenteditable', 'false');
-
                     }
-                    if (data.needHighAuthorization != null && data.needHighAuthorization != "undefined") {
+
+                    if (!abc_general.isNullOrEmpty(data.needHighAuthorization)) {
                         $("#needhighotherization-" + val).text(data.needHighAuthorization);
                         $("#needhighotherization-" + val).attr('contenteditable', 'false');
-
                     }
 
-                    if (data.itemNumber != null && data.itemNumber != "undefined") {
+                    if (!abc_general.isNullOrEmpty(data.itemNumber)) {
                         var string = data.itemNumber;
-                        string = string.substring(0, 2) + '-' + string.substring(2, string.length);
-                        $("#itemnumber-" + val).text(string);
+                        $("#itemnumber-" + val).text( string.substring(0, 2) + '-' + string.substring(2, string.length));
                         // $("#needhighotherization-" + val).attr('contenteditable', 'false');
-
                     }
-                    if (data.highlimitOn != null && data.highlimitOn != "undefined") {
+
+                    if (!abc_general.isNullOrEmpty(data.highlimitOn)) {
                         $("#highlimiton-" + val).text(data.highlimitOn);
                         $("#highlimiton-" + val).attr('contenteditable', 'false');
-
                     }
 
-
-                    if (data.cost != null && data.name != "undefined") {
-                        $("#amount-" + val).text("$" + data.cost);
-
+                    if (!abc_general.isNullOrEmpty(data.cost)) {
+                        $("#amount-" + val).text(abc_general.dollarAdd(data.cost));
                     }
-                    if (data.cost != null && data.cost != "undefined") {
+
+                    if (!abc_general.isNullOrEmpty(data.cost)) {
 
                         var price = 0;
-                        if (window.stTax != null) {
+                        if (!abc_general.isNullOrEmpty(window.stTax)) {
                             $.each(window.stTax, function (index, value) {
                                 var firstVal = (value.productId).toString();
                                 var tax = parseInt(value.tax);
+                                
                                 if (data.id == firstVal) {
                                     data.cost = parseFloat(data.cost) + tax;
                                 }
                             });
                         }
-                        $("#price-" + val).text("$" + data.cost);
-                        $("#total-" + val).text("$" + data.cost);
-                        //  var totalamountgrossindex1 = $("#total" + val).text();
-                        // var ReplacedAmountgross1 = totalamountgrossindex1.replace(/\$/g, '');
-                        var existingValue = $("#subtotalauto").val().split('$');
-                        var existingvalueAmount = existingValue[1];
+
+                        $("#price-" + val).text(abc_general.dollarAdd(data.cost));
+                        $("#total-" + val).text(abc_general.dollarAdd(data.cost));
+                        var existingvalueAmount = abc_general.dollarRemove($("#subtotalauto").val());
+
                         if (existingvalueAmount > 0) {
                             var newtotal = parseFloat(existingvalueAmount) + parseFloat(data.cost);
-                            $("#subtotalauto").val("$" + newtotal.toFixed(2));
+                            $("#subtotalauto").val(abc_general.dollarAdd(newtotal.toFixed(2)));
                         } else {
                             //var newtotal1 = ReplacedAmountgross1;
-                            $("#subtotalauto").val("$" + parseFloat(data.cost).toFixed(2));
+                            $("#subtotalauto").val(abc_general.dollarAdd(parseFloat(data.cost).toFixed(2)));
                         }
-                        $("#countnum").text(val);
-                        $(".add-row").trigger("click");
-                        //calculate function
 
+                        $("#countnum").text(val);
+                        $(".add-row").trigger("click")
                     }
 
                     if (data.id != null && data.id != "undefined") {
@@ -5710,11 +5688,7 @@
 
                     }
                     CalculatetaxPlusDiscount();
-
-                   // SaveOnGoingSales();
                 }
-
-
             },
             error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
@@ -5722,6 +5696,7 @@
         });
     }
     function AppendAllMissions(event) {
+        debugger;
         $.ajax({
             type: "GET",
             url: "@Url.Action("AutoCompleteSearchCustomerInfo", "Sale")",
@@ -5761,6 +5736,7 @@
     };
     var Increament = 0;
     function GetAllMatchedItems(event) {
+        debugger;
         if (Increament != 0) {
             AppendAllMissions();
         }
@@ -5784,7 +5760,6 @@
         Increament++;
     };
     function GetCompanyByID(val, showReceivables) {
-        debugger;
         var id = val;
         $.ajax({
             type: "GET",
@@ -5795,7 +5770,6 @@
             },
             dataType: 'json',
             success: function (data) {
-                debugger;
                 if (data != null || data !="") {
                     //if (showReceivables == true) {
 
@@ -6198,8 +6172,7 @@
         }
     }
         
-    function ShowReceivables(data) {
-        debugger;
+    function ShowReceivables(data) {   
         if (data != null && data != "undefined") {
             $(".forremovingmodel").empty();
             var html = "";
@@ -6323,48 +6296,35 @@
 
 
     function GetItemList(val) {
-        debugger;
+        //debugger;
         var data_array = [];
         var search = $("#DescriptionInput-" + val).val();
         $("#productList-" + val).empty();
         var dropdown = '';
-        $.ajax({
-            type: "GET",
-            async: false,
-            cache: false,
-            url: '@Url.Action("GetAllItem", "Sale")',
-            dataType: 'json',
-            success: function (data) {
 
-                $.each(data, function (index, value) {
-                    if (search != "") {
-                        if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
-                            dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
-                            let my_object = {};
-                            my_object.title = value.text;
-                            my_object.value = value.value;
-
-                            data_array.push(my_object);
-                        }
-                    }
-                });
-
-            },
-            error: function (xhr, status, error) {
-                var errorMessage = xhr.status + ': ' + xhr.statusText
-            },
-        });
+         $.each(AllItemsList, function (index, value) {
+             if (search != "") {
+                 if (value.text.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
+                     dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
+                            
+                     let my_object = {};
+                      my_object.title = value.text;
+                      my_object.value = value.value;
+                      data_array.push(my_object);
+                   }
+                }
+           });
 
         $("#productList-" + val).append(dropdown);
-        $.each(data_array, function (index, value) {
+
+            $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 var string = data_array[index].value;
                 string = string.substring(0, 2) + '-' + string.substring(2, string.length);
                 $("#itemnumber-" + val).text(string);
                 GetItemByItemNumber(null, val);
-            }
-        });
-        //data_array.empty();
+             }
+          });
 
     }
 
@@ -6677,7 +6637,6 @@
     var printorNotStatus = false;
     var updatestatus = false;
     function creditCheck(printorNot, update, Ispaid, IsInvoicePaid) {
-        debugger;
         //var customer = $("#searchname").val();
         //if(customer == "" || customer == null || customer == "undefined"){
         //    swal("Error!", "Please Select Customer", "error");
@@ -7159,7 +7118,6 @@
                 data: { InvoiceNumber: data, Method: method },
                 dataType: "json",
                 success: function (data) {
-                    debugger;
 
                     var sernum = 1;
                     // debugger;
@@ -7196,7 +7154,6 @@
                             
                              
                             $.each(data.pointOfSaleDetails, function (index, value) {
-                                debugger;
                                 var inunit = (value.inUnit != null) ? value.inUnit : '';
                                 var outunit = (value.outUnit != null) ? value.outUnit : '';
                                 var itemnumber = value.itemNumber;
@@ -7239,7 +7196,7 @@
                                 sernum++;
 
                             });
-                                debugger;
+
                                 var total = $("#total-" + sernum).text();
                                 var subtotalnew = $("#subtotalauto").val();
                                 var finalsubtotalvalue = subtotalnew.split('$');
@@ -8105,7 +8062,6 @@
 
 
     $("#PrintInvoicef10").click(function () {
-        debugger;
         var tablecount = $("#saletable TBODY TR").length;
         if (parseInt(tablecount) == 0) {
 
@@ -8156,7 +8112,6 @@
     });
 
     function SaveMultiPayment(){
-        debugger;
         var customerId = $("#customerid").val();
         var TotalPaidAmount = $("#TotalPaidAmount").text();
         var totalAmountAllocation = $("#totalAmountAllocation").text();
@@ -8174,7 +8129,6 @@
         var multiPaymentArray = new Array();
         var count1 = 1;
         $("#CusMultiPaymentsTable TBODY TR").each(function () {
-            debugger;
             var row = $(this);
             var objmultipay = {};
 
@@ -8236,8 +8190,6 @@
     }
 
      function ChangePayment1(IsInvoicedPaid) {
-        debugger;
-
         var OnlyPayment = false;
         var customername = $("#searchname").val();
         // var customercode = $("#customercodeinfo").val();
@@ -8278,7 +8230,6 @@
         var SaleArray = new Array();
         var count1 = 1;
         $("#Custpaymenttable TBODY TR").each(function () {
-            debugger;
             var row = $(this);
             var SaleDetail = {};
 
@@ -8353,9 +8304,6 @@
     }
 
     function ChangePayment(IsInvoicedPaid) {
-
-
-        debugger;
 
         var OnlyPayment = false;
 
@@ -9105,7 +9053,6 @@
         
         $('#thumbLeftButton').hide();
         $('#thumbLeftButton').click(function () {   
-            debugger;
             var balanceValue = $('#CustomerBalanceDue').text();
             var customerBalance = $("#CustomerBalance").val().split('$');
             var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
@@ -9119,7 +9066,6 @@
  
         });
         $('#thumbRightButton').click(function () {
-            debugger;
             var changeValue = $('#ChangeAmount').val();
             var TotalPaidAmount = $("#TotalPaidAmount").text();
             $("#totalAmountAllocation").text(TotalPaidAmount);
@@ -9133,7 +9079,6 @@
 
 
     function MultiPaymentAdd(val) {
-        debugger;
         var amountpayed = $("#amountpayed-" + val).text().split('$');
         var CusBalanceDue = $("#CustomerBalance").val().split('$');
         var CusDueBalance = CusBalanceDue[1];
@@ -9179,7 +9124,6 @@
 
 
     function PaymentAdd(val) {
-        debugger;
         var amountpayed = $("#amountpayed-" + val).text().split('$');
         var Balanceduep = $("#BalanceDueP").text().split('$');
         var BalanceDueP = Balanceduep[1];
@@ -9923,7 +9867,6 @@
 
         var jj = 1;
         $('#saletable tr').each(function () {
-            debugger;
             var currentRow = $(this).closest("tr");
             var check = $("#rowid-" + jj).find("#itemnumber-" + jj).text();
             if (check[jj] == null || check[jj] == "") {
@@ -10045,7 +9988,6 @@
 
     //shortInventoryView
     function openinventory(idu) {
-        debugger;
         //var cd = $("#Description-" + idu ).text();
         //var min = idu - 1;
         //var cd = $("#Description-" + min ).text();

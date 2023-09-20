@@ -7617,32 +7617,7 @@ function CountTotalOfAllTD() {
                     }
                 }
             });
-            //$.ajax({
-            //    type: "GET",
-            //    async: false,
-            //    cache: false,
-            //    data: { vendorId: vendorid },
-            //    url: '@Url.Action("GetItemsWithVenodrId", "Purchase")',
-            //    dataType: 'json',
-            //    success: function(data) {
-            //        $.each(data, function(index, value) {
-            //            if (search != "") {
-            //                if (value.text.toLowerCase().indexOf(search) >= 0) {
-            //                    dropdown += '<option data-value="' + value.value + '">' + value.text + '</option>';
-            //                    let my_object = {};
-            //                    my_object.title = value.text;
-            //                    my_object.value = value.value;
 
-            //                    data_array.push(my_object);
-            //                }
-            //            }
-            //        });
-
-            //    },
-            //    error: function(xhr, status, error) {
-            //        var errorMessage = xhr.status + ': ' + xhr.statusText
-            //    },
-            //});
             $("#productList-" + val).append(dropdown);
             $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
@@ -7670,34 +7645,9 @@ function CountTotalOfAllTD() {
                 }
             });
 
-            //$.ajax({
-            //    type: "GET",
-            //    async: false,
-            //    cache: false,
-            //    url: '@Url.Action("GetAllItemReturnWithId", "Sale")',
-            //    dataType: 'json',
-            //    success: function(data) {
-
-            //        $.each(data, function(index, value) {
-            //            if (search != "") {
-            //                if (value.text.toLowerCase().indexOf(search) >= 0) {
-            //                    dropdown += '<option data-value="' + value.value + '" value="' + value.text + '"></option>';
-            //                    let my_object = {};
-            //                    my_object.title = value.text;
-            //                    my_object.value = value.value;
-
-            //                    data_array.push(my_object);
-            //                }
-            //            }
-            //        });
-
-            //    },
-            //    error: function(xhr, status, error) {
-            //        var errorMessage = xhr.status + ': ' + xhr.statusText
-            //    },
-            //});
             var additem = true;
             $("#productList-" + val).append(dropdown);
+
             $.each(data_array, function (index, value) {
                 if (data_array[index].title == search) {
                     debugger;
