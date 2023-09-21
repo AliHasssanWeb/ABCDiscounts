@@ -904,19 +904,19 @@
                             <table class="table table-bordered table-condensed" id="saletable" style="border:0.7px solid;">
                                 <thead>
                                     <tr style="border:0.7px solid;border-bottom:1.4px solid">
-                                        <th style="width: 10px">Ser</th>
-                                        <th style="width: 10px">Item#</th>
-                                        <th>Description</th>
+                                        <th onclick="sortTable(0)" style="width: 10px">Ser</th>
+                                        <th onclick="sortTable(1)" style="width: 10px">Item#</th>
+                                        <th onclick="sortTable(2)">Description</th>
                                         @*<th>Quantity</th>*@
-                                        <th>Amount</th>
+                                        <th onclick="sortTable(0)">Amount</th>
                                         <th>Discount</th>
                                         <th>Discount</th>
                                         <th>Units</th>
                                         <th>Units</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
+                                        <th onclick="sortTable(4)">Price</th>
+                                        <th onclick="sortTable(9)">Total</th>
                                         <th>Sales Limit</th>
-                                        <th>Ringer Quantity</th>
+                                        <th onclick="sortTable(0)">Ringer Quantity</th>
                                         <th><span class="add-row ti-plus"></span></th>
 
                                     </tr>
@@ -4017,7 +4017,6 @@
 <link href="~/sweetalert/sweetalert2.min.css" rel="stylesheet" />
 <script src="/vendors/sweetalert/sweetalert.min.js"></script>
 <script src="~/sweetalert/sweetalert2.min.js"></script>
-
 
 
 
@@ -10530,3 +10529,56 @@
         });
     }
 </script>
+
+<script>
+  function sortTable(n) {
+    var table,
+      rows,
+      switching,
+      i,
+      x,
+      y,
+      shouldSwitch,
+      dir,
+      switchcount = 0;
+    table = document.getElementById("saletable");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+      switching = false;
+      rows = table.getElementsByTagName("TR");
+
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+</script>
+
+
+
+
