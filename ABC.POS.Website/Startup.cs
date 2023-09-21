@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Rotativa.AspNetCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +25,7 @@ namespace ABC.POS.Website
         {
             Configuration = configuration;
         }
-     
+
 
         public IConfiguration Configuration { get; }
 
@@ -75,12 +77,19 @@ namespace ABC.POS.Website
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), @"StaticContent")),
+                RequestPath = new PathString("/StaticContent")
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
             app.UseSession();
             app.UseMvc();
-             app.UseCookiePolicy();
+            app.UseCookiePolicy();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

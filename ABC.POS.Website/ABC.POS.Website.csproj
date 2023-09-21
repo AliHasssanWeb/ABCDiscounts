@@ -6,6 +6,9 @@
 	<PropertyGroup>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="StaticContent\customJs\abc_generaljs.js" />
+	</ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
