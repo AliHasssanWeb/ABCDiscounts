@@ -33,7 +33,9 @@ namespace ABC.POS.Website
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddRazorPages();
+#if DEBUG
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#endif
             services.AddSession();
             services.AddMvc(x => x.EnableEndpointRouting = false);
             services.AddAuthentication(options =>
