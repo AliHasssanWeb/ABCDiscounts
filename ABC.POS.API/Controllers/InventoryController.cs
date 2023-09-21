@@ -10348,7 +10348,10 @@ namespace ABC.POS.API.Controllers
 
                 SalesInvoice saleInvoice = new SalesInvoice();
                 Receiving receiving = new Receiving();
+
                 var FoundInvoice = db.PointOfSales.ToList().Where(x => x.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
+                var recevables = db.Receivables.Where(x => x.AccountId == saleInvoices.AccountId).FirstOrDefault();
+                var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
 
                 FoundInvoice.IsClose = true;
                 FoundInvoice.IsOpen = false;
@@ -10367,9 +10370,6 @@ namespace ABC.POS.API.Controllers
                 db.SalesInvoices.Add(saleInvoice);
                 db.SaveChanges();
 
-                var recevables = db.Receivables.Where(x => x.AccountId == saleInvoices.AccountId).FirstOrDefault();
-
-                var checkReceiving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
 
                 if (checkReceiving == null)
                 {
@@ -10402,6 +10402,16 @@ namespace ABC.POS.API.Controllers
                     receiving.PreBalance = recevables == null ? "0.00" : recevables.Amount;
 
                     db.Receivings.Add(receiving);
+
+                   foreach(var item in saleInvoices.itemsdetails)
+                    {
+                        var invStock = db.InventoryStocks.Where(f=>f.ProductId == Convert.ToInt32(item.ItemId)).FirstOrDefault();
+
+                        invStock.Quantity = (Convert.ToDouble(invStock.Quantity) - Convert.ToDouble(item.RingerQty)).ToString();
+
+                        db.Entry(invStock).State = EntityState.Modified;
+                    }
+
                 }
                 else
                 {

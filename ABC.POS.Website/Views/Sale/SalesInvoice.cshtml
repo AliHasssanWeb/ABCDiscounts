@@ -689,7 +689,7 @@
                                             <div class="form-group">
                                                 <label class="dim col-sm-12">
                                                     Sold To
-                                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control searchname brd", onkeyup = "GetAllMatchedItems(event)", autocomplete = "nope", id = "searchname" } })
+                                                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control searchname brd", onkeyup = "GetAllMatchedItems(event)", autocomplete = "off", id = "searchname" } })
                                                     <div style="background-color: blue !important;cursor:pointer" id="listallmissions"></div>
                                                     <label class="text-danger field-validation-error db" id="ValCustomerName" style="font-size:12px;"></label>
                                                 </label>
@@ -5469,11 +5469,6 @@
 
         var discountAmount = 0;
 
-        if(discount > 100){
-             Swal.fire("Error","Discount Not Be More Then 100%",'error');
-            return;
-        }
-
         discount == "" ? (discount = 0) : discount;
         otheridval == "" ? (otheridval = 0) : otheridval;
         taxidval == "" ? (taxidval = 0) : taxidval;
@@ -5481,6 +5476,12 @@
         prevBalance == "" ? (prevBalance = 0) : prevBalance;
 
         var sumofallexpences = parseFloat(subtotalInv) + parseFloat(otheridval) + parseFloat(taxidval) + parseFloat(freight);
+
+        if (discount > 100) {
+            $("#discountidadd").val("");
+            Swal.fire("Error", "Discount Not Be More Then 100%", 'error');
+            return;
+        }
 
         if (parseFloat(discount) > 0) {
             discountAmount = (parseFloat(discount) / 100) * parseFloat(sumofallexpences);
@@ -5519,7 +5520,6 @@
 
     }
     function CalculateTaxFreight() {
-        //debugger;
         var val1 = $("#subtotal").val();
         var val2 = $("#discountidadd").val();
         var val3 = $("#taxid").val();
@@ -7310,7 +7310,7 @@
 
                             GetCompanyByID(data.customerId, false);
 
-                            $('#previousbalance').val('$' + data.preBalance);
+                            $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
 
                             CalculatetaxPlusDiscount();
                             
@@ -8193,7 +8193,7 @@
     }
 
      function ChangePayment1(IsInvoicedPaid) {
-
+         debugger;
         var OnlyPayment = false;
         var customername = $("#searchname").val();
         // var customercode = $("#customercodeinfo").val();
@@ -8253,19 +8253,19 @@
             var dd = row.find("TD").eq(3).text();
             var ee = row.find("TD").eq(4).val();
 
-            if (aa != null && aa != "" && aa != "undefined") {
+            if (!abc_general.isNullOrEmpty(aa)) {
 
-                SaleDetail.AmountPaid = row.find("TD").eq(0).text();
+                SaleDetail.AmountPaid = aa;
             }
-            if (bb != null && bb != "" && bb != "undefined") {
+            if (!abc_general.isNullOrEmpty(bb)) {
 
-                SaleDetail.AmountAllocate = row.find("TD").eq(1).text();
+                SaleDetail.AmountAllocate = bb;
             }
-            if (cc != null && cc != "" && cc != "undefined") {
+            if (!abc_general.isNullOrEmpty(cc)) {
 
                 SaleDetail.PaymentType = xx;
             }
-            if (dd != null && dd != "" && dd != "undefined") {
+            if (!abc_general.isNullOrEmpty(dd)) {
 
                 SaleDetail.ChequeNumber = dd;
             }
@@ -8275,7 +8275,23 @@
             SaleArray.push(SaleDetail);
             count1++;
         });
+
+         var count2 = 1;
+          var itemsArray = new Array();
+         $("#saletable TBODY TR").each(function () {
+             var row = $(this);
+            var itemDetail = {};
+        
+            itemDetail.Quantity = row.find("TD").eq(3).html();
+            itemDetail.RingerQty = row.find("TD").eq(17).html();    
+            itemDetail.ItemId = row.find("TD").eq(14).html();
+
+            itemsArray.push(itemDetail);
+            count2++;
+        });
+
          Sale.saleInvoiceTransactionModel = SaleArray;
+        Sale.itemsdetails = itemsArray;
 
         $.ajax({
             type: "POST",
@@ -8310,7 +8326,6 @@
     }
 
     function ChangePayment(IsInvoicedPaid) {
-
         var OnlyPayment = false;
 
         var customername = $("#searchname").val();

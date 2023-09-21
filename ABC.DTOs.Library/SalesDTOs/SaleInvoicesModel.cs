@@ -35,5 +35,6 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string Freight { get; set; }
 
         public virtual ICollection<SaleInvoiceTransactionModel> saleInvoiceTransactionModel { get; set; }
+        public virtual ICollection<PointOfSaleDetailModel> itemsdetails { get; set; }
     }
 }
