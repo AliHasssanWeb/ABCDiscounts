@@ -927,14 +927,14 @@
                                                 <th class="brdr-right" style="width:10px;">Sr#.</th>*@
                                                 <th class="brdr-right" style="width:10px;"><span class="add-row ti-plus"></span></th>
                                                 <th class="brdr-right" style="width:10px;">Supplier Item#</th>
-                                                <th class="text-primary brdr-right" style="width:10px;">Stock Item#</th>
-                                                <th class="text-primary brdr-right">Description</th>
+                                                <th onclick="sortTable(0)" class="text-primary brdr-right" style="width:10px;">Stock Item#</th>
+                                                <th onclick="sortTable(0)" class="text-primary brdr-right">Description</th>
                                                 <th class="text-primary brdr-right">Retail</th>
-                                                <th class="brdr-right"> @Html.CheckBox("IsPrice", false, new { @id = "IsPrice", }) Price</th>
-                                                <th class="brdr-right"> @Html.CheckBox("IsQty", false, new { @id = "IsQty", }) Qty</th>
+                                                <th onclick="sortTable(0)" class="brdr-right"> @Html.CheckBox("IsPrice", false, new { @id = "IsPrice", }) Price</th>
+                                                <th onclick="sortTable(0)" class="brdr-right"> @Html.CheckBox("IsQty", false, new { @id = "IsQty", }) Qty</th>
                                                 <th class="brdr-right"> @Html.CheckBox("IsCaseQty", false, new { @id = "IsCaseQty", }) Case Qty</th>
                                                 <th class="brdr-right"> @Html.CheckBox("IsDiscount", false, new { @id = "IsDiscount", }) Disc</th>
-                                                <th class="brdr-right">Amount</th>
+                                                <th onclick="sortTable(4)" class="brdr-right">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody id="appendnewrowforsale">
@@ -10147,3 +10147,44 @@ function CountTotalOfAllTD() {
 
 </script>
 
+<script>
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir,
+    switchcount = 0;
+    table = document.getElementById("mytable");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+      switching = false;
+      rows = table.getElementsByTagName("TR");
+
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+</script>
