@@ -1270,7 +1270,79 @@ namespace ABC.POS.Website.Controllers
             return Json("false");
         }
 
+        public IActionResult NewPurchaseOrderGet_1()
+        {
+            try
+            {
+                PurchaseOrder model = new PurchaseOrder();
 
+                SResponse respEmp = RequestSender.Instance.CallAPI("api", "Purchase/PurchaseOrderGet_1", "GET");
+
+                ResponseBack<SystemCountModel> record = JsonConvert.DeserializeObject<ResponseBack<SystemCountModel>>(respEmp.Resp);
+
+                var fullcode = "";
+                long code = 0;
+                code = record.Data.PurchaseInvoiceCount;
+                string invCount = string.Format("{0:00000000}", code);
+                fullcode = invCount.Insert(7, "-");
+                ViewBag.InvoiceNumber = fullcode;
+                model.InvoiceNumber = ViewBag.InvoiceNumber;
+
+
+                SResponse ItemCategoryGet = RequestSender.Instance.CallAPI("api",
+                   "Inventory/ItemCategoryGet", "GET");
+                if (ItemCategoryGet.Status && (ItemCategoryGet.Resp != null) && (ItemCategoryGet.Resp != ""))
+                {
+                    ResponseBack<List<ItemCategory>> response =
+                                  JsonConvert.DeserializeObject<ResponseBack<List<ItemCategory>>>(ItemCategoryGet.Resp);
+                    if (response.Data.Count() > 0)
+                    {
+                        List<ItemCategory> responseObject = response.Data;
+                        ViewBag.ItemCategory = new SelectList(responseObject.ToList(), "Id", "Name");
+                    }
+                    else
+                    {
+                        List<ItemCategory> responseObject = new List<ItemCategory>();
+                        ViewBag.ItemCategory = new SelectList(responseObject, "Id", "Name");
+                    }
+                }
+                else
+                {
+                    List<ItemCategory> listItemCategory = new List<ItemCategory>();
+                    ViewBag.ItemCategory = new SelectList(listItemCategory, "Id", "Name");
+                }
+
+
+
+
+                List<SelectListItem> Title = new List<SelectListItem>()
+                {
+                    new SelectListItem(){Text="Mr.",Value="Mr"},
+                    new SelectListItem(){Text="Mrs.",Value="Mrs"}
+                };
+                ViewData["Gender"] = Title;
+
+                List<SelectListItem> VendorType = new List<SelectListItem>()
+                {
+                    new SelectListItem(){Text="AT-Unclassified Acquirer",Value="AT Unclassified Acquirer"},
+                    new SelectListItem(){Text="Inter-Company", Value="InterCompany"},
+                    new SelectListItem(){Text="PM-Participate",Value="PMParticipate"},
+                    new SelectListItem(){Text="ST-Secondary Wholesale",Value="STSecondaryWholesale"},
+                    new SelectListItem(){Text="ST-Secondary Wholesale",Value="STSecondaryWholesale"},
+                    new SelectListItem(){Text="WT-Wholesale",Value="WTWholesale"},
+                    new SelectListItem(){Text="WT-Wholesale",Value="WTWholesale"},
+                };
+                ViewData["VendorType"] = VendorType;
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["response"] = ex.Message + "Error Occured.";
+                return View();
+            }
+
+        }
 
 
         //NewPurchase Order

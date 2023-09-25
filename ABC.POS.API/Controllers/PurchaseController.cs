@@ -444,6 +444,29 @@ namespace ABC.POS.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("PurchaseOrderGet_1")]
+        public IActionResult PurchaseOrderGet_1()
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SystemCount>();
+                var record = db.SystemCounts.FirstOrDefault();
+
+                ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                return Ok(Response);
+              
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<PurchaseOrder>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost("PurchaseOrderCreate")]
         public async Task<IActionResult> PurchaseOrderCreate(List<PurchaseOrder> obj)        
         {
