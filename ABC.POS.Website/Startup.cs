@@ -1,5 +1,6 @@
 using ABC.POS.Domain.DataConfig;
 using ABC.POS.Website.Models;
+using ABC.POS.Website.Service;
 using ABC.Shared.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -52,7 +53,9 @@ namespace ABC.POS.Website
             {
                 options.LoginPath = "/POSSecurity/POSLogin";
             });
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<Globle_Variable>();
+            services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

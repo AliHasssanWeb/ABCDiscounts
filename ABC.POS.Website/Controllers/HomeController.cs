@@ -1,6 +1,7 @@
 ﻿using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
 using ABC.POS.Website.Models;
+using ABC.POS.Website.Service;
 using ABC.Shared.DataConfig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,17 +20,32 @@ namespace ABC.POS.Website.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ISession session;
-
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
+        private readonly IEmailService _emailService;
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
         {
             _logger = logger;
             this.session = httpContextAccessor.HttpContext.Session;
+            _emailService = emailService;
         }
-
-        public IActionResult Index()
+        public async Task<ViewResult> Index()
         {
+
+            //UserEmailOptions options = new UserEmailOptions
+            //{
+            //    ToEmails = new List<string>() { "test@gmail.com" },
+            //    PlaceHolders = new List<KeyValuePair<string, string>>()
+            //    {
+            //        new KeyValuePair<string, string>("{{UserName}}", "Awais")
+            //    }
+            //};
+
+            //await _emailService.SendTestEmail(options);
             return View();
         }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public IActionResult CashierIndex()
         {
