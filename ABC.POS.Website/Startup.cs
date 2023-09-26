@@ -53,9 +53,19 @@ namespace ABC.POS.Website
             {
                 options.LoginPath = "/POSSecurity/POSLogin";
             });
+            services.AddScoped<ISmsService, SmsService>(provider =>
+                 new SmsService(
+                 provider.GetRequiredService<IConfiguration>()["Twilio:AccountSid"],
+                 provider.GetRequiredService<IConfiguration>()["Twilio:AuthToken"],
+                 provider.GetRequiredService<IConfiguration>()["Twilio:PhoneNumber"]
+             )
+            );
+
+
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<Globle_Variable>();
             services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
+            services.Configure<SmsRequest>(Configuration.GetSection("Twilio"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
