@@ -22,5 +22,6 @@ namespace ABC.POS.Website.Models
         public string GrossTotal { get; set; }
         public string ItemPrice { get; set; }
         public string Charges { get; set; }
+
     }
 }

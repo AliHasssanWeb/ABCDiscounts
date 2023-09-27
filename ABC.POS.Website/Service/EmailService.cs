@@ -6,40 +6,55 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System;
 
 namespace ABC.POS.Website.Service
 {
     public class EmailService : IEmailService
     {
+        private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
         private const string templatePath = @"EmailTemplate/{0}.html";
         private readonly SMTPConfigModel _smtpConfig;
+        public EmailService(IRazorViewToStringRenderer razorViewToStringRenderer, SMTPConfigModel smtpConfig)
+        {
+            _razorViewToStringRenderer = razorViewToStringRenderer;
+            _smtpConfig = smtpConfig;
+    }
+        
 
         public async Task SendTestEmail(UserEmailOptions userEmailOptions)
         {
-            userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, This is test email subject from book store web app", userEmailOptions.PlaceHolders);
+            //var listInvmodel = new List<InvoiceTotal>() {
+            //    new InvoiceTotal { ItemCode = "234",ItemName = "abc" },
+            //    new InvoiceTotal { ItemCode = "345",ItemName = "cdf" },
+            //    new InvoiceTotal { ItemCode = "567",ItemName = "bgt" }
+            //};
+            //var confirmAccountModel = new ConfirmAccountEmailViewModel($"index/{Guid.NewGuid()}");
 
-            userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("TestEmail"), userEmailOptions.PlaceHolders);
+            //userEmailOptions.Subject = "domey data subject test "; ///UpdatePlaceHolders("Hello {{UserName}}, This is test email subject from book store web app", userEmailOptions.PlaceHolders);
 
-            await SendEmail(userEmailOptions);
-        }
-
-        public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
-        {
-            userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, Confirm your email id.", userEmailOptions.PlaceHolders);
-
-            userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("EmailConfirm"), userEmailOptions.PlaceHolders);
+            //userEmailOptions.Body = emailBody; //await _razorViewToStringRenderer.RenderViewToStringAsync(templatePath, listinvTotal);
 
             await SendEmail(userEmailOptions);
         }
 
-        public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
-        {
-            userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, reset your password.", userEmailOptions.PlaceHolders);
+        //public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
+        //{
+        //    userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, Confirm your email id.", userEmailOptions.PlaceHolders);
 
-            userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
+        //    userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("EmailConfirm"), userEmailOptions.PlaceHolders);
 
-            await SendEmail(userEmailOptions);
-        }
+        //    await SendEmail(userEmailOptions);
+        //}
+
+        //public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
+        //{
+        //    userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, reset your password.", userEmailOptions.PlaceHolders);
+
+        //    userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
+
+        //    await SendEmail(userEmailOptions);
+        //}
 
         public EmailService(IOptions<SMTPConfigModel> smtpConfig)
         {
@@ -98,5 +113,30 @@ namespace ABC.POS.Website.Service
 
             return text;
         }
+
+        //public Task SendEmailForEmailConfirmation(UserEmailOptions invoiceModel)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        //public Task SendEmailForForgotPassword(UserEmailOptions invoiceModel)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        ////public Task SendTestEmail(UserEmailOptions userEmailOptions)
+        ////{
+        ////    throw new System.NotImplementedException();
+        ////}
+
+        //public Task SendEmailForEmailConfirmation(InvoiceModel invoiceModel)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        //public Task SendEmailForForgotPassword(InvoiceModel invoiceModel)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

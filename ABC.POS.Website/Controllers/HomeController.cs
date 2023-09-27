@@ -21,14 +21,23 @@ namespace ABC.POS.Website.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ISession session;
         private readonly IEmailService _emailService;
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
+        private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IEmailService emailService, IRazorViewToStringRenderer razorViewToStringRenderer)
         {
             _logger = logger;
             this.session = httpContextAccessor.HttpContext.Session;
             _emailService = emailService;
+            _razorViewToStringRenderer = razorViewToStringRenderer;
         }
         public async Task<ViewResult> Index()
         {
+
+            //var listInvmodel = new List<InvoiceTotal>() {
+            //    new InvoiceTotal { ItemCode = "234",ItemName = "abc" },
+            //    new InvoiceTotal { ItemCode = "345",ItemName = "cdf" },
+            //    new InvoiceTotal { ItemCode = "567",ItemName = "bgt" }
+            //};
+
 
             //UserEmailOptions options = new UserEmailOptions
             //{
@@ -36,10 +45,13 @@ namespace ABC.POS.Website.Controllers
             //    PlaceHolders = new List<KeyValuePair<string, string>>()
             //    {
             //        new KeyValuePair<string, string>("{{UserName}}", "Awais")
-            //    }
-            //};
+            //    },
+            //    Subject = "domey data subject test",
+            //    Body = await _razorViewToStringRenderer.RenderViewToStringAsync("~/EmailTemplate/EmailTemplate.cshtml", listInvmodel)
+            //};                   
 
             //await _emailService.SendTestEmail(options);
+            
             return View();
         }
         //public IActionResult Index()

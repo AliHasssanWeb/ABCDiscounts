@@ -1,0 +1,32 @@
+﻿@using ABC.POS.Website.Models
+@model ICollection<InvoiceTotal>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoices</title>
+</head>
+<body>
+    <h1>Invoices</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Invoice Number</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var invoice in Model)
+            {
+                <tr>
+                    <td>@invoice.ItemCode</td>
+                    <td>@invoice.ItemName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

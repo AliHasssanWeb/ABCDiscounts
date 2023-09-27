@@ -2,7 +2,7 @@
 
 namespace ABC.POS.Website.Models
 {
-    public class UserEmailOptions
+    public class UserEmailOptions 
     {
         public List<string> ToEmails { get; set; }
         public string Subject { get; set; }

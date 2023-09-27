@@ -61,8 +61,8 @@ namespace ABC.POS.Website
              )
             );
 
-
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IRazorViewToStringRenderer, RazorViewToStringRenderer>();
             services.AddScoped<Globle_Variable>();
             services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
             services.Configure<SmsRequest>(Configuration.GetSection("Twilio"));
