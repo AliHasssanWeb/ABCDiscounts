@@ -490,7 +490,7 @@ namespace ABC.POS.Website.Controllers
         }
         public JsonResult GetItemStockFinancialByItemNumber(string itemnumber)
         {
-            SResponse ress = RequestSender.Instance.CallAPI("api","Inventory/ItemGetWithStockAndFinancialByItemnumber/" + itemnumber, "GET");
+            SResponse ress = RequestSender.Instance.CallAPI("api", "Inventory/ItemGetWithStockAndFinancialByItemnumber/" + itemnumber, "GET");
             var Msg = "";
 
             if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
@@ -971,7 +971,7 @@ namespace ABC.POS.Website.Controllers
             try
             {
 
-               // List<Product> responseObject = new List<Product>();
+                // List<Product> responseObject = new List<Product>();
                 List<Product> FoundSession_Result = new List<Product>();
 
                 var FoundSession = HttpContext.Session.GetString("loadedProducts");
@@ -982,12 +982,12 @@ namespace ABC.POS.Website.Controllers
 
                 if (FoundSession_Result != null && FoundSession_Result.Count() < 1)
                 {
-                    var Productlist = FoundSession_Result.Select(x => new SelectListItem {  Value = x.ItemNumber, Text = x.Name });
+                    var Productlist = FoundSession_Result.Select(x => new SelectListItem { Value = x.ItemNumber, Text = x.Name });
                     return Json(Productlist);
                 }
                 else
                 {
-                    SResponse respEmp = RequestSender.Instance.CallAPI("api","Inventory/GetAllItem/", "GET");
+                    SResponse respEmp = RequestSender.Instance.CallAPI("api", "Inventory/GetAllItem/", "GET");
 
                     if (respEmp.Status && (respEmp.Resp != null) && (respEmp.Resp != ""))
                     {
@@ -1432,10 +1432,10 @@ namespace ABC.POS.Website.Controllers
                 }
 
                 var body = JsonConvert.SerializeObject(pointOfSale);
-              
+
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleCreate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
-                {   
+                {
                     return Json(true);
                 }
                 else
@@ -1796,8 +1796,8 @@ namespace ABC.POS.Website.Controllers
                     pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
 
                     pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
-                   
-                   
+
+
                 }
                 var body = JsonConvert.SerializeObject(pointOfSale);
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleUpdate1", "POST", body);
@@ -1821,7 +1821,7 @@ namespace ABC.POS.Website.Controllers
 
                 throw ex;
             }
-           
+
         }
 
 
@@ -2875,11 +2875,11 @@ namespace ABC.POS.Website.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSaleInvoiceByInvoiceNumber1(string InvoiceNumber = "", string Method = "")
+        public JsonResult GetSaleInvoiceByInvoiceNumber1(string InvoiceNumber = "", string Method = "", string invoiceType = "")
         {
             var Msg = "";
 
-            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/PosSaleByInvoiceNumber1/" + InvoiceNumber + "/" + Method, "GET");
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/PosSaleByInvoiceNumber1/" + InvoiceNumber + "/" + Method + "/" + invoiceType, "GET");
             if (res.Status && (res.Resp != null) && (res.Resp != ""))
             {
                 ResponseBack<PointOfSaleModel> response = JsonConvert.DeserializeObject<ResponseBack<PointOfSaleModel>>(res.Resp);
@@ -2930,6 +2930,34 @@ namespace ABC.POS.Website.Controllers
 
         }
 
+        [HttpGet]
+        public JsonResult GetPaymentType()
+        {
+            var Msg = "";
+
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/GetPaymentType", "GET");
+            if (res.Status && (res.Resp != null) && (res.Resp != ""))
+            {
+                ResponseBack<List<PaymentTypeModel>> response = JsonConvert.DeserializeObject<ResponseBack<List<PaymentTypeModel>>>(res.Resp);
+                if (response.Data != null)
+                {
+                    List<PaymentTypeModel> responseobj = response.Data;
+                    return Json(responseobj);
+
+                }
+                else
+                {
+                    return Json("false");
+                }
+
+            }
+            else
+            {
+                return Json("false");
+            }
+
+        }
+
         [HttpPost]
         public IActionResult MultiPaymentInvoice([FromBody] SaleMultiInvoicePayModel multiInvoicePay)
         {
@@ -2946,7 +2974,7 @@ namespace ABC.POS.Website.Controllers
                 {
                     return Json(false);
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -2956,64 +2984,18 @@ namespace ABC.POS.Website.Controllers
         }
 
 
-        [HttpPost]  
+        [HttpPost]
         public IActionResult ChangePayment1([FromBody] SaleInvoicesModel Sale)
         {
             try
             {
-               
-                List<SalesInvTransaction> invTransactionslist = new List<SalesInvTransaction>();
-
                 var saleInfo = JsonConvert.SerializeObject(Sale);
-
-                foreach (var sale in Sale.saleInvoiceTransactionModel)
-                {
-                    SalesInvTransaction invTransactions = new SalesInvTransaction();
-                    if (sale.AmountPaid != null && sale.AmountPaid != "undefined")
-                    {
-                        string amountPaid = (sale.AmountPaid as string).Trim('$');
-                        invTransactions.AmountPaid = amountPaid;
-
-                    }
-                    if (sale.AmountAllocate != null && sale.AmountAllocate != "undefined")
-                    {
-                        string amountAllocate = (sale.AmountAllocate as string).Trim('$');
-                        invTransactions.AmountAllocate = amountAllocate;
-
-                    }
-                    if (sale.PaymentType != null && sale.PaymentType != "undefined")
-                    {
-                        invTransactions.PaymentType = sale.PaymentType;
-                    }
-                    if (sale.ChequeNumber != null && sale.ChequeNumber != "undefined")
-                    {
-                        invTransactions.ChequeNumber = sale.ChequeNumber;
-                    }
-                    if (sale.HoldDate != null)
-                    {
-                        invTransactions.HoldDate = sale.HoldDate;
-                    }
-                    if (sale.InvoiceNumber != null && sale.InvoiceNumber != "undefined")
-                    {
-                        invTransactions.InvoiceNumber = sale.InvoiceNumber;
-                    }
-
-                    invTransactionslist.Add(invTransactions);
-                }
-                var seralizeInvTransactions = JsonConvert.SerializeObject(invTransactionslist);
+                var loginUser = HttpContext.Session.GetString("userobj");
 
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/ChangePayment1", "POST", saleInfo);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {
-                    SResponse ressp = RequestSender.Instance.CallAPI("api", "Inventory/SalesInvoiceTransactions1", "POST", seralizeInvTransactions);
-                    if (ressp.Status && (ressp.Resp != null) && (ressp.Resp != ""))
-                    {
-                        return Json(true);
-                    }
-                    else
-                    {
-                        return Json(false);
-                    }
+                    return Json(true);
                 }
                 else
                 {
@@ -3027,7 +3009,7 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
-            [HttpPost]
+        [HttpPost]
         public IActionResult ChangePayment([FromBody] List<SalesInvoicesJson> SaleDetails)
         {
             try

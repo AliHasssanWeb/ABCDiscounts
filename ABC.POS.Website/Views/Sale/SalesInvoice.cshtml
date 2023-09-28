@@ -14,11 +14,16 @@
 @* get data on page load *@
 <script>
     var AllItemsList = [];
+    var PaymentTypeList = [];
 
     $(document).ready(function () {
 
          if (AllItemsList.length < 1) {
             AllItemsList = ABCPOSWebsite.init();
+        }
+
+        if(PaymentTypeList.length < 1){
+            PaymentTypeList = ABCPOSWebsite.PaymentType();
         }
 
     });
@@ -645,12 +650,12 @@
 
                                 <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />
                                 <div class="di div-style" style=" margin-left: 30px;">
-                                    <select onchange="nextinvoice1('null',this.value)" id="posted-invoice">
+                                    <select onchange="nextinvoice1('null',this.value, 'PostedInvoice')" id="posted-invoice">
                                         <option value="value">Posted</option>
                                     </select>
                                 </div>
                                 <div class="di div-style">
-                                    <select onchange="nextinvoice1('null',this.value)" id="open-invoice">
+                                    <select onchange="nextinvoice1('null',this.value, 'OpenInvoice')" id="open-invoice">
                                         <option value="value">Open</option>
                                     </select>
                                 </div>
@@ -1231,9 +1236,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Paid
                                     </label>
-                                    <label id="TotalPaidP" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
+                                    <label id="TotalPaidP" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
 
                                 </div>
                             </div>
@@ -1242,10 +1245,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Alloc
                                     </label>
-                                    <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
-
+                                    <label id="totalpaidd" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-12 col-12">
@@ -1276,9 +1276,7 @@
                                     <label class="dim col-sm-12 label-style" style="color:blue">
                                         Balance
                                     </label>
-                                    <label id="BalanceP" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
+                                    <label id="BalanceP" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
                                 </div>
                             </div>
                         </div>
@@ -2107,9 +2105,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Paid
                                     </label>
-                                    <label id="TotalPaidAmount" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
+                                    <label id="TotalPaidAmount" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
 
                                 </div>
                             </div>
@@ -2118,9 +2114,7 @@
                                     <label class="dim col-sm-12 label-style" style="color: #53adcb">
                                         Total Alloc
                                     </label>
-                                    <label id="totalAmountAllocation" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
+                                    <label id="totalAmountAllocation" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
 
                                 </div>
                             </div>
@@ -2152,9 +2146,7 @@
                                     <label class="dim col-sm-12 label-style" style="color:blue">
                                         Balance
                                     </label>
-                                    <label id="CustomerBalanceDue" class="dim col-sm-12 label-style" style="color: #53adcb">
-                                        $0.00
-                                    </label>
+                                    <label id="CustomerBalanceDue" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
                                 </div>
                             </div>
                         </div>
@@ -4192,36 +4184,31 @@
 
 
 
-
     /*  /to append list on posted open dropdown/*/
     $('.add-rowpayment').click(function () {
-
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
-        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="PaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
+        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onfocusout="PaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
         html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" class="table-warning" readonly ></td>';
         html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash PaymentMethodP txtCalCredit" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
-        html += '<option value="Cash">Cash</option>';
-        html += '<option value="MoneyOrder">MoneyOrder</option>';
-        html += '<option value="CreditCard">CreditCard</option>';
-        html += '<option value="DebitCard">DebitCard</option>';
-        html += '<option value="cust">Cust.Advance</option>';
-        html += '<option value = "Check" >Check</option >';
+        $.each(PaymentTypeList, function (index, item) {
+             html += '<option value = '+ item.paymentTypeId +' > '+ item.paymentTypeName +' </option >';
+        });
         html += '</select ></td>';
         html += '<td id="cardnumber-' + paymentserial + '" contenteditable="true" class="table-warning"></td>';
         html += '<td id="holddate-' + paymentserial + '" contenteditable="true" class="table-warning " style="color: #c92d21;font-weight: 500;"><input type="text" id="DateP-' + paymentserial + '" style="background:#fff3cd; border:none;" disabled></td>';
         html += '<td id="paymentrowdelete-' + paymentserial + '"  onclick="RemoveRowPayment(' + paymentserial + ')"><span class="delete-row ti-close"></span></td>';
         html += '</tr >';
 
-
-
-        CountTotalOfAllTDOfPayment();
         $('#paymentmodaltable').append(html);
 
+
+       // CountTotalOfAllTDOfPayment();
         //$("#DateP-" + paymentserial).datepicker({
         //    dateFormat: "dd/MM/yy"
         //});
         //SetDate(paymentserial);
+
         $("#DateP-" + paymentserial).datepicker();
         $("#DateP-" + paymentserial).datepicker("setDate", "10w+1");
         paymentserial++;
@@ -4230,30 +4217,28 @@
     $('.add-generalpaymentrow').click(function () {
         var html = '';
         html += '<tr  id="rowidsalepayment-' + paymentserial + '" class="">';
-        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onkeyup="MultiPaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
+        html += '<td class="txtCal" id="amountpayed-' + paymentserial + '" onfocusout="MultiPaymentAdd(' + paymentserial + ')" contenteditable="true" class="table-warning" style="color: #020caf; background:#fff3cd;"></td>';
         html += '<td class="txtCal1" style="background:#fff3cd;" id="amountallocate-' + paymentserial + '" class="table-warning" readonly ></td>';
         html += '<td id="paymenttype-' + paymentserial + '"  contenteditable="true" class="table-primary"><select id="selectid-' + paymentserial + '" class="selectcash PaymentMethodP txtCalCredit" onchange="AddCreditTax(' + paymentserial + ')" name="D1">';
-        html += '<option value="Cash">Cash</option>';
-        html += '<option value="MoneyOrder">MoneyOrder</option>';
-        html += '<option value="CreditCard">CreditCard</option>';
-        html += '<option value="DebitCard">DebitCard</option>';
-        html += '<option value="cust">Cust.Advance</option>';
-        html += '<option value = "Check" >Check</option >';
+        $.each(PaymentTypeList, function (index, item) {
+            html += '<option value = ' + item.paymentTypeId + ' > ' + item.paymentTypeName + ' </option >';
+        });
         html += '</select ></td>';
         html += '<td id="cardnumber-' + paymentserial + '" contenteditable="true" class="table-warning"></td>';
         html += '<td id="holddate-' + paymentserial + '" contenteditable="true" class="table-warning " style="color: #c92d21;font-weight: 500;"><input type="text" id="DateP-' + paymentserial + '" style="background:#fff3cd; border:none;" disabled></td>';
-        html += '<td id="paymentrowdelete-' + paymentserial + '"  onclick="RemoveRowPayment(' + paymentserial + ')"><span class="delete-row ti-close"></span></td>';
+        html += '<td id="paymentrowdelete-' + paymentserial + '"  onclick="RemoveRowMultiPayment(' + paymentserial + ')"><span class="delete-row ti-close"></span></td>';
         html += '</tr >';
 
-
-
-        CountTotalOfAllTDOfPayment();
         $('#generalpaymentmodaltable').append(html);
+
+
+       // CountTotalOfAllTDOfPayment();
 
         //$("#DateP-" + paymentserial).datepicker({
         //    dateFormat: "dd/MM/yy"
         //});
         //SetDate(paymentserial);
+
         $("#DateP-" + paymentserial).datepicker();
         $("#DateP-" + paymentserial).datepicker("setDate", "10w+1");
         paymentserial++;
@@ -4301,16 +4286,14 @@
         //    $("#cardnumber-1").
         //    $("#cardnumber-1").css(display, value);
         //}
-
         var amountvalue = 0;
         amountvalue = $("#amountpayed-" + id).text();
 
-        var selectvalue = $("#paymenttype-1").find("select").val();
-        if (selectvalue === "CreditCard") {
+        var selectvalue = $("#paymenttype-"+id).find("select").val();
+        if (selectvalue === "3") {
             var percentage = (amountvalue * 2) / 100;
 
             var tofixedvalue = percentage.toFixed(2);
-            //alert(tofixedvalue);
             $("#cardnumber-" + id).text("@@2%=$" + tofixedvalue);
             $("#cardnumber-" + id).addClass("CreditC");
 
@@ -4322,7 +4305,7 @@
             $("#totalpaidd").text("$" + bb.toFixed(2));
         } else {
             $("#cardnumber-" + id).removeClass("CreditC");
-
+            $("#cardnumber-" + id).text("");
         }
     }
     // var openinvoices = $('#open-invoice');
@@ -4425,31 +4408,72 @@
         });
         CalculatetaxPlusDiscount()
     }
-    function CountTotalOfAllTDOfPayment() {
 
+    function CountTotalOfAllTDOfPayment() {
         var total = 0
 
+        $("#Custpaymenttable tr").each(function (index, val) {
+            if(index > 0){
+                var self = $(this);
+                var col_11_value = self.find("td:eq(0)").text().trim();
+                var result = col_11_value.replace(/\$/g, '');
+                var afterparsing =  parseFloat(result);
+                if (!isNaN(afterparsing)) {
+                     total += afterparsing;
+                 }
+            }
+        });
+           $("#TotalPaidP").text(abc_general.dollarAdd(total));
+        $("#totalpaidd").text(abc_general.dollarAdd(total));
+           var cusPayBalance = parseFloat(abc_general.parenthRemove($("#BalanceDueP").text(), '('));
+           $("#BalanceP").text(abc_general.parenthAdd((cusPayBalance - total).toFixed(2)));
+           $("#ChangeP").val('');
 
-        //$("#saletable tr").each(function () {
-        //    var self = $(this);
-
-        //    var col_11_value = self.find("td:eq(10)").text().trim();
-
-        //    var result = col_11_value.replace(/\$/g, '');
-
-        //    console.log(result + "result");
-        //   var afterparsing =  parseFloat(result);
-        //    if (!isNaN(afterparsing)) {
-        //        total += afterparsing;
-        //    }
-
-        //    console.log(total + "////");
-        //    $("#subtotalauto").val("$" + total);
-        //});
-        //  CalculatetaxPlusDiscount()
+        if (abc_general.parenthRemove($("#BalanceP").text(), "(") > 0){
+             $("#myButton").hide();
+             $("#rightButton").show();
+             $("#rightButton").prop("disabled", true);
+        }
+        else {
+            $("#rightButton").hide();
+            $("#myButton").show();
+            $("#myButton").prop("disabled", false);
+        }
     }
-    function RemoveRow(val) {
 
+    function CountTotalOfAllTDOfMultiPayment() {
+        var total = 0
+
+        $("#CusMultiPaymentsTable tr").each(function (index, val) {
+            if(index > 0){
+                var self = $(this);
+                var col_0_value = self.find("td:eq(0)").text().trim();
+                var result = col_0_value.replace(/\$/g, '');
+                var afterparsing =  parseFloat(result);
+                if (!isNaN(afterparsing)) {
+                     total += afterparsing;
+                 }
+            }
+        });
+        $("#TotalPaidAmount").text(abc_general.dollarAdd(total));
+        $("#totalAmountAllocation").text(abc_general.dollarAdd(total));
+        var cusPayBalance = parseFloat(abc_general.parenthRemove($("#CustomerBalance").val(), '('));
+        $("#CustomerBalanceDue").text(abc_general.parenthAdd((cusPayBalance - total).toFixed(2)));
+        $("#ChangeAmount").val('');
+
+        if (abc_general.parenthRemove($("#CustomerBalanceDue").text(), "(") > 0) {
+            $("#thumbLeftButton").hide();
+            $("#thumbRightButton").show();
+            $("#thumbRightButton").prop("disabled", true);
+        }
+        else{
+            $("#thumbRightButton").hide();
+            $("#thumbLeftButton").show();
+            $("#thumbLeftButton").prop("disabled", false);
+        }
+    }
+
+    function RemoveRow(val) {
         $("#rowid-" + val).remove();
         var alltr = $("#saletable").find('tr');
 
@@ -4489,7 +4513,7 @@
     }
     function RemoveRowPayment(val) {
         $("#rowidsalepayment-" + val).remove();
-        var alltr = $("#customerpaymentsaletable").find('tr');
+        var alltr = $("#Custpaymenttable").find('tr');
 
         $.each(alltr, function (i, t) {
             if (i > 0) {
@@ -4533,12 +4557,55 @@
 
     }
 
+    function RemoveRowMultiPayment(val) {
+        $("#rowidsalepayment-" + val).remove();
+        var alltr = $("#CusMultiPaymentsTable").find('tr');
+
+        $.each(alltr, function (i, t) {
+            if (i > 0) {
+                var TRid = $(t)[0].id.split('-');
+                $(t).attr('id', TRid[0] + "-" + i);
+
+                var alltd = $(t).find('td');
+                $.each(alltd, function (f, it) {
+                    var id = $(it)[0].id.split('-');
+
+
+                    if (id[0] == "paymentrowdelete") {
+                        $(it).attr('onclick', 'RemoveRowMultiPayment(' + i + ')');
+                    }
+                    if (id[0] == "amountpayed") {
+                        $(it).attr('onkeyup', 'AddCreditTax(' + i + ')');
+                    }
+                    if (id[0] == "paymenttype") {
+                        $(it).find("select").attr('onchange', 'AddCreditTax(' + i + ')');
+                    }
+                    $(it).attr('id', id[0] + "-" + i);
+                    var idselect = $(it).find("select").attr('id');
+                    if (idselect != null && idselect != "undefined") {
+                        var selectid = idselect.split('-');
+                        if (selectid[0] != null && selectid[0] != "undefined") {
+                            $(it).find("select").attr('id', selectid[0] + "-" + i);
+                        }
+
+                    }
+
+
+                });
+            }
+
+        });
+
+        paymentserial--;
+        CountTotalOfAllTDOfMultiPayment();
+
+    }
+
 
     function closemodal() {
         $("#payment").modal('hide');
     }
     function openmodal() {
-       
 
         // var chksubTotal = $("#subtotalauto").val();
         // var chkinvTotal = $("#invoicetotal").val();
@@ -5190,7 +5257,7 @@
                                                 dataType: "json",
                                                 success: function (data) {
                                                     //debugger;
-    @*if (data.success) {
+                                                 @*if (data.success) {
                                                         var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                         window.open(actionUrl);
                                                         location.reload();
@@ -5220,7 +5287,7 @@
                                         dataType: "json",
                                         success: function (data) {
                                             //debugger;
-    @*if (data.success) {
+                                            @*if (data.success) {
                                                 window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                 //window.open('Purchase/PurchaseInvoice','_blank');
                                                 }*@
@@ -5503,11 +5570,12 @@
         } 
         else {
             $("#invoicetotal").val(abc_general.dollarAdd(subtotalInv));
-            $('#InvoiceBalance').val(abc_general.dollarAdd(subtotalInv));
+           // $('#InvoiceBalance').val(abc_general.dollarAdd(subtotalInv));
             var amountDue = parseFloat(subtotalInv) + parseFloat(prevBalance);
             var amountDueParse = parseFloat(amountDue).toFixed(2);
             amountDueParse = abc_general.parenthAdd(amountDueParse.toString());
             $("#amountdue").val(amountDueParse);
+            $("#InvoiceBalance").val(amountDueParse);
         }
 
         //if (invoicetotal == "NaN") {
@@ -5813,8 +5881,8 @@
                     $("#searchname").val((data.company != null && data.company != "undefined" ? data.company : (data.firstName + data.lastName)));
 
                      if (data.viewInvoicePrevBalance) {
-                            if($("#posted-invoice").val() == "value"){
-                               if (data.amount != null) {
+                          if (data.amount != null) {
+                            if($("#posted-invoice").val() == "value" && $("#open-invoice").val() == "value"){
                                    var PreviousBalance = "";
                                    if(Math.sign(data.amount) == -1){
                                        PreviousBalance = Math.abs(data.amount);
@@ -5839,17 +5907,17 @@
 
                                     //----- Previous Balance Popup Show Function Call ----
                                     ShowReceivables(data);
-                                //----- Previous Balance Popup Show Function Call ----
-                               } 
-                               else {
+                                    //----- Previous Balance Popup Show Function Call ----
+                                } 
+                              } 
+                              else {
                                         $("#previousbalance").val("");
                                         $("#amountdue").val("");
                                         $("#remainingAmount").text("");
                                         $("#CustomerBalance").val("");
                                         $("#CustomerBalanceDue").val("");
                                     }
-
-                              } 
+                               
                         }
                    
                        if (data.isBillToBill != null) {
@@ -5866,12 +5934,14 @@
                             $("#iscredithold").text("0");
                         }
 
-                        if (data.additionalInvoiceCharge == "" || data.additionalInvoiceCharge == null) {
-                            $("#otherid").val("0");
-                        }
-                       else {
-                            $("#otherid").val(data.additionalInvoiceCharge);
-                       }
+                        //-------------commented by nouman start---------------------
+                        // if (data.additionalInvoiceCharge == "" || data.additionalInvoiceCharge == null) {
+                        //     $("#otherid").val("0");
+                        // }
+                        // else {
+                        //     $("#otherid").val(data.additionalInvoiceCharge);
+                        // }
+                         //-------------commented by nouman end---------------------
                         $("#isExclude").text(data.isExclude);
                         $("#isPopupMessage").text(data.isPopupMessage);
                         if (data.isPopupMessage) {
@@ -6199,7 +6269,7 @@
             html += '</div>';
             html += '<div class="row mt-1">';
             html += '<div class="col-lg-6 col-md-12 col-sm-12 col font-size">';
-            html += '<label>' + data.businessAddress !== null || data.businessAddress !== undefined || typeOf(data.businessAddress) !=="undefined" ? data.businessAddress : "" + '</label>';
+            html += '<label>' + data.businessAddress !== null || data.businessAddress !== undefined || data.businessAddress !=="undefined" ? data.businessAddress : "" + '</label>';
             html += '</div>';
             html += '</div>';
             html += '<div class="row mt-1">';
@@ -7090,7 +7160,7 @@
     // Function Load Data Created by Nouman
 
 
-    var nextinvoice1 = function (method, selectedinvoicenumber) {
+    var nextinvoice1 = function (method, selectedinvoicenumber, invoiceType) {
           var data = $("#txtInvoiceNumber").text();
         if (method == 'null') { data = selectedinvoicenumber }
 
@@ -7100,14 +7170,14 @@
                 url: '@Url.Action("GetSaleInvoiceByInvoiceNumber1", "Sale")',
                 async: false,
                 Type: 'GET',
-                data: { InvoiceNumber: data, Method: method },
+                data: { InvoiceNumber: data, Method: method, invoiceType: invoiceType },
                 dataType: "json",
                 success: function (data) {
 
                     var sernum = 1;
                    // $("#salesmanid").text(data.saleManName);
                     $("#invoicetotal").val(data.invoiceTotal);
-                    $("#discountidadd").val(data.charges);
+                    $("#discountidadd").val(data.discount);
                     $("#subtotalauto").val(abc_general.dollarAdd(data.subTotal));  
                     $("#otherid").val(data.other);
                     $("#taxid").val(data.tax);
@@ -7180,20 +7250,20 @@
                                 sernum++;
 
                             });
-                                var total = $("#total-" + sernum).text();
-                                var subtotalnew = $("#subtotalauto").val();
-                                var finalsubtotalvalue = subtotalnew.split('$');
+                                // var total = $("#total-" + sernum).text();
+                                // var subtotalnew = $("#subtotalauto").val();
+                                // var finalsubtotalvalue = subtotalnew.split('$');
 
-                                if (total != null && total != '') {
-                                    var newtotal = total.split('$');
-                                    var newtotalsuplitted = newtotal[1];
-                                    var subtotalsuplitednew = finalsubtotalvalue[1];
-                                    if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
-                                      var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
-                                      $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+                                // if (total != null && total != '') {
+                                //     var newtotal = total.split('$');
+                                //     var newtotalsuplitted = newtotal[1];
+                                //     var subtotalsuplitednew = finalsubtotalvalue[1];
+                                //     if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+                                //       var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                                //       $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
 
-                                    }
-                                }
+                                //     }
+                                // }
                             
                            
                             $('#previousbalance').attr("readonly", false);
@@ -7205,6 +7275,7 @@
                             $('#invoicetotal').attr("readonly", false);
                             $('#amountdue').attr("readonly", false);
                             $('#searchname').attr("readonly", false);
+                            $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
 
                             GetCompanyByID(data.customerId, false);
 
@@ -7347,7 +7418,6 @@
                 data: { InvoiceNumber: data, Method: method },
                 dataType: "json",
                 success: function (data) {
-                    console.log("USMAN" + data);
 
                     var sernum = 1;
                     // debugger;
@@ -8007,7 +8077,7 @@
         });
 
 
-        $("#TotalPaidP").text("$" + calculated_total_sum.toFixed(2));
+       // $("#TotalPaidP").text("$" + calculated_total_sum.toFixed(2));
     });
 
     $("#Custpaymenttable").on('input', '.txtCal1', function () {
@@ -8019,7 +8089,7 @@
                 calculated_total_sum += parseFloat(get_textbox_value);
             }
         });
-        $("#totalpaidd").text("$" + calculated_total_sum);
+      //  $("#totalpaidd").text("$" + calculated_total_sum);
 
         //var s = $("#TotalPaidP").text(); s = s.replace(/[^0-9\s]/gi, '');
         //var z = $("#totalpaidd").text(); z = z.replace(/[^0-9\s]/gi, '');
@@ -8096,10 +8166,10 @@
 
     function SaveMultiPayment(){
         var customerId = $("#customerid").val();
-        var TotalPaidAmount = $("#TotalPaidAmount").text();
-        var totalAmountAllocation = $("#totalAmountAllocation").text();
-        var ChangeAmount = $("#ChangeAmount").val();
-        var CusBalanceDue = $("#CustomerBalanceDue").text();
+        var TotalPaidAmount = abc_general.dollarRemove($("#TotalPaidAmount").text());
+        var totalAmountAllocation = abc_general.dollarRemove($("#totalAmountAllocation").text());
+        var ChangeAmount = abc_general.dollarRemove($("#ChangeAmount").val());
+        var CusBalanceDue = abc_general.dollarRemove($("#CustomerBalanceDue").text());
 
         var multiPayments = {}
         multiPayments.CustomerId = customerId;
@@ -8129,19 +8199,19 @@
             var dd = row.find("TD").eq(3).text();
             var ee = row.find("TD").eq(4).val();
 
-            if (aa != null && aa != "" && aa != "undefined") {
+            if (!abc_general.isNullOrEmpty(aa)) {
 
-                objmultipay.AmountPaid = row.find("TD").eq(0).text();
+                objmultipay.AmountPaid = aa;
             }
-            if (bb != null && bb != "" && bb != "undefined") {
+            if (!abc_general.isNullOrEmpty(bb)) {
 
-                objmultipay.AmountAllocate = row.find("TD").eq(1).text();
+                objmultipay.AmountAllocate = bb;
             }
-            if (cc != null && cc != "" && cc != "undefined") {
+            if (!abc_general.isNullOrEmpty(cc)) {
 
                 objmultipay.PaymentType = xx;
             }
-            if (dd != null && dd != "" && dd != "undefined") {
+            if (!abc_general.isNullOrEmpty(dd)) {
 
                 objmultipay.ChequeNumber = dd;
             }
@@ -8176,18 +8246,16 @@
          debugger;
         var OnlyPayment = false;
         var customername = $("#searchname").val();
-        // var customercode = $("#customercodeinfo").val();
         var customerId = $("#customerid").val();
         var saleman = $("#salesmanid").text();
         var invoicenumber = $("#invoicenumber").val();
         var AccountId = $("#Accountnumber").val();
         var invoicetotal = abc_general.dollarRemove($("#invoicetotal").val());
-        //var balanceDueP = $("#BalanceDueP").text();
         var totalPaidP = abc_general.dollarRemove($("#TotalPaidP").text());
         var totalAllocation = abc_general.dollarRemove($("#totalpaidd").text());
  
         var change = abc_general.dollarRemove($("#ChangeP").val());
-        var InvBalance = abc_general.dollarRemove($("#BalanceP").text());
+        var InvBalance = (abc_general.parenthRemove($("#BalanceP").text(), "(")).toString();
         var SubTotal = abc_general.dollarRemove($("#subtotalauto").val());
         var AmountDue = abc_general.dollarRemove($("#amountdue").val());
         var Other = abc_general.dollarRemove($("#otherid").val());
@@ -8202,7 +8270,6 @@
         Sale.AccountId = AccountId;
         Sale.SubTotal = SubTotal
         Sale.InvoiceTotal = invoicetotal;
-       // Sale.PreviousBalance = balanceDueP;
         Sale.TotalPaid = totalPaidP;
         Sale.TotalAmount = totalAllocation;
         Sale.Change = change;
@@ -9086,35 +9153,48 @@
 
 
     function MultiPaymentAdd(val) {
-        var amountpayed = $("#amountpayed-" + val).text().split('$');
-        var CusBalanceDue = $("#CustomerBalance").val().split('$');
-        var CusDueBalance = CusBalanceDue[1];
+
+        var paymentsSum = 0;
+        $("#CusMultiPaymentsTable tr").each(function (index, value) {
+            debugger;
+            if (index > 0) {
+                var self = $(this);
+
+                if (!abc_general.isNullOrEmpty(self.find("td:eq(0)").text())) {
+                    var paidAmount = parseFloat(abc_general.dollarRemove(self.find("td:eq(0)").text()));
+                    paymentsSum = paymentsSum + paidAmount;
+                    paymentsSum = parseFloat(paymentsSum.toFixed(2));
+                }
+            }
+        });
+
+        var amountpayed =  abc_general.dollarRemove($("#amountpayed-" + val).text());
+        var CusBalanceDue =  abc_general.dollarRemove($("#CustomerBalance").val());
         if (amountpayed != "" && isNaN(amountpayed) == false) {
-            $("#TotalPaidAmount").text("$" + amountpayed);
+            $("#TotalPaidAmount").text(abc_general.dollarAdd(paymentsSum));
             $('#thumbRightButton').show();
             $('#thumbLeftButton').hide();
                 
-            if (parseFloat(amountpayed[0]) > parseFloat(CusDueBalance)) {
-                $("#amountallocate-" + val).text(parseFloat(amountpayed[0]).toFixed(2));
-                $("#totalAmountAllocation").text("$" + parseFloat(amountpayed[0]).toFixed(2));
+            if (parseFloat(amountpayed) > parseFloat(CusBalanceDue)) {
+                $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
+                $("#totalAmountAllocation").text(abc_general.dollarAdd(parseFloat(paymentsSum).toFixed(2)));
                 $("#thumbLeftButton").prop("disabled", false);
                 $('#thumbLeftButton').show();
                 $('#thumbRightButton').hide();
 
-                var change = parseFloat(amountpayed) - parseFloat(CusDueBalance);
-                //  $("#ChangeP").val("$" + change.toFixed(2));
-                $("#ChangeAmount").val("$" + 0.00);
-                $("#CustomerBalanceDue").text("$(" + change.toFixed(2) + ")");
+                var change = parseFloat(paymentsSum) - parseFloat(CusBalanceDue);
+                $("#ChangeAmount").val(abc_general.dollarAdd(0.00));
+                $("#CustomerBalanceDue").text(abc_general.dollarParenthAdd(change.toFixed(2)));
             } else {
                 $("#thumbRightButton").prop("disabled", true);
                 $('#thumbLeftButton').hide();
                 $('#thumbRightButton').show();
                 $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
-                $("#totalAmountAllocation").text("$" + parseFloat(amountpayed).toFixed(2));
+                $("#totalAmountAllocation").text(abc_general.dollarAdd(parseFloat(paymentsSum).toFixed(2)));
 
-                var balance = parseFloat(CusDueBalance) - parseFloat(amountpayed);
-                $("#ChangeAmount").val("$" + 0.00);
-                $("#CustomerBalanceDue").text("$" + balance.toFixed(2));
+                var balance = parseFloat(CusBalanceDue) - parseFloat(paymentsSum);
+                $("#ChangeAmount").val(abc_general.dollarAdd(0.00));
+                $("#CustomerBalanceDue").text(abc_general.dollarAdd(balance.toFixed(2)));
             }
         } else if (amountpayed == "" || isNaN(amountpayed) == true) {
 
@@ -9122,7 +9202,7 @@
             $("#totalAmountAllocation").text('');
             $("#ChangeAmount").val('');
             $("#amountallocate-" + val).text('');
-            $("#CustomerBalanceDue").text("$" + CusDueBalance);
+            $("#CustomerBalanceDue").text(abc_general.dollarAdd(CusBalanceDue));
             Swal.fire('Please Enter Numeric Value');
         }
 
@@ -9130,21 +9210,36 @@
 
 
     function PaymentAdd(val) {
+   var paymentsSum = 0;
+        $("#Custpaymenttable tr").each(function (index, value) {
+             debugger;
+             if(index > 0){
+                 var self = $(this);
+               
+                 if(!abc_general.isNullOrEmpty(self.find("td:eq(0)").text())){
+                    var paidAmount = parseFloat(abc_general.dollarRemove(self.find("td:eq(0)").text()));
+                    paymentsSum = paymentsSum + paidAmount;
+                    paymentsSum = parseFloat(paymentsSum.toFixed(2));
+                 }
+             }
+        });
+
+
         var amountpayed = abc_general.dollarRemove($("#amountpayed-" + val).text());
         var Balanceduep = abc_general.dollarRemove($("#BalanceDueP").text());
         if (amountpayed != "" && isNaN(amountpayed) == false) {
-            $("#TotalPaidP").text(abc_general.dollarAdd(amountpayed));
+            $("#TotalPaidP").text(abc_general.dollarAdd(paymentsSum));
             $('#rightButton').show();
             $('#myButton').hide();
-
-            if (parseFloat(amountpayed) > parseFloat(Balanceduep)) {
+                
+            if (parseFloat(paymentsSum) > parseFloat(Balanceduep)) {
                 $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
-                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(amountpayed).toFixed(2)));
+                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(paymentsSum).toFixed(2)));
                 $("#myButton").prop("disabled", false);
                 $('#myButton').show();
                 $('#rightButton').hide();
 
-                var change = parseFloat(amountpayed) - parseFloat(Balanceduep);
+                var change = parseFloat(paymentsSum) - parseFloat(Balanceduep);
                 $("#ChangeP").val(abc_general.dollarAdd(0.00));
                 $("#BalanceP").text(abc_general.dollarParenthAdd(change.toFixed(2)));
             } else {
@@ -9153,9 +9248,9 @@
                 $('#rightButton').show();
 
                 $("#amountallocate-" + val).text(parseFloat(amountpayed).toFixed(2));
-                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(amountpayed).toFixed(2)));
+                $("#totalpaidd").text(abc_general.dollarAdd(parseFloat(paymentsSum).toFixed(2)));
 
-                var balance = parseFloat(Balanceduep) - parseFloat(amountpayed);
+                var balance = parseFloat(Balanceduep) - parseFloat(paymentsSum);
                 $("#ChangeP").val(abc_general.dollarAdd(0.00));
                 $("#BalanceP").text(abc_general.dollarAdd(balance.toFixed(2)));
             }

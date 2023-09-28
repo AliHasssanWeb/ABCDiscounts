@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using NetBarcode;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -10275,51 +10277,27 @@ namespace ABC.POS.API.Controllers
                 {
                     return BadRequest();
                 }
-                double TotalAllocation = Convert.ToDouble((multiInvoicePay.TotalAmountAllocation as string).Trim('$'));
+                double TotalAllocation = Convert.ToDouble(multiInvoicePay.TotalAmountAllocation);
                 var TotalAmount = TotalAllocation;
-                var CheckInvoices = db.Receivings.Where(f => f.CustomerId == Convert.ToInt32(multiInvoicePay.CustomerId) && f.IsPaid == false).OrderByDescending(f => f.IsPaid).OrderBy(f => f.Date).ToList();
-                if (CheckInvoices.Count > 0)
-                {
-                    foreach (var item in CheckInvoices)
-                    {
-                        double InvBalance = Convert.ToDouble(item.InvBalance);
 
-                        if (TotalAllocation == 0.00)
-                        {
-                            break;
-                        }
-                        if (TotalAllocation >= InvBalance)
-                        {
-                            TotalAllocation = TotalAllocation - InvBalance;
-                            item.IsPaid = true;
-                            item.InvBalance = "0";
-                        }
-                        else
-                        {
-                            item.InvBalance = (InvBalance - TotalAllocation).ToString();
-                            TotalAllocation = 0.00;
-                        }
-                        db.Entry(item).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                SaleInvoiceTransactions(Convert.ToInt32(multiInvoicePay.CustomerId), multiInvoicePay.multiInvoiceTransaction);
+
+                var RecevableQuery = (from cusInfo in db.CustomerInformations
+                                      join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
+                                      from jrresult in result.DefaultIfEmpty()
+                                      where cusInfo.Id == Convert.ToInt32(multiInvoicePay.CustomerId)
+                                      select new { Amount = jrresult.Amount, RecevingId = jrresult.Id, AccountId = jrresult.AccountId }).FirstOrDefault();
 
 
-                    var RecevableQuery = (from cusInfo in db.CustomerInformations
-                                          join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
-                                          from jrresult in result.DefaultIfEmpty()
-                                          where cusInfo.Id == Convert.ToInt32(multiInvoicePay.CustomerId)
-                                          select new { Amount = jrresult.Amount, RecevingId = jrresult.Id, AccountId = jrresult.AccountId }).FirstOrDefault();
+                double remainingAmount = Convert.ToDouble(RecevableQuery.Amount) - TotalAmount;
+                Receivable receivable = new Receivable();
+                receivable.Amount = remainingAmount.ToString("F");
+                receivable.AccountId = RecevableQuery.AccountId;
+                receivable.Id = RecevableQuery.RecevingId;
+                db.Entry(receivable).State = EntityState.Modified;
+                db.SaveChanges();
 
-
-                    double remainingAmount = Convert.ToDouble(RecevableQuery.Amount) - TotalAmount;
-                    Receivable receivable = new Receivable();
-                    receivable.Amount = remainingAmount.ToString("F");
-                    receivable.AccountId = RecevableQuery.AccountId;
-                    receivable.Id = RecevableQuery.RecevingId;
-                    db.Entry(receivable).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                }
+                // }
 
                 return Ok(Response);
             }
@@ -10333,6 +10311,113 @@ namespace ABC.POS.API.Controllers
                 }
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        private void MultiInvPayment(int CustomerId, SaleInvoiceTransactionModel invTransaction)
+        {
+            var CheckInvoices = db.Receivings.Where(f => f.CustomerId == CustomerId && f.IsPaid == false).OrderByDescending(f => f.IsPaid).OrderBy(f => f.Date).ToList();
+
+
+            SalesInvTransaction saleinvTransaction = null;
+            SaleInvHistory saleInvHistory = null;
+
+            saleinvTransaction = new SalesInvTransaction();
+            //saleinvTransaction.UserId = Convert.ToInt32(loginUser.Id);
+            //saleinvTransaction.InvoiceNumber = item.InvoiceNumber;
+            saleinvTransaction.CustomerId = CustomerId;
+            saleinvTransaction.AmountPaid = invTransaction.AmountPaid;
+            saleinvTransaction.AmountAllocate = invTransaction.AmountAllocate;
+            saleinvTransaction.PaymentType = invTransaction.PaymentType;
+            saleinvTransaction.ChequeNumber = invTransaction.ChequeNumber;
+            saleinvTransaction.HoldDate = invTransaction.HoldDate;
+            saleinvTransaction.Change = invTransaction.Change;
+
+            var saveSaleInvTransaction = db.SalesInvTransactions.Add(saleinvTransaction);
+            db.SaveChanges();
+            var SaleInvTransactionId = saveSaleInvTransaction.Entity.Id;
+
+            double TotalAllocation = Convert.ToDouble(invTransaction.AmountAllocate);
+
+            var unPaidinvCount = CheckInvoices.Count;
+            var loopCount = 0;
+
+            if (CheckInvoices.Count > 0)
+            {
+                foreach (var item in CheckInvoices)
+                {
+                    loopCount ++;
+                    double InvBalance = Convert.ToDouble(item.InvBalance);
+
+                    if (TotalAllocation == 0.00)
+                    {
+                        break;
+                    }
+
+                    saleInvHistory = new SaleInvHistory();
+                    saleInvHistory.InvoiceNumber = item.InvoiceNumber;
+                    saleInvHistory.SaleInvTransactionId = SaleInvTransactionId;
+
+                    if (TotalAllocation >= InvBalance)
+                    {
+                        TotalAllocation = TotalAllocation - InvBalance;
+                        item.IsPaid = true;
+                        item.InvBalance = "0";
+
+                        saleInvHistory.AmountAllocate = InvBalance.ToString();
+                    }
+                    else
+                    {
+                        item.InvBalance = (InvBalance - TotalAllocation).ToString("F");
+
+                        saleInvHistory.AmountAllocate = TotalAllocation.ToString("F");
+
+                        TotalAllocation = 0.00;
+
+                    }
+
+                    db.Entry(item).State = EntityState.Modified;
+                    db.SaleInvHistories.Add(saleInvHistory);
+                    db.SaveChanges();
+
+                    if(unPaidinvCount == loopCount && TotalAllocation > 0)
+                    {
+                        SaveSaleCreditAmount(SaleInvTransactionId, TotalAllocation);
+                    }
+
+                }
+            }
+            else if(TotalAllocation > 0)
+            {
+                SaveSaleCreditAmount(SaleInvTransactionId, TotalAllocation);
+            }
+
+        }
+
+        private void SaleInvoiceTransactions(int CustomerId, List<SaleInvoiceTransactionModel> saleInvoiceTransaction)
+        {
+
+            foreach (var item in saleInvoiceTransaction)
+            {
+
+                if (item.PaymentType == "1" || item.PaymentType == "2" || item.PaymentType == "4" || item.PaymentType == "5" || item.PaymentType == "6")
+                {
+                    MultiInvPayment(CustomerId, item);
+                }
+            }
+
+        }
+
+        private void SaveSaleCreditAmount(int SaleInvTransactionId, double TotalAllocation)
+        {
+            SaleInvHistory saleinvhistory = null;
+
+            saleinvhistory = new SaleInvHistory();
+            saleinvhistory.InvoiceNumber = "CREDIT";
+            saleinvhistory.SaleInvTransactionId = SaleInvTransactionId;
+            saleinvhistory.AmountAllocate = TotalAllocation.ToString("F");
+            db.SaleInvHistories.Add(saleinvhistory);
+            db.SaveChanges();
         }
 
         [HttpPost("ChangePayment1")]
@@ -10370,7 +10455,6 @@ namespace ABC.POS.API.Controllers
                 db.SalesInvoices.Add(saleInvoice);
                 db.SaveChanges();
 
-
                 if (checkReceiving == null)
                 {
                     receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
@@ -10378,22 +10462,9 @@ namespace ABC.POS.API.Controllers
                     receiving.Date = DateTime.Now;
                     receiving.SubTotal = saleInvoices.SubTotal;
                     receiving.InvTotal = saleInvoices.InvoiceTotal;
-                    if (Convert.ToDouble(saleInvoices.TotalAmount) >= Convert.ToDouble(saleInvoices.SubTotal))
-                    {
-                        receiving.InvBalance = "0.00";
-                    }
-                    else
-                    {
-                        receiving.InvBalance = (Convert.ToDouble(saleInvoices.SubTotal) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
-                    }
-                    if (receiving.InvBalance == "0" || receiving.InvBalance == "0.00")
-                    {
-                        receiving.IsPaid = true;
-                    }
-                    else
-                    {
-                        receiving.IsPaid = false;
-                    }
+                 
+                    receiving.InvBalance = saleInvoices.InvoiceTotal;
+                    receiving.IsPaid = false;
                     receiving.Change = saleInvoices.Change;
                     receiving.Tax = saleInvoices.Tax;
                     receiving.Discount = saleInvoices.Discount;
@@ -10403,9 +10474,9 @@ namespace ABC.POS.API.Controllers
 
                     db.Receivings.Add(receiving);
 
-                   foreach(var item in saleInvoices.itemsdetails)
+                    foreach (var item in saleInvoices.itemsdetails)
                     {
-                        var invStock = db.InventoryStocks.Where(f=>f.ProductId == Convert.ToInt32(item.ItemId)).FirstOrDefault();
+                        var invStock = db.InventoryStocks.Where(f => f.ProductId == Convert.ToInt32(item.ItemId)).FirstOrDefault();
 
                         invStock.Quantity = (Convert.ToDouble(invStock.Quantity) - Convert.ToDouble(item.RingerQty)).ToString();
 
@@ -10413,25 +10484,12 @@ namespace ABC.POS.API.Controllers
                     }
 
                 }
-                else
-                {
-                    if (Convert.ToDouble(saleInvoices.TotalAmount) >= Convert.ToDouble(checkReceiving.InvBalance))
-                    {
-                        checkReceiving.InvBalance = "0.00";
-                    }
-                    else
-                    {
-                        checkReceiving.InvBalance = (Convert.ToDouble(checkReceiving.InvBalance) - Convert.ToDouble(saleInvoices.TotalAmount)).ToString("F");
-                    }
-                    checkReceiving.Change = saleInvoices.Change;
-                    if (checkReceiving.InvBalance == "0.00" || checkReceiving.InvBalance == "0")
-                    {
-                        checkReceiving.IsPaid = true;
-                    }
-                    db.Entry(checkReceiving).State = EntityState.Modified;
-                }
                 db.SaveChanges();
 
+                if (saleInvoices.saleInvoiceTransactionModel.Count > 0)
+                {
+                    SaleInvoiceTransactions(Convert.ToInt32(saleInvoices.CustomerId), saleInvoices.saleInvoiceTransactionModel);
+                }
 
                 if (recevables != null)
                 {
@@ -10620,40 +10678,6 @@ namespace ABC.POS.API.Controllers
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
                     var Response = ResponseBuilder.BuildWSResponse<SalesInvoice>();
-                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
-                    return Ok(Response);
-                }
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("SalesInvoiceTransactions1")]
-        public async Task<IActionResult> SalesInvoiceTransactions1(List<SalesInvTransaction> obj)
-        {
-            try
-            {
-                var Response = ResponseBuilder.BuildWSResponse<SalesInvTransaction>();
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest();
-                }
-                for (int i = 0; i < obj.Count(); i++)
-                {
-                    var SaleInvId = db.SalesInvoices.Where(x => x.InvoiceNumber == obj[0].InvoiceNumber).FirstOrDefault();
-                    if (SaleInvId != null)
-                    {
-                        obj[i].SalesInvoiceId = SaleInvId.Id;
-                    }
-                    await db.SalesInvTransactions.AddAsync(obj[i]);
-                    await db.SaveChangesAsync();
-                }
-                return Ok(Response);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
-                {
-                    var Response = ResponseBuilder.BuildWSResponse<SalesInvTransaction>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
@@ -11014,6 +11038,7 @@ namespace ABC.POS.API.Controllers
                           }).ToList();
             return record;
         }
+
     }
 
 }

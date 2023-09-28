@@ -192,4 +192,25 @@
         return allreturnitems_array;
 
     },
+
+    PaymentType: function () {
+        var paymentTypeArray = [];
+        $.ajax({
+            url: "/Sale/GetPaymentType",
+            async: false,
+            contentType: "application/json;",
+            dataType: "json",
+            success: function (data) {
+                var opts = jQuery.parseJSON(JSON.stringify(data));
+                $.each(opts, function (i, d) {
+                    paymentTypeArray.push(d);
+                });
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+        return paymentTypeArray;
+    }
 }

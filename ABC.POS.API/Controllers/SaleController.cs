@@ -6,6 +6,7 @@ using ABC.Shared.Interface;
 using ABC.Shared.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
@@ -720,8 +721,8 @@ namespace ABC.POS.API.Controllers
             }
         }
 
-        [HttpGet("PosSaleByInvoiceNumber1/{invoicenumber}/{method}")]
-        public IActionResult PosSaleByInvoiceNumber1(string invoicenumber, string method)
+        [HttpGet("PosSaleByInvoiceNumber1/{invoicenumber}/{method}/{invoiceType}")]
+        public IActionResult PosSaleByInvoiceNumber1(string invoicenumber, string method, string invoiceType)
         {
             try
             {
@@ -737,10 +738,29 @@ namespace ABC.POS.API.Controllers
                 obj.IsClose = record.IsClose;
                 obj.Count = record.Count.ToString();
                 obj.SubTotal = record.SubTotal;
-                obj.Other = record.Other;
-                obj.Discount = record.Discount;
-                obj.Tax = record.Tax;
-                obj.Freight = record.Freight;
+
+                if (invoiceType == "OpenInvoice")
+                {
+                    var AccountId = db.CustomerInformations.Where(f => f.Id == record.CustomerId).Select(f => f.AccountId).FirstOrDefault();
+                    var PreviousBalance = db.Receivables.Where(f => f.AccountId == AccountId).Select(f => f.Amount).FirstOrDefault();
+                    _ = PreviousBalance != null ? PreviousBalance : PreviousBalance = "0";
+
+                    obj.PreBalance = PreviousBalance;
+                    obj.Other = record.Other;
+                    obj.Discount = record.Discount;
+                    obj.Tax = record.Tax;
+                    obj.Freight = record.Freight;
+                }
+                if (invoiceType == "PostedInvoice")
+                {
+                    var receiving = db.Receivings.Where(f => f.InvoiceNumber == invoicenumber).FirstOrDefault();
+                    obj.InvoiceBalance = receiving.InvBalance;
+                    obj.PreBalance = receiving.PreBalance;
+                    obj.Other = receiving.Other;
+                    obj.Discount = receiving.Discount;
+                    obj.Tax = receiving.Tax;
+                    obj.Freight = receiving.Freight;
+                }
 
                 if (record != null)
                 {
@@ -779,12 +799,7 @@ namespace ABC.POS.API.Controllers
 
                         obj.PointOfSaleDetails = PointOfSaleDetailQry;
 
-                        var receiving = db.Receivings.Where(f => f.InvoiceNumber == invoicenumber).FirstOrDefault();
-                        if (receiving != null)
-                        {
-                            obj.InvoiceBalance = receiving.InvBalance;
-                            obj.PreBalance = receiving.PreBalance;
-                        }
+                        
                     }
                 }
                 if (record != null)
@@ -847,6 +862,44 @@ namespace ABC.POS.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetPaymentType")]
+        public IActionResult GetPaymentType()
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<List<PaymentTypeModel>>();
+
+                var record = db.PaymentTypes.Select(u => new PaymentTypeModel
+                {
+                    PaymentTypeId = u.PaymentTypeId,
+                    PaymentTypeName = u.PaymentTypeName
+                }).ToList();
+
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var response = ResponseBuilder.BuildWSResponse<List<PosSale>>();
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet("CashierCounters/{id}")]
         public IActionResult CashierCounters(int id)
