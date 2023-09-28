@@ -9,17 +9,13 @@ namespace ABC.DTOs.Library.SalesDTOs
 {
     public class SaleMultiInvoicePayModel
     {
-        public SaleMultiInvoicePayModel()
-        {
-            multiInvoiceTransaction = new HashSet<SaleMultiInvoiceTransactionAdp>();
-        }
-
         public string CustomerId { get; set; }
         public string TotalPaidAmount { get; set; }
         public string TotalAmountAllocation { get; set; }
         public string ChangeAmount { get; set; }
         public string CustomerBalanceDue { get; set; }
 
-        public ICollection<SaleMultiInvoiceTransactionAdp> multiInvoiceTransaction { get; set; }
+        //public List<SaleMultiInvoiceTransactionAdp> multiInvoiceTransaction { get; set; }
+        public List<SaleInvoiceTransactionModel> multiInvoiceTransaction { get; set; }
     }
 }

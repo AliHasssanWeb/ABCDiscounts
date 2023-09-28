@@ -98,6 +98,7 @@ namespace ABC.EFCore.Repository.Edmx
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<PaymentTerm> PaymentTerms { get; set; }
+        public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<PersonPin> PersonPins { get; set; }
         public virtual DbSet<PointOfSale> PointOfSales { get; set; }
         public virtual DbSet<PointOfSaleDetail> PointOfSaleDetails { get; set; }
@@ -113,6 +114,7 @@ namespace ABC.EFCore.Repository.Edmx
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<SaleHistory> SaleHistories { get; set; }
+        public virtual DbSet<SaleInvHistory> SaleInvHistories { get; set; }
         public virtual DbSet<SalesInvTransaction> SalesInvTransactions { get; set; }
         public virtual DbSet<SalesInvoice> SalesInvoices { get; set; }
         public virtual DbSet<SalesManager> SalesManagers { get; set; }
@@ -2080,6 +2082,15 @@ namespace ABC.EFCore.Repository.Edmx
                 entity.Property(e => e.Name).HasMaxLength(250);
             });
 
+            modelBuilder.Entity<PaymentType>(entity =>
+            {
+                entity.ToTable("PaymentType");
+
+                entity.Property(e => e.PaymentTypeName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<PersonPin>(entity =>
             {
                 entity.HasKey(e => e.PinId);
@@ -2722,9 +2733,41 @@ namespace ABC.EFCore.Repository.Edmx
                 entity.Property(e => e.TransacetionId).HasColumnName("TransacetionID");
             });
 
+            modelBuilder.Entity<SaleInvHistory>(entity =>
+            {
+                entity.ToTable("SaleInvHistory");
+
+                entity.Property(e => e.AmountAllocate)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InvoiceNumber)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.SaleInvTransaction)
+                    .WithMany(p => p.SaleInvHistories)
+                    .HasForeignKey(d => d.SaleInvTransactionId)
+                    .HasConstraintName("FK_SaleInvHistory");
+            });
+
             modelBuilder.Entity<SalesInvTransaction>(entity =>
             {
+                entity.Property(e => e.Change)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.HoldDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.SalesInvTransactions)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK__SalesInvT__Custo__79FD19BE");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.SalesInvTransactions)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__SalesInvT__UserI__7AF13DF7");
             });
 
             modelBuilder.Entity<SalesInvoice>(entity =>

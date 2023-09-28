@@ -14,6 +14,9 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string PaymentType { get; set; }
         public DateTime? HoldDate { get; set; }
         public string InvoiceNumber { get; set; }
+        public int? UserId { get; set; }
+        public int? CustomerId { get; set; }
+        public string Change { get; set; }
 
     }
 }

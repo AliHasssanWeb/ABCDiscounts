@@ -9,12 +9,7 @@ namespace ABC.DTOs.Library.SalesDTOs
 {
     public partial class SaleInvoicesModel
     {
-        public SaleInvoicesModel()
-        {
-            saleInvoiceTransactionModel = new HashSet<SaleInvoiceTransactionModel>();
-        }
-
-
+       
         public int? SalesInvoiceId { get; set; }
         public string InvoiceNumber { get; set; }
         public DateTime? Date { get; set; }
@@ -34,7 +29,7 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string Tax { get; set; }
         public string Freight { get; set; }
 
-        public virtual ICollection<SaleInvoiceTransactionModel> saleInvoiceTransactionModel { get; set; }
-        public virtual ICollection<PointOfSaleDetailModel> itemsdetails { get; set; }
+        public List<SaleInvoiceTransactionModel> saleInvoiceTransactionModel { get; set; }
+        public List<PointOfSaleDetailModel> itemsdetails { get; set; }
     }
 }

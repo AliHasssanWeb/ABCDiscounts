@@ -7,6 +7,11 @@ namespace ABC.EFCore.Repository.Edmx
 {
     public partial class AspNetUser
     {
+        public AspNetUser()
+        {
+            SalesInvTransactions = new HashSet<SalesInvTransaction>();
+        }
+
         public int Id { get; set; }
         public string Email { get; set; }
         public bool? EmailConfirmed { get; set; }
@@ -40,5 +45,7 @@ namespace ABC.EFCore.Repository.Edmx
         public int? EmployeeId { get; set; }
         public bool? AdminApproval { get; set; }
         public string State { get; set; }
+
+        public virtual ICollection<SalesInvTransaction> SalesInvTransactions { get; set; }
     }
 }
