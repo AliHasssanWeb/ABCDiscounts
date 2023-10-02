@@ -3018,5 +3018,40 @@ namespace ABC.POS.Website.Controllers
                 return Json(JsonConvert.DeserializeObject("false." + ex.Message));
             }
         }
+
+        public IActionResult GetPaymentsInvoices(int CustomerId)
+        {
+            try
+            {
+                var loginUser = HttpContext.Session.GetString("userobj");
+                int UserId = 0;
+                if (!string.IsNullOrEmpty(loginUser))
+                {
+                    AspNetUser aspNetUser = JsonConvert.DeserializeObject<AspNetUser>(loginUser);
+                    UserId = aspNetUser.Id;
+                }
+
+                SResponse ress = RequestSender.Instance.CallAPI("api",
+               "Inventory/GetPaymentsInvoices" + "/" + CustomerId + "/" + UserId, "GET");
+                if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+                {
+                    var response = JsonConvert.DeserializeObject<ResponseBack<List<SalesInvoicePaymentsAdp>>>(ress.Resp);
+                    if (response.Data != null)
+                    {
+                        var responseObject = response.Data;
+                        return Json(responseObject);
+                    }
+                    else
+                    {
+                        return Json("false");
+                    }
+                }
+                return Json("true");
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.DeserializeObject("false." + ex.Message));
+            }
+        }
     }
 }

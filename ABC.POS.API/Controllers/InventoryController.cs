@@ -11149,6 +11149,64 @@ namespace ABC.POS.API.Controllers
 
         }
 
+        [HttpGet("GetPaymentsInvoices/{CustomerId}/{UserId}")]
+        public IActionResult GetPaymentsInvoices(int CustomerId, int UserId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicePaymentsAdp>>();
+
+                var record = (from Sit in db.SalesInvTransactions
+                              join POS in db.PointOfSales on Sit.CustomerId equals POS.CustomerId into POSresult
+                              from posresult1 in POSresult.DefaultIfEmpty()
+
+                              join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
+                              from smresult1 in smresult.DefaultIfEmpty()
+
+                              join user in db.AspNetUsers on Sit.UserId equals user.Id into userresult
+                              from userresult1 in userresult.DefaultIfEmpty()
+
+                              join PT in db.PaymentTypes on Sit.PaymentType equals PT.PaymentTypeId.ToString() into ptresult
+                              from ptresult1 in ptresult.DefaultIfEmpty()
+
+                              where Sit.CustomerId == CustomerId && Sit.UserId == UserId
+                              select new SalesInvoicePaymentsAdp
+                              {
+                                  PaidDate = Sit.HoldDate,
+                                  Time = DateTime.Parse(Sit.HoldDate.ToString()).ToString("hh:mm tt"),
+                                  HoldDate = Sit.HoldDate,
+                                  SalemanName = smresult1.Name,
+                                  PaymentTypeName = ptresult1.PaymentTypeName,
+                                  ChequeNumber = Sit.ChequeNumber,
+                                  AmountPaid = Sit.AmountPaid,
+                                  AmountAllocate = Sit.AmountAllocate,
+                                  Change = Sit.Change
+
+                              }).ToList();
+                if (record.Count() > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<ItemDocument>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         public List<ReceivingAdp> ReceiveableQuery(int CustomerId)
         {
             var record = (from receiving in db.Receivings
