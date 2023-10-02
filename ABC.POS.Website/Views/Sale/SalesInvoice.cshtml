@@ -4715,7 +4715,7 @@
 
        // Sale.drivingLicense = drivingLicense;
        // Sale.plateNo = plateNo;
-       // Sale.CustomerName = customername;
+       Sale.CustomerName = customername;
        // Sale.CustomerNumber = customercode;
         Sale.CustomerId = CustomerId;
        // Sale.SaleManName = saleman;
@@ -4752,7 +4752,7 @@
         if (Sale.IsPrintinvoice == true) {
             Sale.OnCredit = "true";
         }
-       // Sale.BusinessAddress = $("#bussinessAddress").text();
+        Sale.BusinessAddress = $("#bussinessAddress").text();
        // if ($("#customerAddToMail").text() == "true") {
           //  Sale.AddToMailList = true;
       //  }
@@ -4776,7 +4776,7 @@
             }
 
             var itemDetail = {};
-        
+
             itemDetail.Quantity = row.find("TD").eq(3).html();
             itemDetail.AmountRetail = abc_general.dollarRemove(row.find("TD").eq(4).html());
             itemDetail.InDiscount = abc_general.dollarRemove(row.find("TD").eq(5).html());    
@@ -4787,6 +4787,8 @@
             itemDetail.Total = abc_general.dollarRemove(row.find("TD").eq(10).html());
             itemDetail.RingerQty = row.find("TD").eq(17).html();    
             itemDetail.ItemId = row.find("TD").eq(14).html();
+            itemDetail.ItemName = row.find("TD").eq(2).html();
+            itemDetail.ItemNumber = row.find("TD").eq(1).html();
 
           if(PointOfSaleId != null || PointOfSaleId != ""){
                 itemDetail.PointOfSaleId = PointOfSaleId;
@@ -8349,19 +8351,16 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-
+                debugger;
                 if (data == true) {
-                    //swal("Success!", "Updated Successfully");
                     CustomerPMOdalhide();
                     // creditCheckWithPayment(true, false);
                     toastr.success('Payment Received');
+                    debugger;
 
-                    //if(OnlyPayment){
-                    // var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
-                    // window.open(actionUrl);
-                    location.reload();
-                    //}
-                    // location.reload();
+                    window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
+                   
+
                 }
 
                 else {
@@ -8371,7 +8370,7 @@
             }
         });
     }
-
+ 
     function ChangePayment(IsInvoicedPaid) {
         var OnlyPayment = false;
 

@@ -6279,7 +6279,7 @@ namespace ABC.POS.API.Controllers
         }
 
         [HttpPost("SaleCreate1")]
-        public async Task<IActionResult> SaleCreate1(PointOfSale obj)
+        public async Task<IActionResult> SaleCreate1(PointOfSaleModel sale)
         {
             try
             {
@@ -6289,10 +6289,45 @@ namespace ABC.POS.API.Controllers
                     return BadRequest();
                 }
 
-                var exist = await db.PointOfSales.Where(a => a.InvoiceNumber == obj.InvoiceNumber).FirstOrDefaultAsync();
+                var exist = await db.PointOfSales.Where(a => a.InvoiceNumber == sale.InvoiceNumber).FirstOrDefaultAsync();
                 if (exist == null)
                 {
-                    db.PointOfSales.Add(obj);
+                    PointOfSale pointOfSale = new PointOfSale();
+
+                    pointOfSale.CustomerId = sale.CustomerId;
+                    pointOfSale.GetSaleDiscount = sale.GetSaleDiscount;
+                    pointOfSale.Count = Convert.ToInt32(sale.Count);
+                    pointOfSale.InvoiceNumber = sale.InvoiceNumber;
+                    pointOfSale.SubTotal = sale.SubTotal;
+                    pointOfSale.Other = sale.Other;
+                    pointOfSale.Discount = sale.Discount;
+                    pointOfSale.Tax = sale.Tax;
+                    pointOfSale.Freight = sale.Freight;
+                    pointOfSale.IsPaid = sale.IsPaid;
+                    pointOfSale.IsOpen = true;
+                    pointOfSale.IsClose = false;
+                    pointOfSale.OnCash = sale.OnCash;
+                    pointOfSale.OnCredit = sale.OnCredit;
+                    pointOfSale.Charges = sale.Charges;
+
+                    foreach (var itemsDetails in sale.PointOfSaleDetails)
+                    {
+                        PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
+                        pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
+                        pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
+                        pointOfSaleDetail.InDiscount = itemsDetails.InDiscount;
+                        pointOfSaleDetail.OutDiscount = itemsDetails.OutDiscount;
+                        pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
+                        pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
+                        pointOfSaleDetail.Price = itemsDetails.Price;
+                        pointOfSaleDetail.Total = itemsDetails.Total;
+                        pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
+
+                        pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
+
+                    }
+
+                    db.PointOfSales.Add(pointOfSale);
                     db.SaveChanges();
 
                     var SaleOrderCount = db.SystemCounts.FirstOrDefault();
@@ -6916,7 +6951,7 @@ namespace ABC.POS.API.Controllers
 
 
         [HttpPost("SaleUpdate1")]
-        public async Task<IActionResult> SaleUpdate1(PointOfSale obj)
+        public async Task<IActionResult> SaleUpdate1(PointOfSaleModel SaleModel)
         {
             try
             {
@@ -6926,21 +6961,62 @@ namespace ABC.POS.API.Controllers
                     return BadRequest();
                 }
 
-                var exist = await db.PointOfSales.Where(a => a.PointOfSaleId == obj.PointOfSaleId).FirstOrDefaultAsync();
+                var exist = await db.PointOfSales.Where(a => a.PointOfSaleId == SaleModel.PointOfSaleId).FirstOrDefaultAsync();
                 if (exist != null)
                 {
-                    var checkPayInvoice = db.Receivings.Where(f => f.InvoiceNumber == obj.InvoiceNumber).FirstOrDefault();
+                    PointOfSale pointOfSale = new PointOfSale();
+
+                    pointOfSale.PointOfSaleId = SaleModel.PointOfSaleId;
+                    pointOfSale.CustomerId = SaleModel.CustomerId;
+                    pointOfSale.GetSaleDiscount = SaleModel.GetSaleDiscount;
+                    pointOfSale.Count = Convert.ToInt32(SaleModel.Count);
+                    pointOfSale.InvoiceNumber = SaleModel.InvoiceNumber;
+                    pointOfSale.SubTotal = SaleModel.SubTotal;
+                    pointOfSale.Other = SaleModel.Other;
+                    pointOfSale.Tax = SaleModel.Tax;
+                    pointOfSale.Freight = SaleModel.Freight;
+                    pointOfSale.IsPaid = SaleModel.IsPaid;
+                    pointOfSale.IsOpen = true;
+                    pointOfSale.IsClose = false;
+                    pointOfSale.OnCash = SaleModel.OnCash;
+                    pointOfSale.OnCredit = SaleModel.OnCredit;
+                    pointOfSale.Charges = SaleModel.Charges;
+
+                    foreach (var itemsDetails in SaleModel.PointOfSaleDetails)
+                    {
+                        PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
+                        pointOfSaleDetail.PointOfSaleId = Convert.ToInt32(itemsDetails.PointOfSaleId);
+                        pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
+                        pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
+                        string inDiscountTrim = (itemsDetails.InDiscount as string).Trim('$');
+                        pointOfSaleDetail.InDiscount = Convert.ToString(inDiscountTrim);
+                        string OutDiscountTrim = (itemsDetails.OutDiscount as string).Trim('%');
+                        pointOfSaleDetail.OutDiscount = Convert.ToString(OutDiscountTrim);
+                        pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
+                        pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
+                        string PriceTrim = (itemsDetails.Price as string).Trim('$');
+                        pointOfSaleDetail.Price = Convert.ToString(PriceTrim);
+                        string TotalTrim = (itemsDetails.Total as string).Trim('$');
+                        pointOfSaleDetail.Total = Convert.ToString(TotalTrim);
+                        pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
+
+                        pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
+
+
+                    }
+
+                    var checkPayInvoice = db.Receivings.Where(f => f.InvoiceNumber == SaleModel.InvoiceNumber).FirstOrDefault();
                     if (checkPayInvoice == null)
                     {
                         //if (obj.Count > exist.Count)
                         //{
-                        var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == obj.PointOfSaleId).ToList();
+                        var savedItems = db.PointOfSaleDetails.Where(f => f.PointOfSaleId == SaleModel.PointOfSaleId).ToList();
 
                         if (savedItems.Count > 0)
                         {
-                            db.Entry(exist).CurrentValues.SetValues(obj);
+                            db.Entry(exist).CurrentValues.SetValues(pointOfSale);
                             db.PointOfSaleDetails.RemoveRange(savedItems);
-                            db.PointOfSaleDetails.AddRange(obj.PointOfSaleDetails);
+                            db.PointOfSaleDetails.AddRange(pointOfSale.PointOfSaleDetails);
                             db.SaveChanges();
                         }
                         // }

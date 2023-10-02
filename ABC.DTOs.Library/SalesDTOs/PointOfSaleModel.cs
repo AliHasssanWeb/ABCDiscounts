@@ -7,13 +7,11 @@ namespace ABC.EFCore.Repository.Edmx
 {
     public partial class PointOfSaleModel
     {
-        public PointOfSaleModel()
-        {
-            PointOfSaleDetails = new HashSet<PointOfSaleDetailModel>();
-        }
-
+      
         public int PointOfSaleId { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string BusinessAddress { get; set; }
         public bool? GetSaleDiscount { get; set; }
       //  public int? SalesManId { get; set; }
       //  public string PaymentTerms { get; set; }
@@ -58,6 +56,6 @@ namespace ABC.EFCore.Repository.Edmx
         public string AmountDue { get; set; }
         public string PreBalance { get; set; }
         //  public virtual CustomerInformation Customer { get; set; }
-        public virtual ICollection<PointOfSaleDetailModel> PointOfSaleDetails { get; set; }
+        public  List<PointOfSaleDetailModel> PointOfSaleDetails { get; set; }
     }
 }
