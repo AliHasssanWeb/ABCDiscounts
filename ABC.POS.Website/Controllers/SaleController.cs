@@ -1396,42 +1396,9 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
-                PointOfSale pointOfSale = new PointOfSale();
+                var body = JsonConvert.SerializeObject(sale);
 
-                pointOfSale.CustomerId = sale.CustomerId;
-                pointOfSale.GetSaleDiscount = sale.GetSaleDiscount;
-                pointOfSale.Count = Convert.ToInt32(sale.Count);
-                pointOfSale.InvoiceNumber = sale.InvoiceNumber;
-                pointOfSale.SubTotal = sale.SubTotal;
-                pointOfSale.Other = sale.Other;
-                pointOfSale.Discount = sale.Discount;
-                pointOfSale.Tax = sale.Tax;
-                pointOfSale.Freight = sale.Freight;
-                pointOfSale.IsPaid = sale.IsPaid;
-                pointOfSale.IsOpen = true;
-                pointOfSale.IsClose = false;
-                pointOfSale.OnCash = sale.OnCash;
-                pointOfSale.OnCredit = sale.OnCredit;
-                pointOfSale.Charges = sale.Charges;
-
-                foreach (var itemsDetails in sale.PointOfSaleDetails)
-                {
-                    PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
-                    pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
-                    pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
-                    pointOfSaleDetail.InDiscount = itemsDetails.InDiscount;
-                    pointOfSaleDetail.OutDiscount = itemsDetails.OutDiscount;
-                    pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
-                    pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
-                    pointOfSaleDetail.Price = itemsDetails.Price;
-                    pointOfSaleDetail.Total = itemsDetails.Total;
-                    pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
-
-                    pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
-
-                }
-
-                var body = JsonConvert.SerializeObject(pointOfSale);
+                TempData["saleorder"] = body;
 
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleCreate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
@@ -1758,48 +1725,8 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
-
-                PointOfSale pointOfSale = new PointOfSale();
-
-                pointOfSale.PointOfSaleId = SaleModel.PointOfSaleId;
-                pointOfSale.CustomerId = SaleModel.CustomerId;
-                pointOfSale.GetSaleDiscount = SaleModel.GetSaleDiscount;
-                pointOfSale.Count = Convert.ToInt32(SaleModel.Count);
-                pointOfSale.InvoiceNumber = SaleModel.InvoiceNumber;
-                pointOfSale.SubTotal = SaleModel.SubTotal;
-                pointOfSale.Other = SaleModel.Other;
-                pointOfSale.Tax = SaleModel.Tax;
-                pointOfSale.Freight = SaleModel.Freight;
-                pointOfSale.IsPaid = SaleModel.IsPaid;
-                pointOfSale.IsOpen = true;
-                pointOfSale.IsClose = false;
-                pointOfSale.OnCash = SaleModel.OnCash;
-                pointOfSale.OnCredit = SaleModel.OnCredit;
-                pointOfSale.Charges = SaleModel.Charges;
-
-                foreach (var itemsDetails in SaleModel.PointOfSaleDetails)
-                {
-                    PointOfSaleDetail pointOfSaleDetail = new PointOfSaleDetail();
-                    pointOfSaleDetail.PointOfSaleId = Convert.ToInt32(itemsDetails.PointOfSaleId);
-                    pointOfSaleDetail.ItemId = Convert.ToInt32(itemsDetails.ItemId);
-                    pointOfSaleDetail.Quantity = Convert.ToString(itemsDetails.Quantity);
-                    string inDiscountTrim = (itemsDetails.InDiscount as string).Trim('$');
-                    pointOfSaleDetail.InDiscount = Convert.ToString(inDiscountTrim);
-                    string OutDiscountTrim = (itemsDetails.OutDiscount as string).Trim('%');
-                    pointOfSaleDetail.OutDiscount = Convert.ToString(OutDiscountTrim);
-                    pointOfSaleDetail.InUnit = Convert.ToString(itemsDetails.InUnit == "" ? 0 : itemsDetails.InUnit);
-                    pointOfSaleDetail.OutUnit = Convert.ToString(itemsDetails.OutUnit == "" ? 0 : itemsDetails.OutUnit);
-                    string PriceTrim = (itemsDetails.Price as string).Trim('$');
-                    pointOfSaleDetail.Price = Convert.ToString(PriceTrim);
-                    string TotalTrim = (itemsDetails.Total as string).Trim('$');
-                    pointOfSaleDetail.Total = Convert.ToString(TotalTrim);
-                    pointOfSaleDetail.RingerQty = Convert.ToString(itemsDetails.RingerQty);
-
-                    pointOfSale.PointOfSaleDetails.Add(pointOfSaleDetail);
-
-
-                }
-                var body = JsonConvert.SerializeObject(pointOfSale);
+                var body = JsonConvert.SerializeObject(SaleModel);
+                TempData["saleorder"] = body;
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleUpdate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {
@@ -2328,62 +2255,14 @@ namespace ABC.POS.Website.Controllers
         }
 
 
-        public IActionResult SaleInvoicePdf(InvoiceModel model)
+        public IActionResult SaleInvoicePdf()
         {
             try
             {
                 var list1 = TempData["saleorder"];
-                var list2 = JsonConvert.DeserializeObject<List<PosSale>>((string)list1);
-                var infolist = TempData["saleorderInfo"];
-                var info_list = JsonConvert.DeserializeObject<SaleInfoModel>((string)infolist);
-                List<PosSale> obj = new List<PosSale>();
-                InvoiceSaleModel invoiceModel = new InvoiceSaleModel();
-                var test = list2[0].InvoiceNumber;
-                InvoiceTotal total = new InvoiceTotal();
-                total.InvoiceNumber = list2[0].InvoiceNumber;
-                total.SupplierNumber = list2[0].CustomerName;
-                total.ItemCode = list2[0].ItemNumber;
-                total.ItemName = list2[0].ItemName;
-                total.TotalItems = list2[0].RingerQuantity;
-                total.Other = list2[0].Other;
-                total.Charges = list2[0].Charges;
-                total.BusinessAddress = info_list.BusinessAddress;
-                total.SubTotal = list2[0].SubTotal;
-                total.Discount = list2[0].Discount;
-                total.Tax = list2[0].Tax;
-                total.Freight = list2[0].Freight;
-                for (int i = 0; i < list2.Count(); i++)
-                {
-                    if (list2[i].Discount != null)
-                    {
-                        list2[i].Discount = list2[i].Discount.Replace("%", "");
-
-                    }
-                    if (list2[i].RingerQuantity != null && list2[i].Price != null)
-                    {
-                        decimal current = (decimal.Parse(list2[i].RingerQuantity)) * (decimal.Parse(list2[i].Price));
-                        list2[i].AmountRetail = (Math.Round((current), 2)).ToString();
-                    }
-                }
-
-                //foreach (var item in list2)
-                //{
-                //    item.Discount = item.OutDiscount.Replace("%", "");
-                //    var newSubtotal = (decimal.Parse(item.Price) * decimal.Parse(item.RingerQuantity));
-                //    total.SubTotal = (decimal.Parse(total.SubTotal) + newSubtotal).ToString();
-                //    total.Discount = (decimal.Parse(total.Discount) + (decimal.Parse(item.RingerQuantity) * ((decimal.Parse(item.Price) / 100) * decimal.Parse(item.Discount)))).ToString();
-                //}
-                invoiceModel.SaleOrders = list2;
-                invoiceModel.InvoiceTotal = total;
-                //total.SubTotal = (Math.Round(decimal.Parse(total.SubTotal), 2)).ToString();
-                //total.Discount = (Math.Round(decimal.Parse(total.Discount), 2)).ToString();
-                //var total1 = (Math.Round((decimal.Parse(total.SubTotal) - decimal.Parse(total.Discount)), 2)).ToString();
-                total.Total = list2[0].InvoiceTotal;
-                //(Math.Round((decimal.Parse(total1) + (decimal.Parse(total.Other))), 2)).ToString();
-                var pdfResult = new ViewAsPdf(invoiceModel);
+                var list2 = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)list1);
+                var pdfResult = new ViewAsPdf(list2);
                 return pdfResult;
-
-
             }
             catch (Exception ex)
             {
@@ -2391,10 +2270,6 @@ namespace ABC.POS.Website.Controllers
                 return View();
             }
         }
-
-
-
-
         public IActionResult SendApproval([FromBody] List<JsonPosSale> SaleDetails)
         {
             try

@@ -11,6 +11,8 @@ namespace ABC.EFCore.Repository.Edmx
         public int PosSaleDetailId { get; set; }
         public string PointOfSaleId { get; set; }
         public string ItemId { get; set; }
+        public string ItemName { get; set; }
+        public string ItemNumber { get; set; }
         public string Quantity { get; set; }
         public string InDiscount { get; set; }
         public string OutDiscount { get; set; }
@@ -21,7 +23,6 @@ namespace ABC.EFCore.Repository.Edmx
         public string RingerQty { get; set; }
         // Item Name Description
         public string Description { get; set; }
-        public string ItemNumber { get; set; }
         public string AmountRetail { get; set; }
         public string SalesLimit { get; set; }
         public bool? NeedHighAuthorization { get; set; }

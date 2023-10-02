@@ -1,4 +1,4 @@
-﻿@model ABC.POS.Website.Models.InvoiceSaleModel
+﻿@model ABC.POS.Website.Models.PointOfSalePdfModel
 @{
     ViewData["Title"] = "SaleInvoice";
     Layout = null;
@@ -86,7 +86,7 @@
                 <br />
                 <br />
                 <span style="float: left; margin-left: 15px;">
-                    Invoice:<b>@Model.InvoiceTotal.InvoiceNumber</b>
+                    Invoice:<b>@Model.InvoiceNumber</b>
                 </span>
                 <span style="float: right; margin-right: 15px;">
                     Date:<b>@DateTime.Now</b>
@@ -95,23 +95,23 @@
 
             <hr style="height:1px;border-width:0;color:black;background-color:black; width: 272px;">
             <p style="float: left; margin-left: 15px; font-weight: bold;    margin-top: -4px !important;">
-                Customer:@Model.InvoiceTotal.SupplierNumber
+               Customer:@Model.CustomerName
             </p>
             <br />
             <div style="height: 75px;width: 100px;margin-left: 39px;  margin-bottom: -20px;">
                 <p style="word-break: break-all;">
-                  Address: @Model.InvoiceTotal.BusinessAddress
+                  Address: @Model.BusinessAddress
                 </p>
             </div>
             <table>
 
 
-                @foreach (var item in Model.SaleOrders)
+                @foreach (var item in Model.PointOfSaleDetails)
                 {
                     <tr style=" border-top: 1px solid black; ">
 
                         <td class="quantity">
-                            <span style="float: left; font-weight: bold;">@item.ItemNumber-</span>
+                            <span style="float: left; font-weight: bold;">@item.ItemNumber</span>
                             <span style="float: left; font-weight: bold;">@item.ItemName</span>
                             <br />
                             <br />
@@ -120,15 +120,15 @@
                                     $@item.Price
                                 </span>
                                 <span style="margin-left: 40px; width: 25%;">
-                                    @item.RingerQuantity
+                                    @item.RingerQty
                                 </span><b>@@</b>
                                 <span style="width: 15%;">
                                     $@item.AmountRetail
                                 </span>
                                 <b>-</b>
-                                @if(Convert.ToDouble(item.InDiscount) > 0){
+                                @if(Convert.ToDouble(item.InDiscount) > 0 || item.InDiscount !="" ){
                                 <span style="float: right; width: 25%;">$@item.InDiscount</span>
-                                }else if(Convert.ToDouble(item.OutDiscount) > 0){
+                                }else if(Convert.ToDouble(item.OutDiscount) > 0 || item.OutDiscount !="" ){
                                 <span style="float: right; width: 25%;">$@item.OutDiscount %</span>
                                 }
                                 <b> </b>
@@ -149,32 +149,32 @@
            <table style="width: 266px;margin-left: 20px">
                 <tr>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Item Sold</th>
-                    <td colspan="2" style="border:1px solid; text-align: center; font-weight: bold;">&nbsp;@Model.SaleOrders.Count()</td>
+                    <td colspan="2" style="border:1px solid; text-align: center; font-weight: bold;">&nbsp;@Model.Count</td>
 
                 </tr>
                 <tr>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub Total</th>
-                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.SubTotal</td>
+                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;">&nbsp;$@Model.SubTotal</td>
 
                 </tr>
                 <tr>
                     <th>&nbsp;Other/Charges</th>
-                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Other</td>
-                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Charges</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.Other</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.Charges</td>
                 </tr>
                   <tr>
                     <th>&nbsp;Tax/Freight</th>
-                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Tax</td>
-                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Freight</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.Tax</td>
+                    <td style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.Freight</td>
                 </tr>
                 <tr>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Discount</th>
-                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Discount</td>
+                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.Discount</td>
 
                 </tr>
                 <tr>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Bill</th>
-                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal.Total</td>
+                    <td colspan="2" style="border:1px solid;text-align: right; font-weight: bold;">&nbsp;$@Model.InvoiceTotal</td>
 
                 </tr>
             </table>
@@ -186,7 +186,7 @@
                     <th style="width: 500px !important">CK/Card Number</th>
                 </tr>
                 <tr>
-                    <td style="border-right: 1px solid;text-align: right; font-weight: bold; ">$@Model.InvoiceTotal.Total</td>
+                    <td style="border-right: 1px solid;text-align: right; font-weight: bold; ">$@Model.InvoiceTotal</td>
                     <td style="border-right: 1px solid ">Cash</td>
                     <td></td>
 
@@ -196,7 +196,7 @@
             <table style="width: 266px;margin-left: 20px">
                 <tr>
                     <th>&nbsp;Amount Applied</th>
-                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;width: 925px !important;">&nbsp;$@Model.InvoiceTotal.Total</td>
+                    <td colspan="2" style="border:1px solid; text-align: right; font-weight: bold;width: 925px !important;">&nbsp;$@Model.InvoiceTotal</td>
 
                 </tr>
                @* <tr>
