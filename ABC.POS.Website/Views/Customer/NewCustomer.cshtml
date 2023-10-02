@@ -1179,10 +1179,10 @@
                         <div class="tab-pane fade row" id="saledata">
                             <div class="row mt-3">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" id="saletable">
-                                    <table class="table table-bordered table-condensed" id="saletable" style="border:0.7px solid;">
+                                    <table class="table table-bordered table-condensed" id="saleinvoicestable" style="border:0.7px solid;">
                                         <thead>
                                             <tr class="text-center grids-head-simple" style="border:0.7px solid;border-bottom:1.4px solid">
-                                                <th class="w-auto">Sr#</th>
+                                                @* <th class="w-auto">Sr#</th> *@
                                                 <th class="w-auto">Invoice#</th>
                                                 <th class="w-auto">Inv. Date</th>
                                                 <th class="w-auto">Printed Date</th>
@@ -5926,6 +5926,54 @@
     //$("#accounthistorydatatab").on('click', function () {
     //    $("#panelheading").text("Account History");
     //});
+
+
+    $("#saledatatab").on('click', function () {
+      debugger;
+        var CustomerId = $('#customerinformationid').val();
+      //  if(CustomerId !=""){
+        $.ajax({
+        type: "GET",
+        url: '@Url.Action("GetSalesInvoices", "Customer")',
+        data: { CustomerId: CustomerId },
+        dataType: 'json',
+        success: function (data) {
+            debugger;
+              var inner = '';
+              $.each(data, function (val, text) {
+
+                          // Invoice Date Formating
+                          var invd = new Date(text.invoiceDate);
+                          var InvDate = invd.getDate() + '-' + (invd.getMonth()+1) + '-' + invd.getFullYear();
+
+                           // Invoice Date Formating
+                  var printedd = new Date(text.printedDate);
+                          var PrintedDate = printedd.getDate() + '-' + (printedd.getMonth()+1) + '-' +  printedd.getFullYear();
+                        
+                        //Invoice Row
+                        inner = '';
+                        inner += '<tr>';
+                        inner += '<td> ' + text.invoiceNumber + ' </td>';   
+                        inner += '<td> ' + InvDate + ' </td>';
+                        inner += '<td> ' + PrintedDate + ' </td>';
+                        inner += '<td> ' + text.salemanName == "undefined" ? "N/A" : text.salemanName + ' </td>';
+                        inner += '<td> ' + text.userName + ' </td>';
+                        inner += '<td> ' + text.invTotal + ' </td>';
+                        inner += '<td> ' + text.totalPaid + ' </td>';
+                        inner += '<td> ' + text.invBalance + ' </td>';
+                        inner += '</tr>';
+                    $('#saleinvoicestable > tbody:last-child').append(inner);
+
+                    }); 
+       // }
+       
+                 
+        },
+        error: function (xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText
+        },
+    });
+    });
 
 
     function triggerAddCustomer() {

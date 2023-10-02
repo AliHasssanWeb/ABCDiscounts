@@ -28,6 +28,7 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string Discount { get; set; }
         public string Tax { get; set; }
         public string Freight { get; set; }
+        public int UserId { get; set; }
 
         public List<SaleInvoiceTransactionModel> saleInvoiceTransactionModel { get; set; }
         public List<PointOfSaleDetailModel> itemsdetails { get; set; }

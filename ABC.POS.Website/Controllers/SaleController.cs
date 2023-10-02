@@ -2963,6 +2963,14 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
+                var loginUser = HttpContext.Session.GetString("userobj");
+                if (!string.IsNullOrEmpty(loginUser))
+                {
+                    AspNetUser aspNetUser = JsonConvert.DeserializeObject<AspNetUser>(loginUser);
+                    var UserId = aspNetUser.Id;
+                    multiInvoicePay.UserId = UserId;
+                }
+
                 var invTrans = JsonConvert.SerializeObject(multiInvoicePay);
 
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/MultiPaymentInvoice", "POST", invTrans);
@@ -2989,9 +2997,15 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
-                var saleInfo = JsonConvert.SerializeObject(Sale);
+                
                 var loginUser = HttpContext.Session.GetString("userobj");
-
+                if (!string.IsNullOrEmpty(loginUser))
+                {
+                    AspNetUser aspNetUser = JsonConvert.DeserializeObject<AspNetUser>(loginUser);
+                    var UserId = aspNetUser.Id;
+                    Sale.UserId = UserId;
+                }
+                var saleInfo = JsonConvert.SerializeObject(Sale);
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/ChangePayment1", "POST", saleInfo);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {

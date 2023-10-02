@@ -14,6 +14,7 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string TotalAmountAllocation { get; set; }
         public string ChangeAmount { get; set; }
         public string CustomerBalanceDue { get; set; }
+        public int UserId { get; set; }
 
         //public List<SaleMultiInvoiceTransactionAdp> multiInvoiceTransaction { get; set; }
         public List<SaleInvoiceTransactionModel> multiInvoiceTransaction { get; set; }

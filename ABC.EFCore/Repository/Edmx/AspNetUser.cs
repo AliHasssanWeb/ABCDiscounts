@@ -9,6 +9,7 @@ namespace ABC.EFCore.Repository.Edmx
     {
         public AspNetUser()
         {
+            Receivings = new HashSet<Receiving>();
             SalesInvTransactions = new HashSet<SalesInvTransaction>();
         }
 
@@ -46,6 +47,7 @@ namespace ABC.EFCore.Repository.Edmx
         public bool? AdminApproval { get; set; }
         public string State { get; set; }
 
+        public virtual ICollection<Receiving> Receivings { get; set; }
         public virtual ICollection<SalesInvTransaction> SalesInvTransactions { get; set; }
     }
 }

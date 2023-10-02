@@ -43,7 +43,9 @@ namespace ABC.EFCore.Repository.Edmx
         public int? CustomerId { get; set; }
         public bool? IsPaid { get; set; }
         public bool? IsPaidFirst { get; set; }
+        public int? UserId { get; set; }
 
         public virtual CustomerInformation Customer { get; set; }
+        public virtual AspNetUser User { get; set; }
     }
 }

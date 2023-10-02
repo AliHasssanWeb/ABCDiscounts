@@ -2636,6 +2636,11 @@ namespace ABC.EFCore.Repository.Edmx
                     .WithMany(p => p.Receivings)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_CustomerId");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Receivings)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_AspNetUsers");
             });
 
             modelBuilder.Entity<Route>(entity =>

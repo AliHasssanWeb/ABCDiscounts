@@ -10280,7 +10280,7 @@ namespace ABC.POS.API.Controllers
                 double TotalAllocation = Convert.ToDouble(multiInvoicePay.TotalAmountAllocation);
                 var TotalAmount = TotalAllocation;
 
-                SaleInvoiceTransactions(Convert.ToInt32(multiInvoicePay.CustomerId), multiInvoicePay.multiInvoiceTransaction);
+                SaleInvoiceTransactions(Convert.ToInt32(multiInvoicePay.CustomerId), multiInvoicePay.UserId, multiInvoicePay.multiInvoiceTransaction);
 
                 var RecevableQuery = (from cusInfo in db.CustomerInformations
                                       join receveable in db.Receivables on cusInfo.AccountId equals receveable.AccountId into result
@@ -10314,7 +10314,7 @@ namespace ABC.POS.API.Controllers
         }
 
 
-        private void MultiInvPayment(int CustomerId, SaleInvoiceTransactionModel invTransaction)
+        private void MultiInvPayment(int CustomerId, int UserId, SaleInvoiceTransactionModel invTransaction)
         {
             var CheckInvoices = db.Receivings.Where(f => f.CustomerId == CustomerId && f.IsPaid == false).OrderByDescending(f => f.IsPaid).OrderBy(f => f.Date).ToList();
 
@@ -10323,7 +10323,7 @@ namespace ABC.POS.API.Controllers
             SaleInvHistory saleInvHistory = null;
 
             saleinvTransaction = new SalesInvTransaction();
-            //saleinvTransaction.UserId = Convert.ToInt32(loginUser.Id);
+            saleinvTransaction.UserId = UserId;
             //saleinvTransaction.InvoiceNumber = item.InvoiceNumber;
             saleinvTransaction.CustomerId = CustomerId;
             saleinvTransaction.AmountPaid = invTransaction.AmountPaid;
@@ -10394,7 +10394,7 @@ namespace ABC.POS.API.Controllers
 
         }
 
-        private void SaleInvoiceTransactions(int CustomerId, List<SaleInvoiceTransactionModel> saleInvoiceTransaction)
+        private void SaleInvoiceTransactions(int CustomerId, int UserId, List<SaleInvoiceTransactionModel> saleInvoiceTransaction)
         {
 
             foreach (var item in saleInvoiceTransaction)
@@ -10402,7 +10402,7 @@ namespace ABC.POS.API.Controllers
 
                 if (item.PaymentType == "1" || item.PaymentType == "2" || item.PaymentType == "4" || item.PaymentType == "5" || item.PaymentType == "6")
                 {
-                    MultiInvPayment(CustomerId, item);
+                    MultiInvPayment(CustomerId, UserId, item);
                 }
             }
 
@@ -10459,6 +10459,7 @@ namespace ABC.POS.API.Controllers
                 {
                     receiving.InvoiceNumber = saleInvoices.InvoiceNumber;
                     receiving.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
+                    receiving.UserId = saleInvoices.UserId;
                     receiving.Date = DateTime.Now;
                     receiving.SubTotal = saleInvoices.SubTotal;
                     receiving.InvTotal = saleInvoices.InvoiceTotal;
@@ -10488,7 +10489,7 @@ namespace ABC.POS.API.Controllers
 
                 if (saleInvoices.saleInvoiceTransactionModel.Count > 0)
                 {
-                    SaleInvoiceTransactions(Convert.ToInt32(saleInvoices.CustomerId), saleInvoices.saleInvoiceTransactionModel);
+                    SaleInvoiceTransactions(Convert.ToInt32(saleInvoices.CustomerId), saleInvoices.UserId,  saleInvoices.saleInvoiceTransactionModel);
                 }
 
                 if (recevables != null)
@@ -11000,6 +11001,57 @@ namespace ABC.POS.API.Controllers
                 if (record.Count() > 0)
                 {
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record.ToList());
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<ItemDocument>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetSalesInvoices/{CustomerId}/{UserId}")]
+        public IActionResult GetSalesInvoices(int CustomerId, int UserId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicesAdp>>();
+            
+                var record = (from R in db.Receivings
+                             join POS in db.PointOfSales on R.InvoiceNumber equals POS.InvoiceNumber into POSresult
+                             from posresult1 in POSresult.DefaultIfEmpty()
+                             join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
+                             from smresult1 in smresult.DefaultIfEmpty()
+                             join user in db.AspNetUsers on R.UserId equals user.Id into userresult
+                             from userresult1 in userresult.DefaultIfEmpty()
+                             where R.CustomerId == CustomerId && R.UserId == UserId
+                             select new SalesInvoicesAdp
+                             {
+                                 InvoiceNumber = R.InvoiceNumber,
+                                 InvoiceDate = R.Date,
+                                 PrintedDate = R.Date,
+                                 SalesmanName = smresult1.Name,
+                                 UserName = userresult1.UserName,
+                                 InvTotal = R.InvTotal,
+                                 InvBalance = R.InvBalance,
+                                 TotalPaid = (Convert.ToDouble(R.InvTotal) - Convert.ToDouble(R.InvBalance)).ToString("F")
+
+                             }).ToList();
+                if (record.Count() > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
 
                 }
                 else
