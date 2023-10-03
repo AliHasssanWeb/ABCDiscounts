@@ -1211,7 +1211,7 @@
                                                 <th style="width:10px;">Date Paid</th>
                                                 <th style="width:10px;">Time</th>
                                                 <th style="width:10px;">Hold Date</th>
-                                                @* <th style="width:10px;">SID</th> *@
+                                                <th style="width:10px;">SID</th>
                                                 <th style="width:10px;">SaleMan</th>
                                                 <th style="width:10px;">Type</th>
                                                 <th style="width:10px;">Check#</th>
@@ -3680,7 +3680,6 @@
 
     //Customer Documents Upload
     $("#UploadNoteBtn").click(function() {
-        debugger;
         var customerId = $("#customerinformationid").val();
         var customerNote = $("#NoteArea").val();
         var customerName = $("#CustomerNameNote").val();
@@ -3713,7 +3712,6 @@
 
     //Customer Note Update
     $("#UpdateNoteBtn").click(function() {
-        debugger;
         var customerId = $("#customerinformationid").val();
         var customerNote = $("#NoteArea").val();
         var customerName = $("#CustomerNameNote").val();
@@ -3746,7 +3744,6 @@
 
 
     function openNotesModalu() {
-        debugger;
         $("#NotesModalu").modal('show');
         var pp = $("#newcustomercode").text();
         $("#CustomerCodeNa").text(pp);
@@ -5928,7 +5925,6 @@
     //});
 
     $("#paymentdatatab").on('click', function () {
-        debugger;
          // for Clear Old Table Data
         var checktable = $('#invoicepaymenttable').dataTable();
         checktable.fnClearTable();
@@ -5942,10 +5938,8 @@
         data: { CustomerId: CustomerId },
         dataType: 'json',
         success: function (data) {
-            debugger;
               var inner = '';
               $.each(data, function (val, text) {
-                  debugger;
                           // Invoice Date Formating
                         var Paidd = new Date(text.paidDate);
                           var paidDate = Paidd.getDate() + '-' + (Paidd.getMonth()+1) + '-' + Paidd.getFullYear();
@@ -5963,6 +5957,7 @@
                         inner += '<td> ' + paidDate + ' </td>';
                         inner += '<td> ' + text.time + ' </td>';
                         inner += '<td> ' + holdDate + ' </td>';
+                        inner += '<td> ' + text.sid + ' </td>';
                         inner += '<td> ' + SalemanName + ' </td>';
                         inner += '<td> ' + text.paymentTypeName + ' </td>';
                         inner += '<td> ' + text.chequeNumber + ' </td>';
@@ -5985,7 +5980,6 @@
     });
 
     $("#saledatatab").on('click', function () {
-      debugger;
        // for Clear Old Table Data
         var checktable = $('#saleinvoicestable').dataTable();
         checktable.fnClearTable();
@@ -5999,10 +5993,8 @@
         data: { CustomerId: CustomerId },
         dataType: 'json',
         success: function (data) {
-            debugger;
               var inner = '';
               $.each(data, function (val, text) {
-                  debugger;
                           // Invoice Date Formating
                           var invd = new Date(text.invoiceDate);
                           var InvDate = invd.getDate() + '-' + (invd.getMonth()+1) + '-' + invd.getFullYear();

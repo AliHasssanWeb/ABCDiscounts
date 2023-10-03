@@ -11,6 +11,7 @@ namespace ABC.DTOs.Library.Adaptors
         public DateTime? PaidDate { get; set; }
         public string Time { get; set; }
         public DateTime? HoldDate { get; set; }
+        public int? SID { get; set; }
         public string SalemanName { get; set; }
         public string PaymentTypeName { get; set; }
         public string ChequeNumber { get; set; }
