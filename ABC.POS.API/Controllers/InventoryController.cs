@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using StatusCodes = ABC.Shared.DataConfig.StatusCodes;
 using Vendor = ABC.EFCore.Repository.Edmx.Vendor;
@@ -11106,19 +11107,16 @@ namespace ABC.POS.API.Controllers
                 var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicesAdp>>();
             
                 var record = (from R in db.Receivings
-                             join POS in db.PointOfSales on R.InvoiceNumber equals POS.InvoiceNumber into POSresult
-                             from posresult1 in POSresult.DefaultIfEmpty()
-                             join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
-                             from smresult1 in smresult.DefaultIfEmpty()
                              join user in db.AspNetUsers on R.UserId equals user.Id into userresult
                              from userresult1 in userresult.DefaultIfEmpty()
+                             join aspr in db.AspNetRoles on userresult1.RoleId equals aspr.Id
                              where R.CustomerId == CustomerId && R.UserId == UserId
                              select new SalesInvoicesAdp
                              {
                                  InvoiceNumber = R.InvoiceNumber,
                                  InvoiceDate = R.Date,
                                  PrintedDate = R.Date,
-                                 SalesmanName = smresult1.Name,
+                                 SalesmanName = aspr.Name,
                                  UserName = userresult1.UserName,
                                  InvTotal = R.InvTotal,
                                  InvBalance = R.InvBalance,
@@ -11157,26 +11155,21 @@ namespace ABC.POS.API.Controllers
                 var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicePaymentsAdp>>();
 
                 var record = (from Sit in db.SalesInvTransactions
-                              join POS in db.PointOfSales on Sit.CustomerId equals POS.CustomerId into POSresult
-                              from posresult1 in POSresult.DefaultIfEmpty()
 
-                              join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
-                              from smresult1 in smresult.DefaultIfEmpty()
-
-                              join user in db.AspNetUsers on Sit.UserId equals user.Id into userresult
-                              from userresult1 in userresult.DefaultIfEmpty()
-
-                              join PT in db.PaymentTypes on Sit.PaymentType equals PT.PaymentTypeId.ToString() into ptresult
-                              from ptresult1 in ptresult.DefaultIfEmpty()
+                              join PT in db.PaymentTypes on Sit.PaymentType equals PT.PaymentTypeId.ToString() 
+                              join asp in db.AspNetUserRoles on Sit.UserId equals asp.UserId
+                              join aspr in db.AspNetRoles on asp.RolesId equals aspr.Id
 
                               where Sit.CustomerId == CustomerId && Sit.UserId == UserId
+
                               select new SalesInvoicePaymentsAdp
                               {
                                   PaidDate = Sit.HoldDate,
                                   Time = DateTime.Parse(Sit.HoldDate.ToString()).ToString("hh:mm tt"),
                                   HoldDate = Sit.HoldDate,
-                                  SalemanName = smresult1.Name,
-                                  PaymentTypeName = ptresult1.PaymentTypeName,
+                                  SID = asp.UserId,
+                                  SalemanName = aspr.Name,
+                                  PaymentTypeName = PT.PaymentTypeName,
                                   ChequeNumber = Sit.ChequeNumber,
                                   AmountPaid = Sit.AmountPaid,
                                   AmountAllocate = Sit.AmountAllocate,
