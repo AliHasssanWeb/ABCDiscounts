@@ -1189,7 +1189,7 @@
                                                 <th class="w-auto">SaleMan</th>
                                                 <th class="w-auto">User</th>
                                                 <th class="w-auto">Total Amount</th>
-                                                <th class="w-auto">Total Paid</th>
+                                                <th class="w-auto" onclick="openTotalAmountModal()">Total Paid</th>
                                                 <th class="w-auto">Due</th>
                                             </tr>
                                         </thead>
@@ -3630,6 +3630,41 @@
     </div>
 </div>
 
+    @*City Edit Modal*@
+<div id="TotalAmountModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:135%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel">Invoice Payments</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeTotalAmountModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" style="padding:0px;">
+                        <table class="table table-bordered table-condensed overflow-auto">
+                            <thead style="text-align:center;">
+                                <tr style="background:rgb(198, 201, 206);">
+                                    <th class="w-auto" style="color:blue;">Amount Paid</th>
+                                    <th class="w-auto" style="color:blue;">Amount Alloc</th>
+                                    <th class="w-auto" style="color:blue;">Payment Type</th>
+                                    <th class="w-auto" style="color:blue;">CC/Card Number</th>
+                                    <th class="w-auto" style="color:blue;">Date</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="modalzipcodegetlisttable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     //    $("#location").click(function(){
@@ -3756,6 +3791,14 @@
         $("#NoteAreau").show();
         $("#AttachImgu").show();
     });
+
+    function openTotalAmountModal() {
+        $("#TotalAmountModal").modal('show');
+
+    }
+    function closeTotalAmountModal() {
+        $("#TotalAmountModal").modal('hide');
+    }
 
 
     $("#DocumentTypeSubmit").on('click', function() {
