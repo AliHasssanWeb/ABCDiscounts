@@ -1292,11 +1292,12 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <input type="checkbox" id="emailcopy" style=" height: 9px;" name="vehicle1" value="Bike">
-                                    <label for="emailcopy" style=" font-size: 10px; font-weight: 800; color: red;">Email Copy</label>
+                                    <input type="checkbox" id="customeremailcopy" style=" height: 9px;" onclick="checkboxChange()">
+                                    <label for="customeremailcopy" style=" font-size: 10px; font-weight: 800; color: red;">Email Copy</label>
+                                    <input type = "text" id="CustomerEmailValue" value="false" hidden>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label id="emaillabel" style=" font-size: 11px; font-weight: 700;">qondalistion@gmail.com</label>
+                                    <label id="customeremaillabel" style=" font-size: 11px; font-weight: 700;">qondalistion@gmail.com</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -2713,6 +2714,8 @@
                     <div class="col-lg-8">
                         <label class="dim" style=" width:80px; font-weight:600; position:absolute;"> Cell:</label>
                         <input id="CellShort" type="text" class="form-control" style="width:86%; background:white; margin-left:80px" disabled />
+                        <input type="text"  id="PhoneNumber" hidden/>
+                        <input type="text" id="faxNumber" hidden/>
                     </div>
                     <div class="col-lg-4">
                         <input id="ProviderShort" type="text" class="form-control" style="width:95%; background:white; margin-left:10px" disabled />
@@ -4703,7 +4706,8 @@
         var drivingLicense = $("#drivingLicense").val();
         var plateNo = $("#plateNo").val();
         var PointOfSaleId = $("#PointOfSaleId").val();
-
+        var phoneNumber = $("#PhoneNumber").val();
+        var faxNumber = $("#faxNumber").val();
 
         $("#saletable TBODY TR").each(function () {
             if ($(this).find("#productId").val() == '') {
@@ -4729,7 +4733,8 @@
         Sale.Tax = taxid;
         Sale.Freight = freightid;
         Sale.PointOfSaleId = PointOfSaleId != "" ? PointOfSaleId : 0 ;
-
+        Sale.Phone = phoneNumber;
+        Sale.Fax = faxNumber;
         if (GetSaleDiscount == true) {
             Sale.GetSaleDiscount = true;
         } else {
@@ -4781,8 +4786,8 @@
             itemDetail.AmountRetail = abc_general.dollarRemove(row.find("TD").eq(4).html());
             itemDetail.InDiscount = abc_general.dollarRemove(row.find("TD").eq(5).html());    
             itemDetail.OutDiscount = abc_general.signRemove(row.find("TD").eq(6).html(), '%');
-            itemDetail.InUnit = row.find("TD").eq(7).html();
-            itemDetail.OutUnit = row.find("TD").eq(8).html();
+            itemDetail.InUnit = abc_general.dollarRemove(row.find("TD").eq(7).html());
+            itemDetail.OutUnit = abc_general.dollarRemove(row.find("TD").eq(8).html());
             itemDetail.Price = abc_general.dollarRemove(row.find("TD").eq(9).html());  
             itemDetail.Total = abc_general.dollarRemove(row.find("TD").eq(10).html());
             itemDetail.RingerQty = row.find("TD").eq(17).html();    
@@ -5652,6 +5657,7 @@
             async: false,
             dataType: 'json',
             success: function (data) {
+                debugger;
                 $("#rowid-" + val).find("#productId").val(data.id);
                 var Id = data.id;
                 var count = 0;
@@ -5677,7 +5683,7 @@
                 });
 
                 if (notexist === true) {
-                                      
+                                 debugger;     
                         if (!abc_general.isNullOrEmpty(data.quantity)) {
                             $("#stockno-" + val).text(data.quantity);
 
@@ -5714,6 +5720,14 @@
 
                     if (!abc_general.isNullOrEmpty(data.cost)) {
                         $("#amount-" + val).text(abc_general.dollarAdd(data.cost));
+                    }
+                    
+                    if (!abc_general.isNullOrEmpty(data.inUnits)) {
+                        $("#InUnits-" + val).text(abc_general.dollarAdd(data.inUnits));
+                    }
+
+                    if (!abc_general.isNullOrEmpty(data.outUnits)) {
+                        $("#OutUnits-" + val).text(abc_general.dollarAdd(data.outUnits));
                     }
 
                     if (!abc_general.isNullOrEmpty(data.cost)) {
@@ -5867,6 +5881,8 @@
                         $("#ZipCodeShort").val(data.zipCode.code);
                     }
                     $("#CellShort").val(data.cell);
+                    $("#PhoneNumber").val(data.phone);
+                    $("#faxNumber").val(data.fax);
                     $("#ProviderShort").val(data.provider);
                     $("#TaxIdShort").val(data.taxIdfein);
                     $("#EmailShort").val(data.email);
@@ -6080,6 +6096,7 @@
                 // ---------- Display None Properties --------
                   $("#bussinessAddress").text(data.businessAddress);
                   $("#customerEmail").text(data.email);
+                  $("#customeremaillabel").text(data.email);
                   $("#customerAddToMail").text(data.addtoMaillingList);
                   // ---------- Display None Properties --------
 
@@ -7999,6 +8016,23 @@
     });
 
 
+    function checkboxChange(){
+        debugger;
+        var checkbox = document.getElementById("customeremailcopy");   
+            if (checkbox.checked) {
+             $("#checkboxvalue").val(true);
+             var CustomerEmail = $("#customerEmail").text();
+   
+             $("#CustomerEmailValue").val(CustomerEmail);
+            } 
+            else {
+              $("#CustomerEmailValue").val(false);
+            }
+    }
+
+
+
+
 
     function GetItemDataAppendForDesModal1() {
 
@@ -8245,7 +8279,6 @@
     }
 
      function ChangePayment1(IsInvoicedPaid) {
-         debugger;
         var OnlyPayment = false;
         var customername = $("#searchname").val();
         var customerId = $("#customerid").val();
@@ -8264,7 +8297,9 @@
         var discount = abc_general.dollarRemove($("#discountidadd").val());
         var tax = abc_general.dollarRemove($("#taxid").val());
         var freight = abc_general.dollarRemove($("#freightid").val());
-
+        var customerEmail = $("#CustomerEmailValue").val();
+       
+        debugger;
         var Sale = {}   
         Sale.InvoiceNumber = invoicenumber;
         Sale.CustomerId = customerId;
@@ -8281,9 +8316,13 @@
         Sale.Discount = discount;
         Sale.Tax = tax;
         Sale.Freight = freight;
+        Sale.CustomerEmail = customerEmail;
+        
 
         var SaleArray = new Array();
+
         var count1 = 1;
+
         $("#Custpaymenttable TBODY TR").each(function () {
             var row = $(this);
             var SaleDetail = {};
@@ -8358,7 +8397,7 @@
                     toastr.success('Payment Received');
                     debugger;
 
-                    window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
+                   // window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
                    
 
                 }

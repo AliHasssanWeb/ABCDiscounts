@@ -38,5 +38,8 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string Profit { get; set; }
         public bool? NeedHighAuthorization { get; set; }
         public string HighlimitOn { get; set; }
+        public string InUnits { get; set;}
+        public string OutUnits { get; set; }
+
     }
 }

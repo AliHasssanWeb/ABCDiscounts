@@ -4156,6 +4156,7 @@ namespace ABC.POS.API.Controllers
                         record.Stock.Sku = getStock.Sku;
                         record.Stock.ItemBarCode = getStock.ItemBarCode;
                         record.Stock.StockId = getStock.StockId;
+                        
                     }
                     var getFinancial = db.Financials.ToList().Where(x => x.ItemId == id).FirstOrDefault();
                     if (getFinancial != null)
@@ -8085,7 +8086,10 @@ namespace ABC.POS.API.Controllers
                                   Description = p.Description,
                                   Profit = FN.Profit,
                                   NeedHighAuthorization = p.NeedHighAuthorization,
-                                  HighlimitOn = p.HighlimitOn
+                                  HighlimitOn = p.HighlimitOn,
+                                  InUnits = p.UnitsInPack,
+                                  OutUnits = p.UnitRetail,
+
                               }
                         ).FirstOrDefault();
 
@@ -8302,6 +8306,8 @@ namespace ABC.POS.API.Controllers
                                   State = cusInfo.State,
                                   Zip = cusInfo.Zip,
                                   Cell = cusInfo.Cell,
+                                  Phone = cusInfo.Phone,
+                                  Fax = cusInfo.Fax,
                                   Provider = cusInfo.Provider,
                                   CheckAddress = cusInfo.CheckAddress,
                                   Email = cusInfo.Email,

@@ -793,7 +793,7 @@ namespace ABC.POS.API.Controllers
                                 SalesLimit = jrresult.SalesLimit,
                                 NeedHighAuthorization = jrresult.NeedHighAuthorization,
                                 HighLimitOn = jrresult.HighlimitOn,
-                                StockQty = jrresult1.Quantity
+                                StockQty = jrresult1.Quantity,  
                             }
                             ).ToList();
 
