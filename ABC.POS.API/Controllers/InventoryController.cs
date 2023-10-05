@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using StatusCodes = ABC.Shared.DataConfig.StatusCodes;
 using Vendor = ABC.EFCore.Repository.Edmx.Vendor;
@@ -10400,13 +10401,11 @@ namespace ABC.POS.API.Controllers
         {
             var CheckInvoices = db.Receivings.Where(f => f.CustomerId == CustomerId && f.IsPaid == false).OrderByDescending(f => f.IsPaid).OrderBy(f => f.Date).ToList();
 
-
             SalesInvTransaction saleinvTransaction = null;
             SaleInvHistory saleInvHistory = null;
 
             saleinvTransaction = new SalesInvTransaction();
             saleinvTransaction.UserId = UserId;
-            //saleinvTransaction.InvoiceNumber = item.InvoiceNumber;
             saleinvTransaction.CustomerId = CustomerId;
             saleinvTransaction.AmountPaid = invTransaction.AmountPaid;
             saleinvTransaction.AmountAllocate = invTransaction.AmountAllocate;
@@ -10428,7 +10427,7 @@ namespace ABC.POS.API.Controllers
             {
                 foreach (var item in CheckInvoices)
                 {
-                    loopCount ++;
+                    loopCount++;
                     double InvBalance = Convert.ToDouble(item.InvBalance);
 
                     if (TotalAllocation == 0.00)
@@ -10455,21 +10454,19 @@ namespace ABC.POS.API.Controllers
                         saleInvHistory.AmountAllocate = TotalAllocation.ToString("F");
 
                         TotalAllocation = 0.00;
-
                     }
 
                     db.Entry(item).State = EntityState.Modified;
                     db.SaleInvHistories.Add(saleInvHistory);
                     db.SaveChanges();
 
-                    if(unPaidinvCount == loopCount && TotalAllocation > 0)
+                    if (unPaidinvCount == loopCount && TotalAllocation > 0)
                     {
                         SaveSaleCreditAmount(SaleInvTransactionId, TotalAllocation);
                     }
-
                 }
             }
-            else if(TotalAllocation > 0)
+            else if (TotalAllocation > 0)
             {
                 SaveSaleCreditAmount(SaleInvTransactionId, TotalAllocation);
             }
@@ -10478,16 +10475,13 @@ namespace ABC.POS.API.Controllers
 
         private void SaleInvoiceTransactions(int CustomerId, int UserId, List<SaleInvoiceTransactionModel> saleInvoiceTransaction)
         {
-
             foreach (var item in saleInvoiceTransaction)
             {
-
                 if (item.PaymentType == "1" || item.PaymentType == "2" || item.PaymentType == "4" || item.PaymentType == "5" || item.PaymentType == "6")
                 {
                     MultiInvPayment(CustomerId, UserId, item);
                 }
             }
-
         }
 
         private void SaveSaleCreditAmount(int SaleInvTransactionId, double TotalAllocation)
@@ -10545,7 +10539,6 @@ namespace ABC.POS.API.Controllers
                     receiving.Date = DateTime.Now;
                     receiving.SubTotal = saleInvoices.SubTotal;
                     receiving.InvTotal = saleInvoices.InvoiceTotal;
-                 
                     receiving.InvBalance = saleInvoices.InvoiceTotal;
                     receiving.IsPaid = false;
                     receiving.Change = saleInvoices.Change;
@@ -10569,9 +10562,71 @@ namespace ABC.POS.API.Controllers
                 }
                 db.SaveChanges();
 
+                if (recevables != null)
+                {
+                    var saveReceving = db.Receivings.Where(f => f.InvoiceNumber == saleInvoices.InvoiceNumber).FirstOrDefault();
+
+                    var DecimalAmount = Convert.ToDouble(recevables.Amount);
+                    if (DecimalAmount < 0)
+                    {
+                        var postiveAmount = Math.Abs(DecimalAmount);
+                        var invoiceBalance = Convert.ToDouble(saveReceving.InvBalance);
+
+                        SalesInvTransaction saleinvTransaction = null;
+                        SaleInvHistory saleInvHistory = null;
+
+                        saleinvTransaction = new SalesInvTransaction();
+                        saleinvTransaction.UserId = saleInvoices.UserId;
+                        saleinvTransaction.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
+                        saleinvTransaction.PaymentType = "Invoice Credit";
+                        saleinvTransaction.ChequeNumber = null;
+                        saleinvTransaction.HoldDate = DateTime.Now;
+                        saleinvTransaction.Change = null;
+
+                        if (postiveAmount >= invoiceBalance)
+                        {
+                            saleinvTransaction.AmountPaid = (-Math.Abs(invoiceBalance)).ToString();
+                            saleinvTransaction.AmountAllocate = invoiceBalance.ToString();
+                        }
+                        else
+                        {
+                            saleinvTransaction.AmountPaid = (-Math.Abs(postiveAmount)).ToString();
+                            saleinvTransaction.AmountAllocate = postiveAmount.ToString();
+                        }
+                        
+                        var saveSaleInvTransaction = db.SalesInvTransactions.Add(saleinvTransaction);
+                        db.SaveChanges();
+
+                        var SaleInvTransactionId = saveSaleInvTransaction.Entity.Id;
+
+                        saleInvHistory = new SaleInvHistory();
+                        saleInvHistory.InvoiceNumber = saleInvoices.InvoiceNumber;
+                        saleInvHistory.SaleInvTransactionId = SaleInvTransactionId;
+
+                        if (postiveAmount >= invoiceBalance)
+                        {
+                            postiveAmount = postiveAmount - invoiceBalance;
+                            saveReceving.IsPaid = true;
+                            saveReceving.InvBalance = "0";
+
+                            saleInvHistory.AmountAllocate = invoiceBalance.ToString();
+                        }
+                        else
+                        {
+                            saveReceving.InvBalance = (invoiceBalance - postiveAmount).ToString("F");
+
+                            saleInvHistory.AmountAllocate = postiveAmount.ToString("F");
+                        }
+
+                        db.Entry(saveReceving).State = EntityState.Modified;
+                        db.SaleInvHistories.Add(saleInvHistory);
+                        db.SaveChanges();
+                    }
+                }
+
                 if (saleInvoices.saleInvoiceTransactionModel.Count > 0)
                 {
-                    SaleInvoiceTransactions(Convert.ToInt32(saleInvoices.CustomerId), saleInvoices.UserId,  saleInvoices.saleInvoiceTransactionModel);
+                    SaleInvoiceTransactions(Convert.ToInt32(saleInvoices.CustomerId), saleInvoices.UserId, saleInvoices.saleInvoiceTransactionModel);
                 }
 
                 if (recevables != null)
@@ -11110,27 +11165,24 @@ namespace ABC.POS.API.Controllers
             try
             {
                 var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicesAdp>>();
-            
-                var record = (from R in db.Receivings
-                             join POS in db.PointOfSales on R.InvoiceNumber equals POS.InvoiceNumber into POSresult
-                             from posresult1 in POSresult.DefaultIfEmpty()
-                             join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
-                             from smresult1 in smresult.DefaultIfEmpty()
-                             join user in db.AspNetUsers on R.UserId equals user.Id into userresult
-                             from userresult1 in userresult.DefaultIfEmpty()
-                             where R.CustomerId == CustomerId && R.UserId == UserId
-                             select new SalesInvoicesAdp
-                             {
-                                 InvoiceNumber = R.InvoiceNumber,
-                                 InvoiceDate = R.Date,
-                                 PrintedDate = R.Date,
-                                 SalesmanName = smresult1.Name,
-                                 UserName = userresult1.UserName,
-                                 InvTotal = R.InvTotal,
-                                 InvBalance = R.InvBalance,
-                                 TotalPaid = (Convert.ToDouble(R.InvTotal) - Convert.ToDouble(R.InvBalance)).ToString("F")
 
-                             }).ToList();
+                var record = (from R in db.Receivings
+                              join user in db.AspNetUsers on R.UserId equals user.Id into userresult
+                              from userresult1 in userresult.DefaultIfEmpty()
+                              join aspr in db.AspNetRoles on userresult1.RoleId equals aspr.Id
+                              where R.CustomerId == CustomerId && R.UserId == UserId
+                              select new SalesInvoicesAdp
+                              {
+                                  InvoiceNumber = R.InvoiceNumber,
+                                  InvoiceDate = R.Date,
+                                  PrintedDate = R.Date,
+                                  SalesmanName = aspr.Name,
+                                  UserName = userresult1.UserName,
+                                  InvTotal = R.InvTotal,
+                                  InvBalance = R.InvBalance,
+                                  TotalPaid = (Convert.ToDouble(R.InvTotal) - Convert.ToDouble(R.InvBalance)).ToString("F")
+
+                              }).ToList();
                 if (record.Count() > 0)
                 {
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
@@ -11163,26 +11215,21 @@ namespace ABC.POS.API.Controllers
                 var Response = ResponseBuilder.BuildWSResponse<List<SalesInvoicePaymentsAdp>>();
 
                 var record = (from Sit in db.SalesInvTransactions
-                              join POS in db.PointOfSales on Sit.CustomerId equals POS.CustomerId into POSresult
-                              from posresult1 in POSresult.DefaultIfEmpty()
 
-                              join s in db.Salesmen on posresult1.SalesManId equals s.Id into smresult
-                              from smresult1 in smresult.DefaultIfEmpty()
-
-                              join user in db.AspNetUsers on Sit.UserId equals user.Id into userresult
-                              from userresult1 in userresult.DefaultIfEmpty()
-
-                              join PT in db.PaymentTypes on Sit.PaymentType equals PT.PaymentTypeId.ToString() into ptresult
-                              from ptresult1 in ptresult.DefaultIfEmpty()
+                              join PT in db.PaymentTypes on Sit.PaymentType equals PT.PaymentTypeId.ToString()
+                              join asp in db.AspNetUserRoles on Sit.UserId equals asp.UserId
+                              join aspr in db.AspNetRoles on asp.RolesId equals aspr.Id
 
                               where Sit.CustomerId == CustomerId && Sit.UserId == UserId
+
                               select new SalesInvoicePaymentsAdp
                               {
                                   PaidDate = Sit.HoldDate,
                                   Time = DateTime.Parse(Sit.HoldDate.ToString()).ToString("hh:mm tt"),
                                   HoldDate = Sit.HoldDate,
-                                  SalemanName = smresult1.Name,
-                                  PaymentTypeName = ptresult1.PaymentTypeName,
+                                  SID = asp.UserId,
+                                  SalemanName = aspr.Name,
+                                  PaymentTypeName = PT.PaymentTypeName,
                                   ChequeNumber = Sit.ChequeNumber,
                                   AmountPaid = Sit.AmountPaid,
                                   AmountAllocate = Sit.AmountAllocate,
