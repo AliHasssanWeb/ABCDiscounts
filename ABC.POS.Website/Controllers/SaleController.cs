@@ -5,12 +5,14 @@ using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
 using ABC.POS.Domain.DataConfig.Configurations;
 using ABC.POS.Website.Models;
+using ABC.POS.Website.Service;
 using ABC.Shared;
 using ABC.Shared.DataConfig;
 using iTextSharp.tool.xml.html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Ocsp;
 using Rotativa.AspNetCore;
@@ -28,6 +30,15 @@ namespace ABC.POS.Website.Controllers
 {
     public class SaleController : Controller
     {
+        private readonly ILogger<SaleController> _logger;
+        private readonly IEmailService _emailService;
+        private readonly IRazorViewToStringRenderer _razorViewToStringRenderer;
+        public SaleController(ILogger<SaleController> logger, IEmailService emailService, IRazorViewToStringRenderer razorViewToStringRenderer)
+        {
+            _logger = logger;
+            _emailService = emailService;
+            _razorViewToStringRenderer = razorViewToStringRenderer;
+        }
         public IActionResult Index()
         {
             return View();
@@ -2872,7 +2883,7 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
-                
+
                 var loginUser = HttpContext.Session.GetString("userobj");
                 if (!string.IsNullOrEmpty(loginUser))
                 {
@@ -2884,6 +2895,14 @@ namespace ABC.POS.Website.Controllers
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/ChangePayment1", "POST", saleInfo);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {
+                    if (Sale.CustomerEmail != "false")
+                    {
+                        var saleObj = TempData["saleorder"];
+                        var model = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)saleObj);
+
+                       Sendmail(Sale.CustomerEmail, model);
+
+                    }
                     return Json(true);
                 }
                 else
@@ -2896,6 +2915,23 @@ namespace ABC.POS.Website.Controllers
 
                 throw ex;
             }
+        }
+
+        private async Task Sendmail(string Email, PointOfSalePdfModel model)
+
+        {
+            UserEmailOptions options = new UserEmailOptions
+            {
+                ToEmails = new List<string>() { Email },
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{UserName}}", "Awais")
+                },
+                Subject = "domey data subject test",
+                Body = await _razorViewToStringRenderer.RenderViewToStringAsync("~/EmailTemplate/EmailTemplate.cshtml", model)
+            };
+
+            await _emailService.SendTestEmail(options);
         }
 
         [HttpPost]

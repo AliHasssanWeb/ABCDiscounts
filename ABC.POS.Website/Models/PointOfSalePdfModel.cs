@@ -17,6 +17,8 @@ namespace ABC.POS.Website.Models
         public string Freight { get; set; }
         public string InvoiceTotal { get; set; }
         public string Charges { get; set; }
+        public string Phone { get; set; }
+        public string Fax { get; set; }
         public List<PointOfSaleDetailPDFModel> PointOfSaleDetails { get; set; }
     }
 }

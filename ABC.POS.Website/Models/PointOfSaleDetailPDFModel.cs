@@ -18,6 +18,9 @@ namespace ABC.POS.Website.Models
         // Item Name Description
         public string Description { get; set; }
         public string AmountRetail { get; set; }
+        public string InUnit { get; set; }
+        public string OutUnit { get; set; }
+        public string  Retail { get; set; }
 
     }
 }

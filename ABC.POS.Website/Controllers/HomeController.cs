@@ -29,29 +29,9 @@ namespace ABC.POS.Website.Controllers
             _emailService = emailService;
             _razorViewToStringRenderer = razorViewToStringRenderer;
         }
-        public async Task<ViewResult> Index()
+        public async Task<ViewResult> Index()    
         {
 
-            //var listInvmodel = new List<InvoiceTotal>() {
-            //    new InvoiceTotal { ItemCode = "234",ItemName = "abc" },
-            //    new InvoiceTotal { ItemCode = "345",ItemName = "cdf" },
-            //    new InvoiceTotal { ItemCode = "567",ItemName = "bgt" }
-            //};
-
-
-            //UserEmailOptions options = new UserEmailOptions
-            //{
-            //    ToEmails = new List<string>() { "test@gmail.com" },
-            //    PlaceHolders = new List<KeyValuePair<string, string>>()
-            //    {
-            //        new KeyValuePair<string, string>("{{UserName}}", "Awais")
-            //    },
-            //    Subject = "domey data subject test",
-            //    Body = await _razorViewToStringRenderer.RenderViewToStringAsync("~/EmailTemplate/EmailTemplate.cshtml", listInvmodel)
-            //};                   
-
-            //await _emailService.SendTestEmail(options);
-            
             return View();
         }
         //public IActionResult Index()

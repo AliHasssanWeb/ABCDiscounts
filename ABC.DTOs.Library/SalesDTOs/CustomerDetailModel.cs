@@ -18,6 +18,8 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string State { get; set; }
         public string Zip { get; set; }
         public string Cell { get; set; }
+        public string Phone { get; set; }
+        public string Fax { get; set; }
         public string Provider { get; set; }
         public bool? CheckAddress { get; set; }
         public string Email { get; set; }

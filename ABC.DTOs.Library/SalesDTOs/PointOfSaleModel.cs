@@ -22,7 +22,9 @@ namespace ABC.EFCore.Repository.Edmx
         public string InvoiceNumber { get; set; }
      //   public string PreviousBalance { get; set; }
         public string SubTotal { get; set; }
-       // public string Discount { get; set; }
+        // public string Discount { get; set; }
+        public string Phone { get; set; }
+        public string Fax { get; set; }
         public string Other { get; set; }
         public string Discount { get; set; }
         public string Tax { get; set; }
