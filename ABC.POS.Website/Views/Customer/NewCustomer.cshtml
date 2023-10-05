@@ -16,7 +16,7 @@
 @if (TempData["response"] != null)
 {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var success = '@((TempData["response"] != null).ToString())';
             if (success == 'false' || success == false) {
                 toastr.error('@TempData["response"].ToString()')
@@ -198,10 +198,9 @@
         padding: 5px;
         border: none;
         color: red;
-      /*  position: absolute;
-        left: 60%;
-        top: 29%*/
-        
+        /*  position: absolute;
+            left: 60%;
+            top: 29%*/
     }
 </style>
 
@@ -279,6 +278,7 @@
                                         <label class="dim col-sm-12" style="position:absolute; width:115px; text-align:right; font-weight:bold; margin-top:5px">Company</label>
                                             @*@Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control searchname", placeholder = " Name", id = "companyname", onkeydown = "GetAllMatchedItems(event)", autocomplete = "off", style="width:84%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                         <div style="cursor:pointer" id="listallmissions"></div>*@
+                                       <input type="text" id="CompanyNameId" hidden/>
 
                                         <input type="text" class="form-control searchnamee" placeholder="Enter Company Name" onclick="triggerkeup()" onkeyup="GetCompaniesList()" id="CompanyInput" list="companylist" autocomplete="off" style="width:80%; margin-left:122px; margin-top:10px; border-top:1px solid gray; border-left:1px solid gray;">
 
@@ -306,7 +306,7 @@
                                             <div class="form-group" style="text-align:end">
                                                     @*<label class="dim col-sm-6" style="font-weight:bold;">First Name</label>*@
                                                     @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstName" , style="border-top:1px solid gray; border-left:1px solid gray;" } })
-                                                    
+
                                             </div>
                                         </div>
 
@@ -330,18 +330,18 @@
                                                     @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger db" })
                                             </div>
                                         </div>
-                                        <div class="col-lg-5 col-sm-6" >
+                                        <div class="col-lg-5 col-sm-6">
                                             <div class="form-group">
                                                     @Html.EditorFor(model => model.Suite, new { htmlAttributes = new { @class = "form-control ", placeholder = "Suite", id = "suite", style="width:82%; margin-left:15px; border-top:1px solid gray; border-left:1px solid gray;" } })
                                                     @Html.ValidationMessageFor(model => model.Suite, "", new { @class = "text-danger db" })
-                                               
+
                                             </div>
                                                 @*<div id="output" style="width:500px; height:500px; border:1px solid red;"></div>*@
                                         </div>
                                         <div class="col-lg-1 col-sm-6">
-                                          
-                                                <i class="fa fa-map-marker " style="font-size: 28px; color:red" aria-hidden="true"></i>
-                                          
+
+                                            <i class="fa fa-map-marker " style="font-size: 28px; color:red" aria-hidden="true"></i>
+
                                         </div>
 
                                     </div>
@@ -349,7 +349,7 @@
 
 
                                 <div class="col-lg-3 col-sm-8" style="margin-left:65px;">
-                                     <div style="height:99px; width:270px; border:1px solid blue; float:right; margin-top:-65px;">
+                                    <div style="height:99px; width:270px; border:1px solid blue; float:right; margin-top:-65px;">
                                         <h5 style="text-align:center; color:red; margin-top:8px; font-weight:bold;">Accurate Balance</h5>
                                         <h4 id="AccurateBalance" style="text-align:center; color:#b6b605; margin-top:25px; font-weight:bold;">Click Here</h4>
                                         <span id="PreviousBalanceS" style="font-size:20px; margin-left:95px; font-weight:bold; display:none;"></span>
@@ -391,7 +391,7 @@
                                                     </div>
 
                                                 </div>
-                                               
+
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-4">
@@ -479,7 +479,7 @@
 
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -492,7 +492,7 @@
                                                             @Html.DropDownListFor(model => model.CustomerType, (IEnumerable<SelectListItem>)ViewBag.CustomerType, "--Choose Customer Type--", new { @class = "form-control dropdowncursor", id = "customertype", style="margin-left:103px; width:71%; border-top:1px solid gray; border-left:1px solid gray;" })
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -619,8 +619,8 @@
                                                             @Html.DropDownListFor(model => model.DrivingLicenseStateId, (IEnumerable<SelectListItem>)ViewBag.DrivingLicenseState, "Choose State", new { @class = "form-control dropdowncursor", id = "txtdrivinglicensestate", style="margin-left:53px; border-top:1px solid gray; border-left:1px solid gray; background:peachpuff;" })
                                                     </div>
                                                 </div>
-                                               @* <div class="col-lg-3 col-sm-3" style="padding-top:5px;">
-                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivinglicensestate" style="margin-left:22px;  padding:5px; border:1px solid gray;"></i>
+                                                    @* <div class="col-lg-3 col-sm-3" style="padding-top:5px;">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivinglicensestate" style="margin-left:22px;  padding:5px; border:1px solid gray;"></i>
 
                                                 </div>*@
                                             </div>
@@ -649,14 +649,14 @@
 
                                     </div>
                                 </div>
-                               @* <div class="col-lg-4 col-sm-4">
-                                    <div class="form-group">
+                                    @* <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
 
-                                            @Html.CheckBox("Authorized", false, new { @id = "Authorized", })
-                                        <label class="dim col-sm-8" for="Authorized" style="font-weight:bold;">
-                                            Authorized
-                                        </label>
-                                    </div>
+                                @Html.CheckBox("Authorized", false, new { @id = "Authorized", })
+                                <label class="dim col-sm-8" for="Authorized" style="font-weight:bold;">
+                                Authorized
+                                </label>
+                                </div>
                                 </div>*@
 
                             </div>
@@ -1182,7 +1182,7 @@
                                     <table class="table table-bordered table-condensed" id="saleinvoicestable" style="border:0.7px solid;">
                                         <thead>
                                             <tr class="text-center grids-head-simple" style="border:0.7px solid;border-bottom:1.4px solid">
-                                                @* <th class="w-auto">Sr#</th> *@
+                                                    @* <th class="w-auto">Sr#</th> *@
                                                 <th class="w-auto">Invoice#</th>
                                                 <th class="w-auto">Inv. Date</th>
                                                 <th class="w-auto">Printed Date</th>
@@ -1216,7 +1216,7 @@
                                                 <th style="width:10px;">Type</th>
                                                 <th style="width:10px;">Check#</th>
                                                 <th style="width:10px;">Amount Paid</th>
-                                                <th style="width:10px;">Amount Alloc</th>
+                                                <th style="width:10px;" onclick="openPaymenntAmountModal()">Amount Alloc</th>
                                                 <th style="width:10px;">Change</th>
 
                                             </tr>
@@ -1410,22 +1410,22 @@
                                         <label class="dim col-sm-12" style="position:absolute; width:146px;  font-size:13px; text-align:right; font-weight:bold;"> Name </label>
                                         <div class="col-lg-3 col-sm-2" style="padding-left:85px;">
                                             <div class="form-group">
-                                                @*<label class="dim col-sm-8" style="font-weight:bold;margin-left: 92px;">Mr./Mrs.</label>*@
-                                                @Html.DropDownListFor(model => model.Gender, (IEnumerable<SelectListItem>)ViewData["Gender"], "--Choose Title--", new { @class = "form-control dropdowncursor", id = "txtgenderu", style="border-top:1px solid gray; border-left:1px solid gray; width:130px; margin-left:56px;" })
+                                                    @*<label class="dim col-sm-8" style="font-weight:bold;margin-left: 92px;">Mr./Mrs.</label>*@
+                                                    @Html.DropDownListFor(model => model.Gender, (IEnumerable<SelectListItem>)ViewData["Gender"], "--Choose Title--", new { @class = "form-control dropdowncursor", id = "txtgenderu", style="border-top:1px solid gray; border-left:1px solid gray; width:130px; margin-left:56px;" })
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-5" style="width:22%">
                                             <div class="form-group" style="text-align:end">
-                                                @*<label class="dim col-sm-6" style="font-weight:bold;">First Name</label>*@
-                                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstNameu" , style="border-top:1px solid gray; border-left:1px solid gray;" } })
+                                                    @*<label class="dim col-sm-6" style="font-weight:bold;">First Name</label>*@
+                                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control ", placeholder = "First Name", id = "txtFirstNameu" , style="border-top:1px solid gray; border-left:1px solid gray;" } })
                                                 <label class="text-danger db" style="display:none" id="fnamevalidation">Enter First Name</label>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-4 col-sm-5" style="width:22%; margin-left:-20px;">
                                             <div class="form-group">
-                                                @*<label class="dim col-sm-6" style="font-weight:bold;">Last name</label>*@
-                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control ", placeholder = "Last Name", id = "txtLastNameu", style="border-top:1px solid gray; border-left:1px solid gray;" } })
+                                                    @*<label class="dim col-sm-6" style="font-weight:bold;">Last name</label>*@
+                                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control ", placeholder = "Last Name", id = "txtLastNameu", style="border-top:1px solid gray; border-left:1px solid gray;" } })
                                                 <label class="text-danger db" style="display:none" id="lnamevalidation">Enter Last Name</label>
                                             </div>
                                         </div>
@@ -1454,7 +1454,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-8">
-                                <div style="height:99px; width:270px; border:1px solid blue; float:right; margin-top:-65px;">
+                                    <div style="height:99px; width:270px; border:1px solid blue; float:right; margin-top:-65px;">
                                         <h5 style="text-align:center; color:red; margin-top:8px; font-weight:bold;">Accurate Balance</h5>
                                         <h4 style="text-align:center; color:#b6b605; margin-top:25px; font-weight:bold;">Click Here</h4>
                                             @*<span id="PreviousBalanceS" style="font-size:20px; margin-left:95px; font-weight:bold; display:none;"></span>*@
@@ -1496,7 +1496,7 @@
                                                     </div>
 
                                                 </div>
-                                              
+
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-4">
@@ -1550,8 +1550,8 @@
                                             <div class="form-group">
                                                 <label class="dim" style="position:absolute; width:115px; font-weight:bold; text-align:right"> Phone</label>
                                                     @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control ", placeholder = "Enter Phone ", id = "phonenumberu", type = "number", style="margin-left:122px; width:77%; border-top:1px solid gray; border-left:1px solid gray;" } })
-                                                   @* @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })*@
-                                                    <label class="text-danger db" style="display:none" id="phnvalidation">Enter First Name</label>
+                                                    @* @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })*@
+                                                <label class="text-danger db" style="display:none" id="phnvalidation">Enter First Name</label>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-sm-6" style="padding-left:41px;">
@@ -1585,7 +1585,7 @@
                                                                 <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Provider</label>
                                                             </div>
                                                         </div>
-                                                     
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1599,7 +1599,7 @@
                                                         <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Customer Type</label>
                                                     </div>
                                                 </div>
-                                              
+
                                             </div>
                                         </div>
                                     </div>
@@ -1733,8 +1733,8 @@
                                                         <label class="text-danger db" style="display:none" id="msgcustomertype">Enter Driving License State</label>
                                                     </div>
                                                 </div>
-                                               @* <div class="col-lg-3 col-sm-3" style="padding-top:5px;">
-                                                    <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivinglicensestate" style="margin-left:22px;  padding:5px; border:1px solid gray;"></i>
+                                                    @* <div class="col-lg-3 col-sm-3" style="padding-top:5px;">
+                                                <i class="mdi mdi-plus text-primary" data-bs-toggle="modal" data-bs-target="#adddrivinglicensestate" style="margin-left:22px;  padding:5px; border:1px solid gray;"></i>
 
                                                 </div>*@
                                             </div>
@@ -1764,13 +1764,13 @@
 
                                     </div>
                                 </div>
-                               @* <div class="col-lg-4 col-sm-4">
-                                    <div class="form-group">
-                                            @Html.CheckBox("Authorized", false, new { @id = "Authorizedu", })
-                                        <label class="dim col-sm-8" for="Authorized" style="font-weight:bold;">
-                                            Authorized
-                                        </label>
-                                    </div>
+                                    @* <div class="col-lg-4 col-sm-4">
+                                <div class="form-group">
+                                @Html.CheckBox("Authorized", false, new { @id = "Authorizedu", })
+                                <label class="dim col-sm-8" for="Authorized" style="font-weight:bold;">
+                                Authorized
+                                </label>
+                                </div>
                                 </div>*@
 
                             </div>
@@ -3112,7 +3112,7 @@
                     <div class="card-header">
                         <label>POSSale Screen</label>
                         <div id="LoadPage " class="alertstyle">
-                        <a id="Printbtn" onclick="PrintMe()"> <img src="~/images/printer.png" style="width: 50px;" title="Print" /></a>
+                            <a id="Printbtn" onclick="PrintMe()"> <img src="~/images/printer.png" style="width: 50px;" title="Print" /></a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -3445,7 +3445,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3" style="margin-top:-2.7%" >
+                    <div class="col-lg-3" style="margin-top:-2.7%">
                         <label style="width: 62px;color: blue; font-size:13px">Note'sDate</label>
                         <input style="width:100%" id="NoteAddDate" disabled />
                     </div>
@@ -3490,43 +3490,43 @@
             </div>
             <div class="modal-body" style="padding-top: 20px;padding-bottom:10px;">
                 <div class="row">
-                   @* <div class="col-lg-2 col-md-4 col-sm-6">
-                        <label class="text-primary">Type</label>
-                        <select style="width:100%" id="typeSelect">
-                            <option value="option1">Notes</option>
-                            <option value="option2">2</option>
-                            <option value="option3">3</option>
-                        </select>
+                        @* <div class="col-lg-2 col-md-4 col-sm-6">
+                    <label class="text-primary">Type</label>
+                    <select style="width:100%" id="typeSelect">
+                    <option value="option1">Notes</option>
+                    <option value="option2">2</option>
+                    <option value="option3">3</option>
+                    </select>
                     </div>
                     <div class="col-lg-2 col-md-4 col-sm-6">
-                        <label class="text-primary">Id</label>
-                        <select style="width:100%" id="idSelect">
-                            <option value="option1">1</option>
-                            <option value="option2">2</option>
-                            <option value="option3">3</option>
-                        </select>
+                    <label class="text-primary">Id</label>
+                    <select style="width:100%" id="idSelect">
+                    <option value="option1">1</option>
+                    <option value="option2">2</option>
+                    <option value="option3">3</option>
+                    </select>
                     </div>*@
-                    <div class="col-lg-4 col-md-12" >
+                    <div class="col-lg-4 col-md-12">
                         <label class="text-primary">Search</label>
-                       
-                            <input type="text" id="searchnote">
-                           @* <div class="input-group-append">
-                                <button class="btn" id="viewnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;">View</button>
-                                <button class="btn" id="delnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;">Delete</button>
-                            </div>*@
-                       
+
+                        <input type="text" id="searchnote">
+                            @* <div class="input-group-append">
+                        <button class="btn" id="viewnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;">View</button>
+                        <button class="btn" id="delnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;">Delete</button>
+                        </div>*@
+
                     </div>
                     <div class="col-lg-2 col-md-12">
                         <button class="btn" id="delnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;margin-top:15px ">Delete</button>
-                
-                               
-                           
-                          </div>
-                           <div class="col-lg-2 col-md-4 col-sm-6">
+
+
+
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
                         <button class="btn" id="viewnotebtn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px; margin-right:0px;margin-top:15px">View</button>
                     </div>
-                      </div>
-                 
+                </div>
+
                 <div class="row" style=" background:white; height:300px;">
                     <div class="table-responsive-lg">
                         <table class="table table-bordered w-100 overflow-auto" id="attachtable">
@@ -3548,7 +3548,7 @@
                         <labeL class="text-primary">Description</labeL>
                         <input type="text" style="width:28%" id="AttachmentName">
                         <button class="btn" style="color:blue; font-weight:bold; border-bottom:1px solid gray; border-right:1px solid gray; border-radius:0px;" id="SubmitNoteAttachment">Add File</button>
-`
+                        `
                     </div>
                 </div>
             </div>
@@ -3644,7 +3644,7 @@
                 <div class="row" style="margin:0px;">
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-responsive" style="padding:0px;">
-                        <table class="table table-bordered table-condensed overflow-auto">
+                        <table class="table table-bordered table-condensed overflow-auto" id="invoicePaymentsHistoryTable">
                             <thead style="text-align:center;">
                                 <tr style="background:rgb(198, 201, 206);">
                                     <th class="w-auto" style="color:blue;">Amount Paid</th>
@@ -3665,6 +3665,104 @@
     </div>
 </div>
 
+<div id="PaymenntAmountModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:80%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel">Payments Adjustment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closePaymenntAmountModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;background-color:#cccccc">
+                <div class="row" style="margin:0px">
+                    <div style="background-color:#f1f1f1;width:95%; height:250px">
+                        <p id="CompanyNameAndId">1175 ABC FLEA MARKET</p>
+                      <div class="row">
+                            <table class="table table-bordered" id="paymentAdjustmenttable" style="background-color:#cccccc; border: 1px solid black;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width:0%;">Invoice #</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Applied</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*  Append Row Here  *@
+
+                                </tbody>
+                            </table>
+                        </div>
+                       
+                  </div>
+                  <div class="row">
+                        <div class="col-md-8"> <p style="background-color:#cccccc; padding:5px; text-align:left" id="userNameId"></p></div>
+                        <div class="col-md-4"> <p style="background-color:#cccccc; padding:5px; text-align:right" id="TotalAmountId"></p></div>
+                  </div>
+
+                    <style>
+                         /*Style for tabs*/
+                        .tab {
+                            display: none;
+                        }
+
+                        /** Style for the selected tab */
+                        .active {
+                            display: block;
+                        }
+                    </style>
+                   
+                    <button style="width:28%" class="tablink" onclick="openTab('London')">Change</button>
+                    <button style="width:28%" class="tablink" onclick="openTab('Paris')">Transfer</button>
+
+
+                    <div id="London" class="row tab">
+                        <div style="background-color:#cccccc; border:outset; height:120px;width:100%">
+                            <div class="pt-2">
+                                <label for="cars">Change Payment Type To:</label>
+                                <select style="margin-left:10px" name="cars" id="cars">
+                                    <option value="volvo">Cash</option>
+                                    <option value="saab">Check</option>
+                                    <option value="volvo">Money Order</option>
+                                    <option value="saab">Credit Card</option>
+                                    <option value="volvo">Debit Card</option>
+                                    <option value="saab">Cust Advance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Paris" class="row tab">
+                        <div style="background-color:#cccccc; border:outset; height:120px;width:100%">
+                            <div class="pt-2">
+                                <label for="cars">Transfer Payment to:</label>
+                                <div class="pt-2">
+                                    <select style="margin-left:10px" name="cars" id="cars">
+                                        <option value="volvo"></option>
+                                        <option value="saab">Check</option>
+                                        <option value="volvo">Money Order</option>
+                                        <option value="saab">Credit Card</option>
+                                        <option value="volvo">Debit Card</option>
+                                        <option value="saab">Cust Advance</option>
+                                    </select>
+                                    <select style="margin-left:10px" name="cars" id="cars">
+                                        <option value="volvo"></option>
+                                        <option value="saab">Check</option>
+                                        <option value="volvo">Money Order</option>
+                                        <option value="saab">Credit Card</option>
+                                        <option value="volvo">Debit Card</option>
+                                        <option value="saab">Cust Advance</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row pt-2" style="justify-content:right;"><button style="width:25%">Transfer</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     //    $("#location").click(function(){
@@ -3679,13 +3777,47 @@
     //    });
     //});
 
-    $("#AccurateBalance").click(function() {
+    function openPaymenntAmountModal() {
+        $("#PaymenntAmountModal").modal('show');
+
+    }
+    function closePaymenntAmountModal() {
+        $("#PaymenntAmountModal").modal('hide');
+    }
+
+    function openTab(tabName) {
+        var i, tabs;
+        tabs = document.getElementsByClassName("tab");
+        for (i = 0; i < tabs.length; i++) {
+            tabs[i].style.display = "none"; // Hide all tabs
+        }
+        document.getElementById(tabName).style.display = "block"; // Show the selected tab
+    }
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Activate the "London" tab by default
+    document.getElementById("London").style.display = "block";
+    document.querySelector(".tablinks").classList.add("active");
+
+    $("#AccurateBalance").click(function () {
         $("#AccurateBalance").hide();
         $("#PreviousBalanceS").show();
     })
 
 
-    $("#location").click(function() {
+    $("#location").click(function () {
         $("#MapModal").modal('show');
     });
     function CloseMapModal() {
@@ -3702,7 +3834,7 @@
         $("#NotesModal").modal('hide');
     }
 
-    $("#PlusN").click(function() {
+    $("#PlusN").click(function () {
         $("#NoteArea").show();
         $("#AttachImg").show();
     });
@@ -3714,7 +3846,7 @@
     }
 
     //Customer Documents Upload
-    $("#UploadNoteBtn").click(function() {
+    $("#UploadNoteBtn").click(function () {
         var customerId = $("#customerinformationid").val();
         var customerNote = $("#NoteArea").val();
         var customerName = $("#CustomerNameNote").val();
@@ -3732,12 +3864,12 @@
             processData: false,
             contentType: false,
 
-            success: function() {
+            success: function () {
                 swal("Success!", "Customer Note Added Successfully!");
                 $("#NotesModal").modal('hide');
                 window.location = '@Url.Action("NewCustomer", "Customer")';
             },
-            error: function() {
+            error: function () {
                 swal("Error!", "Customer Note Already Added");
                 $("#NotesModal").modal('hide');
             }
@@ -3746,7 +3878,7 @@
     });
 
     //Customer Note Update
-    $("#UpdateNoteBtn").click(function() {
+    $("#UpdateNoteBtn").click(function () {
         var customerId = $("#customerinformationid").val();
         var customerNote = $("#NoteArea").val();
         var customerName = $("#CustomerNameNote").val();
@@ -3764,12 +3896,12 @@
             processData: false,
             contentType: false,
 
-            success: function() {
+            success: function () {
                 swal("Success!", "Customer Note Updated Successfully!");
                 $("#NotesModal").modal('hide');
                 window.location = '@Url.Action("NewCustomer", "Customer")';
             },
-            error: function() {
+            error: function () {
                 swal("Error!", "Customer Note Already Added");
                 $("#NotesModal").modal('hide');
             }
@@ -3787,7 +3919,7 @@
         $("#NotesModalu").modal('hide');
     }
 
-    $("#PlusNu").click(function() {
+    $("#PlusNu").click(function () {
         $("#NoteAreau").show();
         $("#AttachImgu").show();
     });
@@ -3801,7 +3933,7 @@
     }
 
 
-    $("#DocumentTypeSubmit").on('click', function() {
+    $("#DocumentTypeSubmit").on('click', function () {
         var DocumentType = $("#DocumentType").val();
 
         var record = {};
@@ -3813,7 +3945,7 @@
                 title: 'Add New Document Type!',
                 content: 'Are you sure to add new dcoument type?',
                 buttons: {
-                    confirm: function() {
+                    confirm: function () {
                         $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
                         $.ajax({
                             url: '@Url.Action("AddDocumentType", "Vendor")',
@@ -3823,10 +3955,10 @@
                             dataType: "json",
                             processData: false,
                             contentType: false,
-                            success: function(data) {
+                            success: function (data) {
                                 if (data == "Add Successfully") {
                                     $("#DocumentTypeModal").modal('hide');
-                                    setTimeout(function() {
+                                    setTimeout(function () {
                                         $.unblockUI();
                                         window.location = '@Url.Action("NewCustomer", "Customer")';
                                         toastr.success("Document TYpe Added Successfully");
@@ -3834,15 +3966,15 @@
                                     }, 2500);
                                 }
                             },
-                            error: function() {
-                                setTimeout(function() {
+                            error: function () {
+                                setTimeout(function () {
                                     $.unblockUI();
 
                                 }, 2500);
                             }
                         });
                     },
-                    cancel: function() {
+                    cancel: function () {
                     },
                 }
             });
@@ -3880,7 +4012,7 @@
             var allrows = $(".selrow").find('tr');
             $(event).addClass("selectedrow");
 
-            $("#delnotebtn").click(function() {
+            $("#delnotebtn").click(function () {
                 DeleteAttachment(val2);
             });
         }
@@ -3891,7 +4023,7 @@
 
 
 
-    $("#submittAttachments").on('click', function() {
+    $("#submittAttachments").on('click', function () {
 
         var DocumentType = $("#SupDocType").val();
         var DocumentName = $("#DocumentName").val();
@@ -3902,7 +4034,7 @@
             if (!(regex.test(val))) {
                 $("#documentuploadresponse").text("Only pdf format are allowed !");
                 $("#documentuploadresponse").show();
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#documentuploadresponse").hide();
                 }, 3000);
             }
@@ -3930,7 +4062,7 @@
                         title: 'Add Customer Documents!',
                         content: 'Are you sure to add this Document?',
                         buttons: {
-                            confirm: function() {
+                            confirm: function () {
                                 $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
                                 $.ajax({
                                     type: "POST",
@@ -3939,19 +4071,19 @@
                                     dataType: "json",
                                     processData: false,
                                     contentType: false,
-                                    success: function(data) {
+                                    success: function (data) {
                                         console.log(data);
                                         if (data == true) {
                                             $("#documentuploadresponse").text("successfully uploaded");
                                             $("#documentuploadresponse").show();
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 $.unblockUI();
                                                 location.reload();
                                             }, 2500);
                                         }
                                     },
-                                    error: function() {
-                                        setTimeout(function() {
+                                    error: function () {
+                                        setTimeout(function () {
                                             $.unblockUI();
                                             location.reload();
                                         }, 2500);
@@ -3959,7 +4091,7 @@
                                 });
 
                             },
-                            cancel: function() {
+                            cancel: function () {
                             },
                         }
                     });
@@ -3976,7 +4108,7 @@
 
         @*Submit Note Attachments*@
 
-        $("#SubmitNoteAttachment").on('click', function() {
+        $("#SubmitNoteAttachment").on('click', function () {
             var customerId = $("#customerinformationid").val();
             var DocumentName = $("#AttachmentName").val();
             var val = $("#NoteFile").val().toLowerCase(),
@@ -3984,7 +4116,7 @@
             if (val != "") {
                 if (!(regex.test(val))) {
                     swal("Error", "Only PDF Allowed")
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $("#documentuploadresponse").hide();
                     }, 3000);
                 }
@@ -4011,7 +4143,7 @@
                         title: 'Add Customer Documents!',
                         content: 'Are you sure to add this Document?',
                         buttons: {
-                            confirm: function() {
+                            confirm: function () {
                                 $.blockUI({ message: '<h3 class="blockui-txt"><img src="../images/busy.gif" style="width:15%"/> Loading ...</h1>' });
                                 $.ajax({
                                     type: "POST",
@@ -4020,20 +4152,20 @@
                                     dataType: "json",
                                     processData: false,
                                     contentType: false,
-                                    success: function(data) {
+                                    success: function (data) {
                                         console.log(data);
                                         if (data == true) {
                                             swal("Success", "Document Uploaded Successfully");
                                             $("#NotesAttachmentModal").modal('hide');
                                             $("#NotesModal").modal('hide');
-                                            setTimeout(function() {
+                                            setTimeout(function () {
                                                 $.unblockUI();
                                                 location.reload();
                                             }, 2500);
                                         }
                                     },
-                                    error: function() {
-                                        setTimeout(function() {
+                                    error: function () {
+                                        setTimeout(function () {
                                             $.unblockUI();
                                             location.reload();
                                         }, 2500);
@@ -4041,7 +4173,7 @@
                                 });
 
                             },
-                            cancel: function() {
+                            cancel: function () {
                             },
                         }
                     });
@@ -4057,7 +4189,7 @@
 
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $("#addappendTabs").hide();
         $("#deleteicon").hide();
@@ -4076,7 +4208,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function(data) {
+            success: function (data) {
                 if (data.length > 0) {
                     $('#parentgroupname').html('');
                     var options = '';
@@ -4087,7 +4219,7 @@
                     $('#parentgroupname').append(options);
                 }
             },
-            error: function() {
+            error: function () {
 
             }
         });
@@ -4095,8 +4227,8 @@
         AppendAllMissions(event);
         GetAllZipCodes();
         statelistcallfun();
-        $('.modal').each(function() {
-            $("#addzipcode").on('hidden.bs.modal', function() {
+        $('.modal').each(function () {
+            $("#addzipcode").on('hidden.bs.modal', function () {
                 //location.reload();
             });
 
@@ -4107,7 +4239,7 @@
     });
 
 
-    var appendsalescreen = function(e) {
+    var appendsalescreen = function (e) {
         var customerid = $(e).attr('ab');
         var currentInvoice = $(e).attr('cd');
 
@@ -4118,11 +4250,11 @@
                 customerid: customerid,
                 currentInvoice: currentInvoice
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
                     console.log(data);
                     $('#addsalesinvoice').modal('show');
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         if (value.getSaleDiscount) {
 
                             $("#modaltxtisgetsalediscount").prop("checked", true)
@@ -4177,16 +4309,16 @@
                     });
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
     }
 
 
-    $("#searchnote").on("keyup", function() {
+    $("#searchnote").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        $("#attachtable tr").filter(function() {
+        $("#attachtable tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
@@ -4205,12 +4337,12 @@
             async: false,
             dataType: 'json',
             cache: false,
-            success: function(data) {
+            success: function (data) {
                 var inner = '';
                 var opts = jQuery.parseJSON(JSON.stringify(data));
                 if (opts.length > 0) {
                 }
-                $.each(opts, function(i, d) {
+                $.each(opts, function (i, d) {
                     inner = '';
                     if (i == 0) {
                         inner += '<div class="setsearchbox dropdownhwading hidden">';
@@ -4231,7 +4363,7 @@
                     $("#listallmissions").append(inner);
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
@@ -4256,7 +4388,7 @@
             items.parent().hide();
 
             //show only those matching user input:
-            items.filter(function() {
+            items.filter(function () {
                 return $(this).text().toLowerCase().indexOf(text) == 0;
             }).parent().show();
 
@@ -4273,9 +4405,9 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
-
+                    debugger;
 
                     var iconhtml = '';
                     iconhtml += '<img class="hide-icon" src="../images/attach.png" style="width:50px" title="Attachments" onclick="showattachmentmodal()" />';
@@ -4308,6 +4440,7 @@
                     $("#prebalance").text(data.balance);
                     $("#PreviousBalanceS").text(data.balance);
                     $("#companyname").val(data.company);
+                    $("#CompanyNameId").val(data.company);
                     $("#suite").val(data.suite);
                     $('#txtgender').val(data.gender).attr("selected", "selected");
                     //if (data.gender != null) {
@@ -4507,7 +4640,7 @@
                     $("#listallmissions").empty();
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4556,9 +4689,9 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data.length > 0) {
-                    $.each(data, function(index, value) {
+                    $.each(data, function (index, value) {
                         console.log(value);
                         //var date=(value.invoiceDate).ToString("dd/mm/yyy");
                         var html = "";
@@ -4586,9 +4719,9 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data.length > 0) {
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         //var date=(value.invoiceDate).ToString("dd/mm/yyy");
                         var html = "";
                         html += '<tr ondblclick="appendsalescreen(this)" ab="' + value.customerId + '" cd="' + value.invoiceNumber + '" >';
@@ -4611,7 +4744,7 @@
 
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4624,10 +4757,10 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data.length > 0) {
                     console.log(data);
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         //var date=(value.invoiceDate).ToString("dd/mm/yyy");
                         var html = "";
                         html += '<tr >';
@@ -4650,10 +4783,10 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 if (data != null && data.length > 0) {
 
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         var html = "";
                         html += '<tr ondblclick="forpaymentrowcolor(' + key + ')">';
                         html += '<td class="w-auto"> ' + value.orderDate + '</td >';
@@ -4674,7 +4807,7 @@
                     });
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4688,10 +4821,10 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 //console.log(data);
                 if (data != null && data.length > 0) {
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         //var date=(value.invoiceDate).ToString("dd/mm/yyy");
                         var html = "";
                         html += '<tr >';
@@ -4708,7 +4841,7 @@
 
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4722,14 +4855,14 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
 
                 console.log(data);
                 $("#CreatedD").val(data.createdDate);
                 $("#LastUse").val(data.lastLogin);
                 $("#LastSale").val(data.deliveredDate);
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4743,12 +4876,12 @@
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
 
                 console.log(data);
 
             },
-            error: function() {
+            error: function () {
 
             },
         });
@@ -4764,7 +4897,7 @@
             title: "Delete Document",
             content: "Are you sure to add delete document?",
             buttons: {
-                confirm: function() {
+                confirm: function () {
 
                     $.ajax({
                         type: "GET",
@@ -4772,7 +4905,7 @@
                         data: {
                             id: id
                         },
-                        success: function(data) {
+                        success: function (data) {
 
                             swal("Success!", "Document Deleted Successfully");
                             window.location = '@Url.Action("NewCustomer", "Customer")';
@@ -4787,12 +4920,12 @@
                             // swal("Success!", "Document Deleted Successfully");
                             //    });
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         })
     }
@@ -4804,7 +4937,7 @@
             title: "Delete Document",
             content: "Are you sure to add delete document?",
             buttons: {
-                confirm: function() {
+                confirm: function () {
 
                     $.ajax({
                         type: "GET",
@@ -4812,18 +4945,18 @@
                         data: {
                             id: id
                         },
-                        success: function(data) {
+                        success: function (data) {
 
                             swal("Success!", "Document Deleted Successfully");
                             window.location = '@Url.Action("NewCustomer", "Customer")';
 
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         })
     }
@@ -4880,7 +5013,7 @@
             title: "Add A New Provider",
             content: "Are you sure to add a new provider?",
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     var ProviderName = $("#providername").val();
                     var providerdata = {};
                     providerdata = new FormData();
@@ -4892,19 +5025,19 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
 
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         })
     }
@@ -4913,7 +5046,7 @@
             title: 'Add New ShiptoReference!',
             content: 'Are you sure to Add New ShiptoReference?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
 
                     var Name = $("#shiptoreferencename").val();
                     var shiptoreferencedata = {};
@@ -4926,18 +5059,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -4947,7 +5080,7 @@
             title: "Add a new Customer State",
             content: "Are u Sure To Add A New Customer State",
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     var CustomerStateName = $("#StateName").val();
                     var CustomerStatedata = {};
                     CustomerStatedata = new FormData();
@@ -4959,18 +5092,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -4980,7 +5113,7 @@
             title: "Add a new Customer Type",
             content: "Are u Sure To Add A New Customer Type",
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     var TypeName = $("#customertype").val();
                     var TypeNamedata = {};
                     TypeNamedata = new FormData();
@@ -4992,19 +5125,19 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
 
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5014,7 +5147,7 @@
             title: "Add a new Driving License State",
             content: "Are u Sure To Add A New Driving Licenese State",
             buttons: {
-                confirm: function() {
+                confirm: function () {
 
                     var Name = $("#driverlicensestatename").val();
                     var Driverlicensestatedata = {};
@@ -5027,19 +5160,19 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
 
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5054,7 +5187,7 @@
             title: 'Add New Group!',
             content: 'Are you sure to Add New Group?',
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddGroup", "Customer")",
@@ -5062,18 +5195,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5089,7 +5222,7 @@
             title: 'Add New SubGroup!',
             content: 'Are you sure to Add New SubGroup?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddSubGroup", "Customer")",
@@ -5097,18 +5230,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5122,7 +5255,7 @@
             title: 'Add New Zone!',
             content: 'Are you sure to Add New Zone?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddZone", "Customer")",
@@ -5130,18 +5263,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5155,7 +5288,7 @@
             title: 'Add New Business Type!',
             content: 'Are you sure to Add New Business Type?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddBusinessType", "Customer")",
@@ -5163,18 +5296,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5202,7 +5335,7 @@
             title: 'Add New SalesMan!',
             content: 'Are you sure to Add New SalesMan?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddSalesman", "Customer")",
@@ -5210,18 +5343,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5242,7 +5375,7 @@
             title: 'Add New Shipped Via!',
             content: 'Are you sure to Add New Shipped Via?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddShipmentPurchase", "Customer")",
@@ -5250,18 +5383,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5282,7 +5415,7 @@
             title: 'Add New Route!',
             content: 'Are you sure to Add New Route?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddRoute", "Customer")",
@@ -5290,18 +5423,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5336,7 +5469,7 @@
             title: 'Add New Route!',
             content: 'Are you sure to Add New Route?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("AddDriver", "Customer")",
@@ -5344,18 +5477,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5365,7 +5498,7 @@
             title: 'Add New Pricing!',
             content: 'Are you sure to Add New Pricing?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
 
                     var Name = $("#pricingname").val();
                     var pricingdata = {};
@@ -5378,18 +5511,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5399,7 +5532,7 @@
             title: 'Add New PaymentTerm!',
             content: 'Are you sure to Add New PaymentTerm?',
             buttons: {
-                confrim: function() {
+                confrim: function () {
 
                     var Name = $("#pyementtermsname").val();
                     var paymenttermsdata = {};
@@ -5412,18 +5545,18 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 closemodal();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
 
@@ -5660,7 +5793,7 @@
             title: 'Update Existing Customer!',
             content: 'Are you sure to update existing customer?',
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     $.ajax({
                         type: "POST",
                         url: "@Url.Action("EditCustomerInformation", "Customer")",
@@ -5668,23 +5801,23 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         },
-                        error: function() {
+                        error: function () {
 
                         },
                     });
                 },
-                cancel: function() {
+                cancel: function () {
                 },
             }
         });
 
     }
-    $("#searchbutton").on('click', function() {
+    $("#searchbutton").on('click', function () {
         var companyname = $("#searchcompany").val();
         $.ajax({
             type: "GET",
@@ -5693,7 +5826,7 @@
                 name: companyname
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
 
                     var iconhtml = '';
@@ -5933,17 +6066,17 @@
                     $("#addicon").hide();
                 }
             },
-            error: function() {
+            error: function () {
 
             },
         });
     });
-    $("#editicon").on('click', function() {
+    $("#editicon").on('click', function () {
 
     });
 
 
-    $("#deleteicon").on('click', function() {
+    $("#deleteicon").on('click', function () {
 
     });
 
@@ -5968,33 +6101,33 @@
     //});
 
     $("#paymentdatatab").on('click', function () {
-         // for Clear Old Table Data
+        // for Clear Old Table Data
         var checktable = $('#invoicepaymenttable').dataTable();
         checktable.fnClearTable();
         checktable.fnDestroy();
 
-      var CustomerId = $('#customerinformationid').val();
-       if(CustomerId !=""){
-        $.ajax({
-        type: "GET",
-        url: '@Url.Action("GetPaymentsInvoices", "Customer")',
-        data: { CustomerId: CustomerId },
-        dataType: 'json',
-        success: function (data) {
-              var inner = '';
-              $.each(data, function (val, text) {
-                          // Invoice Date Formating
+        var CustomerId = $('#customerinformationid').val();
+        if (CustomerId != "") {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetPaymentsInvoices", "Customer")',
+                data: { CustomerId: CustomerId },
+                dataType: 'json',
+                success: function (data) {
+                    var inner = '';
+                    $.each(data, function (val, text) {
+                        // Invoice Date Formating
                         var Paidd = new Date(text.paidDate);
-                          var paidDate = Paidd.getDate() + '-' + (Paidd.getMonth()+1) + '-' + Paidd.getFullYear();
+                        var paidDate = Paidd.getDate() + '-' + (Paidd.getMonth() + 1) + '-' + Paidd.getFullYear();
 
-                           // Printed Date Formating
-                          var printedd = new Date(text.holdDate);
-                          var holdDate = printedd.getDate() + '-' + (printedd.getMonth()+1) + '-' +  printedd.getFullYear();
+                        // Printed Date Formating
+                        var printedd = new Date(text.holdDate);
+                        var holdDate = printedd.getDate() + '-' + (printedd.getMonth() + 1) + '-' + printedd.getFullYear();
 
-                         var SalemanName =  text.salemanName !== null ? (SalemanName = text.salemanName) : (SalemanName = "N/A");
+                        var SalemanName = text.salemanName !== null ? (SalemanName = text.salemanName) : (SalemanName = "N/A");
                         var Change = text.change !== null ? (Change = text.change) : (Change = 0);
 
-                        //Invoice Row   
+                        //Invoice Row
                         inner = '';
                         inner += '<tr>';
                         inner += '<td> ' + paidDate + ' </td>';
@@ -6005,73 +6138,162 @@
                         inner += '<td> ' + text.paymentTypeName + ' </td>';
                         inner += '<td> ' + text.chequeNumber + ' </td>';
                         inner += '<td> ' + text.amountPaid + ' </td>';
-                        inner += '<td> ' + text.amountAllocate + ' </td>';
+                        inner += '<td onclick=PaymenthistoryLoad(' + text.saleInvTransactionId + ')> ' + text.amountAllocate + ' </td>';
                         inner += '<td> ' + Change + ' </td>';
                         inner += '</tr>';
                         $('#invoicepaymenttable > tbody:last-child').append(inner);
 
-                    }); 
-       
-       
-                 
-        },
-        error: function (xhr, status, error) {
-            var errorMessage = xhr.status + ': ' + xhr.statusText
-        },
-    });
-     }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                },
+            });
+        }
     });
 
+    function PaymenthistoryLoad(saleinvId){
+        debugger;
+          // for Clear Old Table Data
+        var checktable = $('#paymentAdjustmenttable').dataTable();
+        checktable.fnClearTable();
+        checktable.fnDestroy();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetSaleInvHistory", "Customer")',
+                data: { SaleInvTransactionId: saleinvId },
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    $("#userNameId").text(data[0].userName);
+                    $("#TotalAmountId").text(data[0].totalAmount)
+
+                    var customerCode = $("#customernumberfound").text();
+                    var CompanyName = $("#CompanyNameId").val();
+
+                $("#CompanyNameAndId").text(customerCode + "  " + CompanyName);
+                var inner = '';
+                    $.each(data, function (val, text) {
+                    debugger;
+                        // Hold Date Formating
+                        var holdDate = new Date(text.holdDate);
+                        var DatePay = holdDate.getDate() + '-' + (holdDate.getMonth() + 1) + '-' + holdDate.getFullYear();
+
+                        //SaleHistory Row
+                        inner = '';
+                        inner += '<tr>';
+                        inner += '<td> ' + text.invoiceNumber + ' </td>';
+                        inner += '<td> ' + DatePay + ' </td>';
+                        inner += '<td> ' + text.amountAllocate + ' </td>';
+                       
+                        inner += '</tr>';
+                        $('#paymentAdjustmenttable > tbody:last-child').append(inner);
+
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                },
+            });
+
+        $("#PaymenntAmountModal").modal('show');
+    }
+
+    
+
     $("#saledatatab").on('click', function () {
-       // for Clear Old Table Data
+        // for Clear Old Table Data
         var checktable = $('#saleinvoicestable').dataTable();
         checktable.fnClearTable();
         checktable.fnDestroy();
 
-       var CustomerId = $('#customerinformationid').val();
-       if(CustomerId !=""){
-        $.ajax({
-        type: "GET",
-        url: '@Url.Action("GetSalesInvoices", "Customer")',
-        data: { CustomerId: CustomerId },
-        dataType: 'json',
-        success: function (data) {
-              var inner = '';
-              $.each(data, function (val, text) {
-                          // Invoice Date Formating
-                          var invd = new Date(text.invoiceDate);
-                          var InvDate = invd.getDate() + '-' + (invd.getMonth()+1) + '-' + invd.getFullYear();
+        var CustomerId = $('#customerinformationid').val();
+        if (CustomerId != "") {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetSalesInvoices", "Customer")',
+                data: { CustomerId: CustomerId },
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    var inner = '';
+                    $.each(data, function (val, text) {
+                        // Invoice Date Formating
+                        var invd = new Date(text.invoiceDate);
+                        var InvDate = invd.getDate() + '-' + (invd.getMonth() + 1) + '-' + invd.getFullYear();
 
-                           // Printed Date Formating
-                          var printedd = new Date(text.printedDate);
-                          var PrintedDate = printedd.getDate() + '-' + (printedd.getMonth()+1) + '-' +  printedd.getFullYear();
-                          var SalemanName = text.salesmanName !== null ? (SalemanName = text.salesmanName) : (SalemanName = "N/A");
+                        // Printed Date Formating
+                        var printedd = new Date(text.printedDate);
+                        var PrintedDate = printedd.getDate() + '-' + (printedd.getMonth() + 1) + '-' + printedd.getFullYear();
+                        var SalemanName = text.salesmanName !== null ? (SalemanName = text.salesmanName) : (SalemanName = "N/A");
                         //Invoice Row
                         inner = '';
                         inner += '<tr>';
-                        inner += '<td> ' + text.invoiceNumber + ' </td>';   
+                        inner += '<td> ' + text.invoiceNumber + ' </td>';
                         inner += '<td> ' + InvDate + ' </td>';
                         inner += '<td> ' + PrintedDate + ' </td>';
                         inner += '<td> ' + SalemanName + ' </td>';
                         inner += '<td> ' + text.userName + ' </td>';
                         inner += '<td> ' + text.invTotal + ' </td>';
-                        inner += '<td> ' + text.totalPaid + ' </td>';
+                        inner += '<td onclick=SalePaymentHistoryLoad(\"' + text.invoiceNumber + '\")> ' + text.totalPaid + ' </td>';
                         inner += '<td> ' + text.invBalance + ' </td>';
                         inner += '</tr>';
-                    $('#saleinvoicestable > tbody:last-child').append(inner);
+                        $('#saleinvoicestable > tbody:last-child').append(inner);
 
-                    }); 
-       
-       
-                 
-        },
-        error: function (xhr, status, error) {
-            var errorMessage = xhr.status + ': ' + xhr.statusText
-        },
-    });
-     }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                },
+            });
+        }
     });
 
+    function SalePaymentHistoryLoad(invValue) {
+        debugger;
+        // for Clear Old Table Data
+        var checktable = $('#invoicePaymentsHistoryTable').dataTable();
+        checktable.fnClearTable();
+        checktable.fnDestroy();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetSalePaymentHistory", "Customer")',
+            data: { InvoiceNumber: invValue },
+            dataType: 'json',
+            success: function (data) {
+
+                var inner = '';
+                $.each(data, function (val, text) {
+                    debugger;
+                    // Hold Date Formating
+                    var holdDate = new Date(text.holdDate);
+                    var DatePay = holdDate.getDate() + '-' + (holdDate.getMonth() + 1) + '-' + holdDate.getFullYear();
+
+                    //Sale Payment History Row
+                    inner = '';
+                    inner += '<tr>';
+                    inner += '<td> ' + text.amountPaid + ' </td>';
+                    inner += '<td> ' + text.amountAllocate + ' </td>';
+                    inner += '<td> ' + text.paymentType + ' </td>';
+                    inner += '<td> ' + text.cardNumber + ' </td>';
+                    inner += '<td> ' + DatePay + ' </td>';
+                    inner += '</tr>';
+                    $('#invoicePaymentsHistoryTable > tbody:last-child').append(inner);
+
+                });
+
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+            },
+        });
+
+
+        $("#TotalAmountModal").modal('show');
+    }
 
     function triggerAddCustomer() {
 
@@ -6382,7 +6604,7 @@
                 title: 'Save New Customer!',
                 content: 'Are you sure to save new customer?',
                 buttons: {
-                    confirm: function() {
+                    confirm: function () {
                         $.ajax({
                             url: '@Url.Action("NewCustomer", "Customer")',
                             type: "POST",
@@ -6391,16 +6613,16 @@
                             dataType: "json",
                             processData: false,
                             contentType: false,
-                            success: function(data) {
+                            success: function (data) {
                                 //location.Reload();
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             },
-                            error: function() {
+                            error: function () {
                                 //window.alert("hi");
                             }
                         });
                     },
-                    cancel: function() {
+                    cancel: function () {
                     },
                 }
             });
@@ -6416,7 +6638,7 @@
             title: 'Delete Customer!',
             content: 'Are you sure to delete this customer?',
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     $.ajax({
                         type: "DELETE",
                         url: "@Url.Action("DeleteCustomerInformation", "Customer")",
@@ -6424,14 +6646,14 @@
                             id: id
                         },
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             if (data == true) {
                                 window.location = '@Url.Action("NewCustomer", "Customer")';
                             }
                         }
                     });
                 },
-                cancel: function() {
+                cancel: function () {
                 },
             }
         });
@@ -6443,9 +6665,9 @@
             type: "GET",
             url: "@Url.ActionLink("GetListZipCode", "Customer")",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         var html = "";
                         html += '<tr id="rowid-' + value.id + '" ondblclick="zipcodeiconshow(' + value.id + ',' + (key + 1) + ');">';
                         html += '<td class="w-auto" style="font-size:17px">' + (key + 1) + '</td>';
@@ -6458,7 +6680,7 @@
                     });
                 }
             },
-            error: function() { }
+            error: function () { }
         });
     }
     function Addnewrowforzipcodetable() {
@@ -6472,7 +6694,7 @@
                 type: "GET",
                 url: "@Url.ActionLink("GetListZipCode", "Customer")",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data != null) {
                         index = data.length;
                         html += '<tr>';
@@ -6492,7 +6714,7 @@
                         $("#zipcodeonlisticon").hide();
                     }
                 },
-                error: function() { }
+                error: function () { }
             });
         }
         else {
@@ -6511,7 +6733,7 @@
             title: "Add New ZipCode Data.",
             content: "Are you sure to want to add?",
             buttons: {
-                confirm: function() {
+                confirm: function () {
 
                     var zipcodedata = {};
                     zipcodedata = new FormData();
@@ -6527,9 +6749,9 @@
                         async: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == "true") {
-                                $(".modal").each(function() {
+                                $(".modal").each(function () {
                                     $(this).find("#modalzipcodegetlisttable").empty();
                                     $("#onaddiconclick").hide();
                                     $("#onaddiconclick").removeClass('d-flex');
@@ -6539,9 +6761,9 @@
                                     type: "GET",
                                     url: "@Url.ActionLink("GetListZipCode", "Customer")",
                                     dataType: "json",
-                                    success: function(data) {
+                                    success: function (data) {
                                         if (data != null) {
-                                            $.each(data, function(key, value) {
+                                            $.each(data, function (key, value) {
                                                 var html = "";
                                                 html += '<tr id="rowid-' + value.id + '" ondblclick="zipcodeiconshow(' + value.id + ');">';
                                                 html += '<td class="w-auto">' + (key + 1) + '</td>';
@@ -6554,15 +6776,15 @@
                                             });
                                         }
                                     },
-                                    error: function() { }
+                                    error: function () { }
                                 });
                             }
                         },
-                        error: function() { }
+                        error: function () { }
 
                     });
                 },
-                cancel: function() { }
+                cancel: function () { }
             }
         });
     }
@@ -6577,7 +6799,7 @@
                 id: id
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
                     $("#modalzipcodegetlisttable").empty();
                     var html = "";
@@ -6605,7 +6827,7 @@
                     $("#fortablerowid").val(id);
                 }
             },
-            error: function() { }
+            error: function () { }
         });
     }
     function updatezipcoderow() {
@@ -6614,7 +6836,7 @@
             title: "Update Zipcode Record ",
             content: "Are you sure to Update this Record!",
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     var zipcode = $("#edittablezipcodetd").text();
                     var city = $("#edittablecitytd").text();
                     var stateshortcut = $("#edittablestateshortcuttd").text();
@@ -6634,16 +6856,16 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: function(data) {
+                        success: function (data) {
                             if (data == true) {
                                 location.reload();
                             }
                         },
-                        error: function() { }
+                        error: function () { }
 
                     });
                 },
-                cancel: function() {
+                cancel: function () {
 
                 }
             }
@@ -6655,7 +6877,7 @@
             title: "Delete Zipcode Record ",
             content: "Are you sure to delete this Record!",
             buttons: {
-                confirm: function() {
+                confirm: function () {
                     $.ajax({
                         type: "DELETE",
                         url: "@Url.ActionLink("DeleteZipCode", "Customer")",
@@ -6663,16 +6885,16 @@
                             id: id
                         },
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             if (data == true) {
                                 location.reload();
                             }
                         },
-                        error: function() { }
+                        error: function () { }
 
                     });
                 },
-                cancel: function() {
+                cancel: function () {
 
                 }
             }
@@ -6685,9 +6907,9 @@
             dataType: "json",
             contentType: false,
             processData: false,
-            success: function(data) {
+            success: function (data) {
                 if (data != null) {
-                    $.each(data, function(val, text) {
+                    $.each(data, function (val, text) {
                         var option = '';
                         option += '<option value=' + val + '>' + text.stateName + '</option>';
                         $("#stateselect").append(option);
@@ -6695,12 +6917,12 @@
 
                 }
             },
-            error: function() { }
+            error: function () { }
         });
     }
-    $("#modalzipcodesearch").on('keyup', function() {
+    $("#modalzipcodesearch").on('keyup', function () {
         var value = $(this).val().toLowerCase();
-        $("#modalzipcodegetlisttable tr").filter(function() {
+        $("#modalzipcodegetlisttable tr").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
         });
     });
@@ -6709,9 +6931,9 @@
             type: "GET",
             url: "@Url.ActionLink("billtobillchecklist", "Customer")",
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
-                $.each(data, function(key, value) {
+                $.each(data, function (key, value) {
                     var html = "";
                     html += '<tr>';
                     html += '<td class="w-25 text-center text-primary">' + value.customerCode + '</td>';
@@ -6720,10 +6942,10 @@
                     $("#appendbilltobillcheckboxlist").append(html);
                 });
             },
-            error: function() { }
+            error: function () { }
         });
     }
-    $("#forselectrowindex").on('keyup', function() {
+    $("#forselectrowindex").on('keyup', function () {
         var index = $(this).val();
         var lenght = $("#billtobillcheckboxlisttable tr").index() + 1;
         if (index != null && index != 0 && index != (lenght + 1)) {
@@ -6737,9 +6959,9 @@
                 type: "GET",
                 url: "@Url.ActionLink("billtobillchecklist", "Customer")",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         var html = "";
                         html += '<tr>';
                         html += '<td class="w-25 text-center">' + value.customerCode + '</td>';
@@ -6748,7 +6970,7 @@
                         $("#appendbilltobillcheckboxlist").append(html);
                     });
                 },
-                error: function() { }
+                error: function () { }
             });
         }
     });
@@ -6800,8 +7022,8 @@
             cache: false,
             url: '@Url.Action("AutoCompleteSearchCustomer", "Customer")',
             dataType: 'json',
-            success: function(data) {
-                $.each(data, function(index, value) {
+            success: function (data) {
+                $.each(data, function (index, value) {
                     if (search != '') {
                         if (value.company.toLowerCase().indexOf(search.toLowerCase()) >= 0) {
                             dropdown += '<option data-value="' + value.id + '" value="' + value.company + '"></option>';
@@ -6825,13 +7047,13 @@
                     }
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = xhr.status + ': ' + xhr.statusText
             },
         });
         $("#companylist").append(dropdown);
 
-        $.each(data_array, function(index, value) {
+        $.each(data_array, function (index, value) {
             if (data_array[index].title == search) {
                 $("#defaultlisticons").empty();
                 $("#existingitemnumber").empty();
@@ -6841,8 +7063,8 @@
 
         });
     }
-     function PrintMe(){
-     window.open('@Url.Action("ExistingSaleInvoicePdf", "Customer")', '_blank');
-     }
+    function PrintMe() {
+        window.open('@Url.Action("ExistingSaleInvoicePdf", "Customer")', '_blank');
+    }
 </script>
 location
