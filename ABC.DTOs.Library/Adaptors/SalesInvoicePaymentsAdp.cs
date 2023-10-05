@@ -8,6 +8,7 @@ namespace ABC.DTOs.Library.Adaptors
 {
     public class SalesInvoicePaymentsAdp
     {
+        public int SaleInvTransactionId { get; set; }
         public DateTime? PaidDate { get; set; }
         public string Time { get; set; }
         public DateTime? HoldDate { get; set; }

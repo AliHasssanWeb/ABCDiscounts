@@ -3053,5 +3053,61 @@ namespace ABC.POS.Website.Controllers
                 return Json(JsonConvert.DeserializeObject("false." + ex.Message));
             }
         }
+
+        public IActionResult GetSaleInvHistory(int SaleInvTransactionId)
+        {
+            try
+            {
+               
+                SResponse ress = RequestSender.Instance.CallAPI("api",
+               "Inventory/GetSaleInvHistory" + "/" + SaleInvTransactionId, "GET");
+                if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+                {
+                    var response = JsonConvert.DeserializeObject<ResponseBack<List<SaleInvHistroy>>>(ress.Resp);
+                    if (response.Data != null)
+                    {
+                        var responseObject = response.Data;
+                        return Json(responseObject);
+                    }
+                    else
+                    {
+                        return Json("false");
+                    }
+                }
+                return Json("true");
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.DeserializeObject("false." + ex.Message));
+            }
+        }
+
+        public IActionResult GetSalePaymentHistory(string InvoiceNumber)
+        {
+            try
+            {
+
+                SResponse ress = RequestSender.Instance.CallAPI("api",
+               "Inventory/GetSalePaymentHistory" + "/" + InvoiceNumber, "GET");
+                if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+                {
+                    var response = JsonConvert.DeserializeObject<ResponseBack<List<SaleInvoicePaymentHistoryAdp>>>(ress.Resp);
+                    if (response.Data != null)
+                    {
+                        var responseObject = response.Data;
+                        return Json(responseObject);
+                    }
+                    else
+                    {
+                        return Json("false");
+                    }
+                }
+                return Json("true");
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.DeserializeObject("false." + ex.Message));
+            }
+        }
     }
 }

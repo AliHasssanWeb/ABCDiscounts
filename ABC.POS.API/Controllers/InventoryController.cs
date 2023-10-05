@@ -10405,7 +10405,7 @@ namespace ABC.POS.API.Controllers
             saleinvTransaction.AmountAllocate = invTransaction.AmountAllocate;
             saleinvTransaction.PaymentType = invTransaction.PaymentType;
             saleinvTransaction.ChequeNumber = invTransaction.ChequeNumber;
-            saleinvTransaction.HoldDate = invTransaction.HoldDate;
+            saleinvTransaction.HoldDate = DateTime.Now;
             saleinvTransaction.Change = invTransaction.Change;
 
             var saveSaleInvTransaction = db.SalesInvTransactions.Add(saleinvTransaction);
@@ -10572,7 +10572,7 @@ namespace ABC.POS.API.Controllers
                         saleinvTransaction = new SalesInvTransaction();
                         saleinvTransaction.UserId = saleInvoices.UserId;
                         saleinvTransaction.CustomerId = Convert.ToInt32(saleInvoices.CustomerId);
-                        saleinvTransaction.PaymentType = "Invoice Credit";
+                        saleinvTransaction.PaymentType = "7";
                         saleinvTransaction.ChequeNumber = null;
                         saleinvTransaction.HoldDate = DateTime.Now;
                         saleinvTransaction.Change = null;
@@ -11218,6 +11218,7 @@ namespace ABC.POS.API.Controllers
 
                               select new SalesInvoicePaymentsAdp
                               {
+                                  SaleInvTransactionId = Sit.Id,
                                   PaidDate = Sit.HoldDate,
                                   Time = DateTime.Parse(Sit.HoldDate.ToString()).ToString("hh:mm tt"),
                                   HoldDate = Sit.HoldDate,
@@ -11229,6 +11230,93 @@ namespace ABC.POS.API.Controllers
                                   AmountAllocate = Sit.AmountAllocate,
                                   Change = Sit.Change
 
+                              }).ToList();
+                if (record.Count() > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<ItemDocument>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetSaleInvHistory/{SaleInvTransactionId}")]
+        public IActionResult GetSaleInvHistory(int SaleInvTransactionId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<SaleInvHistroy>>();
+
+                var record = (from sit in db.SalesInvTransactions
+                              join sih in db.SaleInvHistories on sit.Id equals sih.SaleInvTransactionId
+                              join asp in db.AspNetUsers on sit.UserId equals  asp.Id
+                              where sih.SaleInvTransactionId == SaleInvTransactionId 
+                              select new SaleInvHistroy
+                              {
+                                  InvoiceNumber = sih.InvoiceNumber,
+                                  HoldDate = sit.HoldDate,
+                                  AmountAllocate = sih.AmountAllocate,
+                                  TotalAmount = sit.AmountAllocate,
+                                  UserName = asp.UserName
+                              }).ToList();
+                if (record.Count() > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<ItemDocument>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetSalePaymentHistory/{InvoiceNumber}")]
+        public IActionResult GetSalePaymentHistory(string InvoiceNumber)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<SaleInvoicePaymentHistoryAdp>>();
+
+                var record = (from sih in db.SaleInvHistories
+                              join r in db.Receivings on sih.InvoiceNumber equals r.InvoiceNumber
+                              join sit in db.SalesInvTransactions on sih.SaleInvTransactionId equals sit.Id
+                              join Pt in db.PaymentTypes on Convert.ToInt32(sit.PaymentType) equals Pt.PaymentTypeId
+                              where sih.InvoiceNumber == InvoiceNumber
+                              select new SaleInvoicePaymentHistoryAdp
+                              {
+                                  AmountPaid = sit.AmountPaid,
+                                  AmountAllocate = sit.AmountAllocate,
+                                  HoldDate = sit.HoldDate,
+                                  PaymentType = Pt.PaymentTypeName,
+                                  CardNumber = sit.ChequeNumber
                               }).ToList();
                 if (record.Count() > 0)
                 {
