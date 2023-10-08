@@ -4157,7 +4157,7 @@ namespace ABC.POS.API.Controllers
                         record.Stock.Sku = getStock.Sku;
                         record.Stock.ItemBarCode = getStock.ItemBarCode;
                         record.Stock.StockId = getStock.StockId;
-                        
+
                     }
                     var getFinancial = db.Financials.ToList().Where(x => x.ItemId == id).FirstOrDefault();
                     if (getFinancial != null)
@@ -10559,6 +10559,60 @@ namespace ABC.POS.API.Controllers
                         db.Entry(invStock).State = EntityState.Modified;
                     }
 
+                    // For Credit 
+
+                    Transaction Credittransaction = null;
+                    Credittransaction = new Transaction();
+
+                    //transaction.InvoiceNumber = saleInvoices.InvoiceNumber;
+                    Credittransaction.AccountNumber = saleInvoices.AccountId;
+                    Credittransaction.Credit = "0.00";
+                    Credittransaction.Debit = saleInvoices.InvoiceTotal;
+                    Credittransaction.Date = DateTime.Now;
+                    Credittransaction.Description = "Invoice Payment Pending to Pay By Customer";
+
+                    db.Transactions.Add(Credittransaction);
+
+                    // For Debit 
+                    Transaction Debittransaction = null;
+                    Debittransaction = new Transaction();
+
+                    Debittransaction.AccountNumber = "01-01-06-0002";
+                    Debittransaction.Credit = saleInvoices.InvoiceTotal;
+                    Debittransaction.Debit = "0.00";
+                    Debittransaction.Date = DateTime.Now;
+                    Debittransaction.Description = "Invoice Payment Credit to Customer";
+
+                    db.Transactions.Add(Debittransaction);
+
+                    if (Convert.ToDouble(saleInvoices.TotalPaid) > 0)
+                    {
+                        // For Credit If Amount Pay
+                        Transaction transactionCredit = null;
+                        transactionCredit = new Transaction();
+
+                        //transaction.InvoiceNumber = saleInvoices.InvoiceNumber;
+                        transactionCredit.AccountNumber = saleInvoices.AccountId;
+                        transactionCredit.Credit = saleInvoices.TotalPaid;
+                        transactionCredit.Debit = "0.00";
+                        transactionCredit.Date = DateTime.Now;
+                        transactionCredit.Description = "Item Purchase By Customer " + saleInvoices.CustomerName + "";
+
+                        db.Transactions.Add(transactionCredit);
+
+                        // For Debit If Amount Pay
+                        Transaction transactiondebit = null;
+                        transactiondebit = new Transaction();
+
+                        transactiondebit.AccountNumber = "01-01-06-0002";
+                        transactiondebit.Credit = "0.00";
+                        transactiondebit.Debit = saleInvoices.TotalPaid;
+                        transactiondebit.Date = DateTime.Now;
+                        transactiondebit.Description = "Invoice Payment";
+
+                        db.Transactions.Add(transactiondebit);
+
+                    }
                 }
                 db.SaveChanges();
 
@@ -10593,7 +10647,7 @@ namespace ABC.POS.API.Controllers
                             saleinvTransaction.AmountPaid = (-Math.Abs(postiveAmount)).ToString();
                             saleinvTransaction.AmountAllocate = postiveAmount.ToString();
                         }
-                        
+
                         var saveSaleInvTransaction = db.SalesInvTransactions.Add(saleinvTransaction);
                         db.SaveChanges();
 
@@ -11270,8 +11324,8 @@ namespace ABC.POS.API.Controllers
 
                 var record = (from sit in db.SalesInvTransactions
                               join sih in db.SaleInvHistories on sit.Id equals sih.SaleInvTransactionId
-                              join asp in db.AspNetUsers on sit.UserId equals  asp.Id
-                              where sih.SaleInvTransactionId == SaleInvTransactionId 
+                              join asp in db.AspNetUsers on sit.UserId equals asp.Id
+                              where sih.SaleInvTransactionId == SaleInvTransactionId
                               select new SaleInvHistroy
                               {
                                   InvoiceNumber = sih.InvoiceNumber,
