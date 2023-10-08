@@ -5657,7 +5657,7 @@
             async: false,
             dataType: 'json',
             success: function (data) {
-                debugger;
+               // debugger;
                 $("#rowid-" + val).find("#productId").val(data.id);
                 var Id = data.id;
                 var count = 0;
@@ -5683,7 +5683,7 @@
                 });
 
                 if (notexist === true) {
-                                 debugger;     
+                                // debugger;     
                         if (!abc_general.isNullOrEmpty(data.quantity)) {
                             $("#stockno-" + val).text(data.quantity);
 
@@ -8017,7 +8017,7 @@
 
 
     function checkboxChange(){
-        debugger;
+        //debugger;
         var checkbox = document.getElementById("customeremailcopy");   
             if (checkbox.checked) {
              $("#checkboxvalue").val(true);
@@ -8299,7 +8299,7 @@
         var freight = abc_general.dollarRemove($("#freightid").val());
         var customerEmail = $("#CustomerEmailValue").val();
        
-        debugger;
+        //debugger;
         var Sale = {}   
         Sale.InvoiceNumber = invoicenumber;
         Sale.CustomerId = customerId;
@@ -8397,7 +8397,7 @@
                     toastr.success('Payment Received');
                     debugger;
 
-                   // window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
+                    window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
                    
 
                 }
@@ -9194,7 +9194,7 @@
 
         var paymentsSum = 0;
         $("#CusMultiPaymentsTable tr").each(function (index, value) {
-            debugger;
+            //debugger;
             if (index > 0) {
                 var self = $(this);
 
@@ -9250,7 +9250,7 @@
     function PaymentAdd(val) {
    var paymentsSum = 0;
         $("#Custpaymenttable tr").each(function (index, value) {
-             debugger;
+             //debugger;
              if(index > 0){
                  var self = $(this);
                

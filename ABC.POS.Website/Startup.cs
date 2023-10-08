@@ -36,6 +36,7 @@ namespace ABC.POS.Website
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSession();
 #if DEBUG
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 #endif
@@ -89,6 +90,7 @@ namespace ABC.POS.Website
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseStaticFiles(new StaticFileOptions()
             {

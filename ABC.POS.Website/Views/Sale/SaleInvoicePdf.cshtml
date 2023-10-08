@@ -77,12 +77,11 @@
         <div class="ticket" style="border:1px solid">
 
             <p class="centered">
-                ABC DISCOUNT LLC
-                <br />1055 GATEWOOD AVENUE
-                <br />GREENSBORO, NC 27405
+               @Model.CustomerName
+                <br />@Model.BusinessAddress
             </p>
             <p class="contact">
-                Tel(336) 412-2800 FAX (336) 412-2801
+                Tel @Model.Phone FAX @Model.Fax
                 <br />
                 <br />
                 <span style="float: left; margin-left: 15px;">

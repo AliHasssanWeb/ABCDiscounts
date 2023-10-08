@@ -1409,7 +1409,9 @@ namespace ABC.POS.Website.Controllers
             {
                 var body = JsonConvert.SerializeObject(sale);
 
-                TempData["saleorder"] = body;
+                HttpContext.Session.SetString("saleorder", body);
+
+                //TempData["saleorder"] = body;
 
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleCreate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
@@ -1423,10 +1425,9 @@ namespace ABC.POS.Website.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                TempData["response"] = ex.Message + " Error Occurred.";
+                return Json(false);
             }
-
-            return View();
         }
 
         public IActionResult AddSalePos([FromBody] List<JsonPosSale> SaleDetails)
@@ -2270,17 +2271,26 @@ namespace ABC.POS.Website.Controllers
         {
             try
             {
-                var list1 = TempData["saleorder"];
-                var list2 = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)list1);
-                var pdfResult = new ViewAsPdf(list2);
+                var body = HttpContext.Session.GetString("saleorder");
+
+                if (string.IsNullOrEmpty(body))
+                {
+                    TempData["response"] = "Sale data not found in TempData.";
+                    return View();
+                }
+                var existingData = JsonConvert.DeserializeObject<PointOfSalePdfModel>(body);
+                // Use the updated data to generate the PDF
+                var pdfResult = new ViewAsPdf(existingData);
                 return pdfResult;
             }
             catch (Exception ex)
             {
-                TempData["response"] = ex.Message + "Error Occured.";
+                TempData["response"] = ex.Message + "Error Occurred.";
                 return View();
             }
         }
+
+
         public IActionResult SendApproval([FromBody] List<JsonPosSale> SaleDetails)
         {
             try
@@ -2897,8 +2907,8 @@ namespace ABC.POS.Website.Controllers
                 {
                     if (Sale.CustomerEmail != "false")
                     {
-                        var saleObj = TempData["saleorder"];
-                        var model = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)saleObj);
+                        var body = HttpContext.Session.GetString("saleorder");
+                        var model = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)body);
 
                        Sendmail(Sale.CustomerEmail, model);
 
