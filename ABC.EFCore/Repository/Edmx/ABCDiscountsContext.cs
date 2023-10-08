@@ -3107,6 +3107,10 @@ namespace ABC.EFCore.Repository.Edmx
 
                 entity.Property(e => e.Debit).HasMaxLength(50);
 
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.DetailAccountId).HasColumnName("DetailAccountID");
 
                 entity.Property(e => e.InvoiceNumber).HasMaxLength(50);

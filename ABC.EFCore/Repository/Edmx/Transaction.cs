@@ -17,5 +17,6 @@ namespace ABC.EFCore.Repository.Edmx
         public DateTime? Date { get; set; }
         public string DetailAccountId { get; set; }
         public string ClosingBalance { get; set; }
+        public string Description { get; set; }
     }
 }

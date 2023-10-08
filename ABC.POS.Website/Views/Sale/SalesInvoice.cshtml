@@ -691,11 +691,15 @@
                                 <div class="col-lg-10 col-md-12 col-sm-12 col-12">
                                     <div class="row">
                                         <div class="col-lg-8 col-md-8 col-sm-12 col-12 gx-0 gy-0">
-                                            <div class="form-group">
-                                                <label class="dim col-sm-12">
+                                          <div class="form-group" >
+                                                <label class="dim col-sm-12" >
                                                     Sold To
                                                     @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control searchname brd", onkeyup = "GetAllMatchedItems(event)", autocomplete = "off", id = "searchname" } })
-                                                    <div style="background-color: blue !important;cursor:pointer" id="listallmissions"></div>
+                                                    <div style="background-color: transparent !important;">
+                                                        <div id="listallmissions" style="overflow: auto; max-height: 300px;">
+                                                          
+                                                        </div>
+                                                    </div>
                                                     <label class="text-danger field-validation-error db" id="ValCustomerName" style="font-size:12px;"></label>
                                                 </label>
                                             </div>
@@ -914,10 +918,8 @@
                                         <th onclick="sortTable(2)">Description</th>
                                         @*<th>Quantity</th>*@
                                         <th onclick="sortTable(0)">Amount</th>
-                                        <th>Discount</th>
-                                        <th>Discount</th>
-                                        <th>Units</th>
-                                        <th>Units</th>
+                                        <th colspan="2">Discount</th>
+                                        <th colspan="2">Units</th>
                                         <th onclick="sortTable(4)">Price</th>
                                         <th onclick="sortTable(9)">Total</th>
                                         <th>Sales Limit</th>
