@@ -2749,6 +2749,138 @@
 </div>
 
 
+<div id="CustomerInfoModel" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:white; width:90%;">
+            <div class="modal-header" style="padding:0.5rem!important;">
+                <h5 class="modal-title" id="ModalLabel">Customer's info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodalabcd()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="color: #0000AB; padding-top: 20px;padding-bottom:10px; padding-left:0px; padding-right:0px; background:rgb(225, 225, 225);">
+
+                <div class="row">
+                    <div class="col-lg-4" style="display:flex">
+                        <input type="checkbox" id="emailcopy" style=" height:11px; margin:5px;" name="vehicle1" value="Bike">
+                        <label for="emailcopy" style=" font-size: 10px; font-weight: 800; color: #8f2000;padding-left:5px">Email Copy</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="text" style="font-size: 12px;
+    width: 90%;
+    margin-left: 8px;" />
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-lg-4" style="display:flex">
+                        <input type="checkbox" id="emailcopy" style=" height:11px; margin:5px;" name="vehicle1" value="Bike">
+                        <label for="emailcopy" style=" font-size: 10px; font-weight: 800; color: #8f2000;padding-left:5px">Text Copy</label>
+                    </div>
+                    <div class="col-lg-8">
+                        <input type="text" style="font-size: 12px;
+    width: 90%;
+    margin-left: 8px;" />
+                    </div>
+                </div>
+                <div class="row" pt-3 style="padding-top:12px">
+                    <div class="col-lg-12" style="display:flex">
+                        <input type="checkbox" id="emailcopy" style=" height:11px; margin:5px;" name="vehicle1" value="Bike">
+                        <label for="emailcopy" style=" font-size: 10px; font-weight: 800; color: #8f2000;padding-left:5px">Standard Receipt (8.5 x 11)</label>
+                    </div>
+
+                </div>
+                <div class="row" pt-3 style="padding-top:12px">
+                    <div class="col-lg-5" style="text-align:center">
+
+                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;">Silent/F4</button>
+                    </div>
+                    <div class="col-lg-2" style="text-align:center">
+                        @*  <button class="btn  btn-style ">Silent/F4</button>*@
+                        <p style="font-size: 17px;color: grey;">01</p>
+                    </div>
+                    <div class="col-lg-5" style="text-align:center">
+                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;" onclick="openSalePrintModal();">Preview</button>
+
+                    </div>
+
+                </div>
+                <div class="row" pt-3 style="padding-top:12px">
+                    <div class="col-lg-1" style="text-align:center">
+                        <select style="padding-right:18px" name="cars" id="cars">
+                            <option value="volvo"></option>
+                            <option value="saab"></option>
+                            <option value="mercedes"></option>
+                            <option value="audi"></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4" style="text-align:center">
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">Order By Description</button>
+                    </div>
+                    <div class="col-lg-1" style="text-align:center">
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">1</button>
+
+                    </div>
+                    <div class="col-lg-1" style="text-align:center">
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">2</button>
+
+                    </div>
+                    <div class="col-lg-1" style="text-align:center">
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">3</button>
+                    </div>
+                    <div class="col-lg-1" style="text-align:center">
+                        <i style="font-size:35px; margin-top:1px; color:red;" class="fa fa-power-off red-color" onclick="closemodalabcd()"></i>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="SaleOrderPrintModal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:55%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel" style="font-size:13px">Select an Option</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeSalePrintModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;">
+                    <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
+                        <div id="" class="row" style="display: flex; align-items: center;">
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px">0-Print</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">1-Preview</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">2-Adobe PDF</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">3-PDF (Protected)</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">4-PDF Save As</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">5-PDF Save As Protected</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">6-Un-Protected Storage</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">7-Protected Storage</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">8-email PDF </p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px">9-email PDF (Protected)</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:row;padding:10px">
+                <p>PDF Protected Password : </p>
+                <input style="font-size:10px; width:35%" type="text" />
+            </div>
+            <div style="padding:10px">
+                <p>Protected Storage Location :</p>
+                <input style="font-size:13px" type="file" id="myfile" name="myfile">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="additemshort" class="modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content mw-125" style="height:90%">
@@ -2860,6 +2992,8 @@
 
                                                     <div class="panel-body">
                                                     </div>
+
+
 
 
                                                     <div class="row">
@@ -4635,16 +4769,21 @@
         $("#payment").modal('show');
     }
     function openmodalabcd() {
-        $("#abcd").modal('show');
+        $("#CustomerInfoModel").modal('show');
     }
     function closemodalabcd() {
-        $("#abcd").modal('hide');
+        $("#CustomerInfoModel").modal('hide');
         $("#receivablesid").modal('hide');
         $("#customerpayment").modal('hide');
-
-
     }
 
+    function openSalePrintModal() {
+        $("#SaleOrderPrintModal").modal('show');
+        $("#CustomerInfoModel").modal('hide');
+    }
+    function closeSalePrintModal() {
+        $("#SaleOrderPrintModal").modal('hide');
+    }
     $('.add-row1').click(function () {
 
         var html = '';
@@ -9193,7 +9332,7 @@
 
 
     function MultiPaymentAdd(val) {
-
+        
         var paymentsSum = 0;
         $("#CusMultiPaymentsTable tr").each(function (index, value) {
             //debugger;
@@ -9209,7 +9348,7 @@
         });
 
         var amountpayed =  abc_general.dollarRemove($("#amountpayed-" + val).text());
-        var CusBalanceDue =  abc_general.dollarRemove($("#CustomerBalance").val());
+        var CusBalanceDue =  abc_general.parenthRemove($("#CustomerBalance").val(), '(');
         if (amountpayed != "" && isNaN(amountpayed) == false) {
             $("#TotalPaidAmount").text(abc_general.dollarAdd(paymentsSum));
             $('#thumbRightButton').show();
@@ -9250,12 +9389,11 @@
 
 
     function PaymentAdd(val) {
-   var paymentsSum = 0;
+        var paymentsSum = 0;
         $("#Custpaymenttable tr").each(function (index, value) {
              //debugger;
              if(index > 0){
                  var self = $(this);
-               
                  if(!abc_general.isNullOrEmpty(self.find("td:eq(0)").text())){
                     var paidAmount = parseFloat(abc_general.dollarRemove(self.find("td:eq(0)").text()));
                     paymentsSum = paymentsSum + paidAmount;
@@ -9266,7 +9404,7 @@
 
 
         var amountpayed = abc_general.dollarRemove($("#amountpayed-" + val).text());
-        var Balanceduep = abc_general.dollarRemove($("#BalanceDueP").text());
+        var Balanceduep = abc_general.parenthRemove($("#BalanceDueP").text(),'(');
         if (amountpayed != "" && isNaN(amountpayed) == false) {
             $("#TotalPaidP").text(abc_general.dollarAdd(paymentsSum));
             $('#rightButton').show();
