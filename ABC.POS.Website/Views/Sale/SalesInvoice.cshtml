@@ -4084,7 +4084,7 @@
             html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">1</td>';
             html += '<td id="amount-' + sernum + '" contenteditable="false"></td>';
             html += '<td id="discountin-' + sernum + '"  contenteditable="true" onclick="DiscountPer(' + sernum + ')" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$0.00</td>';
-            html += '<td id="discountout-' + sernum + '" contenteditable="true" onclick="DiscountPerPerc(' + sernum + ')" onkeyup="DiscuntChangePrice(' + sernum + ')">0.00%</td>';
+            html += '<td id="discountout-' + sernum + '" contenteditable="true" onfocus="DiscountPerPerc(' + sernum + ')" onfocusout="DiscuntChangePrice(' + sernum + ')">0.00%</td>';
             html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
             html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
             html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning"></td>';
@@ -6595,10 +6595,13 @@
     function DiscountPerPerc(val) {
         var quantity = $("#discountout-" + val).text();
         if (quantity == '0.00%') {
-            $("#discountout-" + val).text('');
+            $("#discountout-" + val).text('0.00');
         }
         else if (quantity == '') {
-            // $("#discountout-" + val).text('0.00%');
+             $("#discountout-" + val).text('0.00');
+        }else if(quantity != '')
+        {
+             $("#discountout-" + val).text(abc_general.signRemove(quantity ,'%'));
         }
     }
 
@@ -6686,24 +6689,25 @@
 
 
 
-    function DiscuntChangePrice(val) {
-        //debugger;
-
+    function DiscuntChangePrice(val, event) {
+        debugger;
         var quantity = $("#ringerqty-" + val).text();
         var tootal = $("#price-" + val).text();
-        var discount = parseFloat(($("#discountout-" + val).text()).split("%")[0]);
+        var discount = parseFloat(abc_general.signRemove($("#discountout-" + val).text(), '%') );
         var check = $("#discountout-" + val).text();
         if (check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN || check == undefined) {
             //  $("#discountin-" + val).text('$0.00');
             discount = parseFloat("0.00");
         }
+        discount = discount/100;
         var ReplacedAmount = tootal.replace(/\$/g, '');
         var priceDiscount = (ReplacedAmount / 100) * discount;
-        var foundtotalDiscount = parseFloat(quantity) * parseFloat(priceDiscount);
+        var foundtotalDiscount = parseFloat(quantity) * parseFloat(priceDiscount.toFixed(2));
         var amount = parseFloat(quantity) * parseFloat(ReplacedAmount);
         amount = amount - foundtotalDiscount;
         $("#total-" + val).empty();
         $("#total-" + val).text("$" + amount.toFixed(2));
+        $("#discountout-"+val+"").text(discount.toFixed(2) + '%');
         CountTotalOfAllTD();
     }
 
