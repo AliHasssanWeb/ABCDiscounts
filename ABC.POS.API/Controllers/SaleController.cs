@@ -739,11 +739,11 @@ namespace ABC.POS.API.Controllers
                 obj.Count = record.Count.ToString();
                 obj.SubTotal = record.SubTotal;
 
+                var AccountId = db.CustomerInformations.Where(f => f.Id == record.CustomerId).Select(f => f.AccountId).FirstOrDefault();
+                var PreviousBalance = db.Receivables.Where(f => f.AccountId == AccountId).Select(f => f.Amount).FirstOrDefault();
+                _ = PreviousBalance != null ? PreviousBalance : PreviousBalance = "0";
                 if (invoiceType == "OpenInvoice")
                 {
-                    var AccountId = db.CustomerInformations.Where(f => f.Id == record.CustomerId).Select(f => f.AccountId).FirstOrDefault();
-                    var PreviousBalance = db.Receivables.Where(f => f.AccountId == AccountId).Select(f => f.Amount).FirstOrDefault();
-                    _ = PreviousBalance != null ? PreviousBalance : PreviousBalance = "0";
 
                     obj.PreBalance = PreviousBalance;
                     obj.Other = record.Other;
@@ -756,6 +756,7 @@ namespace ABC.POS.API.Controllers
                     var receiving = db.Receivings.Where(f => f.InvoiceNumber == invoicenumber).FirstOrDefault();
                     obj.InvoiceBalance = receiving.InvBalance;
                     obj.PreBalance = receiving.PreBalance;
+                    obj.ReceiveablePreBalance = PreviousBalance;
                     obj.Other = receiving.Other;
                     obj.Discount = receiving.Discount;
                     obj.Tax = receiving.Tax;
@@ -793,13 +794,13 @@ namespace ABC.POS.API.Controllers
                                 SalesLimit = jrresult.SalesLimit,
                                 NeedHighAuthorization = jrresult.NeedHighAuthorization,
                                 HighLimitOn = jrresult.HighlimitOn,
-                                StockQty = jrresult1.Quantity,  
+                                StockQty = jrresult1.Quantity,
                             }
                             ).ToList();
 
                         obj.PointOfSaleDetails = PointOfSaleDetailQry;
 
-                        
+
                     }
                 }
                 if (record != null)

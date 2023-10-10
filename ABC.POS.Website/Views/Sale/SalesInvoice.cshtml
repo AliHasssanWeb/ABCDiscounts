@@ -7498,7 +7498,6 @@
                                 html += '</tr >';
                                 $("#appendnewrowforsale").append(html);
 
-
                                 $(".add-row").css("pointer-events", "none");
 
                                 $("#delete-" + sernum).prop("onclick", null);
@@ -7510,6 +7509,8 @@
                             var total = $("#total-" + sernum).text();
                             var subtotalnew = $("#subtotalauto").val();
                             var finalsubtotalvalue = subtotalnew.split('$');
+                            $("#CustomerBalance").val(abc_general.parenthAdd(data.receiveablePreBalance));
+                            $("#CustomerBalanceDue").text(abc_general.parenthAdd(data.receiveablePreBalance));
 
                             if (total != null && total != '') {
                                 var newtotal = total.split('$');
@@ -7543,7 +7544,7 @@
                             $('#amountdue').attr("readonly", true);
                             $('#searchname').attr("readonly", true);
 
-                            $('#InvoiceBalance').val('$' + data.invoiceBalance);
+                            $('#InvoiceBalance').val(abc_general.parenthAdd(data.receiveablePreBalance));
                             
                              
 
@@ -9295,9 +9296,11 @@
         });
         $('#rightButton').click(function () {
             var changeValue = $('#ChangeP').val();
+            changeValue = abc_general.dollarRemove(changeValue);
+            changeValue = abc_general.dollarParenthAdd(changeValue);
             var totalPayAmount = $('#TotalPaidP').text();
             $('#totalpaidd').text(totalPayAmount);
-            $('#BalanceP').text('(' + changeValue + ')');
+            $('#BalanceP').text(changeValue);
             $('#ChangeP').val('0');
             $('#rightButton').hide();
             $('#myButton').show();
@@ -9309,12 +9312,13 @@
     $(document).ready(function () {
         
         $('#thumbLeftButton').hide();
-        $('#thumbLeftButton').click(function () {   
+        $('#thumbLeftButton').click(function () {  
+            debugger;
             var balanceValue = $('#CustomerBalanceDue').text();
-            var customerBalance = $("#CustomerBalance").val().split('$');
+            var customerBalance = $("#CustomerBalance").val();
             var cleanBalanceValue = balanceValue.replace(/\(|\)/g, '');
 
-            $("#totalAmountAllocation").text("$" + parseFloat(customerBalance[1]).toFixed(2));
+            $("#totalAmountAllocation").text(customerBalance);
             $('#ChangeAmount').val(cleanBalanceValue);
             $('#thumbRightButton').show();
             $("#thumbRightButton").prop("disabled", false);
@@ -9323,10 +9327,13 @@
  
         });
         $('#thumbRightButton').click(function () {
+            debugger;
             var changeValue = $('#ChangeAmount').val();
+            changeValue = abc_general.dollarRemove(changeValue);
+            changeValue = abc_general.dollarParenthAdd(changeValue);
             var TotalPaidAmount = $("#TotalPaidAmount").text();
             $("#totalAmountAllocation").text(TotalPaidAmount);
-            $('#CustomerBalanceDue').text('(' + changeValue + ')');
+            $('#CustomerBalanceDue').text(changeValue);
             $('#ChangeAmount').val('0');
             $('#thumbRightButton').hide();
             $('#thumbLeftButton').show();

@@ -6300,6 +6300,7 @@ namespace ABC.POS.API.Controllers
                     pointOfSale.GetSaleDiscount = sale.GetSaleDiscount;
                     pointOfSale.Count = Convert.ToInt32(sale.Count);
                     pointOfSale.InvoiceNumber = sale.InvoiceNumber;
+                    pointOfSale.InvoiceDate = DateTime.Now;
                     pointOfSale.SubTotal = sale.SubTotal;
                     pointOfSale.Other = sale.Other;
                     pointOfSale.Discount = sale.Discount;
@@ -11324,7 +11325,7 @@ namespace ABC.POS.API.Controllers
 
                 var record = (from sit in db.SalesInvTransactions
                               join sih in db.SaleInvHistories on sit.Id equals sih.SaleInvTransactionId
-                              join asp in db.AspNetUsers on sit.UserId equals asp.Id
+                             // join asp in db.AspNetUsers on sit.UserId equals asp.Id
                               where sih.SaleInvTransactionId == SaleInvTransactionId
                               select new SaleInvHistroy
                               {
@@ -11332,7 +11333,7 @@ namespace ABC.POS.API.Controllers
                                   HoldDate = sit.HoldDate,
                                   AmountAllocate = sih.AmountAllocate,
                                   TotalAmount = sit.AmountAllocate,
-                                  UserName = asp.UserName
+                                  UserName = sit.User.UserName
                               }).ToList();
                 if (record.Count() > 0)
                 {
@@ -11394,6 +11395,52 @@ namespace ABC.POS.API.Controllers
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
                     var Response = ResponseBuilder.BuildWSResponse<ItemDocument>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetInventoryItemsSales/{ItemId}")]
+        public IActionResult GetInventoryItemsSales(int ItemId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<InventoryItemsSalesAdp>>();
+
+                var record = (from posd in db.PointOfSaleDetails
+                              join pos in db.PointOfSales on posd.PointOfSaleId equals pos.PointOfSaleId
+                              where posd.ItemId == ItemId && posd.PointOfSale.IsClose == true
+                              select new InventoryItemsSalesAdp
+                              {
+                                  ItemId = posd.ItemId,
+                                  InvoiceNumber = posd.PointOfSale.InvoiceNumber,
+                                  InvoiceDate = posd.PointOfSale.InvoiceDate,
+                                  Company = pos.Customer.Company,
+                                  Cost = posd.Item.Cost,
+                                  Sales = posd.RingerQty,
+                                  Price = posd.Price,
+                                  Total = posd.Total
+                              }
+                              ).ToList();
+                if (record.Count() > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<InventoryItemsSalesAdp>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }

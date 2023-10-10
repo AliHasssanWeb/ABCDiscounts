@@ -57,6 +57,7 @@ namespace ABC.EFCore.Repository.Edmx
         public string InvoiceBalance { get; set; }
         public string AmountDue { get; set; }
         public string PreBalance { get; set; }
+        public string ReceiveablePreBalance { get; set; }
         //  public virtual CustomerInformation Customer { get; set; }
         public  List<PointOfSaleDetailModel> PointOfSaleDetails { get; set; }
     }

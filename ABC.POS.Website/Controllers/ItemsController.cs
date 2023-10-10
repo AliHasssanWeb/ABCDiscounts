@@ -1,4 +1,5 @@
-﻿using ABC.EFCore.Entities.POS;
+﻿using ABC.DTOs.Library.Adaptors;
+using ABC.EFCore.Entities.POS;
 using ABC.EFCore.Repository.Edmx;
 using ABC.POS.Domain.DataConfig;
 using ABC.POS.Domain.DataConfig.Configurations;
@@ -2446,6 +2447,27 @@ namespace ABC.POS.Website.Controllers
                     var actionname = "Get inventory supplier by vendor id";
                     var pageName = RouteData.Values["action"].ToString();
                     HelperClass.activitylog(actionname, controllername, userDetail.Id, userDetail.UserName, pageName);
+
+                    return Json(responseObject);
+                }
+                else
+                {
+                    return Json("false");
+                }
+            }
+            return Json("false");
+        }
+
+        public JsonResult SalesItemsGet(int ItemId)
+        {
+            SResponse ress = RequestSender.Instance.CallAPI("api",
+                "Inventory/GetInventoryItemsSales" + "/" + ItemId, "GET");
+            if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+            {
+                ResponseBack<List<InventoryItemsSalesAdp>> response = JsonConvert.DeserializeObject<ResponseBack<List<InventoryItemsSalesAdp>>>(ress.Resp);
+                if (response.Data != null)
+                {
+                    var responseObject = response.Data;
 
                     return Json(responseObject);
                 }
