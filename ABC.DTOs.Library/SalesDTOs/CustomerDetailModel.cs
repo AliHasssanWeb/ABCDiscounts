@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABC.EFCore.Repository.Edmx;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,5 +48,7 @@ namespace ABC.DTOs.Library.SalesDTOs
         public string PopupMessage { get; set; }
         public bool? IsGetSalesDiscounts { get; set; }
         public string PaymentTerms { get; set; }
+
+        public List<PointOfSaleModel> PointOfSale { get; set; }
     }
 }
