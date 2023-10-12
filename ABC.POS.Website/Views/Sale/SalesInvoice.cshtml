@@ -2903,7 +2903,7 @@
                                 <label class="textBlue txtBold">Any Part</label>
                             </div>
                             <div class="col di div-style wd-7">
-                                <input style="color:#1515b7;font-weight:bolder;border:none;" type="text" class="wd-10" id="itemquantitylabel" name="name" value="" />
+                                <input style="color:#1515b7;font-weight:bolder;border:none;" type="text" class="wd-10" id="itemquantitylabel" name="name" value="1" />
                             </div>
                             <div class="col di div-style wd-3">
                                 <button id="slctbtn" onclick="GetItemDataAppendForDesModal3()" class="btn btn-outline-primary btn-icon-text mt-2 pt-2 pb-2">Select</button>
@@ -5590,6 +5590,7 @@
 
     }
     function QuantityMultipyPrice(val) {
+        debugger;
         $("#total-" + val).empty();
 
         //var i = 1;
@@ -5621,7 +5622,7 @@
         var saleslimit = $("#saleslimit-" + val).text();
         var quantity = $("#ringerqty-" + val).text();
         if (quantity == "") {
-            quantity = "0";
+            quantity = "1";
         }
         if (parseFloat(saleslimit) >= parseFloat(quantity)) {
             $("#ringerqty-" + val).css("background-color", "#fff3cd");
@@ -6830,7 +6831,7 @@
 
 
 
-    function DiscuntChangePrice(val, event) {
+    function DiscuntChangePrice(val) {
         debugger;
         var quantity = $("#ringerqty-" + val).text();
         var tootal = $("#price-" + val).text();
@@ -7311,7 +7312,7 @@
         $("#customerCode").val('');
         $('#itemnumberModal1').val('');
         $('#Pcd').val('');
-        $('#itemquantitylabel').val('');
+        $('#itemquantitylabel').val('1');
         $('#searchPro').val('');
     }
 
@@ -10154,7 +10155,7 @@
     // Append F3
 
     function GetItemDataAppendForDesModal3() {
-       // debugger;
+        debugger;
 
         var jj = 1;
         $('#saletable tr').each(function () {
