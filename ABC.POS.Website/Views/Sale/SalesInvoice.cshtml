@@ -1343,7 +1343,7 @@
                             <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
                         </div>
                         <div class="col-md-2 ms-3">
-                            <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                            <button type="button" class="btn btn-light p-3" style="border-radius: 0;" id="PaymentSilentF4">SilentF4</button>
                         </div>
                         @*<div class="col-md-2">
                         <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
@@ -4884,20 +4884,13 @@
 
         }
 
-        if (Isprint) {
-            Sale.IsPrintinvoice = true;
-            // Sale.IsClose = true;
-            // Sale.IsOpen = false;
-
-        }
-        // else {
-        //     Sale.IsClose = false;
-        //     Sale.IsOpen = true;
+        // if (Isprint) {
+        //     Sale.IsPrintinvoice = true;
         // }
-
-        if (Sale.IsPrintinvoice == true) {
-            Sale.OnCredit = "true";
-        }
+      
+        // if (Sale.IsPrintinvoice == true) {
+        //     Sale.OnCredit = "true";
+        // }
         Sale.BusinessAddress = $("#bussinessAddress").text();
        // if ($("#customerAddToMail").text() == "true") {
           //  Sale.AddToMailList = true;
@@ -4960,7 +4953,7 @@
             success: function (data) {
                 if(data == true){
                     if(Ispaid == true){
-                        ChangePayment1(true);
+                        ChangePayment1(true,Isprint);
                        }
                     toastr.success('Invoice Saved Successfully');
                     location.reload();
@@ -4980,7 +4973,7 @@
                    
                         if (data == true) {
                             if(Ispaid == true){
-                                ChangePayment1(true);
+                                ChangePayment1(true,Isprint);
                             }
                         // if (Isprint == true) {
                         //     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
@@ -6375,7 +6368,7 @@
                           var month = d.getMonth();
                           var year = d.getFullYear();
                           var InvDate = day + '-' + month + '-' + year;
-                        
+                          var radioName = 'payOrder' + val;
                         //Invoice Row
                         inner = '';
                         inner += '<tr>';
@@ -6385,7 +6378,7 @@
                         inner += '<td> ' + text.invTotal + ' </td>';
                         inner += '<td> ' + text.totalPaid + ' </td>';
                         inner += '<td> ' + text.invBalance + ' </td>';
-                        inner += '<td> <input type="radio" name="payOrder" value="option1">   <input type="radio" name="payOrder" value="option2"> </td>';
+                        inner += '<td> <input type="radio" name="' + radioName + '" value="option1">   <input type="radio" name="' + radioName + '" value="option2"> </td>';
                         inner += '</tr>';
                        $('#tblunpaidinv > tbody:last-child').append(inner);
 
@@ -7325,95 +7318,98 @@
 
 
     var nextinvoice1 = function (method, selectedinvoicenumber, invoiceType) {
-          var data = $("#txtInvoiceNumber").text();
-        if (method == 'null') { data = selectedinvoicenumber }
+        debugger;
+        if (selectedinvoicenumber != 'value') {
 
-        if (data != '') {
+            var data = $("#txtInvoiceNumber").text();
+            if (method == 'null') { data = selectedinvoicenumber }
 
-            $.ajax({
-                url: '@Url.Action("GetSaleInvoiceByInvoiceNumber1", "Sale")',
-                async: false,
-                Type: 'GET',
-                data: { InvoiceNumber: data, Method: method, invoiceType: invoiceType },
-                dataType: "json",
-                success: function (data) {
+            if (data != '') {
 
-                    var sernum = 1;
-                   // $("#salesmanid").text(data.saleManName);
-                    $("#invoicetotal").val(data.invoiceTotal);
-                    $("#discountidadd").val(data.discount);
-                    $("#subtotalauto").val(abc_general.dollarAdd(data.subTotal));  
-                    $("#otherid").val(data.other);
-                    $("#taxid").val(data.tax);
-                    $("#freightid").val(data.freight);
-                    $("#PointOfSaleId").val(data.pointOfSaleId);
-                    if (data.GetSaleDiscount == true) {
+                $.ajax({
+                    url: '@Url.Action("GetSaleInvoiceByInvoiceNumber1", "Sale")',
+                    async: false,
+                    Type: 'GET',
+                    data: { InvoiceNumber: data, Method: method, invoiceType: invoiceType },
+                    dataType: "json",
+                    success: function (data) {
 
-                        $("#discountidadd").attr("disabled", true);
-                        $("#discountidadd").val("");
-                        $('#getsalediscount').prop('checked', true);
-                    } else {
+                        var sernum = 1;
+                        // $("#salesmanid").text(data.saleManName);
+                        $("#invoicetotal").val(data.invoiceTotal);
+                        $("#discountidadd").val(data.discount);
+                        $("#subtotalauto").val(abc_general.dollarAdd(data.subTotal));
+                        $("#otherid").val(data.other);
+                        $("#taxid").val(data.tax);
+                        $("#freightid").val(data.freight);
+                        $("#PointOfSaleId").val(data.pointOfSaleId);
+                        if (data.GetSaleDiscount == true) {
 
-                        $("#discountidadd").attr("disabled", false);
-                        $('#getsalediscount').prop('checked', false);
-                    }
-                    $("#countnum").text(data.count);
-                    $("#invoicenumber").val(data.invoiceNumber);
-                  //  $("#supervisorId").text(data.supervisorID);
-                    if (data.pointOfSaleDetails.length > 0) {
-                        if (data.isOpen == true) {  
+                            $("#discountidadd").attr("disabled", true);
+                            $("#discountidadd").val("");
+                            $('#getsalediscount').prop('checked', true);
+                        } else {
 
-                            $(".Paid").addClass("d-none");
-                            var customername = $("#customername").val();
-                            var customercode = $("#customercodeinfo").val();
-                            var CustomerID = $("#customerid").val();
-                            $("#appendnewrowforsale").html("");
-                            $("#open-invoices").val("true");
-                            
-                             
-                            $.each(data.pointOfSaleDetails, function (index, value) {
-                                var inunit = (value.inUnit != null) ? value.inUnit : '';
-                                var outunit = (value.outUnit != null) ? value.outUnit : '';
-                                var itemnumber = value.itemNumber;
+                            $("#discountidadd").attr("disabled", false);
+                            $('#getsalediscount').prop('checked', false);
+                        }
+                        $("#countnum").text(data.count);
+                        $("#invoicenumber").val(data.invoiceNumber);
+                        //  $("#supervisorId").text(data.supervisorID);
+                        if (data.pointOfSaleDetails.length > 0) {
+                            if (data.isOpen == true) {
 
-                                var string = value.itemNumber;
-                                string = string.substring(0, 2) + '-' + string.substring(2, string.length);
+                                $(".Paid").addClass("d-none");
+                                var customername = $("#customername").val();
+                                var customercode = $("#customercodeinfo").val();
+                                var CustomerID = $("#customerid").val();
+                                $("#appendnewrowforsale").html("");
+                                $("#open-invoices").val("true");
 
-                                var html = '';
-                                html += '<tr  id="rowid-' + sernum + '" class="">';
-                                html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
-                                html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
-                                html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
-                                html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
-                                html += '<td id="amount-' + sernum + '" contenteditable="false">' + abc_general.dollarAdd(value.amountRetail) + '</td>';
-                                html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
-                                html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
-                                html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
-                                html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
-                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.price) + '</td>';
-                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.total) + '</td>';
-                                html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
-                                html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
-                                html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
-                                html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
-                                html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
-                                html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
-                                html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
-                                html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
-                                html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
-                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
-                                html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
-                                html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
-                                html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
-                                html += '</tr >';
-                                $("#appendnewrowforsale").append(html); 
 
-                                $(".add-row").css("pointer-events", "auto");
-                                // $("#addnewitem").css("pointer-events", "none");
+                                $.each(data.pointOfSaleDetails, function (index, value) {
+                                    var inunit = (value.inUnit != null) ? value.inUnit : '';
+                                    var outunit = (value.outUnit != null) ? value.outUnit : '';
+                                    var itemnumber = value.itemNumber;
 
-                                sernum++;
+                                    var string = value.itemNumber;
+                                    string = string.substring(0, 2) + '-' + string.substring(2, string.length);
 
-                            });
+                                    var html = '';
+                                    html += '<tr  id="rowid-' + sernum + '" class="">';
+                                    html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
+                                    html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
+                                    html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
+                                    html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
+                                    html += '<td id="amount-' + sernum + '" contenteditable="false">' + abc_general.dollarAdd(value.amountRetail) + '</td>';
+                                    html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
+                                    html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
+                                    html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
+                                    html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
+                                    html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.price) + '</td>';
+                                    html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">' + abc_general.dollarAdd(value.total) + '</td>';
+                                    html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
+                                    html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
+                                    html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
+                                    html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
+                                    html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
+                                    html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
+                                    html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
+                                    html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
+                                    html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
+                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                    html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
+                                    html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
+                                    html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
+                                    html += '</tr >';
+                                    $("#appendnewrowforsale").append(html);
+
+                                    $(".add-row").css("pointer-events", "auto");
+                                    // $("#addnewitem").css("pointer-events", "none");
+
+                                    sernum++;
+
+                                });
                                 // var total = $("#total-" + sernum).text();
                                 // var subtotalnew = $("#subtotalauto").val();
                                 // var finalsubtotalvalue = subtotalnew.split('$');
@@ -7428,144 +7424,148 @@
 
                                 //     }
                                 // }
-                            
-                           
-                            $('#previousbalance').attr("readonly", false);
-                            $('#subtotalauto').attr("readonly", false);
-                            $('#discountidadd').attr("readonly", false);
-                            $('#otherid').attr("readonly", false);
-                            $('#taxid').attr("readonly", false);
-                            $('#freightid').attr("readonly", false);
-                            $('#invoicetotal').attr("readonly", false);
-                            $('#amountdue').attr("readonly", false);
-                            $('#searchname').attr("readonly", false);
-                            $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
 
-                            GetCompanyByID(data.customerId, false);
 
-                            CalculatetaxPlusDiscount();
+                                $('#previousbalance').attr("readonly", false);
+                                $('#subtotalauto').attr("readonly", false);
+                                $('#discountidadd').attr("readonly", false);
+                                $('#otherid').attr("readonly", false);
+                                $('#taxid').attr("readonly", false);
+                                $('#freightid').attr("readonly", false);
+                                $('#invoicetotal').attr("readonly", false);
+                                $('#amountdue').attr("readonly", false);
+                                $('#searchname').attr("readonly", false);
+                                $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
 
-                            //SaveOnGoingSales();
+                                GetCompanyByID(data.customerId, false);
 
-                            $(".saverecord").hide();
-                            $(".printrecord").hide();
-                            $(".editrecord").show();
+                                CalculatetaxPlusDiscount();
+
+                                //SaveOnGoingSales();
+
+                                $(".saverecord").hide();
+                                $(".printrecord").hide();
+                                $(".editrecord").show();
+                            }
+                            else {
+                                if (data.isPaid != null && data.isPaid != false && data.isPaid != "undefined") {
+                                    $(".Paid").removeClass("d-none");
+                                }
+                                var customername = $("#customername").val();
+                                var customercode = $("#customercodeinfo").val();
+                                var CustomerID = $("#customerid").val();
+                                $("#appendnewrowforsale").html("");
+                                $("#open-invoices").val("false");
+                                $.each(data.pointOfSaleDetails, function (index, value) {
+
+                                    var inunit = (value.inUnit != null) ? value.inUnit : '';
+                                    var outunit = (value.outUnit != null) ? value.outUnit : '';
+                                    var itemnumber = value.itemNumber;
+
+                                    var string = value.itemNumber;
+                                    string = string.substring(0, 2) + '-' + string.substring(2, string.length);
+
+                                    var html = '';
+                                    html += '<tr  id="rowid-' + sernum + '" class="">';
+                                    html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
+                                    html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
+                                    html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
+                                    html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
+                                    html += '<td id="amount-' + sernum + '" contenteditable="false">$' + value.amountRetail + '</td>';
+                                    html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
+                                    html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
+                                    html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
+                                    html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
+                                    html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">$' + value.price + '</td>';
+                                    html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">$' + value.total + '</td>';
+                                    html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
+                                    html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
+                                    html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
+                                    html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
+                                    html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
+                                    html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
+                                    html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
+                                    html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
+                                    html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
+                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                    html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
+                                    html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
+                                    html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
+                                    html += '</tr >';
+                                    $("#appendnewrowforsale").append(html);
+
+                                    $(".add-row").css("pointer-events", "none");
+
+                                    $("#delete-" + sernum).prop("onclick", null);
+
+                                    sernum++;
+
+                                });
+
+                                var total = $("#total-" + sernum).text();
+                                var subtotalnew = $("#subtotalauto").val();
+                                var finalsubtotalvalue = subtotalnew.split('$');
+                                $("#CustomerBalance").val(abc_general.parenthAdd(data.receiveablePreBalance));
+                                $("#CustomerBalanceDue").text(abc_general.parenthAdd(data.receiveablePreBalance));
+
+                                if (total != null && total != '') {
+                                    var newtotal = total.split('$');
+                                    var newtotalsuplitted = newtotal[1];
+                                    var subtotalsuplitednew = finalsubtotalvalue[1];
+                                    if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
+
+                                        var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
+                                        $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
+
+                                    }
+                                }
+
+                                GetCompanyByID(data.customerId, false);
+
+                                $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
+
+                                CalculatetaxPlusDiscount();
+
+                                // SaveOnGoingSales();
+
+
+
+                                $('#previousbalance').attr("readonly", true);
+                                $('#subtotalauto').attr("readonly", true);
+                                $('#discountidadd').attr("readonly", true);
+                                $('#otherid').attr("readonly", true);
+                                $('#taxid').attr("readonly", true);
+                                $('#freightid').attr("readonly", true);
+                                $('#invoicetotal').attr("readonly", true);
+                                $('#amountdue').attr("readonly", true);
+                                $('#searchname').attr("readonly", true);
+
+                                $('#InvoiceBalance').val(abc_general.parenthAdd(data.receiveablePreBalance));
+
+
+
+                                $(".saverecord").hide();
+                                $(".printrecord").hide();
+                                $(".editrecord").hide();
+                            }
                         }
                         else {
-                            if (data.isPaid != null && data.isPaid != false && data.isPaid != "undefined") {
-                                $(".Paid").removeClass("d-none");
-                            }
-                            var customername = $("#customername").val();
-                            var customercode = $("#customercodeinfo").val();
-                            var CustomerID = $("#customerid").val();
-                            $("#appendnewrowforsale").html("");
-                            $("#open-invoices").val("false");
-                            $.each(data.pointOfSaleDetails, function (index, value) {
+                            $('#appendnewrowforsale').html('');
+                            $(".saverecord").show();
+                            $(".printrecord").show();
+                            $(".editrecord").show();
 
-                                var inunit = (value.inUnit != null) ? value.inUnit : '';
-                                var outunit = (value.outUnit != null) ? value.outUnit : '';
-                                var itemnumber = value.itemNumber;
-
-                                var string = value.itemNumber;
-                                string = string.substring(0, 2) + '-' + string.substring(2, string.length);
-
-                                var html = '';
-                                html += '<tr  id="rowid-' + sernum + '" class="">';
-                                html += '<td id="countser-' + sernum + '" style="width: 10px" class="counter" contenteditable="true">' + sernum + '</td>';
-                                html += '<td id="itemnumber-' + sernum + '" style="width: 10px" contenteditable="true" onkeyup="GetItemByItemNumber(event,' + sernum + ')">' + string + '</td>';
-                                html += '<td  id="description-' + sernum + '" style="width: 10px" contenteditable="false"  val"' + sernum + '">' + value.description + '</td>';
-                                html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.quantity + '</td>';
-                                html += '<td id="amount-' + sernum + '" contenteditable="false">$' + value.amountRetail + '</td>';
-                                html += '<td id="discountin-' + sernum + '"  contenteditable="true" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$' + value.inDiscount + '</td>';
-                                html += '<td id="discountout-' + sernum + '" contenteditable="true" onkeyup="DiscuntChangePrice(' + sernum + ')">' + value.outDiscount + '</td>';
-                                html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success">' + inunit + '</td>';
-                                html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success">' + outunit + '</td>';
-                                html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning">$' + value.price + '</td>';
-                                html += '<td id="total-' + sernum + '" contenteditable="false" class="table-warning">$' + value.total + '</td>';
-                                html += '<td id="customername-' + sernum + '" style="display:none;">' + customername + '</td>';
-                                html += '<td style="display:none" id="customercode-' + sernum + '" contenteditable="true" class="table-warning">' + customercode + '</td>';
-                                html += '<td style="display:none" id="customerid-' + sernum + '" contenteditable="true" class="table-warning">' + CustomerID + '</td>';
-                                html += '<td style="display:none" id="itemid-' + sernum + '" contenteditable="true" class="table-warning">' + value.itemId + '</td>';
-                                html += '<td style="display:none" id="stockno-' + sernum + '" contenteditable="true" class="table-warning">' + value.stockQty + '</td>';
-                                html += '<td id="saleslimit-' + sernum + '" contenteditable="false" class="table-warning">' + value.salesLimit + '</td>';
-                                html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
-                                html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
-                                html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
-                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
-                                html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
-                                html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
-                                html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
-                                html += '</tr >';
-                                $("#appendnewrowforsale").append(html);
-
-                                $(".add-row").css("pointer-events", "none");
-
-                                $("#delete-" + sernum).prop("onclick", null);
-
-                                sernum++;
-
-                            });
-
-                            var total = $("#total-" + sernum).text();
-                            var subtotalnew = $("#subtotalauto").val();
-                            var finalsubtotalvalue = subtotalnew.split('$');
-                            $("#CustomerBalance").val(abc_general.parenthAdd(data.receiveablePreBalance));
-                            $("#CustomerBalanceDue").text(abc_general.parenthAdd(data.receiveablePreBalance));
-
-                            if (total != null && total != '') {
-                                var newtotal = total.split('$');
-                                var newtotalsuplitted = newtotal[1];
-                                var subtotalsuplitednew = finalsubtotalvalue[1];
-                                if (subtotalsuplitednew != null && subtotalsuplitednew != '' && subtotalsuplitednew != "$NaN") {
-
-                                    var subtractedtotal = parseFloat(subtotalsuplitednew) - parseFloat(newtotalsuplitted);
-                                    $("#subtotalauto").val("$" + subtractedtotal.toFixed(2));
-
-                                }
-                            }
-
-                            GetCompanyByID(data.customerId, false);
-
-                            $('#previousbalance').val(abc_general.parenthAdd(data.preBalance.toString()));
-
-                            CalculatetaxPlusDiscount();
-                            
-                           // SaveOnGoingSales();
-
-                           
-
-                            $('#previousbalance').attr("readonly", true);
-                            $('#subtotalauto').attr("readonly", true);
-                            $('#discountidadd').attr("readonly", true);
-                            $('#otherid').attr("readonly", true);
-                            $('#taxid').attr("readonly", true);
-                            $('#freightid').attr("readonly", true);
-                            $('#invoicetotal').attr("readonly", true);
-                            $('#amountdue').attr("readonly", true);
-                            $('#searchname').attr("readonly", true);
-
-                            $('#InvoiceBalance').val(abc_general.parenthAdd(data.receiveablePreBalance));
-                            
-                             
-
-                            $(".saverecord").hide();
-                            $(".printrecord").hide();
-                            $(".editrecord").hide();
                         }
-                    }
-                    else {
-                        $('#appendnewrowforsale').html('');
-                        $(".saverecord").show();
-                        $(".printrecord").show();
-                        $(".editrecord").show();
 
-                    }
-
-                },
-                error: function (xhr, status, error) {
-                    var errorMessage = xhr.status + ': ' + xhr.statusText
-                },
-            });
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText
+                    },
+                });
+            }
+        }
+        else{
+            location.reload();
         }
     }
 
@@ -8319,9 +8319,33 @@
                 return false;
             }
            // creditCheck(true, false, true, false);
-            InsertSaleDetails1(false, true);
+            InsertSaleDetails1(true, true);
         }
 
+    });
+
+    $("#PaymentSilentF4").click(function () {
+        var tablecount = $("#saletable TBODY TR").length;
+        if (parseInt(tablecount) == 0) {
+            var customerId = $("#customerid").val();
+            if (customerId == "") {
+                Swal.fire(
+                    "Message",
+                    "Kindly Select Customer",
+                    'error'
+                );
+                return false;
+            }
+            swal("Error!", "Please Complete Current Invoice", "error");
+        } 
+        else {
+            var Total = $("#invoicetotal").val();
+            if (Total == "$0.00") {
+                swal("Error!", "Please Complete Current Invoice", "error");
+                return false;
+            }
+            InsertSaleDetails1(false, true);
+        }
     });
 
     $("#PrintInvoicef3").click(function () {
@@ -8424,7 +8448,8 @@
 
     }
 
-     function ChangePayment1(IsInvoicedPaid) {
+     function ChangePayment1(IsInvoicedPaid, IsPrint) {
+         debugger;
         var OnlyPayment = false;
         var customername = $("#searchname").val();
         var customerId = $("#customerid").val();
@@ -8541,9 +8566,10 @@
                     CustomerPMOdalhide();
                     // creditCheckWithPayment(true, false);
                     toastr.success('Payment Received');
-                    debugger;
 
+                    if(IsPrint == true){
                     window.open('@Url.Action("SaleInvoicePdf", "Sale")', '_blank');
+                    }
                    
 
                 }
