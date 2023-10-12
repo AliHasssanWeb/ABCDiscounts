@@ -6376,6 +6376,9 @@
                           var year = d.getFullYear();
                           var InvDate = day + '-' + month + '-' + year;
                         
+                           var radioName = 'payOrder' + val;
+
+
                         //Invoice Row
                         inner = '';
                         inner += '<tr>';
@@ -6385,7 +6388,7 @@
                         inner += '<td> ' + text.invTotal + ' </td>';
                         inner += '<td> ' + text.totalPaid + ' </td>';
                         inner += '<td> ' + text.invBalance + ' </td>';
-                        inner += '<td> <input type="radio" name="payOrder" value="option1">   <input type="radio" name="payOrder" value="option2"> </td>';
+                        inner += '<td> <input type="radio" name="' + radioName + '" value="option1">   <input type="radio" name="' + radioName + '" value="option2"> </td>';
                         inner += '</tr>';
                        $('#tblunpaidinv > tbody:last-child').append(inner);
 
