@@ -24,6 +24,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Twilio.TwiML.Messaging;
 using static ABC.POS.Domain.DataConfig.RequestSender;
 
 namespace ABC.POS.Website.Controllers
@@ -2910,7 +2911,7 @@ namespace ABC.POS.Website.Controllers
                         var body = HttpContext.Session.GetString("saleorder");
                         var model = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)body);
 
-                       Sendmail(Sale.CustomerEmail, model);
+                        Sendmail(Sale.CustomerEmail, model);
 
                     }
                     return Json(true);
@@ -3047,6 +3048,41 @@ namespace ABC.POS.Website.Controllers
 
 
         }
+
+        [HttpGet]
+        public IActionResult MultiInvGeneratePdf(int CustomerId)
+        {
+            try
+            {
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/MultiInvGeneratePdf/" + CustomerId, "GET");
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    ResponseBack<CustomerDetailModel> response = JsonConvert.DeserializeObject<ResponseBack<CustomerDetailModel>>(resp.Resp);
+                    if (response.Data != null)
+                    {
+                        var pdfResult = new ViewAsPdf(response.Data);
+                        return pdfResult;
+
+                    }
+                    else
+                    {
+                        return Json(false);
+
+                    }
+
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 
 }

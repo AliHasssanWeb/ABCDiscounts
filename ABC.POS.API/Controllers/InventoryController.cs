@@ -11420,6 +11420,71 @@ namespace ABC.POS.API.Controllers
             return record;
         }
 
+        [HttpGet("MultiInvGeneratePdf/{CustomerId}")]
+        public IActionResult MultiInvGeneratePdf(int CustomerId)
+        {
+            try
+             {
+               var Response = ResponseBuilder.BuildWSResponse<CustomerDetailModel>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var record = db.CustomerInformations
+                    .Where(cd => cd.Id == CustomerId)
+                    .Select(cd => new CustomerDetailModel
+                    {
+                        CustomerId = cd.Id,
+                        Company = cd.Company,
+                        BusinessAddress = cd.BusinessAddress,
+                        Fax = cd.Fax,
+                        Phone = cd.Phone,
+                        Email = cd.Email,
+                         PointOfSale = db.PointOfSales
+                            .Where(psm => psm.CustomerId == CustomerId)
+                            .Select(psm => new PointOfSaleModel
+                            {
+                                InvoiceNumber = psm.InvoiceNumber,
+                         
+                                PointOfSaleDetails = db.PointOfSaleDetails
+                                    .Where(psd => psd.PointOfSaleId == psm.PointOfSaleId)
+                                    .Select(psd => new PointOfSaleDetailModel
+                                    {
+                                        ItemName = psd.Item.Name,
+                                        InUnit = psd.InUnit,
+                                        OutUnit = psd.OutUnit,
+                                        Price = psd.Price,
+                                        Total = psd.Total,                                   
+                                    })
+                                    .ToList()
+                            })
+                            .ToList()
+                    })
+                    .FirstOrDefault();
+
+				if (record != null)
+				{
+					ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+				}
+				else
+				{
+					ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+				}
+				return Ok(Response);
+			}
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SalesInvTransaction>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 
 }
