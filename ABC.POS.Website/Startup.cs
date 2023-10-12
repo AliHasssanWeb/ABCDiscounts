@@ -92,13 +92,6 @@ namespace ABC.POS.Website
             app.UseStaticFiles();
             app.UseSession();
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), @"StaticContent")),
-                RequestPath = new PathString("/StaticContent")
-            });
-
             app.UseRouting();
 
             app.UseAuthorization();
