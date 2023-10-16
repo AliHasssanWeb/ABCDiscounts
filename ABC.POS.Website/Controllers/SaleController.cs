@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Twilio.TwiML.Messaging;
 using static ABC.POS.Domain.DataConfig.RequestSender;
@@ -3062,6 +3063,106 @@ namespace ABC.POS.Website.Controllers
                     {
                         var pdfResult = new ViewAsPdf(response.Data);
                         return pdfResult;
+
+                    }
+                    else
+                    {
+                        return Json(false);
+
+                    }
+
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<IActionResult> MultiInvGeneratePdfProtected(int CustomerId, string Password, string CustomerEmail, string Type)
+        {
+            try
+            {
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/MultiInvGeneratePdf/" + CustomerId, "GET");
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    ResponseBack<CustomerDetailModel> response = JsonConvert.DeserializeObject<ResponseBack<CustomerDetailModel>>(resp.Resp);
+                    if (response.Data != null)
+                    {
+
+                        var pdfResult = new ViewAsPdf(response.Data);
+                        var pdfBytes = await pdfResult.BuildFile(ControllerContext);
+                        var protectedPdfBytes = PDFHelper.ProtectPdf(pdfBytes, Password);
+
+                        if (Type == "EmailProtected")
+                        {
+                            await SendEmailWithPDFAttachment(CustomerEmail, protectedPdfBytes);
+                            return Json(true);
+                        }
+                        if (Type == "PDFProtected")
+                        {
+                            return File(protectedPdfBytes, "application/pdf", "SaleInvoicesWithProtected.pdf");
+
+                        }
+                        return Json(false);
+                    }
+                    else
+                    {
+                        return Json(false);
+
+                    }
+
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private async Task SendEmailWithPDFAttachment(string Email, byte[] pdfBytes)
+
+        {
+            UserEmailPDFOptions options = new UserEmailPDFOptions
+            {
+                ToEmails = new List<string>() { Email },
+                Subject = "All Invoices PDF",
+
+            };
+            options.Attachments = new List<EmailAttachment>
+            {
+                new EmailAttachment
+                {
+                     FileName = "SaleInvoicesWithProtected.pdf",
+                     Content = pdfBytes,
+                     ContentType = "application/pdf"
+                }
+            };
+            await _emailService.SendEmailPDFAttachment(options);
+        }
+
+        [HttpGet]
+        public IActionResult SaleOrderInvoiceMoreInfo(int PointOfSaleId)
+        {
+            try
+            {
+                SResponse resp = RequestSender.Instance.CallAPI("api", "Sale/SaleOrderInvoiceMoreInfo/" + PointOfSaleId, "GET");
+                if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
+                {
+                    ResponseBack<SaleOrderInvoiceMoreInfoModel> response = JsonConvert.DeserializeObject<ResponseBack<SaleOrderInvoiceMoreInfoModel>>(resp.Resp);
+                    if (response.Data != null)
+                    {
+                        return Json(response.Data);
 
                     }
                     else

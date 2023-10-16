@@ -38,6 +38,11 @@ namespace ABC.POS.Website.Service
             await SendEmail(userEmailOptions);
         }
 
+        public async Task SendEmailPDFAttachment(UserEmailPDFOptions userEmailPDFOptions)
+        {
+            await SendPDFEmail(userEmailPDFOptions);
+        }
+
         //public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
         //{
         //    userEmailOptions.Subject = UpdatePlaceHolders("Hello {{UserName}}, Confirm your email id.", userEmailOptions.PlaceHolders);
@@ -114,29 +119,49 @@ namespace ABC.POS.Website.Service
             return text;
         }
 
-        //public Task SendEmailForEmailConfirmation(UserEmailOptions invoiceModel)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        #region Send Email Attachments Function
+        private async Task SendPDFEmail(UserEmailPDFOptions userEmailPDFOptions)
+        {
+            MailMessage mail = new MailMessage
+            {
+                Subject = userEmailPDFOptions.Subject,
+                Body = userEmailPDFOptions.Body,
+                From = new MailAddress(_smtpConfig.SenderAddress, _smtpConfig.SenderDisplayName)
+            };
 
-        //public Task SendEmailForForgotPassword(UserEmailOptions invoiceModel)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+            foreach (var toEmail in userEmailPDFOptions.ToEmails)
+            {
+                mail.To.Add(toEmail);
+            }
 
-        ////public Task SendTestEmail(UserEmailOptions userEmailOptions)
-        ////{
-        ////    throw new System.NotImplementedException();
-        ////}
+            NetworkCredential networkCredential = new NetworkCredential(_smtpConfig.UserName, _smtpConfig.Password);
 
-        //public Task SendEmailForEmailConfirmation(InvoiceModel invoiceModel)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+            SmtpClient smtpClient = new SmtpClient
+            {
+                Host = _smtpConfig.Host,
+                Port = _smtpConfig.Port,
+                EnableSsl = _smtpConfig.EnableSSL,
+                UseDefaultCredentials = _smtpConfig.UseDefaultCredentials,
+                Credentials = networkCredential
+            };
 
-        //public Task SendEmailForForgotPassword(InvoiceModel invoiceModel)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+            mail.BodyEncoding = Encoding.Default;
+
+            if (userEmailPDFOptions.Attachments != null)
+            {
+                foreach (var attachment in userEmailPDFOptions.Attachments)
+                {
+                    // Create the attachment
+                    Attachment emailAttachment = new Attachment(new MemoryStream(attachment.Content), attachment.FileName);
+                    emailAttachment.ContentType.MediaType = attachment.ContentType;
+
+                    // Add the attachment to the email
+                    mail.Attachments.Add(emailAttachment);
+                }
+            }
+
+            await smtpClient.SendMailAsync(mail);
+        }
+        #endregion
     }
 }

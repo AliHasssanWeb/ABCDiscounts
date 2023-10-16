@@ -11449,24 +11449,6 @@ namespace ABC.POS.API.Controllers
 
         }
 
-        public List<ReceivingAdp> ReceiveableQuery(int CustomerId)
-        {
-            var record = (from receiving in db.Receivings
-                          where receiving.CustomerId == Convert.ToInt32(CustomerId) && receiving.IsPaid == false
-                          orderby receiving.IsPaidFirst descending, receiving.Date ascending
-                          select new ReceivingAdp
-                          {
-                              InvoiceNumber = receiving.InvoiceNumber,
-                              Date = receiving.Date,
-                              InvTotal = receiving.InvTotal,
-                              TotalPaid = (Convert.ToDouble(receiving.InvTotal) - Convert.ToDouble(receiving.InvBalance)).ToString(),
-                              InvBalance = receiving.InvBalance,
-                              Days = (EF.Functions.DateDiffDay(receiving.Date, DateTime.Now)).ToString()
-
-                          }).ToList();
-            return record;
-        }
-
         [HttpGet("MultiInvGeneratePdf/{CustomerId}")]
         public IActionResult MultiInvGeneratePdf(int CustomerId)
         {

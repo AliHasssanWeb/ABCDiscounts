@@ -1,0 +1,147 @@
+﻿@model ABC.DTOs.Library.SalesDTOs.CustomerDetailModel
+@{
+	ViewData["Title"] = "SalesInvoices";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+
+		* {
+			font-size: 14px;
+			font-family: 'Times New Roman';
+		}
+
+		td,
+		th,
+		tr,
+		table {
+			width: 270px;
+			border-collapse: collapse;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+			td.description,
+			th.description {
+				width: 75px;
+				max-width: 75px;
+			}
+
+			td.quantity,
+			th.quantity {
+				width: 40px;
+				max-width: 40px;
+				word-break: break-all;
+			}
+
+			td.price,
+			th.price {
+				width: 40px;
+				max-width: 40px;
+				word-break: break-all;
+			}
+
+		.centered {
+			text-align: left;
+			align-content: flex-start;
+			font-weight: bold;
+		}
+
+		.ticket {
+			width: 300px;
+			max-width: 300px;
+		}
+
+		.contact {
+			text-align: left;
+			align-content: flex-start;
+			font-weight: bold;
+		}
+
+		img {
+			max-width: inherit;
+			width: inherit;
+		}
+	</style>
+</head>
+<body>
+	<p class="centered">
+		@Model.Company
+		<br />@Model.BusinessAddress
+	</p>
+	<p class="contact">
+		Tel @Model.Phone  FAX @Model.Fax
+	</p>
+	<p class="centered">
+		Date: <b>@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</b>
+	</p>
+	<br />
+	<br />
+
+	@foreach (var invoices in Model.PointOfSale)
+	{
+		<div class="ticket" style="border: 1px solid">
+			<span style="float: left; margin-left: 15px;">
+				Invoice: <b>@invoices.InvoiceNumber</b>
+			</span>
+			<hr style="height:1px;border-width:0;color:black;background-color:black; width: 272px;">
+			<br />
+			<hr style="height:1px;border-width:0;color:black;background-color:black; width: 272px;">
+			<p style="float: left; margin-left: 15px; font-weight: bold; margin-top: -4px !important;">
+				@Model.Company
+			</p>
+			<p style="float: left; margin-left: 15px; font-weight: bold; margin-top: -4px !important;">
+				@Model.BusinessAddress
+			</p>
+			<table>
+				@foreach (var item in invoices.PointOfSaleDetails)
+				{
+					<tr style="border-top: 1px solid black;">
+						<td class="quantity">
+							<span style="float: left; font-weight: bold;">@item.ItemNumber</span>
+							<span style="float: left; font-weight: bold;">@item.ItemName</span>
+							<br />
+							<br />
+							<div style="width:100%">
+								<span style="float: left !important; width: 25%;">
+									$ @item.Price
+								</span>
+								<span style="margin-left: 40px; width: 25%;">
+									@item.RingerQty
+								</span><b>@@</b>
+								<span style="width: 15%;">
+									$ @item.AmountRetail
+								</span>
+								<b>-</b>
+								@if (Convert.ToDouble(item.InDiscount) > 0 || item.InDiscount != "")
+								{
+									<span style="float: right; width: 25%;">$ @item.InDiscount</span>
+								}
+								else if (Convert.ToDouble(item.OutDiscount) > 0 || item.OutDiscount != "")
+								{
+									<span style="float: right; width: 25%;">$ @item.OutDiscount %</span>
+								}
+								<b> </b>
+								<span style="float: right; width: 25%;">$ @item.Total</span>
+							</div>
+							<br />
+						</td>
+					</tr>
+				}
+
+			</table>
+
+		</div>
+	}
+
+	<p style="text-align:left;font-size:11px;font-weight: bold;">
+		Thanks for your Shopping At ABC Discount LLC
+		<br />No EXCHANGE NO REFEND ON VAPE
+	</p>
+</body>
+</html>
+
+

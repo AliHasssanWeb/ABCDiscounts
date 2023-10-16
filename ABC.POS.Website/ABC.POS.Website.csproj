@@ -42,6 +42,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="PdfSharp" Version="1.50.5147" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     <PackageReference Include="Syncfusion.HtmlToPdfConverter.QtWebKit.Net.Core" Version="19.3.0.43" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
