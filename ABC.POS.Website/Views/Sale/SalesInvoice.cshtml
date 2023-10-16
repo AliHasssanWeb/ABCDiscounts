@@ -2792,7 +2792,7 @@
                 <div class="row" pt-3 style="padding-top:12px">
                     <div class="col-lg-5" style="text-align:center">
 
-                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;">Silent/F4</button>
+                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;" onclick="PrintDialogueBox()">Silent/F4</button>
                     </div>
                     <div class="col-lg-2" style="text-align:center">
                         @*  <button class="btn  btn-style ">Silent/F4</button>*@
@@ -2853,7 +2853,7 @@
                 <div class="row" style="margin:0px;">
                     <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
                         <div id="" class="row" style="display: flex; align-items: center;">
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px" onclick=generatePdf()>0-Print</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px" onclick=PrintDialogueBox()>0-Print</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px" onclick=generatePdf()>1-Preview</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px" onclick=generatePdf()>2-Adobe PDF</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px">3-PDF (Protected)</p>
@@ -10835,18 +10835,16 @@
          var url = '@Url.Action("MultiInvGeneratePdf", "Sale")?CustomerId=' + CustmerID;
          window.open(url, '_blank');
 
-        // $.ajax({
-        //    type: "GET",
-        //    url: '@Url.Action("MultiInvGeneratePdf", "Sale")',
-        //    data: { CustmerId: CustmerID },
-        //    dataType: 'json',
-        //    success: function (data) {
-               
-
-        //    },
-        //});
     }
-
+      function PrintDialogueBox() {
+        debugger;
+        var CustomerID = $("#customerid").val();
+        var url = '@Url.Action("MultiInvGeneratePdf", "Sale")?CustomerId=' + CustomerID;
+        var newWindow = window.open(url, '_blank');
+        newWindow.onload = function() {
+            newWindow.print();
+        };
+      }
 </script>
 
 <script>
