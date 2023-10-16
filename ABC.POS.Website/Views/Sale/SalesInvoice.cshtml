@@ -664,6 +664,7 @@
                                 <div class="" style=" margin-left: 20px; display:none; " id="DivSP">
                                     <img class="hide-icon " src="../images/credit.png" style="width:50px" title="Payment" onclick="openmodal()" />
                                     <img class="hide-icon" id="" src="../images/payment.png" style="width:50px" title="Credit" onclick="openmodalabcd()" />
+                                    <img class="hide-icon" id="" src="../images/add.png" style="width:50px" title="Credit" onclick="openpaymentmodal2()" />
                                 </div>
                                 <div class="di" style=" margin-left: 20px; " id="DivSP2">
                                     <img class="hide-icon " src="../images/credit.png" style="width:50px" title="Payment" />
@@ -1151,6 +1152,7 @@
                 </button>
 
             </div>
+
 
             <div class="tab">
                 
@@ -2020,25 +2022,36 @@
 
                             <div class="row">
                                   <div class="col-lg-1 ">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                         <img class="" style="height:10px" src="../images/Edit Svg.svg" />
+                                    </button>
+                                  
                                 </div>
                               
-                                <div class="col-lg-4 ">
-                                   <label>E-mail</label>
+                                <div class="col-lg-1 ">
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                        <img class="" style="height:10px" src="../images/Search SVG.svg" />
+                                    </button>
+                                @*   <label>E-mail</label>
                                   <input style="width:65%" type="text" id="" name="">
                                   <input type="checkbox">
                                    <label>Text</label>
                                     <input style="width:65%; margin-left:7%"  type="number" id="" name="">
-                                  <input type="checkbox">
+                                  <input type="checkbox">*@
+                                </div>
+                                <div class="col-lg-4 ">
+                                     <input type="checkbox">
+                                    <Label>List All Customers</Label>
+
                                 </div>
 
-                                <div class="col-lg-2 ">
+                                <div class="col-lg-2 " style="margin-left:-18px">
                                     <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
                                 </div>
                                 <div class="col-lg-3">
                                     <button type="button" class="btn btn-light p-3" style="border-radius: 0;" onclick="SaveMultiPayment()">PrintInvoiceF5</button>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-1">
                                     <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
                                 </div>
 
@@ -2055,21 +2068,34 @@
                             <div class="row">
                              
 
-                                <div class="col-lg-3 ">
-                                    <input style="width:100%;" type="text" id="" name=""> 
+                                <div class="col-lg-1 ">
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
                                   
                                 </div>
 
-                                <div class="col-lg-2 ">
-                                    <input style="width:100%;" type="text" id="" name="">
+                                <div class="col-lg-3 ">
+                                    <select class="" name="cars" id="deliveryDay">
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
                                 </div>
                                 <div class="col-lg-2">
-                                    <input type="checkbox">
-                                    <Label>List All</Label>
+                                    <select class="" name="cars" id="deliveryDay">
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                    </select>
                                    
                                 </div>
                                 <div class="col-lg-5">
-                                    <label>Balance</label>
+                                    <label>Balance:</label>
                                     <input disabled style="width:60%" type="text" id="CustomerBalance" name="">
                                 </div>
 
@@ -2831,6 +2857,297 @@
                         <i style="font-size:35px; margin-top:1px; color:red;" class="fa fa-power-off red-color" onclick="closemodalabcd()"></i>
                     </div>
 
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="paymentmodal2" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:white; width:90%;">
+            <div class="modal-header" style="padding:0.5rem!important;">
+                <h5 class="modal-title" id="ModalLabel">Customer's info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closepaymentmodal2()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+               <div class="tab">
+                
+                <button class="tablinks active" onclick="openCity(event, 'UnPaidInvoices')">UnPaidInvoices</button>
+                <button class="tablinks" onclick="openCity(event, 'Payments')">Payments</button>
+               
+
+            </div>
+            <div class="modal-body" style="color: #0000AB; padding-top: 20px;padding-bottom:10px; padding-left:0px; padding-right:0px; background:rgb(225, 225, 225);">
+                <div id="UnPaidInvoices" class="tabcontent">
+                    <h3>UnPaidInvoices</h3>
+                    <div class="row" style="border:ridge">
+                        <table class=" table-bordered" id="tblunpaidinv">
+                            <thead>
+                                <tr style="background-color:white;color:#010083">
+                                    @* <th></th> *@
+                                    <th>Invoice #</th>
+                                    <th>Date</th>
+                                    <th>Days</th>
+                                    <th>Inv. Total</th>
+                                    <th>Total Paid</th>
+                                    <th>Inv. Balance</th>
+                                    <th style="background-color:#cccccc">Pay Order</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @* <tr style="background-color:white"> *@
+                                @*   <td>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                                </svg>
+                                </td>
+                                <td>Data 2</td>
+                                <td>Data 3</td>
+                                <td>Data 4</td>
+                                <td>Data 5</td>
+                                <td>Data 6</td>
+                                <td>Data 7</td> *@
+
+                                @* <td style="background-color:#cccccc">   *@
+                                @*   <input type="radio" name="payOrder" value="option1">
+                                <input type="radio" name="payOrder" value="option2"> *@
+                                @* </td> *@
+                                @* </tr> *@
+                                <!-- Add more rows with data here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-2" style="background-color: #cccccc">
+
+
+                        <div class="col-lg-12" style="border:ridge">
+                            <div class="row" style="padding-top:20px">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Email Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-8">
+                                    <div class="form-group row">
+                                        <div class="col-lg-5">
+                                            <input type="checkbox" id="emailcopy" style="height: 9px;" name="vehicle1" value="Bike">
+                                            <label for="emailcopy" style="font-size: 10px; font-weight: 800; color: darkred;">Text Copy</label>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input style="margin-left: 8px;" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 ">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">OrderByDescription</button>
+                                </div>
+
+                                <div class="col-lg-3 ">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="Payments" class="tabcontent">
+                    <h3>Payments</h3>
+                    <div class="row">
+                        <div class="col-lg-12" style="border:ridge;padding-top:10px;padding-bottom:10px;">
+
+
+                            <div class="row">
+                                <div class="col-lg-1 ">
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                        <img class="" style="height:10px" src="../images/Edit Svg.svg" />
+                                    </button>
+
+                                </div>
+
+                                <div class="col-lg-1 ">
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                        <img class="" style="height:10px" src="../images/Search SVG.svg" />
+                                    </button>
+                                    @*   <label>E-mail</label>
+                                    <input style="width:65%" type="text" id="" name="">
+                                    <input type="checkbox">
+                                    <label>Text</label>
+                                    <input style="width:65%; margin-left:7%"  type="number" id="" name="">
+                                    <input type="checkbox">*@
+                                </div>
+                                <div class="col-lg-4 ">
+                                    <input type="checkbox">
+                                    <Label>List All Customers</Label>
+
+                                </div>
+
+                                <div class="col-lg-2 " style="margin-left:-18px">
+                                    <button id="PrintInvoicef10" type="button" class="btn btn-light p-3" style="border-radius: 0;">SilentF4</button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-light p-3" style="border-radius: 0;" onclick="SaveMultiPayment()">PrintInvoiceF5</button>
+                                </div>
+                                <div class="col-lg-1">
+                                    <i class='fa fa-power-off red-color' style="color:red;font-size:50px;"></i>
+                                </div>
+
+                                @*<div class="col-md-2">
+                                <img class="responsive mtop" style="cursor:pointer" src="~/images/icons8-shutdown-96.png" />
+
+                                </div>*@
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12" style="border:ridge;padding-top:10px;padding-bottom:10px;">
+
+
+                            <div class="row">
+
+
+                                <div class="col-lg-1 ">
+                                    <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                    </button>
+
+                                </div>
+
+                                <div class="col-lg-3 ">
+                                    <select class="" name="cars" id="deliveryDay">
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select class="" name="cars" id="deliveryDay">
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-5">
+                                    <label>Balance:</label>
+                                    <input disabled style="width:60%" type="text" id="CustomerBalance" name="">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <div class="row " style="background-color: #cccccc;border: 2px solid #e3e8f1;">
+                        <div class="col-lg-12 mt-1 col-md-12 col-sm-12 col-12 table-responsive" id="">
+                            <table class="table table-bordered table-condensed table-responsive-lg" id="CusMultiPaymentsTable" style="border:0.7px solid;">
+                                <thead>
+                                    <tr style="border:0.7px solid;border-bottom:1.4px solid">
+                                        <th style="color: #020caf;">Amount Paid</th>
+                                        <th>Amount Alloc</th>
+                                        <th>Payment Type</th>
+                                        <th>Ck/Card Number</th>
+                                        <th style="color: #c92d21">Hold Date</th>
+
+                                        <th><span class="add-generalpaymentrow ti-plus"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="generalpaymentmodaltable" style="background-color: white;">
+                                    <!-- hidden row -->
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Paid
+                                    </label>
+                                    <label id="TotalPaidAmount" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        Total Alloc
+                                    </label>
+                                    <label id="totalAmountAllocation" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:red">
+                                        Change
+                                    </label>
+                                    <label class="dim col-sm-12 label-style" style="color: #53adcb">
+                                        <input type="text" name="CJ" id="ChangeAmount" style="border:none; color: #53adcb; width:100%; text-align:center;" readonly />
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12 col-12">
+                                @*  <div class="form-group bordercolormodal">
+
+
+                                </div>*@
+                                <button id="thumbRightButton" style="font-size:30px ; padding:9px 15px" disabled> <i class="fa fa-hand-o-right"></i></button>
+                                <button id="thumbLeftButton" style="font-size:30px ; padding:9px 15px"> <i class="fa fa-hand-o-left"></i></button>
+
+                                @*<button id="rightButton" style="font-size:30px ; padding:9px 15px; display:none;"> <i class="fa fa-hand-o-right"></i></button>*@
+
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                <div class="form-group bordercolormodal">
+                                    <label class="dim col-sm-12 label-style" style="color:blue">
+                                        Balance
+                                    </label>
+                                    <label id="CustomerBalanceDue" class="dim col-sm-12 label-style" style="color: #53adcb">$0.00</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -4776,6 +5093,15 @@
         $("#receivablesid").modal('hide');
         $("#customerpayment").modal('hide');
     }
+
+     function openpaymentmodal2() {
+        $("#paymentmodal2").modal('show');
+    }
+    function closepaymentmodal2() {
+        $("#paymentmodal2").modal('hide');
+       
+    }
+
 
     function openSalePrintModal() {
         $("#SaleOrderPrintModal").modal('show');
