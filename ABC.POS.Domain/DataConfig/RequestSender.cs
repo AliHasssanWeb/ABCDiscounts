@@ -69,8 +69,8 @@ namespace ABC.POS.Domain.DataConfig
             //http://10.10.10.98:5595/abcdposapi/
             //http://38.17.51.207:8047/                       // QA server url
 
-                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/" + otype + "/" + action);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://38.17.51.207:8047/" + otype + "/" + action);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://localhost:5001/" + otype + "/" + action);
+              //  HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://38.17.51.207:8047/" + otype + "/" + action);
                 //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://10.10.10.98:5595/abcdposapi/" + otype + "/" + action);
                 request.Headers.Add("Authorization", "Bearer " + AccessToken);
                 request.Credentials = CredentialCache.DefaultCredentials;
