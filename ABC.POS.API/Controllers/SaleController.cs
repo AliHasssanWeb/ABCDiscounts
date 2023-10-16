@@ -1,4 +1,5 @@
 ﻿using ABC.DTOs.Library.Adaptors;
+using ABC.DTOs.Library.SalesDTOs;
 using ABC.EFCore.Repository.Edmx;
 using ABC.Shared;
 using ABC.Shared.DataConfig;
@@ -922,6 +923,54 @@ namespace ABC.POS.API.Controllers
                 {
                     var Response = ResponseBuilder.BuildWSResponse<CashierCounters>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("SaleOrderInvoiceMoreInfo/{PointOfSaleId}")] 
+        public IActionResult SaleOrderInvoiceMoreInfo(int PointOfSaleId)
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<SaleOrderInvoiceMoreInfoModel>();
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+
+                var record = (from r in db.Receivings
+                              join pos in db.PointOfSales on r.InvoiceNumber equals pos.InvoiceNumber
+                              where pos.PointOfSaleId == PointOfSaleId
+                              select new SaleOrderInvoiceMoreInfoModel
+                              {
+                                  InvoiceNumber = r.InvoiceNumber,
+                                  PreviousBalance = r.PreBalance,
+                                  InvoiceTotal = r.InvTotal,
+                                  AmountDue = (Convert.ToDouble(r.InvTotal) - Convert.ToDouble(r.InvBalance)).ToString("F"),
+                                  InvoiceBalance = r.InvBalance,
+                                  InvoiceDate = pos.InvoiceDate
+                              }).FirstOrDefault();
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SaleOrderInvoiceMoreInfoModel>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
                 return BadRequest(ex.Message);

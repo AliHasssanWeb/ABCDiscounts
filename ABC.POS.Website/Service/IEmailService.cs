@@ -9,5 +9,7 @@ namespace ABC.POS.Website.Service
         //Task SendEmailForEmailConfirmation(InvoiceModel invoiceModel);
         //Task SendEmailForForgotPassword(InvoiceModel invoiceModel);
         Task SendTestEmail(UserEmailOptions userEmailOptions);
+
+        Task SendEmailPDFAttachment(UserEmailPDFOptions userEmailPDFOptions);
     }
 }
