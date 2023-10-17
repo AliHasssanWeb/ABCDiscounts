@@ -2824,7 +2824,7 @@
                 <div class="row" pt-3 style="padding-top:12px">
                     <div class="col-lg-5" style="text-align:center">
 
-                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;" onclick="PrintDialogueBox()">Silent/F4</button>
+                        <button type="button" style="padding:17px;border:outset;color:#00008B;font-weight:700;" onclick=generatePdf("PrintPDF")>Silent/F4</button>
                     </div>
                     <div class="col-lg-2" style="text-align:center">
                         @*  <button class="btn  btn-style ">Silent/F4</button>*@
@@ -3176,16 +3176,16 @@
                 <div class="row" style="margin:0px;">
                     <div class="w-100 h-100 w-100 d-inline-block actionbox" id="listbtns" style="border-radius:0px; background:rgb(198, 201, 206); margin-bottom: 0px; font-size:17px;">
                         <div id="" class="row" style="display: flex; align-items: center;">
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px; cursor: pointer" onclick=PrintDialogueBox()>0-Print</p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=generatePdf()>1-Preview</p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=generatePdf()>2-Adobe PDF</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px;padding-top:10px; cursor: pointer" onclick=generatePdf("PrintPDF")>0-Print</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=generatePdf("Preview")>1-Preview</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=generatePdf("PDFUnProtected")>2-Adobe PDF</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=generatePdfwithProtected("PDFProtected")>3-PDF (Protected)</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">4-PDF Save As</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">5-PDF Save As Protected</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">6-Un-Protected Storage</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">7-Protected Storage</p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">8-email PDF </p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailProtected")>9-email PDF (Protected)</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailUnProtected")>8-Email PDF </p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailProtected")>9-Email PDF (Protected)</p>
 
                         </div>
                     </div>
@@ -11220,11 +11220,25 @@
         });
     }
 
-    function generatePdf(){ 
+    function generatePdf(Type){ 
         debugger;
         var CustmerID = $("#customerid").val();
          var url = '@Url.Action("MultiInvGeneratePdf", "Sale")?CustomerId=' + CustmerID;
-         window.open(url, '_blank');
+         if(Type == "PrintPDF"){
+              var newWindow = window.open(url, '_blank');
+                newWindow.onload = function () {
+                newWindow.print();
+               }
+         }
+         else if(Type == "Preview"){
+              window.open(url, '_blank');
+         }
+         else if(Type == "PDFUnProtected"){
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'SalesInvoices.pdf';
+            link.click();
+         }
     }
 
     function generatePdfwithProtected(Type){ 
@@ -11245,14 +11259,19 @@
         var CustomerEmail = $("#customerEmailCusinfo").val();
         var PdfProtectedPassword = $("#PdfProtectedPassword").val();
         var CustmerID = $("#customerid").val();
-        if(abc_general.isNullOrEmpty(PdfProtectedPassword)){
-            Swal.fire("Please Enter Password to Protect PDF");
-            return;
+
+        if(Type == "EmailProtected"){
+            if(abc_general.isNullOrEmpty(PdfProtectedPassword)){
+                Swal.fire("Please Enter Password to Protect PDF");
+                return;
+             }
         }
+
         if (abc_general.isNullOrEmpty(CustomerEmail)) {
             Swal.fire("Please Enter Email");
             return;
         }
+
         $.ajax({
             type: "GET",
             url: '@Url.Action("MultiInvGeneratePdfProtected", "Sale")',
@@ -11272,16 +11291,6 @@
             },
         });
 
-    }
-
-    function PrintDialogueBox() {
-        debugger;
-        var CustomerID = $("#customerid").val();
-        var url = '@Url.Action("MultiInvGeneratePdf", "Sale")?CustomerId=' + CustomerID;
-        var newWindow = window.open(url, '_blank');
-        newWindow.onload = function () {
-            newWindow.print();
-        };
     }
 </script>
 

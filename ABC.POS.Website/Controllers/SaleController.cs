@@ -3094,10 +3094,15 @@ namespace ABC.POS.Website.Controllers
                     ResponseBack<CustomerDetailModel> response = JsonConvert.DeserializeObject<ResponseBack<CustomerDetailModel>>(resp.Resp);
                     if (response.Data != null)
                     {
+                        byte[] protectedPdfBytes = new byte[0];
 
                         var pdfResult = new ViewAsPdf(response.Data);
                         var pdfBytes = await pdfResult.BuildFile(ControllerContext);
-                        var protectedPdfBytes = PDFHelper.ProtectPdf(pdfBytes, Password);
+
+                        if (Type == "EmailProtected" || Type == "PDFProtected")
+                        {
+                            protectedPdfBytes = PDFHelper.ProtectPdf(pdfBytes, Password);
+                        }
 
                         if (Type == "EmailProtected")
                         {
@@ -3109,14 +3114,17 @@ namespace ABC.POS.Website.Controllers
                             return File(protectedPdfBytes, "application/pdf", "SaleInvoicesWithProtected.pdf");
 
                         }
+                        if (Type == "EmailUnProtected")
+                        {
+                            await SendEmailWithPDFAttachment(CustomerEmail, pdfBytes);
+                            return Json(true);
+                        }
                         return Json(false);
                     }
                     else
                     {
                         return Json(false);
-
                     }
-
                 }
                 else
                 {
@@ -3143,7 +3151,7 @@ namespace ABC.POS.Website.Controllers
             {
                 new EmailAttachment
                 {
-                     FileName = "SaleInvoicesWithProtected.pdf",
+                     FileName = "SalesInvoices.pdf",
                      Content = pdfBytes,
                      ContentType = "application/pdf"
                 }
