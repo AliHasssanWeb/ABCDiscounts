@@ -6254,8 +6254,11 @@
                     inner = '';
                     inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCompanyByID(' + d.id + ',true)";>';
                     if (i == 0) {
-                        inner += '<div class="searchheader">Company Name</div></br>';
+                        inner += '<div class="searchheader">Company Name</div>';
+                      inner += '<div class="searchheader">Company Num</div>';
+                        
                     }
+                    inner += '<span class="item_name di w-50" data-rel="' + d.id + '">' + d.company + '</span>';
                     inner += '<span class="item_name di w-50" data-rel="' + d.id + '">' + d.company + '</span>';
                     inner += '</div>';
 
