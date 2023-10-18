@@ -647,8 +647,8 @@
                                @*  <img class="editrecord" src="../images/edit.png" style="width: 50px; display: none" title="Edit" onclick="creditCheck(false,true,false,false)" /> *@
                                 <img class="editrecord" src="../images/edit.png" style="width: 50px; display: none" title="Edit" onclick="InsertSaleDetails1(false,false)" />
                                 <img class="hide-icon" src="../images/delete.png" style="width:50px" title="Delete" onclick="" />
-
-                                <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />
+@*
+                                <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />*@
                                 <div class="di div-style" style=" margin-left: 30px;">
                                     <select onchange="nextinvoice1('null',this.value, 'PostedInvoice')" id="posted-invoice">
                                         <option value="value">Posted</option>
@@ -662,13 +662,17 @@
                                 <img src="../images/Edit_W.jpg" class="fa-eye d-none" style="height:40px" aria-hidden="true" />
                                 @*<i class="fa fa-eye d-none" style="font-size:30px" aria-hidden="true"></i>*@
                                 <div class="" style=" margin-left: 20px; display:none; " id="DivSP">
-                                    <img class="hide-icon " src="../images/credit.png" style="width:50px" title="Payment" onclick="openmodal()" />
-                                    <img class="hide-icon" id="" src="../images/payment.png" style="width:50px" title="Credit" onclick="openmodalabcd()" />
-                                    <img class="hide-icon" id="" src="../images/add.png" style="width:50px" title="Credit" onclick="openpaymentmodal2()" />
+                                     <img class="hide-icon" src="../images/printer.png" style="width:50px" title="Print" onclick="openmodalabcd()" />
+                                    <img class="hide-icon " src="../images/credit.png" style="width:50px;margin-left:8px;" title="Payment" onclick="openmodal()" />
+                                 @*   <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />*@
+                                  
+                                    <img class="hide-icon" id="" src="../images/payment.png" style="width:50px;margin-left:5px;" title="Credit"  />
+                                    <img class="hide-icon" id="" src="../images/add.png" style="width:50px;margin-left:5px;" title="Credit" onclick="openpaymentmodal2()" />
                                 </div>
                                 <div class="di" style=" margin-left: 20px; " id="DivSP2">
-                                    <img class="hide-icon " src="../images/credit.png" style="width:50px" title="Payment" />
-                                    <img class="hide-icon" id="" src="../images/payment.png" style="width:50px" title="Credit" />
+                                    <img class="hide-icon" src="../images/printer.png" style="width:50px;margin-left:5px;" title="Print"  />
+                                    <img class="hide-icon " src="../images/credit.png" style="width:50px;margin-left:8px;" title="Payment" />
+                                    <img class="hide-icon" id="" src="../images/payment.png" style="width:50px;margin-left:5px;" title="Credit" />
                                 </div>
 
 
@@ -3184,8 +3188,9 @@
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">5-PDF Save As Protected</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">6-Un-Protected Storage</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">7-Protected Storage</p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">8-email PDF </p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailProtected")>9-email PDF (Protected)</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick="openemailmessagemodal()">8-email PDF </p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick="openemailmessagemodal()" )>9-email PDF (Protected)</p>
+                         @*   <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailProtected")>9-email PDF (Protected)</p>*@
 
                         </div>
                     </div>
@@ -3202,6 +3207,97 @@
         </div>
     </div>
 </div>
+
+<div id="emailmessagemodal" class="modal fade" z-index="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:85%">
+            <div class="modal-header" style="padding: 5px 22px;">
+                <h5 class="modal-title" id="ModalLabel" style="font-size:13px">Email Message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeemailmessagemodal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+                <div class="row" style="margin:0px;background:rgb(198, 201, 206);border:outset;padding-bottom:10px">
+                    <div  style="padding-top:10px;display:flex;">
+                        <label for="cars" style="font-weight:600;">Customer</label>
+                        <select  style="width:60%;margin-left:10px" name="cars" id="cars">
+                            <option value="volvo"></option>
+                            <option value="saab">Saab</option>
+                            <option value="opel">Opel</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                        <div class="col-lg-1" style="text-align:center;margin-left:15px">
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
+
+                        </div>
+                        <div class="col-lg-1" style="text-align:center;margin-left:15px">
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">Cc</button>
+
+                        </div>
+                    </div>
+                    <div style="padding-top:10px;display:flex">
+                        <label for="cars" style="font-weight:600;">Vendor</label>
+                        <select style="width:59%;margin-left:29px" name="cars" id="cars">
+                            <option value="volvo"></option>
+                            <option value="saab">Saab</option>
+                            <option value="opel">Opel</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                        <div class="col-lg-1" style="text-align:center;margin-left:15px">
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
+
+                        </div>
+                        <div class="col-lg-1" style="text-align:center;margin-left:15px">
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">Cc</button>
+
+                        </div>
+                    </div>
+                  
+                </div>
+                <div class="row" style="margin:0px;background:rgb(198, 201, 206);padding-top:15px;padding-bottom:20px">
+                    <div class="col-lg-2">  <label for="fname" style="font-weight:600;">To:</label><br /><br />
+                         <label for="fname" style="font-weight:600;">Cc:</label><br><br />
+                        <label for="fname" style="font-weight:600;">Bcc:</label><br><br />
+                        <label for="fname" style="font-weight:600;">Subject:</label>
+                   </div>
+                    <div class="col-lg-7">
+                        <input style="background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+                    </div>
+                   <div class="col-lg-2">
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 12px;">
+                            <img src="../images/Dictionary SVG.svg" style="width:50px" title="Refresh" />
+                        </button>
+                      
+                    </div>
+                 
+                </div>
+              
+
+                 <div class="row" style="margin:0px;background:rgb(198, 201, 206);padding-top:15px; height:80px;border:1px solid black">
+                   
+                 
+                </div>
+
+
+                    </div>
+                   
+                  
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
 
 
 <div id="additemshort" class="modal fade" role="dialog">
@@ -5107,6 +5203,17 @@
         $("#paymentmodal2").modal('hide');
        
     }
+
+
+   
+      function  openemailmessagemodal() {
+        $("#emailmessagemodal").modal('show');
+      
+    }
+    function  closeemailmessagemodal() {
+        $("#emailmessagemodal").modal('hide');
+    }
+
 
 
     function openSalePrintModal() {
