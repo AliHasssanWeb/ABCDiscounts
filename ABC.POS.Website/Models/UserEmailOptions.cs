@@ -13,7 +13,9 @@ namespace ABC.POS.Website.Models
 
     public class UserEmailPDFOptions
     {
-        public List<string> ToEmails { get; set; }
+        public string ToEmails { get; set; }
+        public string CCEmails { get; set; }
+        public string BCCEmails { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
         public List<EmailAttachment> Attachments { get; set; }

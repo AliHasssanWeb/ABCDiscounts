@@ -567,6 +567,32 @@ namespace ABC.POS.Website.Controllers
 
             return Json(Msg);
         }
+
+        public JsonResult AutoCompleteSearchCustomerInfo1()
+        {
+            string Msg = "";
+
+            SResponse ress = RequestSender.Instance.CallAPI("api","Inventory/CustomerInformationGet1", "GET");
+            if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
+            {
+
+                ResponseBack<List<SOCustomersDDAdp>> response = JsonConvert.DeserializeObject<ResponseBack<List<SOCustomersDDAdp>>>(ress.Resp);
+                if (response.Data.Count() > 0)
+                {
+                    List<SOCustomersDDAdp> responseObject = response.Data;
+                    return Json(responseObject);
+
+                }
+                else
+                {
+                    return Json(Msg);
+                }
+
+            }
+
+            return Json(Msg);
+        }
+
         public JsonResult GetCompanyByID(int id)
         {
             var Msg = "";
@@ -2614,18 +2640,11 @@ namespace ABC.POS.Website.Controllers
                 if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
                 {
 
-                    ResponseBack<List<string>> response =
-                                JsonConvert.DeserializeObject<ResponseBack<List<string>>>(ress.Resp);
+                    ResponseBack<List<SOOpenInvoicesModel>> response =
+                                JsonConvert.DeserializeObject<ResponseBack<List<SOOpenInvoicesModel>>>(ress.Resp);
 
                     if (response.Data.Count() > 0)
                     {
-
-                        //List<PosSale> responseObject = response.Data;
-                        //List<string> responseObject = response.Data.Select(x => x.InvoiceNumber).ToList();
-
-
-                        //var query = responseObject.GroupBy(x => x.CurrentInvoiceNumber).Select(g => g.FirstOrDefault()).ToList();
-
                         return Json(response.Data);
                     }
                     else
@@ -2687,15 +2706,11 @@ namespace ABC.POS.Website.Controllers
                 if (ress.Status && (ress.Resp != null) && (ress.Resp != ""))
                 {
 
-                    ResponseBack<List<string>> response =
-                                JsonConvert.DeserializeObject<ResponseBack<List<string>>>(ress.Resp);
+                    ResponseBack<List<SOPostedInvoicesModel>> response =
+                                JsonConvert.DeserializeObject<ResponseBack<List<SOPostedInvoicesModel>>>(ress.Resp);
 
                     if (response.Data.Count() > 0)
                     {
-                        // List<string> responseObject = response.Data.Select(x => x.InvoiceNumber).Distinct().ToList(); ;
-
-                        //var query = responseObject.GroupBy(x => x.CurrentInvoiceNumber).Select(g => g.FirstOrDefault()).ToList();
-
                         return Json(response.Data);
                     }
                     else
@@ -3084,10 +3099,17 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
-        public async Task<IActionResult> MultiInvGeneratePdfProtected(int CustomerId, string Password, string CustomerEmail, string Type)
+        public async Task<IActionResult> MultiInvGeneratePdfProtected(int CustomerId, string Password, string Type, string userEmailPDFOptions)
         {
             try
             {
+                UserEmailPDFOptions options = null;
+
+                if (userEmailPDFOptions != null)
+                {
+                     options = JsonConvert.DeserializeObject<UserEmailPDFOptions>(userEmailPDFOptions);
+                }
+
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/MultiInvGeneratePdf/" + CustomerId, "GET");
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {
@@ -3106,7 +3128,7 @@ namespace ABC.POS.Website.Controllers
 
                         if (Type == "EmailProtected")
                         {
-                            await SendEmailWithPDFAttachment(CustomerEmail, protectedPdfBytes);
+                            await SendEmailWithPDFAttachment(options, protectedPdfBytes);
                             return Json(true);
                         }
                         if (Type == "PDFProtected")
@@ -3116,7 +3138,7 @@ namespace ABC.POS.Website.Controllers
                         }
                         if (Type == "EmailUnProtected")
                         {
-                            await SendEmailWithPDFAttachment(CustomerEmail, pdfBytes);
+                            await SendEmailWithPDFAttachment(options, pdfBytes);
                             return Json(true);
                         }
                         return Json(false);
@@ -3138,14 +3160,16 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
-        private async Task SendEmailWithPDFAttachment(string Email, byte[] pdfBytes)
+        private async Task SendEmailWithPDFAttachment(UserEmailPDFOptions userEmailPDFOptions, byte[] pdfBytes)
 
         {
             UserEmailPDFOptions options = new UserEmailPDFOptions
             {
-                ToEmails = new List<string>() { Email },
-                Subject = "All Invoices PDF",
-
+                ToEmails = userEmailPDFOptions.ToEmails,
+                CCEmails = userEmailPDFOptions.CCEmails,
+                BCCEmails = userEmailPDFOptions.BCCEmails,
+                Subject = userEmailPDFOptions.Subject,
+                Body = userEmailPDFOptions.Body
             };
             options.Attachments = new List<EmailAttachment>
             {

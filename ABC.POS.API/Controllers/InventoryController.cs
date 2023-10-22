@@ -8584,7 +8584,52 @@ namespace ABC.POS.API.Controllers
             }
         }
 
+        [HttpGet("CustomerInformationGet1")]
+        public async Task<IActionResult> CustomerInformationGet1()
+        {
+            try
+            {
+                var Response = ResponseBuilder.BuildWSResponse<List<SOCustomersDDAdp>>();
 
+                var record = (from cusinfo in db.CustomerInformations
+                              join rec in db.Receivables on cusinfo.AccountId equals rec.AccountId into cusresult
+                              from cusinforesult in cusresult.DefaultIfEmpty()
+                              select new SOCustomersDDAdp
+                              {
+                                  Id = cusinfo.Id,
+                                  Company = cusinfo.Company,
+                                  CustomerCode = cusinfo.CustomerCode,
+                                  ReceivableBalance = cusinforesult.Amount == null || cusinforesult.Amount == "" ? "0" : cusinforesult.Amount
+                              }).ToList();
+
+
+
+
+                if (record.Count > 0)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(Response);
+
+                }
+
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var Response = ResponseBuilder.BuildWSResponse<SOCustomersDDAdp>();
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
+                    return Ok(Response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
 
         //Item End
 
@@ -10145,8 +10190,17 @@ namespace ABC.POS.API.Controllers
         {
             try
             {
-                var Response = ResponseBuilder.BuildWSResponse<List<string>>();
-                var record = db.PointOfSales.Where(x => x.IsOpen == true).Select(x => x.InvoiceNumber).ToList();
+                var Response = ResponseBuilder.BuildWSResponse<List<SOOpenInvoicesModel>>();
+                var record = (from pos in db.PointOfSales
+                              where pos.IsOpen == true
+                              join cusInfo in db.CustomerInformations on pos.CustomerId equals cusInfo.Id
+                              select new SOOpenInvoicesModel
+                              {
+                                  InvoiceNumber = pos.InvoiceNumber,
+                                  CustomerName = cusInfo.Company,
+                                  CustomerCode = cusInfo.CustomerCode
+                              }).ToList();
+
                 ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
                 return Ok(Response);
             }
@@ -10154,7 +10208,7 @@ namespace ABC.POS.API.Controllers
             {
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
                 {
-                    var Response = ResponseBuilder.BuildWSResponse<PosSale>();
+                    var Response = ResponseBuilder.BuildWSResponse<SOOpenInvoicesModel>();
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
                     return Ok(Response);
                 }
@@ -10189,8 +10243,19 @@ namespace ABC.POS.API.Controllers
         {
             try
             {
-                var Response = ResponseBuilder.BuildWSResponse<List<string>>();
-                var record = db.PointOfSales.Where(x => x.IsClose == true).Select(f => f.InvoiceNumber).ToList();
+                var Response = ResponseBuilder.BuildWSResponse<List<SOPostedInvoicesModel>>();
+                var record = (from pos in db.PointOfSales
+                              join r in db.Receivings on pos.InvoiceNumber equals r.InvoiceNumber
+                              join cusInfo in db.CustomerInformations on pos.CustomerId equals cusInfo.Id
+                              where pos.IsClose == true
+                              select new SOPostedInvoicesModel
+                              {
+                                  InvoiceNumber = pos.InvoiceNumber,
+                                  CustomerName = cusInfo.Company,
+                                  CustomerCode = cusInfo.CustomerCode,
+                                  Amount = r.InvTotal,
+                                  Balance = r.InvBalance
+                              }).ToList();
                 ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
                 return Ok(Response);
             }
@@ -11325,7 +11390,7 @@ namespace ABC.POS.API.Controllers
 
                 var record = (from sit in db.SalesInvTransactions
                               join sih in db.SaleInvHistories on sit.Id equals sih.SaleInvTransactionId
-                             // join asp in db.AspNetUsers on sit.UserId equals asp.Id
+                              // join asp in db.AspNetUsers on sit.UserId equals asp.Id
                               where sih.SaleInvTransactionId == SaleInvTransactionId
                               select new SaleInvHistroy
                               {
@@ -11453,8 +11518,8 @@ namespace ABC.POS.API.Controllers
         public IActionResult MultiInvGeneratePdf(int CustomerId)
         {
             try
-             {
-               var Response = ResponseBuilder.BuildWSResponse<CustomerDetailModel>();
+            {
+                var Response = ResponseBuilder.BuildWSResponse<CustomerDetailModel>();
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -11469,12 +11534,12 @@ namespace ABC.POS.API.Controllers
                         Fax = cd.Fax,
                         Phone = cd.Phone,
                         Email = cd.Email,
-                         PointOfSale = db.PointOfSales
+                        PointOfSale = db.PointOfSales
                             .Where(psm => psm.CustomerId == CustomerId)
                             .Select(psm => new PointOfSaleModel
                             {
                                 InvoiceNumber = psm.InvoiceNumber,
-                         
+
                                 PointOfSaleDetails = db.PointOfSaleDetails
                                     .Where(psd => psd.PointOfSaleId == psm.PointOfSaleId)
                                     .Select(psd => new PointOfSaleDetailModel
@@ -11483,7 +11548,7 @@ namespace ABC.POS.API.Controllers
                                         InUnit = psd.InUnit,
                                         OutUnit = psd.OutUnit,
                                         Price = psd.Price,
-                                        Total = psd.Total,                                   
+                                        Total = psd.Total,
                                     })
                                     .ToList()
                             })
@@ -11491,17 +11556,17 @@ namespace ABC.POS.API.Controllers
                     })
                     .FirstOrDefault();
 
-				if (record != null)
-				{
-					ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
 
-				}
-				else
-				{
-					ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
-				}
-				return Ok(Response);
-			}
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(Response, StatusCodes.RECORD_NOTFOUND, null, null);
+                }
+                return Ok(Response);
+            }
             catch (Exception ex)
             {
                 if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")

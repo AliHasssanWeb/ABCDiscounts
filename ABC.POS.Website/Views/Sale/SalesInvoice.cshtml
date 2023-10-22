@@ -667,7 +667,7 @@
                                  @*   <img class="printrecord" src="../images/printer.png" style="width:50px" title="Print" onclick="creditCheck(true, false,false,false)" />*@
                                   
                                     <img class="hide-icon" id="" src="../images/payment.png" style="width:50px;margin-left:5px;" title="Credit"  />
-                                    <img class="hide-icon" id="" src="../images/add.png" style="width:50px;margin-left:5px;" title="Credit" onclick="openpaymentmodal2()" />
+                                    @* <img class="hide-icon" id="" src="../images/add.png" style="width:50px;margin-left:5px;" title="Credit" onclick="openpaymentmodal2()" /> *@
                                 </div>
                                 <div class="di" style=" margin-left: 20px; " id="DivSP2">
                                     <img class="hide-icon" src="../images/printer.png" style="width:50px;margin-left:5px;" title="Print"  />
@@ -2963,8 +2963,8 @@
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">5-PDF Save As Protected</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">6-Un-Protected Storage</p>
                             <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer">7-Protected Storage</p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick="openemailmessagemodal()">8-email PDF </p>
-                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick="openemailmessagemodal()" )>9-email PDF (Protected)</p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=openemailmessagemodal("EmailUnProtected")>8-Email PDF </p>
+                            <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=openemailmessagemodal("EmailProtected")>9-Email PDF (Protected)</p>
                          @*   <p style="font-weight:800; color:#1F3BB3; font-size:17px; cursor: pointer" onclick=EmailSendwithProtected("EmailProtected")>9-email PDF (Protected)</p>*@
 
                         </div>
@@ -2995,12 +2995,9 @@
             <div class="modal-body" style="padding:0px;">
                 <div class="row" style="margin:0px;background:rgb(198, 201, 206);border:outset;padding-bottom:10px">
                     <div  style="padding-top:10px;display:flex;">
-                        <label for="cars" style="font-weight:600;">Customer</label>
-                        <select  style="width:60%;margin-left:10px" name="cars" id="cars">
-                            <option value="volvo"></option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <label for="customers" style="font-weight:600;">Customer</label>
+                        <select  style="width:60%;margin-left:10px" name="" id="customerDropDown" onclick=GetCustomersForEmailMessagePopup()>
+                            <option value="" selected>Select</option>
                         </select>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
                             <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
@@ -3012,12 +3009,9 @@
                         </div>
                     </div>
                     <div style="padding-top:10px;display:flex">
-                        <label for="cars" style="font-weight:600;">Vendor</label>
-                        <select style="width:59%;margin-left:29px" name="cars" id="cars">
-                            <option value="volvo"></option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
+                        <label for="Vendor" style="font-weight:600;">Vendor</label>
+                        <select style="width:59%;margin-left:29px" name="vendor" id="vendorDropDown">
+                            <option value="" selected>Select</option>
                         </select>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
                             <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
@@ -3037,36 +3031,26 @@
                         <label for="fname" style="font-weight:600;">Subject:</label>
                    </div>
                     <div class="col-lg-7">
-                        <input style="background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+                        <input style="background:rgb(198, 201, 206);border:inset 1px;" type="text" id="CustomerToEmailId" name="" value=""><br>
 
-                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="CustomerCCEmailId" name="" value=""><br>
 
-                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="CustomerBCCEmailId" name="" value=""><br>
 
-                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="fname" name="fname" value=""><br>
+                        <input style="margin-top:19px;background:rgb(198, 201, 206);border:inset 1px;" type="text" id="CustomerSubjectId" name="" value=""><br>
                     </div>
                    <div class="col-lg-2">
-                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 12px;">
-                            <img src="../images/Dictionary SVG.svg" style="width:50px" title="Refresh" />
+                        <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 12px;" id="TypeEmailProtectedOrUnProtected" onclick=EmailSendwithProtected(this.id)>
+                            <img src="../images/Dictionary SVG.svg" style="width:50px" title="SendEmail" />
                         </button>
-                      
                     </div>
-                 
                 </div>
-              
-
-                 <div class="row" style="margin:0px;background:rgb(198, 201, 206);padding-top:15px; height:80px;border:1px solid black">
-                   
-                 
+                 <div class="row" style="margin:0px; background:rgb(198, 201, 206); height:80px;">
+                   <textarea id="emailBodyId" name="" rows="3" cols="30"></textarea>
                 </div>
-
-
-                    </div>
-                   
-                  
-
-                </div>
-            </div>
+             </div>
+           </div>
+         </div>
             
         </div>
     </div>
@@ -4661,7 +4645,7 @@
     // });
 
     // === function Open invoice Created By NOUMAN
-     var openinvoices1 = $('#open-invoice');
+   var openinvoices1 = $('#open-invoice');
     $.ajax({
         type: "GET",
         url: '@Url.Action("GetOpensales1", "Sale")',
@@ -4671,7 +4655,7 @@
              
                 openinvoices1.append(
                     /*  $('<option></option>').val(val).html("<div onclick=seletchdkjsa(" + text.currentInvoiceNumber + ")" + text.currentInvoiceNumber + "-" + text.customerNumber + "-" + text.customerName +"</div>")*/
-                    $('<option></option>').val(text).html(text/* + "-" + text.customerNumber + "-" + text.customerName*/)
+                    $('<option></option>').val(text.invoiceNumber).html(text.invoiceNumber + '  -  ' + text.customerCode + '  -  ' + text.customerName)
                 );
             });
         },
@@ -4708,7 +4692,7 @@
         success: function (data) {
             $.each(data, function (val, text) {
                 postedinvoices1.append(
-                    $('<option></option>').val(text).html(text /* + "-" + text.customerNumber + "-" + text.customerName*/)
+                    $('<option></option>').val(text.invoiceNumber).html(text.invoiceNumber + '  -  ' + text.customerCode + '  -  ' + text.customerName + '    -    ' + text.amount + '    -   ' + text.balance)
 
                 );
             });
@@ -4980,13 +4964,13 @@
        
     }
 
-
-   
-      function  openemailmessagemodal() {
+    function openemailmessagemodal(Type) {
+        debugger;
         $("#emailmessagemodal").modal('show');
+        $("#TypeEmailProtectedOrUnProtected").attr("id", Type);
       
     }
-    function  closeemailmessagemodal() {
+    function closeemailmessagemodal() {
         $("#emailmessagemodal").modal('hide');
     }
 
@@ -6123,10 +6107,10 @@
         });
     }
     function AppendAllMissions(event) {
-        //debugger;
+        debugger;
         $.ajax({
             type: "GET",
-            url: "@Url.Action("AutoCompleteSearchCustomerInfo", "Sale")",
+            url: "@Url.Action("AutoCompleteSearchCustomerInfo1", "Sale")",
             async: false,
             dataType: 'json',
             cache: false,
@@ -6140,12 +6124,16 @@
                 $("#listallmissions").empty();
                 //$('#ddlAllMission').empty();
                 $.each(opts, function (i, d) {
+                    debugger;
+        
                     inner = '';
                     inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCompanyByID(' + d.id + ',true)";>';
                     if (i == 0) {
                         inner += '<div class="searchheader">Company Name</div></br>';
                     }
                     inner += '<span class="item_name di w-50" data-rel="' + d.id + '">' + d.company + '</span>';
+                    inner += '<span class="item_name di w-50">' + d.customerCode + '</span>';
+                    inner += '<span class="item_name di w-50">' + abc_general.parenthAdd(d.receivableBalance) + '</span>';
                     inner += '</div>';
 
 
@@ -6166,7 +6154,6 @@
         //    AppendAllMissions();
         //}
         var naming = $(".searchname").val();
-        
             $(".item_name").parent().hide();
             $("#customerid").val("");     
             var text = naming;
@@ -6445,11 +6432,16 @@
                 $("#listallmissions").empty();
                 // ---------- Display None Properties --------
                   $("#bussinessAddress").text(data.businessAddress);
-                  $("#customerEmail").text(data.email);
-                  $("#customerEmailCusinfo").val(data.email);
-                  $("#customeremaillabel").text(data.email);
+             
                   $("#customerAddToMail").text(data.addtoMaillingList);
                   // ---------- Display None Properties --------
+
+                  // --------------- Customer Email Binding Properties -----------
+                  $("#customerEmail").text(data.email);
+                  $("#customeremaillabel").text(data.email);
+                  $("#customerEmailCusinfo").val(data.email);
+                  $("#CustomerToEmailId").val(data.email);
+                  //--------------- Customer Email Binding Properties -----------
 
                 var amount = $("#remainingAmount").text();
                 if ($("#isBilltoBill").text() == "0" && $("#isBilltoBill").text() == 0 && amount != "" && amount != "0") {
@@ -6545,7 +6537,6 @@
 
 
     function openCity(evt, cityName) {
-        debugger;
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -6569,7 +6560,6 @@
     }
 
     function switchF9Tabs(event, TabName){
-        debugger;
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent1");
         for (i = 0; i < tabcontent.length; i++) {
@@ -6649,7 +6639,6 @@
                 data: { PointOfSaleId: PointOfSaleId },
                 dataType: "json",
                 success: function (data) {
-                    debugger;
                     var d = new Date(data.invoiceDate)
                     var InvDate = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
 
@@ -7596,7 +7585,6 @@
 
 
     var nextinvoice1 = function (method, selectedinvoicenumber, invoiceType) {
-        debugger;
         if (selectedinvoicenumber != 'value') {
 
             var data = $("#txtInvoiceNumber").text();
@@ -8331,6 +8319,7 @@
         $('#itemquantitylabel').val('');
     }
     function GetCustomerData() {
+        debugger;
         var id = $('#customerCode').val();
         $.ajax({
 
@@ -8354,6 +8343,7 @@
 
 
     function getCustomers(event) {
+        debugger;
         var data_array = [];
         var search = $("#customerInput1").val();
         $("#customerNames").empty();
@@ -11171,7 +11161,11 @@
 
     function EmailSendwithProtected(Type) {
         debugger;
-        var CustomerEmail = $("#customerEmailCusinfo").val();
+        var CustomerEmail = $("#CustomerToEmailId").val();
+        var CustomerCCEmailId = $("#CustomerCCEmailId").val();
+        var CustomerBCCEmailId = $("#CustomerBCCEmailId").val();
+        var CustomerSubjectId = $("#CustomerSubjectId").val();
+        var emailBodyId = $("#emailBodyId").val();
         var PdfProtectedPassword = $("#PdfProtectedPassword").val();
         var CustmerID = $("#customerid").val();
 
@@ -11187,11 +11181,22 @@
             return;
         }
 
+       var userEmailPDFOptions = {
+            ToEmails : CustomerEmail,
+            CCEmails : CustomerCCEmailId,
+            BCCEmails : CustomerBCCEmailId,
+            Subject : CustomerSubjectId,
+            Body : emailBodyId
+        }
+
         $.ajax({
             type: "GET",
             url: '@Url.Action("MultiInvGeneratePdfProtected", "Sale")',
             data: {
-               CustomerId : CustmerID, Password: PdfProtectedPassword, CustomerEmail: CustomerEmail, Type:Type
+               CustomerId : CustmerID, 
+               Password: PdfProtectedPassword, 
+               Type:Type, 
+               userEmailPDFOptions : JSON.stringify(userEmailPDFOptions)
             },
             dataType: "json",
             success: function (data) {
@@ -11251,6 +11256,11 @@
   }
 </script>
 
+<script>
+    function GetCustomersForEmailMessagePopup(){
+     
+    }
+</script>
 
 
 

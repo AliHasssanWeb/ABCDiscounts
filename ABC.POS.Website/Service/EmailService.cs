@@ -19,8 +19,8 @@ namespace ABC.POS.Website.Service
         {
             _razorViewToStringRenderer = razorViewToStringRenderer;
             _smtpConfig = smtpConfig;
-    }
-        
+        }
+
 
         public async Task SendTestEmail(UserEmailOptions userEmailOptions)
         {
@@ -129,9 +129,15 @@ namespace ABC.POS.Website.Service
                 From = new MailAddress(_smtpConfig.SenderAddress, _smtpConfig.SenderDisplayName)
             };
 
-            foreach (var toEmail in userEmailPDFOptions.ToEmails)
+            mail.To.Add(userEmailPDFOptions.ToEmails);
+
+            if (!string.IsNullOrEmpty(userEmailPDFOptions.CCEmails))
             {
-                mail.To.Add(toEmail);
+                mail.CC.Add(userEmailPDFOptions.CCEmails);
+            }
+            if (!string.IsNullOrEmpty(userEmailPDFOptions.BCCEmails))
+            {
+                mail.Bcc.Add(userEmailPDFOptions.BCCEmails);
             }
 
             NetworkCredential networkCredential = new NetworkCredential(_smtpConfig.UserName, _smtpConfig.Password);
