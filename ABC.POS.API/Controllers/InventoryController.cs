@@ -8585,7 +8585,7 @@ namespace ABC.POS.API.Controllers
         }
 
         [HttpGet("CustomerInformationGet1")]
-        public async Task<IActionResult> CustomerInformationGet1()
+        public IActionResult CustomerInformationGet1()
         {
             try
             {
@@ -8602,16 +8602,11 @@ namespace ABC.POS.API.Controllers
                                   ReceivableBalance = cusinforesult.Amount == null || cusinforesult.Amount == "" ? "0" : cusinforesult.Amount
                               }).ToList();
 
-
-
-
                 if (record.Count > 0)
                 {
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.SUCCESS_CODE, null, record);
                     return Ok(Response);
-
                 }
-
                 else
                 {
                     ResponseBuilder.SetWSResponse(Response, StatusCodes.FIELD_REQUIRED, null, null);
