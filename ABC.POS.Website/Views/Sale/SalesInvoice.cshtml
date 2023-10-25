@@ -4814,14 +4814,15 @@
         debugger;
         var ac = $("#rowid-" + val).find("td:eq(4)").text();
         if (ac != null && ac != "") {
-            var xx = $("#rowid-" + val).find("td:eq(7)").text();
-            var allitem = $("#countnum").val();
-            // if(allitem > 0){
-            var zz = allitem - parseFloat(xx);
-            $("#countnum").val(zz);
-            // }else{
-            //    $("#TotalItems").val(0);
-            // }
+            var xx = $("#rowid-" + val).find("td:eq(17)").text();
+            var allitem = $("#countnum").text();
+           if(allitem > 0){
+                var zz = allitem - parseInt(xx);
+                $("#countnum").text(zz);
+            }
+            else{
+               $("#TotalItems").text(0);
+            }
         }
         $("#rowid-" + val).remove();
         var alltr = $("#saletable").find('tr');
@@ -4833,7 +4834,6 @@
 
                 var alltd = $(t).find('td');
                 $.each(alltd, function (f, it) {
-                    //  console.log($(it)[0].id.split('-'));
                     var id = $(it)[0].id.split('-');
                     if (id[0] == "countser") {
                         $(it).attr('id', id[0] + "-" + i);
@@ -4855,21 +4855,9 @@
            // sernum = i;
         });
         var count = 1;
-        var allitem = $("#countnum").val();
-        $("#saletable tr").each(function () {
-            //var currentRow=$(this);
-            //var col_value = currentRow.find("td:eq(7)").text();
-            //alert(col_value);
-            //var zz = allitem - parseFloat(col_value);
-            //alert(zz);
-            //$("#TotalItems").val(zz);
-            count++;
-        });
         var sernum = count;
         sernum--;
-        //$("#TotalItems").val(sernum);
         CountTotalOfAllTD();
-        //alert(101);
     }
     function RemoveRowPayment(val) {
         $("#rowidsalepayment-" + val).remove();
@@ -5903,12 +5891,6 @@
 
         //  $("#subtotalauto").val("$" + additionoftotalquantitysub);
 
-        // var quantityplus = $("#countnum").text();
-        // quantityplus = quantityplus == "" ? 0 : quantityplus;
-        // quantityplus = parseInt(quantityplus);
-        // var quantityTotal = quantityplus + parseInt(quantity);
-        // $("#countnum").text(quantityTotal);
-
          //hereis
         var allitem = 0;
         $("#saletable TBODY TR").each(function () {
@@ -6164,7 +6146,12 @@
                             $("#subtotalauto").val(abc_general.dollarAdd(parseFloat(data.cost).toFixed(2)));
                         }
 
-                        $("#countnum").text(val);
+                        var quantityplus = $("#countnum").text();
+                        quantityplus = quantityplus == "" ? 0 : quantityplus;
+                        quantityplus = parseInt(quantityplus);
+                        var quantityTotal = quantityplus + 1;
+                        $("#countnum").text(quantityTotal);
+
                         $(".add-row").trigger("click")
                     }
 
