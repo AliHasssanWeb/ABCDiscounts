@@ -4414,7 +4414,7 @@
             html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">1</td>';
             html += '<td style="display:none" id="needhighotherization-' + sernum + '"></td>'
             html += '<td style="display:none" id="highlimiton-' + sernum + '"></td>'
-            html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+            html += '<td id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
             html += '<td style="display:none" id="possaleid-' + sernum + '"></td>';
             html += '<input type="hidden" value="" id="productId"/>';
             html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
@@ -4789,8 +4789,40 @@
             $("#thumbLeftButton").prop("disabled", false);
         }
     }
+   function RemoveRowPlusEmpty(val)
+    {
+       //debugger;
+        RemoveRow(val);
+         var addrow = false;
+         var rowCount = 1;
+        $('#saletable tr').each(function (index, tr) {
+            var descriptionIndex = $('#description-' + rowCount).text();
+           if (descriptionIndex == '') {
+              RemoveRow(rowCount);
+              addrow = true;
+           } else {
+               rowCount++;
+               }
+        });
 
+         if(addrow)
+         {
+            $(".add-row").trigger("click");
+         }          
+    }
     function RemoveRow(val) {
+        debugger;
+        var ac = $("#rowid-" + val).find("td:eq(4)").text();
+        if (ac != null && ac != "") {
+            var xx = $("#rowid-" + val).find("td:eq(7)").text();
+            var allitem = $("#countnum").val();
+            // if(allitem > 0){
+            var zz = allitem - parseFloat(xx);
+            $("#countnum").val(zz);
+            // }else{
+            //    $("#TotalItems").val(0);
+            // }
+        }
         $("#rowid-" + val).remove();
         var alltr = $("#saletable").find('tr');
 
@@ -4814,19 +4846,30 @@
                         $(it).attr('onkeyup', 'QuantityMultipyPrice(' + i + ')');
                     }
                     if (id[0] == "delete") {
-                        $(it).attr('onclick', 'RemoveRow(' + i + ')');
+                        $(it).attr('onclick', 'RemoveRowPlusEmpty(' + i + ')');
                     }
                     $(it).attr('id', id[0] + "-" + i);
 
                 });
             }
-            sernum = i;
+           // sernum = i;
         });
-
-        //sernum--;
-        $("#countnum").text(sernum);
+        var count = 1;
+        var allitem = $("#countnum").val();
+        $("#saletable tr").each(function () {
+            //var currentRow=$(this);
+            //var col_value = currentRow.find("td:eq(7)").text();
+            //alert(col_value);
+            //var zz = allitem - parseFloat(col_value);
+            //alert(zz);
+            //$("#TotalItems").val(zz);
+            count++;
+        });
+        var sernum = count;
+        sernum--;
+        //$("#TotalItems").val(sernum);
         CountTotalOfAllTD();
-
+        //alert(101);
     }
     function RemoveRowPayment(val) {
         $("#rowidsalepayment-" + val).remove();
@@ -4993,7 +5036,7 @@
         html += '<td contenteditable="true" class="table-primary"></td>';
         html += '<td contenteditable="true"></td>';
         html += '<td contenteditable="true"></td>';
-        html += '<td><span class="delete-row ti-close" onclick="RemoveRow()"></span></td>';
+        html += '<td><span class="delete-row ti-close" onclick="RemoveRowPlusEmpty()"></span></td>';
         html += '</tr >';
 
         $('#appendnewrowforsalepayment').append(html);
@@ -5781,8 +5824,12 @@
         }
 
     }
+
+    
+    
+
     function QuantityMultipyPrice(val) {
-        debugger;
+ 
         $("#total-" + val).empty();
 
         //var i = 1;
@@ -5855,9 +5902,36 @@
         //var additionoftotalquantitysub = parseFloat(subtotalsuplitednew) + parseFloat(foundtotal);
 
         //  $("#subtotalauto").val("$" + additionoftotalquantitysub);
+
+        // var quantityplus = $("#countnum").text();
+        // quantityplus = quantityplus == "" ? 0 : quantityplus;
+        // quantityplus = parseInt(quantityplus);
+        // var quantityTotal = quantityplus + parseInt(quantity);
+        // $("#countnum").text(quantityTotal);
+
+         //hereis
+        var allitem = 0;
+        $("#saletable TBODY TR").each(function () {
+            debugger;
+            var currentRow = $(this);
+             var check = currentRow.find("TD").eq(4).html();
+             if (check != null && check != "") {
+                var col_value = currentRow.find("TD").eq(17).html(); 
+                if ($.isNumeric(col_value)) {
+                    allitem += parseFloat(col_value);
+                }
+            }
+
+        });
+        $("#countnum").text(0);
+        $("#countnum").text(allitem);
+
         CountTotalOfAllTD();
         DiscuntChangePrice(val);
     }
+
+
+
     function CalculateQrossTotal() {
 
         var freightid = $("#freightid").val();
@@ -5890,7 +5964,7 @@
 
         if (discount > 100) {
             $("#discountidadd").val("");
-            Swal.fire("Error", "Discount Not Be More Then 100%", 'error');
+            Swal.fire("Error", "Discount Not Be More Than 100%", 'error');
             return;
         }
 
@@ -5962,7 +6036,7 @@
         //}   
         //else {
         //}
-        //debugger;
+        debugger;
         var itemTotal = abc_general.dollarRemove($("#total-" + val).text());
         var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
 
@@ -7100,6 +7174,7 @@
             //  $("#discountin-" + val).text('$0.00');
             discount = parseFloat("0.00");
         }
+
         discount = discount/100;
         var ReplacedAmount = tootal.replace(/\$/g, '');
         var priceDiscount = (ReplacedAmount / 100) * discount;
@@ -7663,7 +7738,7 @@
                                     html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
                                     html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
                                     html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
-                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                     html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
                                     html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
                                     html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
@@ -7753,7 +7828,7 @@
                                     html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQty + '</td>';
                                     html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.needHighAuthorization + '</td>'
                                     html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.highLimitOn + '</td>'
-                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                    html += '<td id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                     html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.pointOfSaleId + '</td>';
                                     html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
                                     html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
@@ -7916,7 +7991,7 @@
                                 html += '<td id="ringerqty-' + sernum + '" contenteditable="true" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQuantity + '</td>';
                                 html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.product.needHighAuthorization + '</td>'
                                 html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.product.highlimitOn + '</td>'
-                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.possaleId + '</td>';
                                 html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
                                 html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
@@ -8013,7 +8088,7 @@
                                 html += '<td id="ringerqty-' + sernum + '" contenteditable="false" class="table-warning" val"' + 1 + '"  onkeyup="QuantityMultipyPrice(' + sernum + ')">' + value.ringerQuantity + '</td>';
                                 html += '<td style="display:none" id="needhighotherization-' + sernum + '">' + value.product.needHighAuthorization + '</td>'
                                 html += '<td style="display:none" id="highlimiton-' + sernum + '">' + value.product.highlimitOn + '</td>'
-                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRow(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
+                                html += '<td id="delete-' + sernum + '"  onclick="RemoveRowPlusEmpty(' + sernum + ')"><span class="delete-row ti-close"></span></td>';
                                 html += '<td style="display:none" id="possaleid-' + sernum + '">' + value.possaleId + '</td>';
                                 html += '<input type="hidden" value="' + value.itemId + '" id="productId"/>';
                                 html += '<input type="hidden" id="saleslimitexeeded-' + sernum + '" class="saleslimitexeeded" value="false" />';
