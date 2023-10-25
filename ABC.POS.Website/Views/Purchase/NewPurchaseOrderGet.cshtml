@@ -6043,6 +6043,7 @@ function CountTotalOfAllTD() {
 
     function RemoveRowPlusEmpty(val)
     {
+        debugger;
         RemoveRow(val);
          var addrow = false;
          var rowCount = 1;
@@ -6861,6 +6862,7 @@ function CountTotalOfAllTD() {
         //hereis
         var allitem = 0;
         $("#mytable tr").each(function () {
+            debugger;
             var currentRow = $(this);
             var check = currentRow.find("td:eq(3)").text();
             if (check != null && check != "") {
