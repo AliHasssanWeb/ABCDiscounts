@@ -1766,7 +1766,10 @@ namespace ABC.POS.Website.Controllers
             try
             {
                 var body = JsonConvert.SerializeObject(SaleModel);
-                TempData["saleorder"] = body;
+
+                HttpContext.Session.SetString("saleorder", body);
+
+                //TempData["saleorder"] = body;
                 SResponse resp = RequestSender.Instance.CallAPI("api", "Inventory/SaleUpdate1", "POST", body);
                 if (resp.Status && (resp.Resp != null) && (resp.Resp != ""))
                 {
@@ -2303,7 +2306,7 @@ namespace ABC.POS.Website.Controllers
 
                 if (string.IsNullOrEmpty(body))
                 {
-                    TempData["response"] = "Sale data not found in TempData.";
+                    TempData["response"] = "SaleData is Null";
                     return View();
                 }
                 var existingData = JsonConvert.DeserializeObject<PointOfSalePdfModel>(body);
@@ -2906,7 +2909,7 @@ namespace ABC.POS.Website.Controllers
 
 
         [HttpPost]
-        public IActionResult ChangePayment1([FromBody] SaleInvoicesModel Sale)
+        public async Task<IActionResult> ChangePayment1([FromBody] SaleInvoicesModel Sale)
         {
             try
             {
@@ -2927,7 +2930,7 @@ namespace ABC.POS.Website.Controllers
                         var body = HttpContext.Session.GetString("saleorder");
                         var model = JsonConvert.DeserializeObject<PointOfSalePdfModel>((string)body);
 
-                        Sendmail(Sale.CustomerEmail, model);
+                       await Sendmail(Sale.CustomerEmail, model);
 
                     }
                     return Json(true);
