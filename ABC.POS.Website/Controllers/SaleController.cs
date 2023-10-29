@@ -3102,6 +3102,7 @@ namespace ABC.POS.Website.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> MultiInvGeneratePdfProtected(int CustomerId, string Password, string Type, string userEmailPDFOptions)
         {
             try
@@ -3217,6 +3218,58 @@ namespace ABC.POS.Website.Controllers
 
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        public JsonResult GetVendorsSaleOrderInvoiceEmails()
+        {
+            var Msg = "";
+
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/GetVendorsSaleOrderInvoiceEmail", "GET");
+            if (res.Status && (res.Resp != null) && (res.Resp != ""))
+            {
+                ResponseBack<List<VendorsforInvoiceEmailDDAdp>> response = JsonConvert.DeserializeObject<ResponseBack<List<VendorsforInvoiceEmailDDAdp>>>(res.Resp);
+                if (response.Data != null)
+                {
+                    List<VendorsforInvoiceEmailDDAdp> responseobj = response.Data;
+                    return Json(responseobj);
+                }
+                else
+                {
+                    return Json("false");
+                }
+            }
+            else
+            {
+                return Json("false");
+            }
+
+        }
+
+        [HttpGet]
+        public JsonResult GetCustomersSaleOrderInvoiceEmails()
+        {
+            var Msg = "";
+
+            SResponse res = RequestSender.Instance.CallAPI("api", "Sale/GetCustomersSaleOrderInvoiceEmail", "GET");
+            if (res.Status && (res.Resp != null) && (res.Resp != ""))
+            {
+                ResponseBack<List<CustomersforInvoiceEmailDDAdp>> response = JsonConvert.DeserializeObject<ResponseBack<List<CustomersforInvoiceEmailDDAdp>>>(res.Resp);
+                if (response.Data != null)
+                {
+                    List<CustomersforInvoiceEmailDDAdp> responseobj = response.Data;
+                    return Json(responseobj);
+                }
+                else
+                {
+                    return Json("false");
+                }
+            }
+            else
+            {
+                return Json("false");
+            }
+
         }
 
     }

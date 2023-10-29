@@ -976,5 +976,81 @@ namespace ABC.POS.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetVendorsSaleOrderInvoiceEmail")]
+        public IActionResult GetVendorsSaleOrderInvoiceEmail()
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<List<VendorsforInvoiceEmailDDAdp>>();
+
+                var record = db.Vendors.Select(u => new VendorsforInvoiceEmailDDAdp
+                {
+                    VendorId = u.VendorId,
+                    CompanyName = u.Company,
+                    VendorEmail = u.Email
+                }).ToList();
+
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var response = ResponseBuilder.BuildWSResponse<List<VendorsforInvoiceEmailDDAdp>>();
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetCustomersSaleOrderInvoiceEmail")]
+        public IActionResult GetCustomersSaleOrderInvoiceEmail()
+        {
+            try
+            {
+                var response = ResponseBuilder.BuildWSResponse<List<CustomersforInvoiceEmailDDAdp>>();
+
+                var record = db.CustomerInformations.Select(u => new CustomersforInvoiceEmailDDAdp
+                {
+                    CustomerId = u.Id,
+                    CompanyName = u.Company,
+                    CustomerEmail = u.Email
+                }).ToList();
+
+
+                if (record != null)
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.SUCCESS_CODE, null, record);
+                    return Ok(response);
+                }
+                else
+                {
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.")
+                {
+                    var response = ResponseBuilder.BuildWSResponse<List<CustomersforInvoiceEmailDDAdp>>();
+                    ResponseBuilder.SetWSResponse(response, StatusCodes.RECORD_NOTFOUND, null, null);
+                    return Ok(response);
+                }
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

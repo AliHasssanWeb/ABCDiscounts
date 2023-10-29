@@ -2996,17 +2996,17 @@
                 <div class="row" style="margin:0px;background:rgb(198, 201, 206);border:outset;padding-bottom:10px">
                     <div  style="padding-top:10px;display:flex;">
                         <label for="customers" style="font-weight:600;">Customer</label>
-                        <select  style="width:60%;margin-left:10px" name="" id="customerDropDown" onclick=GetCustomersForEmailMessagePopup()>
+                        <select  style="width:60%;margin-left:10px" name="" id="customerDropDown">
                             <option value="" selected>Select</option>
                         </select>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
-                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;" onclick=CustomerSelectToCCEmail("To")>To</button>
 
                         </div>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
-                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">Cc</button>
-
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;" onclick=CustomerSelectToCCEmail("CC")>Cc</button>
                         </div>
+                        <input type="text" id="CustomerEmailCopyForToCC" hidden>
                     </div>
                     <div style="padding-top:10px;display:flex">
                         <label for="Vendor" style="font-weight:600;">Vendor</label>
@@ -3014,13 +3014,12 @@
                             <option value="" selected>Select</option>
                         </select>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
-                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">To</button>
-
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;" onclick=VendorSelectToCCEmail("To")>To</button>
                         </div>
                         <div class="col-lg-1" style="text-align:center;margin-left:15px">
-                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;">Cc</button>
-
+                            <button type="button" style="padding:3px;border:outset;font-size: 10px; padding: 5px;" onclick=VendorSelectToCCEmail("CC")>Cc</button>
                         </div>
+                        <input type="text" id="VendorEmailCopyForToCC" hidden>
                     </div>
                   
                 </div>
@@ -6168,7 +6167,6 @@
         });
     }
     function AppendAllMissions(event) {
-        debugger;
         $.ajax({
             type: "GET",
             url: "@Url.Action("AutoCompleteSearchCustomerInfo1", "Sale")",
@@ -6185,7 +6183,6 @@
                 $("#listallmissions").empty();
                 //$('#ddlAllMission').empty();
                 $.each(opts, function (i, d) {
-                    debugger;
         
                     inner = '';
                     inner += '<div class="setsearchbox anitem dropdown-menu searchitem cp" onclick="GetCompanyByID(' + d.id + ',true)";>';
@@ -11319,9 +11316,109 @@
 </script>
 
 <script>
-    function GetCustomersForEmailMessagePopup(){
-     
+
+   $(document).ready(function (){
+        $.ajax({
+            url: '@Url.Action("GetVendorsSaleOrderInvoiceEmails", "Sale")',
+                async: false,
+                contentType: "application/json;",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data, function(index, item) {
+                        var dropdown = '<option value='+item.vendorId+' data-email='+item.vendorEmail+'>'+item.companyName+'</option>'
+                        $("#vendorDropDown").append(dropdown);
+                    });
+
+                },
+                error: function(error) {
+                    alert(error);
+                }
+            });
+
+         $.ajax({
+            url: '@Url.Action("GetCustomersSaleOrderInvoiceEmails", "Sale")',
+                async: false,
+                contentType: "application/json;",
+                dataType: "json",
+                success: function(data) {
+                    $.each(data, function(index, item) {
+                        var dropdown = '<option value='+item.customerId+' data-email='+item.customerEmail+'>'+item.companyName+'</option>'
+                        $("#customerDropDown").append(dropdown);
+                    });
+
+                },
+                error: function(error) {
+                    alert(error);
+                }
+            });
+   
+   })
+
+
+    // Add an on VendorDropdown onChange event handler to the dropdown
+    $("#vendorDropDown").on('change', function () {
+        debugger;
+        var selectedOption = $(this).find('option:selected');
+        var selectedEmail = selectedOption.data('email');
+        var selectedId = selectedOption.val();
+        $("#VendorEmailCopyForToCC").val(selectedEmail);
+    });
+
+    // Add an on CustomerDropdown onChange event handler to the dropdown
+    $("#customerDropDown").on('change', function () {
+        debugger;
+        var selectedOption = $(this).find('option:selected');
+        var selectedEmail = selectedOption.data('email');
+        var selectedId = selectedOption.val();
+        $("#CustomerEmailCopyForToCC").val(selectedEmail);
+    });
+
+    function CustomerSelectToCCEmail(value){
+        debugger;
+        var CustomerEmail = $("#CustomerEmailCopyForToCC").val();
+        if(abc_general.isNullOrEmpty(CustomerEmail) == true || CustomerEmail == "null"){
+            Swal.fire('Their is No Email Against The Customer Select');
+            return;
+        }
+
+        if(value == "To"){
+            $("#CustomerToEmailId").val(CustomerEmail);
+            if(CustomerEmail ==  $("#CustomerCCEmailId").val()){
+               $("#CustomerCCEmailId").val(""); 
+            }
+        }
+
+        if(value == "CC"){
+            $("#CustomerCCEmailId").val(CustomerEmail);
+            if (CustomerEmail == $("#CustomerToEmailId").val()) {
+                $("#CustomerToEmailId").val("");
+            }
+        }
     }
+
+    function VendorSelectToCCEmail(value){
+        debugger;
+        var VendorEmail = $("#VendorEmailCopyForToCC").val();
+        if(abc_general.isNullOrEmpty(VendorEmail) == true || VendorEmail == "null"){
+            Swal.fire('Their is No Email Against The Vendor Select');
+            return;
+        }
+
+        if(value == "To"){
+            $("#CustomerToEmailId").val(VendorEmail);
+            if(VendorEmail ==  $("#CustomerCCEmailId").val()){
+               $("#CustomerCCEmailId").val(""); 
+            }
+        }
+
+        if(value == "CC"){
+            $("#CustomerCCEmailId").val(VendorEmail);
+             if(VendorEmail ==  $("#CustomerToEmailId").val()){
+                $("#CustomerToEmailId").val("");
+            }
+        }
+    }
+
 </script>
 
 
