@@ -6021,21 +6021,21 @@
         var itemTotal = abc_general.dollarRemove($("#total-" + val).text());
         var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
 
-        if (!abc_general.isNullOrEmpty(itemTotal) && !abc_general.isNullOrEmpty(subtotalInv) && subtotalInv != "$NaN" ) {
+        // if (!abc_general.isNullOrEmpty(itemTotal) && !abc_general.isNullOrEmpty(subtotalInv) && subtotalInv != "NaN" ) {
 
-                var subtractedtotal = parseFloat(subtotalInv) - parseFloat(itemTotal);
-                $("#subtotalauto").val(abc_general.dollarAdd(subtractedtotal.toFixed(2)));
-                $("#itemnumber-" + val).empty();
-                $("#ringerqty-" + val).empty();
-                $("#amount-" + val).empty();
-                $("#discountin-" + val).empty();
-                $("#discountout-" + val).empty();
-                $("#InUnits-" + val).empty();
-                $("#OutUnits-" + val).empty();
-                $("#price-" + val).empty();
-                $("#total-" + val).empty();
-                $("#description-" + val).empty();
-        }
+        //         var subtractedtotal = parseFloat(subtotalInv) - parseFloat(itemTotal);
+        //         $("#subtotalauto").val(abc_general.dollarAdd(subtractedtotal.toFixed(2)));
+        //         $("#itemnumber-" + val).empty();
+        //         $("#ringerqty-" + val).empty();
+        //         $("#amount-" + val).empty();
+        //         $("#discountin-" + val).empty();
+        //         $("#discountout-" + val).empty();
+        //         $("#InUnits-" + val).empty();
+        //         $("#OutUnits-" + val).empty();
+        //         $("#price-" + val).empty();
+        //         $("#total-" + val).empty();
+        //         $("#description-" + val).empty();
+        // }
 
         var itemnumber = abc_general.signRemove($("#itemnumber-" + val).text(),"-");
 
@@ -7152,6 +7152,7 @@
         debugger;
         var quantity = $("#ringerqty-" + val).text();
         var tootal = $("#price-" + val).text();
+        tootal = tootal == "" ? "0" : tootal;
         var discount = parseFloat(abc_general.signRemove($("#discountout-" + val).text(), '%') );
         var check = $("#discountout-" + val).text();
         if (check == '' || check == "" || check == "$0.00" || check == "undefined" || check == "NaN" || check == NaN || check == undefined) {
