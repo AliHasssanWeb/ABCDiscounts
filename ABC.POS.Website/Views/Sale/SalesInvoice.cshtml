@@ -4397,7 +4397,7 @@
             html += '<td id="Quantity-' + sernum + '"  contenteditable="true" class="table-primary d-none" val"' + 1 + '" onkeyup="QuantityMultipyPrice(' + sernum + ')">1</td>';
             html += '<td id="amount-' + sernum + '" contenteditable="false"></td>';
             html += '<td id="discountin-' + sernum + '"  contenteditable="true" onclick="DiscountPer(' + sernum + ')" onkeyup="DiscuntChangePriceRate(' + sernum + ')">$0.00</td>';
-            html += '<td id="discountout-' + sernum + '" contenteditable="true" onfocus="DiscountPerPerc(' + sernum + ')" onfocusout="DiscuntChangePrice(' + sernum + ')">0.00%</td>';
+            html += '<td id="discountout-' + sernum + '" contenteditable="true" oninput="onChangeValidateDiscount('+ sernum +')" onfocus="DiscountPerPerc(' + sernum + ')" onfocusout="DiscuntChangePrice(' + sernum + ')">0.00%</td>';
             html += '<td id="InUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
             html += '<td id="OutUnits-' + sernum + '"  contenteditable="true" class="table-success"></td>';
             html += '<td id="price-' + sernum + '" contenteditable="false" class="table-warning"></td>';
@@ -6018,8 +6018,8 @@
         //else {
         //}
         debugger;
-        var itemTotal = abc_general.dollarRemove($("#total-" + val).text());
-        var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
+       // var itemTotal = abc_general.dollarRemove($("#total-" + val).text());
+       // var subtotalInv = abc_general.dollarRemove($("#subtotalauto").val());
 
         // if (!abc_general.isNullOrEmpty(itemTotal) && !abc_general.isNullOrEmpty(subtotalInv) && subtotalInv != "NaN" ) {
 
@@ -7145,7 +7145,18 @@
     });
 
 
+    function onChangeValidateDiscount(val){
+        debugger;
+        $("#discountout-" + val).on("input", function () {
+            var discountInput = $(this);
+            var discount = parseFloat(abc_general.signRemove(discountInput.text(), '%'));
 
+            if (discount > 10000) {
+                discountInput.text('10000'); // Set the value to the maximum allowed
+                Swal.fire("Discount cannot be more than 10000");
+            }
+        }); 
+    }
 
 
     function DiscuntChangePrice(val) {
