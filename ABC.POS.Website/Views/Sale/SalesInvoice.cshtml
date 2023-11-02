@@ -4811,19 +4811,38 @@
     }
     function RemoveRow(val) {
         debugger;
-        var ac = $("#rowid-" + val).find("td:eq(4)").text();
-        if (ac != null && ac != "") {
-            var xx = $("#rowid-" + val).find("td:eq(17)").text();
-            var allitem = $("#countnum").text();
-           if(allitem > 0){
-                var zz = allitem - parseInt(xx);
-                $("#countnum").text(zz);
-            }
-            else{
-               $("#TotalItems").text(0);
-            }
-        }
+        // var ac = $("#rowid-" + val).find("td:eq(4)").text();
+        // if (ac != null && ac != "") { 
+        //     var xx = $("#rowid-" + val).find("td:eq(17)").text();
+        //     var allitem = $("#countnum").text();
+        //    if(allitem > 0){
+        //         var zz = allitem - parseInt(xx);
+        //         $("#countnum").text(zz);
+        //     }
+        //     else{
+        //        $("#TotalItems").text(0);
+        //     }
+        // }
+
         $("#rowid-" + val).remove();
+
+        var allitem = 0;
+        $("#saletable TBODY TR").each(function () {
+            debugger;
+            var currentRow = $(this);
+            var check = currentRow.find("TD").eq(4).html();
+            if (check != null && check != "") {
+                var col_value = currentRow.find("TD").eq(17).html();
+                if ($.isNumeric(col_value)) {
+                    allitem += parseFloat(col_value);
+                }
+            }
+
+        });
+        $("#countnum").text(0);
+        $("#countnum").text(allitem);
+
+        
         var alltr = $("#saletable").find('tr');
 
         $.each(alltr, function (i, t) {
@@ -5860,19 +5879,18 @@
             $("#saleslimitexeeded-" + val).val("true");
         }
 
-        var quantity = $("#ringerqty-" + val).text();
-
+        debugger;
         var getStock = $("#stockno-" + val).text();
-        //if (getStock == null || getStock == 0 || getStock == "" || getStock == "undefined") {
-        //    // alert('you cannot sale product stock is not available');
-        //    swal("Error!", "you cannot sale product stock is not available", "error");
-        //    $("#delete-" + val).trigger("click");
-        //}
-        //if (parseInt(quantity) > parseInt(getStock)) {
-
-        //    swal("Error!", "you cannot excede the existing stock", "error");
-        //    $("#delete-" + val).trigger("click");
-        //}
+        if (getStock == null || parseInt(getStock) <= 0 || getStock == "" || getStock == "null") {
+           swal("Error!", "You Cannot Sale Product Stock Is Not Available", "error");
+           $("#delete-" + val).trigger("click");
+           return false;
+        }
+        if (parseInt(quantity) > parseInt(getStock)) {
+           swal("Error!", "You Cannot Exceed The Existing Stock", "error");
+           $("#delete-" + val).trigger("click");
+           return false;
+        }
         var tootal = $("#price-" + val).text();
         //debugger;
         var ReplacedAmount = tootal.replace(/\$/g, '');
@@ -5890,7 +5908,6 @@
 
         //  $("#subtotalauto").val("$" + additionoftotalquantitysub);
 
-         //hereis
         var allitem = 0;
         $("#saletable TBODY TR").each(function () {
             debugger;
@@ -6070,6 +6087,11 @@
                     }
                     count++;
                 });
+
+                if(parseInt(data.quantity) <= 0 || data.quantity == ""){
+                    Swal.fire("Stock is Not Available");
+                    RemoveRow(val);
+                }
 
                 if (notexist === true) {
                                 // debugger;     
@@ -8476,7 +8498,7 @@
 
 
     $('#customQuantity').keydown(function (e) {
-
+        debugger;
         if (e.which == 13) {
             var customQty = $('#customQuantity').val();
             var numberonly = new RegExp('^[0-9]*$');
@@ -8487,14 +8509,14 @@
                 return false;
             }
 
-            if (customQty != null && customQty != '') {
+            if (customQty != null || customQty != '') {
 
                 var InStock = $("#qtyOnHand").val();
-                if (parseFloat(InStock) > 0) {
+                if ((parseInt(InStock) > 0) && (parseInt(customQty) <= parseInt(InStock))) {
                     GetItemDataAppendForDesModal1();
-                } else {
+                } 
+                else {
                     swal("Error!", "Stock Not Available!", "error");
-
                 }
             } else {
                 swal("Error!", "Please Enter Quantity!", "error");
@@ -8517,9 +8539,6 @@
               $("#CustomerEmailValue").val(false);
             }
     }
-
-
-
 
 
     function GetItemDataAppendForDesModal1() {
@@ -10386,7 +10405,7 @@
                                                 window.location.href = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                 //window.open('Purchase/PurchaseInvoice','_blank');
                                                 }*@
-                                                            if (data == true) {
+                                              if (data == true) {
                                                 if (printorNot == true) {
                                                     var actionUrl = '@Url.Action("SaleInvoicePdf", "Sale")';
                                                     window.open(actionUrl);
